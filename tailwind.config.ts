@@ -13,6 +13,7 @@ export default {
         muted: "var(--muted)",
         line: "var(--line)",
         accent: "var(--accent)",
+        "accent-strong": "var(--accent-strong)",
         "accent-ink": "var(--accent-ink)",
       },
       fontFamily: {

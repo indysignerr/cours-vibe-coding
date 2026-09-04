@@ -13,8 +13,9 @@
   --ink: #0b0b0f;
   --muted: #6b6154;
   --line: #ddd6c9;
-  --accent: #ff4d2e;  /* vermillon */
-  --accent-ink: #ffffff;
+  --accent: #ff4d2e;         /* aplats et surfaces */
+  --accent-strong: #c2341a;  /* texte sur fond clair, 4.9:1 */
+  --accent-ink: #0b0b0f;     /* texte sur aplat accent, 5.9:1 */
 
   --grain: 0.035;
   color-scheme: light;
@@ -28,6 +29,7 @@
     --muted: #9b9184;
     --line: #262631;
     --accent: #ff5c40;
+    --accent-strong: #ff5c40;  /* 6.4:1 sur fond sombre */
     --accent-ink: #0b0b0f;
     color-scheme: dark;
   }
@@ -40,6 +42,7 @@
   --muted: #9b9184;
   --line: #262631;
   --accent: #ff5c40;
+  --accent-strong: #ff5c40;
   --accent-ink: #0b0b0f;
   color-scheme: dark;
 }

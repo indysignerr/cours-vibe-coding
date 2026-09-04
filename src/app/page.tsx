@@ -34,16 +34,24 @@ export default function Home() {
   return (
     <>
       <header className="mx-auto flex max-w-stage items-center justify-between px-6 py-6 md:px-10">
-        <span className="font-display text-2xl leading-none">{SITE.name}</span>
+        <span className="whitespace-nowrap font-display text-xl leading-none sm:text-2xl">
+          {SITE.name}
+        </span>
         <nav aria-label="Main" className="flex items-center gap-1 text-sm">
-          <a className="tap flex items-center px-3 font-medium hover:text-accent" href="/programme/">
+          <a
+            className="tap hidden items-center px-3 font-medium hover:text-accent-strong sm:flex"
+            href="/programme/"
+          >
             Programme
           </a>
-          <a className="tap flex items-center px-3 font-medium hover:text-accent" href="/setup/">
+          <a
+            className="tap hidden items-center px-3 font-medium hover:text-accent-strong sm:flex"
+            href="/setup/"
+          >
             Setup
           </a>
           <a
-            className="tap ml-2 flex items-center rounded-full bg-ink px-5 font-medium text-paper transition-colors duration-200 ease-swift hover:bg-accent hover:text-accent-ink"
+            className="tap ml-2 flex items-center whitespace-nowrap rounded-full bg-ink px-5 font-medium text-paper transition-colors duration-200 ease-swift hover:bg-accent hover:text-accent-ink"
             href="/sessions/"
           >
             Sign in
@@ -106,7 +114,7 @@ export default function Home() {
 
             <ol className="mt-12 grid gap-px overflow-hidden rounded-lg bg-line md:grid-cols-3">
               <li className="bg-surface p-8">
-                <span className="font-mono text-sm text-accent">00:00 — 00:30</span>
+                <span className="font-mono text-sm text-accent-strong">00:00 — 00:30</span>
                 <h3 className="mt-3 font-display text-2xl">One idea, shown breaking</h3>
                 <p className="mt-3 text-base text-muted">
                   We start from the failure, then explain the fix. Never a slide of code. Everything
@@ -114,7 +122,7 @@ export default function Home() {
                 </p>
               </li>
               <li className="bg-surface p-8">
-                <span className="font-mono text-sm text-accent">00:30 — 00:57</span>
+                <span className="font-mono text-sm text-accent-strong">00:30 — 00:57</span>
                 <h3 className="mt-3 font-display text-2xl">You build</h3>
                 <p className="mt-3 text-base text-muted">
                   A short brief, a starter repo that already runs, and a checklist that someone else
@@ -122,7 +130,7 @@ export default function Home() {
                 </p>
               </li>
               <li className="bg-surface p-8">
-                <span className="font-mono text-sm text-accent">00:57 — 01:00</span>
+                <span className="font-mono text-sm text-accent-strong">00:57 — 01:00</span>
                 <h3 className="mt-3 font-display text-2xl">Two people show</h3>
                 <p className="mt-3 text-base text-muted">
                   Screens shared, working or broken. A bug explained out loud teaches the room more
@@ -183,13 +191,13 @@ export default function Home() {
         {/* Première séance. */}
         <section className="border-t border-line bg-surface">
           <div className="mx-auto max-w-stage px-6 py-20 md:px-10 md:py-28">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent-strong">
               Session 01 — week of 14 September
             </p>
             <h2 className="mt-4 max-w-[24ch] font-display text-display-lg">{first.title}</h2>
             <p className="mt-6 max-w-measure text-project">{first.promise}</p>
             <a
-              className="tap mt-10 inline-flex items-center gap-2 font-medium text-accent hover:underline"
+              className="tap mt-10 inline-flex items-center gap-2 font-medium text-accent-strong hover:underline"
               href="/setup/"
             >
               Do the setup before you come
@@ -205,11 +213,17 @@ export default function Home() {
             <p className="font-display text-2xl">{SITE.name}</p>
             <p className="mt-2 max-w-measure text-sm text-muted">{SITE.legalMention}</p>
           </div>
-          <nav aria-label="Legal" className="flex flex-wrap gap-x-6 text-sm">
-            <a className="tap flex items-center hover:text-accent" href="/legal/">
+          <nav aria-label="Secondary" className="flex flex-wrap gap-x-6 text-sm">
+            <a className="tap flex items-center hover:text-accent-strong" href="/programme/">
+              Programme
+            </a>
+            <a className="tap flex items-center hover:text-accent-strong" href="/setup/">
+              Setup
+            </a>
+            <a className="tap flex items-center hover:text-accent-strong" href="/legal/">
               Legal notice
             </a>
-            <a className="tap flex items-center hover:text-accent" href="/privacy/">
+            <a className="tap flex items-center hover:text-accent-strong" href="/privacy/">
               Privacy
             </a>
           </nav>
