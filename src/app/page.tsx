@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import { CURRICULUM, PROOF } from "@/lib/curriculum";
 import { SITE } from "@/lib/site";
 
@@ -33,31 +35,7 @@ export default function Home() {
 
   return (
     <>
-      <header className="mx-auto flex max-w-stage items-center justify-between px-6 py-6 md:px-10">
-        <span className="whitespace-nowrap font-display text-xl leading-none sm:text-2xl">
-          {SITE.name}
-        </span>
-        <nav aria-label="Main" className="flex items-center gap-1 text-sm">
-          <a
-            className="tap hidden items-center px-3 font-medium hover:text-accent-strong sm:flex"
-            href="/programme/"
-          >
-            Programme
-          </a>
-          <a
-            className="tap hidden items-center px-3 font-medium hover:text-accent-strong sm:flex"
-            href="/setup/"
-          >
-            Setup
-          </a>
-          <a
-            className="tap ml-2 flex items-center whitespace-nowrap rounded-full bg-ink px-5 font-medium text-paper transition-colors duration-200 ease-swift hover:bg-accent hover:text-accent-ink"
-            href="/sessions/"
-          >
-            Sign in
-          </a>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <main id="main">
         {/* Hero. Une seule action primaire dans le premier écran. */}
@@ -207,28 +185,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="mx-auto max-w-stage px-6 py-14 md:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-8 border-t border-line pt-10">
-          <div>
-            <p className="font-display text-2xl">{SITE.name}</p>
-            <p className="mt-2 max-w-measure text-sm text-muted">{SITE.legalMention}</p>
-          </div>
-          <nav aria-label="Secondary" className="flex flex-wrap gap-x-6 text-sm">
-            <a className="tap flex items-center hover:text-accent-strong" href="/programme/">
-              Programme
-            </a>
-            <a className="tap flex items-center hover:text-accent-strong" href="/setup/">
-              Setup
-            </a>
-            <a className="tap flex items-center hover:text-accent-strong" href="/legal/">
-              Legal notice
-            </a>
-            <a className="tap flex items-center hover:text-accent-strong" href="/privacy/">
-              Privacy
-            </a>
-          </nav>
-        </div>
-      </footer>
+      <SiteFooter />
     </>
   );
 }

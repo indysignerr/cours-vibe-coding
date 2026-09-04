@@ -108,3 +108,89 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Typo des pages rédactionnelles et du markdown venu de Supabase. */
+@layer components {
+  .prose {
+    max-width: 68ch;
+  }
+  .prose h2 {
+    font-family: var(--font-display), Georgia, serif;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1.1;
+    margin-top: 2.75rem;
+    margin-bottom: 0.85rem;
+  }
+  .prose h3 {
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose p,
+  .prose ul,
+  .prose ol,
+  .prose blockquote {
+    margin-bottom: 1.1rem;
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.35rem;
+  }
+  .prose ul { list-style: disc; }
+  .prose ol { list-style: decimal; }
+  .prose li { margin-bottom: 0.4rem; }
+  .prose a {
+    color: var(--accent-strong);
+    text-underline-offset: 3px;
+    text-decoration: underline;
+  }
+  .prose strong { font-weight: 700; }
+  .prose code {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.9em;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+  }
+  /* En séance le code est projeté : jamais sous 20px. */
+  .prose pre {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 10px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.4rem;
+    overflow-x: auto;
+  }
+  .prose pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+  }
+  .prose blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    color: var(--muted);
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.4rem;
+    font-size: 0.95em;
+  }
+  .prose th,
+  .prose td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0.5rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .prose th { font-weight: 700; }
+}

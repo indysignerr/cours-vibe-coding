@@ -5,13 +5,29 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 // appliqué par les politiques RLS, jamais par ce fichier.
 let cached: SupabaseClient | null = null;
 
+function readEnv() {
+  return {
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    key:
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  };
+}
+
+/**
+ * Tant que le projet Supabase n'existe pas, les pages affichent un état
+ * explicite au lieu de casser. Aucune page ne doit appeler getSupabase
+ * sans avoir testé ceci d'abord.
+ */
+export function isSupabaseConfigured(): boolean {
+  const { url, key } = readEnv();
+  return Boolean(url && key);
+}
+
 export function getSupabase(): SupabaseClient {
   if (cached) return cached;
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key =
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { url, key } = readEnv();
 
   if (!url || !key) {
     throw new Error(

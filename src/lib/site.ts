@@ -10,6 +10,7 @@ export const SITE = {
   tagline: "Ship something real, every week.",
   url: "https://cours-vibe-coding.pages.dev",
   whatsapp: "" as string, // lien d'invitation WhatsApp, à remplir
+  contactEmail: "" as string, // adresse publique de l'asso, obligatoire pour les pages légales
   startsWeekOf: "2026-09-14",
   weeks: 12,
   prizeEur: 50,
