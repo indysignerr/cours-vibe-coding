@@ -222,3 +222,110 @@
   }
   .prose th { font-weight: 700; }
 }
+
+/* =====================================================================
+   Briques du registre jeu : boutons épais qui s'enfoncent, cartes à
+   bordure basse, mouvements qui rebondissent. Tout est coupé par
+   prefers-reduced-motion en fin de fichier.
+   ===================================================================== */
+@layer components {
+  /* Le bouton Duolingo : une épaisseur en bas qui s'écrase au clic. */
+  .btn-3d {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 52px;
+    padding: 0 1.6rem;
+    border-radius: 16px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    background: var(--accent);
+    border: 2px solid var(--accent-line);
+    border-bottom-width: 6px;
+    transition:
+      transform 120ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-bottom-width 120ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 120ms;
+    transform: translateY(0);
+  }
+  .btn-3d:hover { filter: brightness(1.04); }
+  .btn-3d:active {
+    transform: translateY(4px);
+    border-bottom-width: 2px;
+  }
+  .btn-3d:disabled {
+    filter: saturate(0.4);
+    opacity: 0.7;
+    transform: none;
+  }
+  .btn-3d--ink   { background: var(--ink);    border-color: #000;              color: var(--paper); }
+  .btn-3d--done  { background: var(--done);   border-color: var(--done-line); }
+  .btn-3d--xp    { background: var(--xp);     border-color: var(--xp-line); }
+  .btn-3d--ghost { background: var(--surface); border-color: var(--line); }
+
+  /* Carte : bordure fine partout, épaisse en bas. */
+  .card-3d {
+    background: var(--surface);
+    border: 2px solid var(--line);
+    border-bottom-width: 5px;
+    border-radius: 20px;
+  }
+  .card-3d--accent { border-color: var(--accent-line); background: var(--accent); }
+  .card-3d--done   { border-color: var(--done-line);   background: var(--done); }
+  .card-3d--streak { border-color: var(--streak-line); background: var(--streak); }
+  .card-3d--xp     { border-color: var(--xp-line);     background: var(--xp); }
+
+  /* Pastille de stat : icône + gros chiffre. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 0.9rem;
+    border-radius: 999px;
+    border: 2px solid var(--line);
+    background: var(--surface);
+    font-weight: 800;
+    font-family: var(--font-display), system-ui, sans-serif;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(0.5px);
+    pointer-events: none;
+  }
+}
+
+@keyframes pop-in {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96%           { transform: scaleY(0.08); }
+}
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  100% { box-shadow: 0 0 0 18px transparent; }
+}
+@keyframes dash {
+  to { stroke-dashoffset: 0; }
+}
+
+.anim-pop    { animation: pop-in 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.anim-float  { animation: float-y 3.4s ease-in-out infinite; }
+.anim-wiggle { animation: wiggle 2.2s ease-in-out infinite; transform-origin: 50% 90%; }
+.anim-pulse  { animation: pulse-ring 1.8s ease-out infinite; }

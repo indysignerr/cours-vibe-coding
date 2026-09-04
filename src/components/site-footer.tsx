@@ -1,32 +1,36 @@
+import { Mascot } from "@/components/mascot";
 import { SITE } from "@/lib/site";
+
+const LINKS = [
+  ["/programme/", "Path"],
+  ["/contests/", "Contests"],
+  ["/setup/", "Setup"],
+  ["/submit/", "Submit"],
+  ["/legal/", "Legal notice"],
+  ["/privacy/", "Privacy"],
+] as const;
 
 export function SiteFooter() {
   return (
-    <footer className="mx-auto max-w-stage px-6 py-14 md:px-10">
-      <div className="flex flex-wrap items-end justify-between gap-8 border-t border-line pt-10">
-        <div>
-          <p className="font-display text-2xl">{SITE.name}</p>
-          <p className="mt-2 max-w-measure text-sm text-muted">{SITE.legalMention}</p>
+    <footer className="mx-auto max-w-stage px-5 py-14 md:px-10">
+      <div className="card-3d flex flex-wrap items-end justify-between gap-8 p-6 md:p-8">
+        <div className="flex items-start gap-4">
+          <Mascot size={56} mood="happy" />
+          <div>
+            <p className="font-display text-2xl font-extrabold">{SITE.name}</p>
+            <p className="mt-1 max-w-measure text-sm text-muted">{SITE.legalMention}</p>
+          </div>
         </div>
-        <nav aria-label="Secondary" className="flex flex-wrap gap-x-6 text-sm">
-          <a className="tap flex items-center hover:text-accent-strong" href="/programme/">
-            Programme
-          </a>
-          <a className="tap flex items-center hover:text-accent-strong" href="/contests/">
-            Contests
-          </a>
-          <a className="tap flex items-center hover:text-accent-strong" href="/setup/">
-            Setup
-          </a>
-          <a className="tap flex items-center hover:text-accent-strong" href="/submit/">
-            Submit
-          </a>
-          <a className="tap flex items-center hover:text-accent-strong" href="/legal/">
-            Legal notice
-          </a>
-          <a className="tap flex items-center hover:text-accent-strong" href="/privacy/">
-            Privacy
-          </a>
+        <nav aria-label="Secondary" className="flex flex-wrap gap-x-1 gap-y-1 text-sm">
+          {LINKS.map(([href, label]) => (
+            <a
+              key={href}
+              className="tap flex items-center rounded-full px-3 font-bold text-muted hover:bg-sunken hover:text-ink"
+              href={href}
+            >
+              {label}
+            </a>
+          ))}
         </nav>
       </div>
     </footer>

@@ -16,15 +16,21 @@ export function PageShell({
   return (
     <>
       <SiteHeader />
-      <main id="main" className="mx-auto max-w-stage px-6 pb-8 pt-10 md:px-10 md:pt-16">
+      <main id="main" className="mx-auto max-w-stage px-5 pb-8 pt-8 md:px-10 md:pt-14">
         {eyebrow ? (
-          <p className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-accent-strong">
+          <p className="anim-pop mb-4 inline-block rounded-full bg-sunken px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.15em] text-accent-strong">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="max-w-[24ch] font-display text-display-lg">{title}</h1>
-        {lede ? <p className="mt-6 max-w-measure text-project text-muted">{lede}</p> : null}
-        <div className="mt-14 md:mt-20">{children}</div>
+        <h1 className="anim-pop max-w-[22ch] font-display text-display-lg font-extrabold [animation-delay:60ms]">
+          {title}
+        </h1>
+        {lede ? (
+          <p className="anim-pop mt-5 max-w-measure text-project text-muted [animation-delay:120ms]">
+            {lede}
+          </p>
+        ) : null}
+        <div className="mt-12 md:mt-16">{children}</div>
       </main>
       <SiteFooter />
     </>
