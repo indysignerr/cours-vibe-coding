@@ -14,21 +14,35 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     title: `${SITE.name} — ${SITE.tagline}`,
     description: `One hour a week at ${SITE.school}. You build, you deploy, you show it.`,
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE.tagline }],
   },
+  twitter: { card: "summary_large_image", images: ["/og.png"] },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  manifest: "/site.webmanifest",
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f1ea" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0b0f" },
-  ],
+  themeColor: "#ff4d2e",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.dataset.theme='dark';if(localStorage.getItem('projector')==='1')document.documentElement.dataset.projector='1'}catch(e){}",
+          }}
+        />
         <SmoothScroll />
         <a
           href="#main"

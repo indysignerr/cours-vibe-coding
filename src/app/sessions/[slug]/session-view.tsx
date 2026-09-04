@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, Lock } from "lucide-react";
+import { ArrowLeft, Check, Copy, Lock, Presentation } from "lucide-react";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -50,7 +50,7 @@ function CopyablePrompt({ prompt, index }: { prompt: SessionPrompt; index: numbe
         </button>
       </div>
       {prompt.label ? <p className="mt-3 font-medium">{prompt.label}</p> : null}
-      <pre className="mt-3 overflow-x-auto whitespace-pre-wrap rounded-lg bg-ink px-5 py-4 font-mono text-xl text-paper">
+      <pre className="projector-code mt-3 overflow-x-auto whitespace-pre-wrap rounded-2xl bg-ink px-5 py-4 font-mono text-xl text-paper">
         <code>{prompt.body}</code>
       </pre>
     </li>
@@ -134,7 +134,46 @@ function Checklist({
   );
 }
 
+/** Bascule du mode projecteur, mémorisée. Flèches ou espace : section suivante. */
+function useProjector() {
+  const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    setOn(document.documentElement.dataset.projector === "1");
+  }, []);
+
+  useEffect(() => {
+    if (!on) return;
+    const sections = () => [...document.querySelectorAll<HTMLElement>(".projector-section")];
+    const onKey = (e: KeyboardEvent) => {
+      if (!["ArrowDown", "ArrowRight", "PageDown", " ", "ArrowUp", "ArrowLeft", "PageUp"].includes(e.key)) return;
+      if ((e.target as HTMLElement)?.tagName === "INPUT" || (e.target as HTMLElement)?.tagName === "TEXTAREA") return;
+      e.preventDefault();
+      const list = sections();
+      const y = window.scrollY + 8;
+      const forward = ["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key);
+      const target = forward
+        ? list.find((el) => el.offsetTop > y + 40)
+        : [...list].reverse().find((el) => el.offsetTop < y - 40);
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [on]);
+
+  function toggle() {
+    const next = !on;
+    setOn(next);
+    if (next) document.documentElement.dataset.projector = "1";
+    else delete document.documentElement.dataset.projector;
+    try { localStorage.setItem("projector", next ? "1" : "0"); } catch {}
+  }
+
+  return { on, toggle };
+}
+
 function Content({ slug, userId }: { slug: string; userId: string }) {
+  const projector = useProjector();
   const [data, setData] = useState<Payload | null | "locked">(null);
   const [ticked, setTicked] = useState<Set<string>>(new Set());
   const entry = bySlug(slug);
@@ -214,11 +253,28 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
             <p className="max-w-measure text-project font-medium">{session.promise}</p>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-3">
-          <a className="btn-3d btn-3d--ghost min-h-[44px] text-sm" href="/sessions/">Back to the path</a>
-          <SignOutButton />
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={projector.toggle}
+            aria-pressed={projector.on}
+            className={`btn-3d min-h-[44px] text-sm ${projector.on ? "" : "btn-3d--ghost"}`}
+          >
+            <Presentation aria-hidden className="size-4" />
+            {projector.on ? "Exit projector" : "Projector"}
+          </button>
+          <a className="btn-3d btn-3d--ghost projector-hide min-h-[44px] text-sm" href="/sessions/">
+            <ArrowLeft aria-hidden className="size-4" />
+            Path
+          </a>
+          <span className="projector-hide"><SignOutButton /></span>
         </div>
       </div>
+      {projector.on ? (
+        <p className="mt-3 font-mono text-xs uppercase tracking-wider text-muted">
+          Arrow keys or space move between sections.
+        </p>
+      ) : null}
 
       {session.concept ? (
         <p className="mt-6 max-w-measure border-l-2 border-accent pl-5 text-base text-muted">
@@ -233,7 +289,7 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
       ) : null}
 
       {session.support_md ? (
-        <section aria-labelledby="support" className="mt-16">
+        <section aria-labelledby="support" className="projector-section mt-16">
           <h2 id="support" className="font-display text-display-md">
             The idea
           </h2>
@@ -244,7 +300,7 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
       ) : null}
 
       {prompts.length ? (
-        <section aria-labelledby="prompts" className="mt-16">
+        <section aria-labelledby="prompts" className="projector-section mt-16">
           <h2 id="prompts" className="font-display text-display-md">
             Prompts for this session
           </h2>
@@ -257,7 +313,7 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
       ) : null}
 
       {session.brief_md ? (
-        <section aria-labelledby="brief" className="mt-16">
+        <section aria-labelledby="brief" className="projector-section mt-16">
           <h2 id="brief" className="font-display text-display-md">
             What you build
           </h2>
@@ -268,7 +324,7 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
       ) : null}
 
       {checks.length ? (
-        <section aria-labelledby="dod" className="mt-16">
+        <section aria-labelledby="dod" className="projector-section mt-16">
           <h2 id="dod" className="font-display text-display-md">
             Done means
           </h2>
@@ -288,7 +344,7 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
       ) : null}
 
       {solution?.is_unlocked ? (
-        <section aria-labelledby="solution" className="mt-16">
+        <section aria-labelledby="solution" className="projector-section mt-16">
           <h2 id="solution" className="font-display text-display-md">
             How it was done
           </h2>

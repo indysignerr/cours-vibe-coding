@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { configurationProblem, getSupabase } from "@/lib/supabase/client";
+import { Onboarding } from "@/components/onboarding";
+import { Skeleton } from "@/components/skeleton";
 import { humanError, useAuth, type AuthState } from "@/lib/use-auth";
 
 /** Écran affiché tant que la configuration Supabase n'est pas exploitable. */
@@ -9,7 +11,7 @@ function NotConfigured() {
   const problem = configurationProblem();
 
   return (
-    <div className="max-w-measure rounded-card border border-line bg-surface p-6 shadow-lift md:p-8">
+    <div className="card-3d max-w-measure p-6 md:p-8">
       <h2 className="font-display text-2xl font-extrabold">Accounts are not switched on yet</h2>
       <p className="mt-3 text-base text-muted">
         The database for this club has not been connected. Session material and contest submissions
@@ -25,7 +27,7 @@ function NotConfigured() {
 }
 
 function SignInForm({ onDone }: { onDone: () => void }) {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup">("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -49,7 +51,7 @@ function SignInForm({ onDone }: { onDone: () => void }) {
 
   return (
     <form className="max-w-md" onSubmit={submit} noValidate>
-      <h2 className="font-display text-display-md">
+      <h2 className="font-display text-display-md font-extrabold">
         {mode === "signin" ? "Sign in" : "Create my password"}
       </h2>
       <p className="mt-3 text-base text-muted">
@@ -68,7 +70,7 @@ function SignInForm({ onDone }: { onDone: () => void }) {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="tap mt-2 w-full rounded-lg border border-line bg-surface px-4 text-base"
+        className="tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line"
       />
 
       <label className="mt-5 block text-sm font-medium" htmlFor="password">
@@ -83,7 +85,7 @@ function SignInForm({ onDone }: { onDone: () => void }) {
         minLength={6}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="tap mt-2 w-full rounded-lg border border-line bg-surface px-4 text-base"
+        className="tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line"
       />
 
       {error ? (
@@ -92,11 +94,7 @@ function SignInForm({ onDone }: { onDone: () => void }) {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={busy}
-        className="tap mt-7 inline-flex w-full items-center justify-center rounded-full bg-accent px-7 font-medium text-accent-ink transition-transform duration-200 ease-swift hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-60"
-      >
+      <button type="submit" disabled={busy} className="btn-3d mt-7 w-full text-lg">
         {busy ? "One moment…" : mode === "signin" ? "Sign in" : "Create my password"}
       </button>
 
@@ -125,12 +123,19 @@ export function AuthGate({
   const { state, reload } = useAuth();
 
   if (state.status === "unconfigured") return <NotConfigured />;
-  if (state.status === "loading") return <p className="text-base text-muted">Loading…</p>;
+  if (state.status === "loading") return <Skeleton rows={3} />;
   if (state.status === "anonymous") return <SignInForm onDone={reload} />;
+
+  // Première connexion : trois écrans avant d'entrer. La colonne
+  // onboarded_at n'existe qu'après 002_gamification.sql ; si elle manque,
+  // le profil n'a pas la clé et on n'impose rien.
+  if (state.profile && "onboarded_at" in state.profile && !state.profile.onboarded_at && !requireAdmin) {
+    return <Onboarding profile={state.profile} onDone={reload} />;
+  }
 
   if (requireAdmin && state.profile?.role !== "admin") {
     return (
-      <div className="max-w-measure rounded-lg border border-line bg-surface p-6 md:p-8">
+      <div className="card-3d max-w-measure p-6 md:p-8">
         <h2 className="font-display text-2xl">Organisers only</h2>
         <p className="mt-3 text-base text-muted">
           This page is for the two people running the club. Your account is signed in as a member.

@@ -5,6 +5,7 @@ import { Mascot } from "@/components/mascot";
 import { ProgressRing } from "@/components/progress-ring";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TabBar } from "@/components/tab-bar";
 import { CURRICULUM, PROOF } from "@/lib/curriculum";
 import { SITE } from "@/lib/site";
 
@@ -39,7 +40,7 @@ export default function Home() {
     <>
       <SiteHeader />
 
-      <main id="main">
+      <main id="main" className="pb-20 sm:pb-0">
         {/* Hero */}
         <section className="relative mx-auto max-w-stage overflow-hidden px-5 pb-16 pt-6 md:px-10 md:pb-28 md:pt-14">
           <span aria-hidden className="blob -left-24 top-10 size-72 bg-streak opacity-40" />
@@ -234,6 +235,7 @@ export default function Home() {
       </main>
 
       <SiteFooter />
+      <TabBar />
     </>
   );
 }

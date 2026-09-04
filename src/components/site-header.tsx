@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/use-auth";
 const LINKS = [
   { href: "/programme/", label: "Path" },
   { href: "/contests/", label: "Contests" },
+  { href: "/leaderboard/", label: "Board" },
   { href: "/setup/", label: "Setup" },
 ];
 

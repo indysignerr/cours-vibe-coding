@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AuthGate, SignOutButton } from "@/components/auth-gate";
 import { getSupabase } from "@/lib/supabase/client";
+import { ClassBoard } from "./class-board";
 import type { Session } from "@/lib/types";
 
 type Invitation = { email: string; full_name: string | null; claimed_at: string | null };
@@ -30,7 +31,7 @@ function Locks() {
   if (rows === null) return <p className="text-base text-muted">Loading…</p>;
 
   return (
-    <ul className="grid gap-px overflow-hidden rounded-lg bg-line">
+    <ul className="grid gap-4">
       {rows.map((row) => (
         <li
           key={row.id}
@@ -40,7 +41,7 @@ function Locks() {
             <span className="font-mono text-sm tabular-nums text-muted">
               {String(row.number).padStart(2, "0")}
             </span>
-            <span className="ml-4 font-display text-2xl">{row.title}</span>
+            <span className="ml-4 font-display text-2xl font-extrabold">{row.title}</span>
           </div>
 
           <button
@@ -116,7 +117,7 @@ function Invites({ adminId }: { adminId: string }) {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="tap mt-2 w-full rounded-lg border border-line bg-surface px-4 text-base"
+            className="tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line"
           />
         </div>
         <div>
@@ -128,7 +129,7 @@ function Invites({ adminId }: { adminId: string }) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="tap mt-2 w-full rounded-lg border border-line bg-surface px-4 text-base"
+            className="tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line"
           />
         </div>
         <button
@@ -153,7 +154,7 @@ function Invites({ adminId }: { adminId: string }) {
           Nobody invited yet. Add yourself and your co-organiser first.
         </p>
       ) : (
-        <ul className="mt-8 grid gap-px overflow-hidden rounded-lg bg-line">
+        <ul className="mt-8 grid gap-4">
           {rows.map((row) => (
             <li
               key={row.email}
@@ -195,8 +196,20 @@ export function AdminPanel() {
             <SignOutButton />
           </div>
 
-          <section aria-labelledby="locks" className="mt-14">
-            <h2 id="locks" className="font-display text-display-md">
+          <section aria-labelledby="class" className="mt-14">
+            <h2 id="class" className="font-display text-display-md font-extrabold">
+              The class, at a glance
+            </h2>
+            <p className="mt-3 max-w-measure text-base text-muted">
+              One ring per student and step. Green is complete. Use it during the hour to see who is stuck.
+            </p>
+            <div className="mt-8">
+              <ClassBoard />
+            </div>
+          </section>
+
+          <section aria-labelledby="locks" className="mt-20">
+            <h2 id="locks" className="font-display text-display-md font-extrabold">
               Session locks
             </h2>
             <p className="mt-3 max-w-measure text-base text-muted">
@@ -209,7 +222,7 @@ export function AdminPanel() {
           </section>
 
           <section aria-labelledby="invites" className="mt-20">
-            <h2 id="invites" className="font-display text-display-md">
+            <h2 id="invites" className="font-display text-display-md font-extrabold">
               Invitations
             </h2>
             <p className="mt-3 max-w-measure text-base text-muted">

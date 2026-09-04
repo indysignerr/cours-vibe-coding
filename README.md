@@ -27,8 +27,8 @@ npm run dev
 
 ```bash
 # dans le SQL editor Supabase, dans cet ordre
-supabase/schema.sql
-supabase/seed.sql
+supabase/bootstrap.sql        # schéma + politiques + données, en une fois
+supabase/002_gamification.sql # consentement, onboarding, classement
 ```
 
 Le schéma est en anglais côté contenu et en français côté commentaires.

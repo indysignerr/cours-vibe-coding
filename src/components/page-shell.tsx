@@ -1,5 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TabBar } from "@/components/tab-bar";
 
 /** En-tête, titre, contenu, pied de page. Utilisé par toutes les pages sauf l'accueil. */
 export function PageShell({
@@ -16,7 +17,7 @@ export function PageShell({
   return (
     <>
       <SiteHeader />
-      <main id="main" className="mx-auto max-w-stage px-5 pb-8 pt-8 md:px-10 md:pt-14">
+      <main id="main" className="mx-auto max-w-stage px-5 pb-24 pt-8 sm:pb-8 md:px-10 md:pt-14">
         {eyebrow ? (
           <p className="anim-pop mb-4 inline-block rounded-full bg-sunken px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.15em] text-accent-strong">
             {eyebrow}
@@ -33,6 +34,7 @@ export function PageShell({
         <div className="mt-12 md:mt-16">{children}</div>
       </main>
       <SiteFooter />
+      <TabBar />
     </>
   );
 }

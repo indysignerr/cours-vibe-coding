@@ -1,4 +1,5 @@
 import { Mascot } from "@/components/mascot";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { SITE } from "@/lib/site";
 
 const LINKS = [
@@ -6,6 +7,7 @@ const LINKS = [
   ["/contests/", "Contests"],
   ["/setup/", "Setup"],
   ["/submit/", "Submit"],
+  ["/leaderboard/", "Board"],
   ["/legal/", "Legal notice"],
   ["/privacy/", "Privacy"],
 ] as const;
@@ -21,7 +23,8 @@ export function SiteFooter() {
             <p className="mt-1 max-w-measure text-sm text-muted">{SITE.legalMention}</p>
           </div>
         </div>
-        <nav aria-label="Secondary" className="flex flex-wrap gap-x-1 gap-y-1 text-sm">
+        <nav aria-label="Secondary" className="flex flex-wrap items-center gap-x-1 gap-y-1 text-sm">
+          <ThemeToggle />
           {LINKS.map(([href, label]) => (
             <a
               key={href}

@@ -52,20 +52,20 @@ export default function SetupPage() {
       title="Twenty minutes at home, so we never lose the hour."
       lede="The fastest way to kill a club like this is to spend the first two sessions installing things. Do these seven steps before you come. If one of them fights back, come ten minutes early and we fix it together."
     >
-      <ol className="grid gap-px overflow-hidden rounded-lg bg-line">
+      <ol className="grid gap-4">
         {STEPS.map((step, i) => (
-          <li key={step.title} className="bg-surface p-6 md:p-8">
+          <li key={step.title} className="card-3d min-w-0 p-6 md:p-8">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-sm text-accent-strong tabular-nums">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <h2 className="font-display text-2xl">{step.title}</h2>
+              <h2 className="font-display text-2xl font-extrabold">{step.title}</h2>
             </div>
 
             <p className="mt-3 max-w-measure text-base text-muted">{step.body}</p>
 
             {step.command ? (
-              <pre className="mt-4 overflow-x-auto rounded-lg bg-ink px-5 py-4 font-mono text-xl text-paper">
+              <pre className="mt-4 max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-2xl bg-ink px-5 py-4 font-mono text-xl text-paper">
                 <code>{step.command}</code>
               </pre>
             ) : null}
@@ -79,8 +79,8 @@ export default function SetupPage() {
         ))}
       </ol>
 
-      <div className="mt-12 rounded-lg border border-line bg-surface p-6 md:p-8">
-        <h2 className="font-display text-2xl">If you get stuck</h2>
+      <div className="mt-12 card-3d p-6 md:p-8">
+        <h2 className="font-display text-2xl font-extrabold">If you get stuck</h2>
         <p className="mt-3 max-w-measure text-base text-muted">
           Do not spend an evening on it. Post the exact error text in the club group, and someone
           answers. An error message pasted in full gets fixed in two minutes. The words &ldquo;it

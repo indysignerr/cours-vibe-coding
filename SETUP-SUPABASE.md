@@ -24,6 +24,13 @@ SQL Editor du dashboard, deux exécutions séparées :
 Vérifier ensuite que la table `sessions` contient bien douze lignes et que
 `rubric_groups` en contient six.
 
+## 2 bis. La gamification
+
+Une fois le bootstrap passé, exécutez aussi `supabase/002_gamification.sql`.
+Il ajoute le consentement RGPD et la date d'onboarding sur les profils, et la
+fonction `leaderboard()` qui alimente le classement de saison. Sans lui, la page
+Board affiche un message explicite et l'onboarding est sauté.
+
 ## 3. Vous inviter, vous deux
 
 Personne ne peut créer de compte sans être dans `invitations`, vous compris.

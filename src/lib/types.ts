@@ -10,7 +10,18 @@ export type Profile = {
   full_name: string;
   github_login: string | null;
   role: Role;
+  consent_publish: boolean;
+  onboarded_at: string | null;
   created_at: string;
+};
+
+export type LeaderboardRow = {
+  profile_id: string;
+  full_name: string;
+  xp: number;
+  steps_done: number;
+  submissions: number;
+  consent_publish: boolean;
 };
 
 export type Session = {

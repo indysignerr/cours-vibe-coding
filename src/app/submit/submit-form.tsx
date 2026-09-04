@@ -57,8 +57,8 @@ function checkRepoUrl(value: string): string | null {
 function Closed() {
   const dates = CURRICULUM.filter((e) => e.kind === "contest");
   return (
-    <div className="max-w-measure rounded-lg border border-line bg-surface p-6 md:p-8">
-      <h2 className="font-display text-2xl">No contest is open right now</h2>
+    <div className="max-w-measure card-3d p-6 md:p-8">
+      <h2 className="font-display text-2xl font-extrabold">No contest is open right now</h2>
       <p className="mt-3 text-base text-muted">
         Submissions open when a contest starts, and close at midnight the same day. The next dates
         are below.
@@ -198,17 +198,17 @@ function Form({ userId }: { userId: string }) {
   }
 
   const field =
-    "tap mt-2 w-full rounded-lg border border-line bg-surface px-4 text-base";
+    "tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line";
 
   return (
     <>
-      <div className="rounded-lg bg-ink p-6 text-paper md:p-8">
+      <div className="card-3d border-black bg-ink p-6 text-paper md:p-8">
         <p className="font-mono text-sm uppercase tracking-wider text-paper/70">
           {contest.title} · closes {DATE.format(new Date(contest.deadline))}
         </p>
         {constraints.length ? (
           <>
-            <h2 className="mt-4 font-display text-display-md">The constraints</h2>
+            <h2 className="mt-4 font-display text-display-md font-extrabold">The constraints</h2>
             <ol className="mt-5 grid gap-3">
               {constraints.map((c, i) => (
                 <li key={c.id} className="flex gap-4">
@@ -226,7 +226,7 @@ function Form({ userId }: { userId: string }) {
       </div>
 
       <form className="mt-14 max-w-xl" onSubmit={submit} noValidate>
-        <h2 className="font-display text-display-md">
+        <h2 className="font-display text-display-md font-extrabold">
           {mine ? "Your submission" : "Submit your project"}
         </h2>
         <p className="mt-3 text-base text-muted">
@@ -291,7 +291,7 @@ function Form({ userId }: { userId: string }) {
           rows={5}
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base"
+          className="mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 py-3 text-base focus:border-accent-line"
         />
         {errors.note ? <p className="mt-2 text-sm text-accent-strong">{errors.note}</p> : null}
 

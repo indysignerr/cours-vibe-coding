@@ -20,16 +20,16 @@ export default function ContestsPage() {
       lede="Once a month the hour becomes a contest. Three constraints, one evening to build, and a grid you can score yourself against before you submit. Nothing is judged on taste alone."
     >
       <section aria-labelledby="dates">
-        <h2 id="dates" className="font-display text-display-md">
+        <h2 id="dates" className="font-display text-display-md font-extrabold">
           When
         </h2>
-        <ol className="mt-8 grid gap-px overflow-hidden rounded-lg bg-line md:grid-cols-3">
+        <ol className="mt-8 grid gap-4 md:grid-cols-3">
           {contests.map((c) => (
-            <li key={c.slug} className="bg-surface p-6 md:p-8">
+            <li key={c.slug} className="card-3d p-6 md:p-8">
               <span className="font-mono text-sm text-accent-strong">
                 Week of {DATE.format(new Date(c.weekOf))}
               </span>
-              <h3 className="mt-3 font-display text-2xl">{c.title}</h3>
+              <h3 className="mt-3 font-display text-2xl font-extrabold">{c.title}</h3>
               <p className="mt-3 text-base text-muted">{c.promise}</p>
             </li>
           ))}
@@ -48,14 +48,14 @@ export default function ContestsPage() {
       </section>
 
       <section aria-labelledby="gate" className="mt-20">
-        <h2 id="gate" className="font-display text-display-md">
+        <h2 id="gate" className="font-display text-display-md font-extrabold">
           The gate
         </h2>
-        <div className="mt-8 rounded-lg bg-ink p-6 text-paper md:p-8">
+        <div className="mt-8 card-3d border-black bg-ink p-6 text-paper md:p-8">
           <p className="font-mono text-sm uppercase tracking-wider text-paper/70">
             Pass or fail · no points
           </p>
-          <h3 className="mt-3 font-display text-display-md">{GATE.label}</h3>
+          <h3 className="mt-3 font-display text-display-md font-extrabold">{GATE.label}</h3>
           <ul className="mt-6 grid gap-4 md:grid-cols-2">
             {GATE.lines.map((l) => (
               <li key={l.label}>
@@ -72,14 +72,14 @@ export default function ContestsPage() {
       </section>
 
       <section aria-labelledby="grid" className="mt-20">
-        <h2 id="grid" className="font-display text-display-md">
+        <h2 id="grid" className="font-display text-display-md font-extrabold">
           The hundred points
         </h2>
 
         <dl className="mt-8 grid gap-6 sm:grid-cols-3">
           {SCALE.map((s) => (
-            <div key={s.value} className="rounded-lg border border-line bg-surface p-5">
-              <dt className="font-display text-display-md">{s.value}</dt>
+            <div key={s.value} className="card-3d p-5">
+              <dt className="font-display text-display-md font-extrabold">{s.value}</dt>
               <dd className="mt-1 text-base text-muted">{s.label}</dd>
             </div>
           ))}
@@ -89,11 +89,11 @@ export default function ContestsPage() {
           cut deliberation time in half.
         </p>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-lg bg-line">
+        <div className="mt-12 grid gap-4">
           {BLOCKS.map((block) => (
-            <section key={block.label} className="bg-surface p-6 md:p-8">
+            <section key={block.label} className="card-3d p-6 md:p-8">
               <div className="flex items-baseline justify-between gap-6">
-                <h3 className="font-display text-2xl">{block.label}</h3>
+                <h3 className="font-display text-2xl font-extrabold">{block.label}</h3>
                 <span className="whitespace-nowrap font-mono text-sm text-accent-strong">
                   {block.weight} pts
                 </span>
@@ -112,7 +112,7 @@ export default function ContestsPage() {
       </section>
 
       <section aria-labelledby="rules" className="mt-20">
-        <h2 id="rules" className="font-display text-display-md">
+        <h2 id="rules" className="font-display text-display-md font-extrabold">
           Rules worth stating
         </h2>
         <div className="prose mt-8">
