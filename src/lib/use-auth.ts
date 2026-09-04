@@ -53,8 +53,11 @@ export function useAuth() {
 /** Les messages bruts de Supabase sont illisibles pour un étudiant. */
 export function humanError(message: string): string {
   const m = message.toLowerCase();
-  if (m.includes("not been invited") || m.includes("database error saving new user")) {
+  if (m.includes("not been invited")) {
     return "This email is not on the invite list. Ask an organiser to add it.";
+  }
+  if (m.includes("database error saving new user")) {
+    return "The database refused to create the account. Either this email is not on the invite list, or the organisers need to check the sign-up trigger.";
   }
   if (m.includes("invalid login credentials")) {
     return "Wrong email or password. If this is your first time, use Create my password.";

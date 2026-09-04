@@ -33,14 +33,14 @@ create table profiles (
 create view public_profiles as
   select id, full_name, github_login from profiles;
 
-create or replace function is_admin() returns boolean
-  language sql security definer stable as $$
-    select exists (select 1 from profiles where id = auth.uid() and role = 'admin');
+create or replace function public.is_admin() returns boolean
+  language sql security definer stable set search_path = public as $$
+    select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin');
   $$;
 
-create or replace function is_judge() returns boolean
-  language sql security definer stable as $$
-    select exists (select 1 from profiles where id = auth.uid() and role in ('judge','admin'));
+create or replace function public.is_judge() returns boolean
+  language sql security definer stable set search_path = public as $$
+    select exists (select 1 from public.profiles where id = auth.uid() and role in ('judge','admin'));
   $$;
 
 -- ---------------------------------------------------------------------
@@ -289,25 +289,29 @@ create policy results_admin on results for all using (is_admin());
 -- =====================================================================
 -- Inscription sur invitation
 -- =====================================================================
-create or replace function handle_new_user() returns trigger
-  language plpgsql security definer as $$
-  declare inv invitations%rowtype;
+-- Ce trigger est déclenché par le service d'authentification, dont le
+-- search_path ne contient pas `public`. Sans le fixer ici, `invitations`
+-- et `profiles` sont introuvables et toute inscription échoue avec
+-- « Database error saving new user ». Vécu sur ce projet.
+create or replace function public.handle_new_user() returns trigger
+  language plpgsql security definer set search_path = public as $$
+  declare inv public.invitations%rowtype;
   begin
-    select * into inv from invitations where email = lower(new.email);
+    select * into inv from public.invitations where email = lower(new.email);
     if not found then
       raise exception 'This email has not been invited.';
     end if;
 
-    insert into profiles (id, full_name)
+    insert into public.profiles (id, full_name)
     values (new.id, coalesce(inv.full_name,
                              new.raw_user_meta_data->>'full_name',
                              split_part(new.email, '@', 1)));
 
-    update invitations set claimed_at = now() where email = lower(new.email);
+    update public.invitations set claimed_at = now() where email = lower(new.email);
     return new;
   end;
   $$;
 
 create trigger on_auth_user_created
   after insert on auth.users
-  for each row execute function handle_new_user();
+  for each row execute function public.handle_new_user();
