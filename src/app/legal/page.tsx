@@ -13,8 +13,8 @@ export default function LegalPage() {
       <div className="prose">
         <h2>Publisher</h2>
         <p>
-          This site is published by {SITE.name}, {SITE.legalMention.toLowerCase()} The association is
-          run by students and is not a service of the school. Opinions and content here are those of
+          This site is published by {SITE.name}, {SITE.legalMention.toLowerCase()} It is run by{" "}
+          {SITE.founders.join(" and ")}, students at {SITE.school}, and is not a service of the school. Opinions and content here are those of
           the association, not of {SITE.school}.
         </p>
         {SITE.contactEmail ? (

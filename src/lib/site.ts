@@ -9,7 +9,7 @@ export const SITE = {
   eyebrow: "Student association at Albert School",
   legalMention:
     "A student association founded and run by two students at Albert School.",
-  founders: [] as string[], // prénoms et noms des deux fondateurs, à remplir
+  founders: ["Indy Francois", "Benjamin Gros-Piron"],
   tagline: "Ship something real, every week.",
   url: "https://cours-vibe-coding.pages.dev",
   whatsapp: "" as string, // lien d'invitation WhatsApp, à remplir

@@ -17,9 +17,6 @@ export type PathNode = {
 
 const WEEK = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
 
-/** Décalage horizontal qui fait serpenter le chemin. */
-const OFFSETS = [0, 48, 72, 48, 0, -48, -72, -48];
-
 function nodeClasses(n: PathNode) {
   if (n.state === "done") return "border-done-line bg-done";
   if (n.state === "current") return "anim-pulse border-accent-line bg-accent";
@@ -33,15 +30,15 @@ function nodeClasses(n: PathNode) {
  */
 export function Path({ nodes }: { nodes: PathNode[] }) {
   return (
-    <ol className="relative mx-auto max-w-2xl py-4">
+    <ol className="relative mx-auto max-w-3xl py-4">
       {/* la ligne pointillée derrière les nœuds */}
       <span
         aria-hidden
-        className="absolute left-1/2 top-0 h-full w-1.5 -translate-x-1/2 rounded-full bg-[repeating-linear-gradient(to_bottom,var(--line)_0_10px,transparent_10px_20px)]"
+        className="absolute left-[52px] top-0 h-full w-1.5 -translate-x-1/2 rounded-full bg-[repeating-linear-gradient(to_bottom,var(--line)_0_10px,transparent_10px_20px)] md:left-1/2"
       />
 
       {nodes.map((n, i) => {
-        const offset = OFFSETS[i % OFFSETS.length];
+        const left = i % 2 === 0; // étiquette à gauche pour les pairs, à droite pour les impairs
         const tone = n.state === "done" ? "done" : n.kind === "contest" ? "xp" : "accent";
         const interactive = n.href && n.state !== "locked";
 
@@ -66,7 +63,7 @@ export function Path({ nodes }: { nodes: PathNode[] }) {
         );
 
         const label = (
-          <div className={`max-w-[18ch] sm:max-w-[24ch] ${offset >= 0 ? "text-left" : "text-right"}`}>
+          <div className={left ? "text-left md:text-right" : "text-left"}>
             <p className="font-mono text-xs font-bold uppercase tracking-wider text-muted">
               {n.kind === "contest" ? "Contest" : `Step ${String(n.number).padStart(2, "0")}`} · {WEEK.format(new Date(n.weekOf))}
             </p>
@@ -77,21 +74,28 @@ export function Path({ nodes }: { nodes: PathNode[] }) {
           </div>
         );
 
+        // Trois colonnes : étiquette | anneau | étiquette. L'anneau est
+        // toujours au centre, exactement sur le rail, et l'étiquette occupe
+        // la colonne opposée. Les pointillés ne passent jamais sous du texte.
         const row = (
-          <div
-            className={`relative flex items-center gap-4 py-5 translate-x-[calc(var(--off)*0.2)] md:gap-5 md:translate-x-[var(--off)] ${offset >= 0 ? "flex-row" : "flex-row-reverse"}`}
-            style={{ "--off": `${offset}px` } as React.CSSProperties}
-          >
-            <span className="sr-only">{n.state}</span>
-            {bubble}
-            {label}
+          <div className="grid grid-cols-[auto_1fr] items-center gap-4 py-4 md:grid-cols-[1fr_auto_1fr] md:gap-6">
+            <div className="hidden justify-end md:flex">{left ? label : null}</div>
+            <div className="relative z-10">
+              <span className="sr-only">{n.state}</span>
+              {bubble}
+            </div>
+            <div className="flex justify-start">
+              {/* mobile : toujours à droite ; desktop : seulement pour les impairs */}
+              <div className={left ? "md:hidden" : ""}>{label}</div>
+              {left ? <div className="hidden md:block">{null}</div> : null}
+            </div>
           </div>
         );
 
         return (
           <li
             key={n.slug}
-            className="anim-pop flex justify-center"
+            className="anim-pop"
             style={{ animationDelay: `${i * 60}ms` }}
           >
             {interactive ? (
