@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   Identité PROVISOIRE, en attente du nom de l'asso.
+   Contraintes déjà actées : pas les couleurs d'Albert School, et pas la
+   palette Indysigner non plus. Changer l'asso de peau = éditer ce bloc.
+   ===================================================================== */
+:root {
+  --paper: #f4f1ea;   /* fond chaud, jamais un blanc pur */
+  --surface: #ffffff;
+  --ink: #0b0b0f;
+  --muted: #6b6154;
+  --line: #ddd6c9;
+  --accent: #ff4d2e;  /* vermillon */
+  --accent-ink: #ffffff;
+
+  --grain: 0.035;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b0b0f;
+    --surface: #14141a;
+    --ink: #f4f1ea;
+    --muted: #9b9184;
+    --line: #262631;
+    --accent: #ff5c40;
+    --accent-ink: #0b0b0f;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #0b0b0f;
+  --surface: #14141a;
+  --ink: #f4f1ea;
+  --muted: #9b9184;
+  --line: #262631;
+  --accent: #ff5c40;
+  --accent-ink: #0b0b0f;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body), system-ui, sans-serif;
+    /* Le site sert aussi de support projeté : le corps ne descend jamais
+       sous 17px, et 18px au-delà de la tablette. */
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (min-width: 768px) {
+    body { font-size: 1.125rem; }
+  }
+
+  /* Fond atmosphérique : grain SVG + halo, jamais un aplat uni. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--grain);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+}
+
+/* Toute cible tactile fait au moins 44px. */
+@layer components {
+  .tap {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
