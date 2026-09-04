@@ -6,7 +6,10 @@ export const SITE = {
   name: "Vibe Coding Club", // PROVISOIRE
   shortName: "VCC", // PROVISOIRE
   school: "Albert School",
-  legalMention: "An independent student association at Albert School.",
+  eyebrow: "Student association at Albert School",
+  legalMention:
+    "A student association founded and run by two students at Albert School.",
+  founders: [] as string[], // prénoms et noms des deux fondateurs, à remplir
   tagline: "Ship something real, every week.",
   url: "https://cours-vibe-coding.pages.dev",
   whatsapp: "" as string, // lien d'invitation WhatsApp, à remplir

@@ -18,6 +18,9 @@ export function SiteFooter() {
           <a className="tap flex items-center hover:text-accent-strong" href="/setup/">
             Setup
           </a>
+          <a className="tap flex items-center hover:text-accent-strong" href="/submit/">
+            Submit
+          </a>
           <a className="tap flex items-center hover:text-accent-strong" href="/legal/">
             Legal notice
           </a>

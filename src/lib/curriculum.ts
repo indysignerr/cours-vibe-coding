@@ -35,5 +35,5 @@ export const PROOF = [
   "albert-maths.pages.dev",
   "manika-bkh.pages.dev",
   "indysigner.fr",
-  "l-ovive.fr",
+  "lovive.fr",
 ];

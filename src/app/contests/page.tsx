@@ -34,6 +34,12 @@ export default function ContestsPage() {
             </li>
           ))}
         </ol>
+        <a
+          className="tap mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-7 font-medium text-accent-ink transition-transform duration-200 ease-swift hover:-translate-y-0.5"
+          href="/submit/"
+        >
+          Submit a project
+        </a>
         <p className="mt-8 max-w-measure text-base text-muted">
           Constraints are announced at the start of the hour, in writing, in the club group. You
           build in the room, you finish at home, and you submit before midnight the same day. The

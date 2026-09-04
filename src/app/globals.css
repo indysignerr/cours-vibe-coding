@@ -21,26 +21,15 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0b0b0f;
-    --surface: #14141a;
-    --ink: #f4f1ea;
-    --muted: #9b9184;
-    --line: #262631;
-    --accent: #ff5c40;
-    --accent-strong: #ff5c40;  /* 6.4:1 sur fond sombre */
-    --accent-ink: #0b0b0f;
-    color-scheme: dark;
-  }
-}
-
+/* Thème sombre disponible pour un futur sélecteur, jamais imposé par le
+   réglage système. Volontairement moins noir que le premier essai : le
+   site sert de support projeté, un quasi-noir écrase la salle. */
 :root[data-theme="dark"] {
-  --paper: #0b0b0f;
-  --surface: #14141a;
+  --paper: #1c1b21;
+  --surface: #26252d;
   --ink: #f4f1ea;
-  --muted: #9b9184;
-  --line: #262631;
+  --muted: #a9a093;
+  --line: #383641;
   --accent: #ff5c40;
   --accent-strong: #ff5c40;
   --accent-ink: #0b0b0f;

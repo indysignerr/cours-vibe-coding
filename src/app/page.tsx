@@ -41,7 +41,7 @@ export default function Home() {
         {/* Hero. Une seule action primaire dans le premier écran. */}
         <section className="mx-auto max-w-stage px-6 pb-24 pt-10 md:px-10 md:pb-32 md:pt-20">
           <p className="mb-8 font-mono text-xs uppercase tracking-[0.2em] text-muted">
-            {SITE.legalMention}
+            {SITE.eyebrow}
           </p>
 
           <h1 className="max-w-[18ch] font-display text-display-xl">
