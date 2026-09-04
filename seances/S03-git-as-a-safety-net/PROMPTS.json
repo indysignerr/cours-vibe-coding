@@ -1,0 +1,6 @@
+[
+  {"label": "First save", "body": "Turn this folder into a git repository and make a first commit with the message \"Page after step 02\". Show me the commands before running them, then run them and show me git log."},
+  {"label": "Break it, then get back", "body": "Redesign the whole page with a dark theme and a menu. Then show me how to get back to the last commit without losing the commit history, and do it."},
+  {"label": "Push to GitHub", "body": "I created an empty repository at <url>. Connect this folder to it and push. Show me each command before running it. If authentication fails, tell me exactly what to type."},
+  {"label": "A real change, saved", "body": "Change <one precise thing>. Then commit it with a message that says what changed, in plain words, and push."}
+]

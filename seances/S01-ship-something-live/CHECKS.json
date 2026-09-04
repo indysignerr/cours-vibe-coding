@@ -1,0 +1,7 @@
+[
+  {"label": "My page has my first name and one thing I care about", "is_bonus": false},
+  {"label": "It opens on my phone at an https:// address", "is_bonus": false},
+  {"label": "Someone else in the room opened it on their phone", "is_bonus": false},
+  {"label": "I posted the URL in the club group", "is_bonus": false},
+  {"label": "Bonus: it looks like it belongs to me and nobody else", "is_bonus": true}
+]

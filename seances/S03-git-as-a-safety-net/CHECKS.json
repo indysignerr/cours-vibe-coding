@@ -1,0 +1,7 @@
+[
+  {"label": "My repository is on GitHub with at least three commits", "is_bonus": false},
+  {"label": "One undo is visible: a restore in my notes or a revert in the history", "is_bonus": false},
+  {"label": "Cloudflare is connected to the repository and deployed my last push by itself", "is_bonus": false},
+  {"label": "I posted the repository link and the live URL in the club group", "is_bonus": false},
+  {"label": "Bonus: I tried something on a branch and merged it", "is_bonus": true}
+]

@@ -1,0 +1,5 @@
+[
+  {"label": "Make it mine", "body": "Read index.html and styles.css. Replace NAME with \"<your first name>\" and rewrite the paragraph so it says one true thing about me: <the thing you care about>. Keep it to one page, do not add sections, do not add a menu. Then tell me exactly which lines you changed."},
+  {"label": "One precise change", "body": "Change only the background colour of the page to something warm, and make the title bigger. Do not touch anything else. List the lines you changed."},
+  {"label": "Check before I deploy", "body": "I am about to upload this folder to Cloudflare Pages. Check that index.html and styles.css reference each other correctly and that nothing points to a file that does not exist. Answer in three lines maximum."}
+]

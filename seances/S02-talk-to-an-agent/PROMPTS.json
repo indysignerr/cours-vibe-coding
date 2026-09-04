@@ -1,0 +1,6 @@
+[
+  {"label": "The brief", "body": "Read index.html and styles.css. This page is for <a named person, e.g. a recruiter with thirty seconds>. It must <one job, e.g. make them want to open my GitHub>. Done means: <three checkable things>. Do not touch <the part you already like>. Tell me your plan in five lines and do not change anything yet."},
+  {"label": "First change", "body": "Do only step <number> of your plan: <name the change>. Do not touch anything else. When you are done, list the lines you changed."},
+  {"label": "Second change", "body": "Now <one precise change, e.g. make the title readable on a phone screen>. Do not touch anything else. List the lines you changed."},
+  {"label": "Bonus: self-critique", "body": "Look at the page as if you were the person it is for. Give me five things that would make it better, one line each, most important first. Do not change anything."}
+]
