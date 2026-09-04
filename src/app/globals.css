@@ -4,20 +4,42 @@
 
 /* =====================================================================
    Identité PROVISOIRE, en attente du nom de l'asso.
-   Contraintes déjà actées : pas les couleurs d'Albert School, et pas la
-   palette Indysigner non plus. Changer l'asso de peau = éditer ce bloc.
+   Contraintes actées : pas les couleurs d'Albert School, pas la palette
+   Indysigner. Toutes les paires sont validées par scripts/check-contrast.mjs,
+   à relancer après chaque retouche.
+
+   Trois jetons par couleur sémantique :
+     --x        aplat vif, porte TOUJOURS du texte encre, jamais du blanc
+     --x-line   bordure d'un repère non textuel, 3:1 minimum sur le fond
+     --x-strong texte coloré sur fond clair, 4.5:1 minimum
    ===================================================================== */
 :root {
-  --paper: #f4f1ea;   /* fond chaud, jamais un blanc pur */
+  --paper: #f4f1ea;
   --surface: #ffffff;
-  --ink: #0b0b0f;
-  --muted: #6b6154;
+  --sunken: #ebe6da;
+  --ink: #14121a;
+  --muted: #5f5647;
   --line: #ddd6c9;
-  --accent: #ff4d2e;         /* aplats et surfaces */
-  --accent-strong: #c2341a;  /* texte sur fond clair, 4.9:1 */
-  --accent-ink: #0b0b0f;     /* texte sur aplat accent, 5.9:1 */
 
-  --grain: 0.035;
+  --accent: #ff4d2e;
+  --accent-line: #d13a1c;
+  --accent-strong: #b8341a;
+  --accent-ink: #14121a;
+
+  --done: #16c08a;
+  --done-line: #0e8f66;
+  --done-strong: #0d6b4f;
+
+  --streak: #ffb43d;
+  --streak-line: #b57a00;
+  --streak-strong: #8a5200;
+
+  --xp: #a678f0;
+  --xp-line: #7a48c4;
+  --xp-strong: #6b3b8f;
+
+  --grain: 0.03;
+  --lift: 0 2px 0 var(--line), 0 10px 24px -14px rgba(20, 18, 26, 0.35);
   color-scheme: light;
 }
 
@@ -27,12 +49,29 @@
 :root[data-theme="dark"] {
   --paper: #1c1b21;
   --surface: #26252d;
+  --sunken: #15141a;
   --ink: #f4f1ea;
   --muted: #a9a093;
   --line: #383641;
-  --accent: #ff5c40;
-  --accent-strong: #ff5c40;
-  --accent-ink: #0b0b0f;
+
+  --accent: #ff6a4d;
+  --accent-line: #ff6a4d;
+  --accent-strong: #ff8a72;
+  --accent-ink: #14121a;
+
+  --done: #2fd79f;
+  --done-line: #2fd79f;
+  --done-strong: #58e0b4;
+
+  --streak: #ffc25c;
+  --streak-line: #ffc25c;
+  --streak-strong: #ffd08a;
+
+  --xp: #b892f5;
+  --xp-line: #b892f5;
+  --xp-strong: #cbb0f8;
+
+  --lift: 0 2px 0 var(--line), 0 10px 24px -14px rgba(0, 0, 0, 0.6);
   color-scheme: dark;
 }
 

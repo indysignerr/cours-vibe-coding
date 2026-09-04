@@ -1,18 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { getSupabase } from "@/lib/supabase/client";
+import { configurationProblem, getSupabase } from "@/lib/supabase/client";
 import { humanError, useAuth, type AuthState } from "@/lib/use-auth";
 
-/** Écran affiché tant que le projet Supabase n'existe pas. */
+/** Écran affiché tant que la configuration Supabase n'est pas exploitable. */
 function NotConfigured() {
+  const problem = configurationProblem();
+
   return (
-    <div className="max-w-measure rounded-lg border border-line bg-surface p-6 md:p-8">
-      <h2 className="font-display text-2xl">Accounts are not switched on yet</h2>
+    <div className="max-w-measure rounded-card border border-line bg-surface p-6 shadow-lift md:p-8">
+      <h2 className="font-display text-2xl font-extrabold">Accounts are not switched on yet</h2>
       <p className="mt-3 text-base text-muted">
         The database for this club has not been connected. Session material and contest submissions
         will live here once it is. Nothing is broken on your side.
       </p>
+      {problem ? (
+        <p className="mt-5 rounded-lg bg-sunken p-4 font-mono text-sm text-muted">
+          For the organisers: {problem}
+        </p>
+      ) : null}
     </div>
   );
 }
