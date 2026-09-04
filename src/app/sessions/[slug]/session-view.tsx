@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { AuthGate, SignOutButton } from "@/components/auth-gate";
+import { ProgressRing } from "@/components/progress-ring";
+import { RewardLayer, reward } from "@/components/rewards";
+import { badgeForSession } from "@/lib/badges";
+import { bySlug } from "@/lib/curriculum";
+import { XP_PER_CHECK } from "@/lib/progress";
 import { getSupabase } from "@/lib/supabase/client";
 import type { Session, SessionCheck, SessionPrompt, SessionSolution } from "@/lib/types";
 
@@ -52,52 +57,87 @@ function CopyablePrompt({ prompt, index }: { prompt: SessionPrompt; index: numbe
   );
 }
 
-function Checklist({ checks, done, userId }: { checks: SessionCheck[]; done: Set<string>; userId: string }) {
+function Checklist({
+  checks,
+  done,
+  userId,
+  sessionNumber,
+  onChange,
+}: {
+  checks: SessionCheck[];
+  done: Set<string>;
+  userId: string;
+  sessionNumber: number;
+  onChange: (ticked: Set<string>) => void;
+}) {
   const [ticked, setTicked] = useState(done);
+  const required = checks.filter((c) => !c.is_bonus);
 
   async function toggle(id: string) {
     const supabase = getSupabase();
     const next = new Set(ticked);
+    const wasComplete = required.every((c) => ticked.has(c.id));
 
     if (next.has(id)) {
       next.delete(id);
       setTicked(next);
+      onChange(next);
       await supabase.from("check_completions").delete().eq("profile_id", userId).eq("check_id", id);
-    } else {
-      next.add(id);
-      setTicked(next);
-      await supabase.from("check_completions").insert({ profile_id: userId, check_id: id });
+      return;
+    }
+
+    next.add(id);
+    setTicked(next);
+    onChange(next);
+    reward.xp(XP_PER_CHECK);
+    await supabase.from("check_completions").insert({ profile_id: userId, check_id: id });
+
+    // La dernière case obligatoire : confettis et badge de la séance.
+    const nowComplete = required.length > 0 && required.every((c) => next.has(c.id));
+    if (nowComplete && !wasComplete) {
+      reward.confetti();
+      const badge = badgeForSession(sessionNumber);
+      if (badge) setTimeout(() => reward.badge(badge), 700);
     }
   }
 
   return (
     <ul className="grid gap-3">
-      {checks.map((c) => (
-        <li key={c.id}>
-          <label className="tap flex cursor-pointer items-center gap-4 rounded-lg border border-line bg-surface px-5 py-4">
-            <input
-              type="checkbox"
-              checked={ticked.has(c.id)}
-              onChange={() => void toggle(c.id)}
-              className="size-5 shrink-0 accent-[var(--accent)]"
-            />
-            <span className="text-base">
-              {c.label}
-              {c.is_bonus ? (
-                <span className="ml-3 font-mono text-xs uppercase tracking-wider text-accent-strong">
-                  bonus
-                </span>
-              ) : null}
-            </span>
-          </label>
-        </li>
-      ))}
+      {checks.map((c) => {
+        const on = ticked.has(c.id);
+        return (
+          <li key={c.id}>
+            <label
+              className={`tap flex cursor-pointer items-center gap-4 rounded-2xl border-2 px-5 py-4 transition-colors duration-200 ${
+                on ? "border-done-line bg-done" : "border-line bg-surface hover:border-accent-line"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={on}
+                onChange={() => void toggle(c.id)}
+                className="size-6 shrink-0 accent-[var(--done-line)]"
+              />
+              <span className={`text-base ${on ? "font-bold" : ""}`}>
+                {c.label}
+                {c.is_bonus ? (
+                  <span className="ml-3 rounded-full bg-xp px-2 py-0.5 font-mono text-xs font-bold uppercase tracking-wider">
+                    bonus
+                  </span>
+                ) : null}
+              </span>
+            </label>
+          </li>
+        );
+      })}
     </ul>
   );
 }
 
 function Content({ slug, userId }: { slug: string; userId: string }) {
   const [data, setData] = useState<Payload | null | "locked">(null);
+  const [ticked, setTicked] = useState<Set<string>>(new Set());
+  const entry = bySlug(slug);
 
   useEffect(() => {
     async function load() {
@@ -120,12 +160,14 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
         supabase.from("check_completions").select("check_id").eq("profile_id", userId),
       ]);
 
+      const doneSet = new Set(((done.data as { check_id: string }[]) ?? []).map((d) => d.check_id));
+      setTicked(doneSet);
       setData({
         session: s,
         prompts: (prompts.data as SessionPrompt[]) ?? [],
         checks: (checks.data as SessionCheck[]) ?? [],
         solution: (solution.data as SessionSolution) ?? null,
-        done: new Set(((done.data as { check_id: string }[]) ?? []).map((d) => d.check_id)),
+        done: doneSet,
       });
     }
     void load();
@@ -149,12 +191,33 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
   }
 
   const { session, prompts, checks, solution, done } = data;
+  const required = checks.filter((c) => !c.is_bonus);
+  const tickedRequired = required.filter((c) => ticked.has(c.id)).length;
+  const progress = required.length ? tickedRequired / required.length : 0;
+  const complete = required.length > 0 && tickedRequired === required.length;
 
   return (
     <>
-      <div className="flex flex-wrap items-baseline justify-between gap-4">
-        <p className="max-w-measure text-project">{session.promise}</p>
-        <SignOutButton />
+      <RewardLayer />
+
+      <div className="card-3d flex flex-wrap items-center justify-between gap-6 p-6 md:p-8">
+        <div className="flex items-center gap-5">
+          <ProgressRing value={progress} size={96} stroke={10} tone={complete ? "done" : "accent"}>
+            <span className="font-display text-xl font-extrabold">
+              {required.length ? `${tickedRequired}/${required.length}` : "—"}
+            </span>
+          </ProgressRing>
+          <div>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.15em] text-muted">
+              {complete ? "Step complete" : "Your progress"}
+            </p>
+            <p className="max-w-measure text-project font-medium">{session.promise}</p>
+          </div>
+        </div>
+        <div className="flex flex-col items-end gap-3">
+          <a className="btn-3d btn-3d--ghost min-h-[44px] text-sm" href="/sessions/">Back to the path</a>
+          <SignOutButton />
+        </div>
       </div>
 
       {session.concept ? (
@@ -213,7 +276,13 @@ function Content({ slug, userId }: { slug: string; userId: string }) {
             Every line is something another person can check without reading your code.
           </p>
           <div className="mt-6">
-            <Checklist checks={checks} done={done} userId={userId} />
+            <Checklist
+              checks={checks}
+              done={done}
+              userId={userId}
+              sessionNumber={entry?.number ?? 0}
+              onChange={setTicked}
+            />
           </div>
         </section>
       ) : null}

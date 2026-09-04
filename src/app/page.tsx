@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowRight, Award, Flame, Rocket, Sparkles, Zap } from "lucide-react";
+import { Countdown } from "@/components/countdown";
 import { Mascot } from "@/components/mascot";
 import { ProgressRing } from "@/components/progress-ring";
 import { SiteFooter } from "@/components/site-footer";
@@ -100,7 +101,11 @@ export default function Home() {
             </div>
           </div>
 
-          <dl className="relative mt-14 grid gap-4 sm:grid-cols-3">
+          <div className="relative mt-12">
+            <Countdown />
+          </div>
+
+          <dl className="relative mt-6 grid gap-4 sm:grid-cols-3">
             {[
               ["1 h", "per week, one evening", "card-3d--accent"],
               [String(SITE.weeks), "weeks, September to November", "card-3d--done"],
