@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { body, display, mono } from "@/lib/fonts";
 import { SITE } from "@/lib/site";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -43,7 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: "try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.dataset.theme='dark';if(localStorage.getItem('projector')==='1')document.documentElement.dataset.projector='1'}catch(e){}",
           }}
         />
-        <SmoothScroll />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-3 focus:text-paper"

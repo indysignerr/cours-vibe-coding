@@ -12,7 +12,7 @@ en séance et de plateforme de rendu des projets.
 - Next.js 16 App Router, TypeScript, export statique
 - Tailwind 3 avec `tailwindcss-animate`, tokens en variables CSS
 - Supabase pour le contenu de cours, les rendus et la notation
-- Lenis pour le scroll, Framer Motion et GSAP pour les animations
+- Framer Motion et GSAP pour les animations, scroll natif
 - Hébergement Cloudflare Pages. Jamais Vercel.
 
 ## Démarrer
