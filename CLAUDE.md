@@ -10,9 +10,9 @@
 - **Le site est aussi le support projeté.** Corps de texte jamais sous 17 px,
   code jamais sous 20 px en séance, rien d'important dans le bas de l'écran.
 - **Contenu en anglais**, commentaires de code en français.
-- **Identité provisoire.** Le nom vit dans `src/lib/site.ts`, la palette et la
-  typo dans `src/app/globals.css` et `src/lib/fonts.ts`. Trois fichiers, pas
-  un de plus.
+- **Identité.** L'asso s'appelle AI-bert Vibe Coding. Le nom vit dans
+  `src/lib/site.ts`, la palette et la typo dans `src/app/globals.css` et
+  `src/lib/fonts.ts`. Trois fichiers, pas un de plus.
 - **Interdits** : la palette Indysigner, les couleurs d'Albert School, Inter,
   Roboto, Arial, une grille 12 colonnes symétrique, un aplat de fond uni.
 - Cloudflare Pages uniquement. Jamais Vercel.

@@ -1,7 +1,7 @@
-# Vibe Coding Club — site du cours
+# AI-bert Vibe Coding — site du cours
 
-> Le nom est provisoire. Il se change dans `src/lib/site.ts`, et la peau
-> dans le bloc `:root` de `src/app/globals.css`.
+> Le nom vit dans `src/lib/site.ts`, la peau dans le bloc `:root` de
+> `src/app/globals.css`.
 
 Site de l'association vibecoding d'Albert School. Une heure par semaine,
 douze semaines, trois concours. Le site sert à la fois de support projeté

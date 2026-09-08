@@ -8,7 +8,7 @@ import pngToIco from "png-to-ico";
 const ACCENT = "#ff4d2e";
 const INK = "#14121a";
 const PAPER = "#f4f1ea";
-const NAME = "Vibe Coding Club"; // PROVISOIRE, aligné sur src/lib/site.ts
+const NAME = "AI-bert Vibe Coding"; // aligné sur src/lib/site.ts
 const TAGLINE = "Ship something real, every week.";
 
 const mascot = (x, y, s) => `
@@ -59,7 +59,7 @@ await writeFile("public/favicon.ico", await pngToIco([buffers[16], buffers[32], 
 await writeFile("public/icon.svg", icon(512).trim());
 await writeFile("public/og.png", await sharp(Buffer.from(og)).png().toBuffer());
 await writeFile("public/site.webmanifest", JSON.stringify({
-  name: NAME, short_name: "VCC", start_url: "/", display: "standalone",
+  name: NAME, short_name: "AI-bert", start_url: "/", display: "standalone",
   background_color: PAPER, theme_color: ACCENT,
   icons: [
     { src: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },

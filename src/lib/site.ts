@@ -3,8 +3,8 @@
  * Tout le reste du site lit ces valeurs.
  */
 export const SITE = {
-  name: "Vibe Coding Club", // PROVISOIRE
-  shortName: "VCC", // PROVISOIRE
+  name: "AI-bert Vibe Coding",
+  shortName: "AI-bert",
   school: "Albert School",
   eyebrow: "Student association at Albert School",
   legalMention:
