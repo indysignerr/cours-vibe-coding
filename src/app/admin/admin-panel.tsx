@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { AuthGate, SignOutButton } from "@/components/auth-gate";
 import { getSupabase } from "@/lib/supabase/client";
+import Link from "next/link";
 import { ClassBoard } from "./class-board";
+import { ContestsAdmin } from "./contests-admin";
 import { Skeleton } from "@/components/skeleton";
 import type { Invitation, Session } from "@/lib/types";
 
@@ -226,6 +228,16 @@ export function AdminPanel() {
             <div className="mt-8">
               <Locks />
             </div>
+          </section>
+
+          <section aria-labelledby="contests" className="mt-20">
+            <h2 id="contests" className="font-display text-display-md font-extrabold">Contests</h2>
+            <p className="mt-3 max-w-measure text-muted">
+              Draft: write the brief and three constraints. Open: students submit until the deadline. Judging: the jury scores at{" "}
+              <Link className="font-bold text-accent-strong underline underline-offset-4" href="/judge/">/judge/</Link>, then you publish here. Results appear at{" "}
+              <Link className="font-bold text-accent-strong underline underline-offset-4" href="/results/">/results/</Link>.
+            </p>
+            <div className="mt-8"><ContestsAdmin /></div>
           </section>
 
           <section aria-labelledby="invites" className="mt-20">

@@ -144,3 +144,16 @@ export type Result = {
   mention: string | null;
   note: string | null;
 };
+
+export type ResultRow = {
+  contest_number: number;
+  contest_title: string;
+  rank: number;
+  is_winner: boolean;
+  mention: string | null;
+  note: string | null;
+  display_name: string;
+  project_title: string;
+  live_url: string;
+  repo_url: string;
+};

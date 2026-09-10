@@ -27,7 +27,7 @@ Vérifier ensuite que la table `sessions` contient bien douze lignes et que
 ## 2 bis. Les migrations, dans l'ordre
 
 Sur un projet déjà créé avant le 10 septembre 2026, exécutez dans cet ordre :
-`002_gamification.sql`, `003_sessions.sql`, `004_security.sql`. Sur un projet neuf,
+`002_gamification.sql`, `003_sessions.sql`, `004_security.sql`, `005_results.sql`. Sur un projet neuf,
 `bootstrap.sql` contient déjà tout sauf `003_sessions.sql`, à passer ensuite.
 
 `004_security.sql` change deux choses visibles : personne ne peut plus se donner
@@ -143,6 +143,14 @@ l'étudiant tombe sur une page morte. C'est l'erreur la plus fréquente.
 Les deux variables se déclarent en **Production et en Preview**. Une variable
 ajoutée après un build n'est pas prise en compte : relancez un déploiement
 depuis Deployments puis Retry deployment.
+
+## Le jour d'un concours
+
+Dans `/admin/`, section Contests : en brouillon vous écrivez le brief et trois
+contraintes, « Open » lance les rendus, « Close submissions » à 23h59 ouvre la
+notation. Chacun de vous note ensuite en aveugle sur `/judge/`. Puis « Compute the
+ranking », une phrase par projet, « Publish » : le concours se ferme et les
+résultats apparaissent sur `/results/` avec les noms selon le consentement.
 
 ## Inviter les étudiants, ensuite
 
