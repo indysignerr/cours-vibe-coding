@@ -27,7 +27,10 @@ Vérifier ensuite que la table `sessions` contient bien douze lignes et que
 ## 2 bis. Les migrations, dans l'ordre
 
 Sur un projet déjà créé avant le 10 septembre 2026, exécutez dans cet ordre :
-`002_gamification.sql`, `003_sessions.sql`, `004_security.sql`, `005_results.sql`. Sur un projet neuf,
+`002_gamification.sql`, `003_sessions.sql`, `004_security.sql`, `005_results.sql`.
+Si vous avez sauté `002`, ce n'est pas grave : `004` et `005` reposent eux-mêmes
+les colonnes `consent_publish` et `onboarded_at` avant de s'en servir. Seule la
+fonction `leaderboard()` de `002` manquerait, et `004` la réécrit de toute façon. Sur un projet neuf,
 `bootstrap.sql` contient déjà tout sauf `003_sessions.sql`, à passer ensuite.
 
 `004_security.sql` change deux choses visibles : personne ne peut plus se donner

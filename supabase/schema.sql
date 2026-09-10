@@ -27,8 +27,10 @@ create table profiles (
   id           uuid primary key references auth.users on delete cascade,
   full_name    text not null,
   github_login text,
-  role         text not null default 'student' check (role in ('student','judge','admin')),
-  created_at   timestamptz not null default now()
+  role            text not null default 'student' check (role in ('student','judge','admin')),
+  consent_publish boolean not null default false,
+  onboarded_at    timestamptz,
+  created_at      timestamptz not null default now()
 );
 
 create or replace function public.is_admin() returns boolean

@@ -2,6 +2,8 @@
 -- Résultats de concours : lecture agrégée, noms selon le consentement.
 -- Idempotent. À exécuter après 004_security.sql.
 -- =====================================================================
+alter table public.profiles add column if not exists consent_publish boolean not null default false;
+
 create or replace function public.contest_results()
 returns table (
   contest_number int, contest_title text, rank int, is_winner boolean,

@@ -1,7 +1,14 @@
 -- =====================================================================
 -- Sécurité et confidentialité, suite à l'audit du 10 septembre 2026.
--- Idempotent : rejouable sans erreur. À exécuter après 002 et 003.
+-- Idempotent : rejouable sans erreur, et autonome : si 002 n'a pas été passé,
+-- ce fichier repose lui-même les colonnes dont il a besoin.
 -- =====================================================================
+
+-- 0. Colonnes de 002. Répétées ici pour que 004 tienne debout seul : sur un
+--    projet où 002 n'a pas été passé, la fonction leaderboard() plus bas
+--    échouait avec « column p.consent_publish does not exist ».
+alter table public.profiles add column if not exists consent_publish boolean not null default false;
+alter table public.profiles add column if not exists onboarded_at timestamptz;
 
 -- 1. Personne ne change son propre rôle. Seul un admin peut promouvoir.
 create or replace function public.protect_profile_role() returns trigger
