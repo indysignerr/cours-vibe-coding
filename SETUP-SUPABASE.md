@@ -24,7 +24,18 @@ SQL Editor du dashboard, deux exécutions séparées :
 Vérifier ensuite que la table `sessions` contient bien douze lignes et que
 `rubric_groups` en contient six.
 
-## 2 bis. La gamification
+## 2 bis. Les migrations, dans l'ordre
+
+Sur un projet déjà créé avant le 10 septembre 2026, exécutez dans cet ordre :
+`002_gamification.sql`, `003_sessions.sql`, `004_security.sql`. Sur un projet neuf,
+`bootstrap.sql` contient déjà tout sauf `003_sessions.sql`, à passer ensuite.
+
+`004_security.sql` change deux choses visibles : personne ne peut plus se donner
+un rôle, et **chaque invitation porte un code à six caractères**, affiché dans
+l'admin à côté de l'adresse. L'étudiant le tape à la création de son mot de
+passe. Envoyez-lui le lien du site et son code ensemble.
+
+## 2 ter. La gamification
 
 Une fois le bootstrap passé, exécutez aussi `supabase/002_gamification.sql`.
 Il ajoute le consentement RGPD et la date d'onboarding sur les profils, et la
@@ -32,6 +43,9 @@ fonction `leaderboard()` qui alimente le classement de saison. Sans lui, la page
 Board affiche un message explicite et l'onboarding est sauté.
 
 ## 3. Vous inviter, vous deux
+
+Après `004_security.sql`, relisez vos deux lignes : `select email, code from invitations;`
+vous donne le code à taper si l'un de vous n'a pas encore créé son compte.
 
 Personne ne peut créer de compte sans être dans `invitations`, vous compris.
 Le trigger refuse toute autre adresse.
@@ -57,6 +71,12 @@ Le lien magique reste la bonne cible, mais il exige un SMTP à vous, Resend ou
 Brevo, avec un domaine vérifié. Vous n'avez pas encore de domaine pour l'asso.
 Une fois le SMTP branché, la limite passe à 30 messages par heure, largement
 suffisant, et ça devient une démonstration parfaite pour la séance 9.
+
+## 4 bis. Mot de passe oublié
+
+Le site propose « Forgot my password », qui passe par le mailer intégré, plafonné
+à deux envois par heure. En séance, plus simple : Authentication → Users → l'étudiant
+→ Send password recovery, ou réinitialisez-le vous-même depuis ce même écran.
 
 ## 5. Se connecter une fois chacun
 

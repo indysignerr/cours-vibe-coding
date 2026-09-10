@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { CURRICULUM } from "@/lib/curriculum";
 import { BLOCKS, GATE, SCALE } from "@/lib/rubric";
@@ -9,8 +10,19 @@ export const metadata: Metadata = {
   description: `Three contests, ${SITE.prizeEur} euros each, and the grid published before you build.`,
 };
 
-const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long" });
+const DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", timeZone: "Europe/Paris" });
 const contests = CURRICULUM.filter((e) => e.kind === "contest");
+
+const EVENTS = contests.map((c) => ({
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: `${SITE.name} · ${c.title}`,
+  description: c.promise,
+  startDate: c.weekOf,
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: { "@type": "Place", name: SITE.school, address: "Paris, France" },
+  organizer: { "@type": "Organization", name: SITE.name, url: SITE.url },
+}));
 
 export default function ContestsPage() {
   return (
@@ -19,6 +31,9 @@ export default function ContestsPage() {
       title="The grid is published before the contest, always."
       lede="Once a month the hour becomes a contest. Three constraints, one evening to build, and a grid you can score yourself against before you submit. Nothing is judged on taste alone."
     >
+      {EVENTS.map((e) => (
+        <script key={e.name} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(e) }} />
+      ))}
       <section aria-labelledby="dates">
         <h2 id="dates" className="font-display text-display-md font-extrabold">
           When
@@ -26,20 +41,15 @@ export default function ContestsPage() {
         <ol className="mt-8 grid gap-4 md:grid-cols-3">
           {contests.map((c) => (
             <li key={c.slug} className="card-3d p-6 md:p-8">
-              <span className="font-mono text-sm text-accent-strong">
-                Week of {DATE.format(new Date(c.weekOf))}
+              <span className="eyebrow text-accent-strong">
+                Week of {DATE.format(new Date(`${c.weekOf}T12:00:00`))}
               </span>
               <h3 className="mt-3 font-display text-2xl font-extrabold">{c.title}</h3>
               <p className="mt-3 text-base text-muted">{c.promise}</p>
             </li>
           ))}
         </ol>
-        <a
-          className="tap mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-7 font-medium text-accent-ink transition-transform duration-200 ease-swift hover:-translate-y-0.5"
-          href="/submit/"
-        >
-          Submit a project
-        </a>
+        <Link className="btn-3d mt-8" href="/submit/">Submit a project</Link>
         <p className="mt-8 max-w-measure text-base text-muted">
           Constraints are announced at the start of the hour, in writing, in the club group. You
           build in the room, you finish at home, and you submit before midnight the same day. The
@@ -60,11 +70,11 @@ export default function ContestsPage() {
             {GATE.lines.map((l) => (
               <li key={l.label}>
                 <p className="font-medium">{l.label}</p>
-                <p className="mt-1 text-base text-paper/70">{l.hint}</p>
+                <p className="on-ink-muted mt-1">{l.hint}</p>
               </li>
             ))}
           </ul>
-          <p className="mt-8 max-w-measure text-base text-paper/80">
+          <p className="on-ink-muted mt-8 max-w-measure">
             A project that does not open is not judged. This is the most important rule of the whole
             programme: shipping is the subject.
           </p>
@@ -94,9 +104,7 @@ export default function ContestsPage() {
             <section key={block.label} className="card-3d p-6 md:p-8">
               <div className="flex items-baseline justify-between gap-6">
                 <h3 className="font-display text-2xl font-extrabold">{block.label}</h3>
-                <span className="whitespace-nowrap font-mono text-sm text-accent-strong">
-                  {block.weight} pts
-                </span>
+                <span className="pill pill--accent whitespace-nowrap text-sm">{block.weight} pts</span>
               </div>
               <ul className="mt-5 grid gap-4 md:grid-cols-3">
                 {block.lines.map((l) => (
@@ -118,7 +126,7 @@ export default function ContestsPage() {
         <div className="prose mt-8">
           <p>
             Using an agent is the subject of this club, never cheating. The only fraud possible is
-            submitting someone else work.
+            submitting someone else&apos;s work.
           </p>
           <p>
             Your repo has to be public, with its commit history. A single giant commit is not

@@ -1,6 +1,6 @@
 ## The version from two minutes ago is nowhere
 
-You asked for a big redesign, the agent rewrote every file, and the result is broken. Undo does nothing, because these are not keystrokes, they are files that were replaced. Without a safety net, the only way back is memory.
+You asked for a big redesign, the agent rewrote every file, and the result is broken. Undo does nothing, because these are not keystrokes, they are files that were replaced. Claude Code keeps checkpoints while its window is open, and they vanish when you close it. Without a safety net that lives in the project itself, the only way back is memory.
 
 ## A commit is a named save point
 
@@ -12,6 +12,10 @@ Exactly like saving a game before a boss. You save, you try the risky thing, and
 - `git revert` undoes a save you already made, and records that you did.
 
 Nothing is ever lost. That is the contract, and it changes how brave you can be with an agent.
+
+## Push means: send your saves to GitHub
+
+A commit lives on your laptop. Push copies it to GitHub. Pull brings back what is there. Three words, that is all the vocabulary tonight needs.
 
 ## GitHub is the copy elsewhere, and your portfolio
 

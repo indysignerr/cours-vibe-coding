@@ -10,6 +10,7 @@ const INK = "#14121a";
 const PAPER = "#f4f1ea";
 const NAME = "AI-bert Vibe Coding"; // aligné sur src/lib/site.ts
 const TAGLINE = "Ship something real, every week.";
+const [T1, T2] = TAGLINE.replace(/\.$/, "").split(" real, ");
 
 const mascot = (x, y, s) => `
 <g transform="translate(${x} ${y}) scale(${s})">
@@ -36,8 +37,8 @@ const og = `
   <circle cx="760" cy="600" r="140" fill="#16c08a" opacity="0.3"/>
   ${mascot(820, 170, 2.1)}
   <text x="80" y="230" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="40" fill="#5f5647">${NAME.toUpperCase()}</text>
-  <text x="80" y="330" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="78" fill="${INK}">Ship something</text>
-  <text x="80" y="420" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="78" fill="${INK}">real, every week.</text>
+  <text x="80" y="330" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="78" fill="${INK}">${T1}</text>
+  <text x="80" y="420" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="78" fill="${INK}">real, ${T2}.</text>
   <rect x="80" y="470" width="420" height="64" rx="32" fill="${ACCENT}"/>
   <text x="290" y="513" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="800" font-size="28" fill="${INK}">Albert School · 1 h / week</text>
 </svg>`;
@@ -57,7 +58,7 @@ await writeFile("public/android-chrome-192x192.png", buffers[192]);
 await writeFile("public/android-chrome-512x512.png", buffers[512]);
 await writeFile("public/favicon.ico", await pngToIco([buffers[16], buffers[32], buffers[48]]));
 await writeFile("public/icon.svg", icon(512).trim());
-await writeFile("public/og.png", await sharp(Buffer.from(og)).png().toBuffer());
+await writeFile("public/og.png", await sharp(Buffer.from(og)).png({ palette: true }).toBuffer());
 await writeFile("public/site.webmanifest", JSON.stringify({
   name: NAME, short_name: "AI-bert", start_url: "/", display: "standalone",
   background_color: PAPER, theme_color: ACCENT,

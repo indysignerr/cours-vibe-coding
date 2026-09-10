@@ -27,9 +27,13 @@ npm run dev
 
 ```bash
 # dans le SQL editor Supabase, dans cet ordre
-supabase/bootstrap.sql        # schéma + politiques + données, en une fois
-supabase/002_gamification.sql # consentement, onboarding, classement
+supabase/bootstrap.sql        # projet neuf : schéma, politiques, sécurité, données
+supabase/003_sessions.sql     # contenu des séances écrites
+# projet existant : 002_gamification.sql, 003_sessions.sql, 004_security.sql
 ```
+
+Contrôles : `node scripts/check-contrast.mjs` valide la palette dans les deux
+thèmes, `npx eslint src scripts` doit rester silencieux.
 
 Le schéma est en anglais côté contenu et en français côté commentaires.
 Les politiques RLS sont le verrou des séances : une séance dont

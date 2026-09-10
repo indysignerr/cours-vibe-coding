@@ -8,6 +8,8 @@ Notion unique : un commit est un point de sauvegarde. Branche et revert en corol
 - Compte GitHub de démo prêt, dépôt vide `demo-s03` créé d'avance.
 - Un projet Cloudflare Pages de démo à connecter à ce dépôt.
 - Vérifier que `git --version` répond sur la machine de démo.
+- Contrôle à l'entrée : `gh auth status` chez chaque étudiant. Ceux qui n'ont pas fait le devoir « avant la séance 3 » rejoignent un binôme.
+- Pratique réaliste : 30 à 35 min. La DoD s'arrête aux commits et à l'annulation ; Cloudflare est en bonus.
 
 ## 00:00–00:03 · Accueil
 « Ce soir, on rend impossible de perdre son travail. À 00:60, casser votre site n'aura plus aucune importance. »
@@ -16,6 +18,7 @@ Notion unique : un commit est un point de sauvegarde. Branche et revert en corol
 1. Sur la page S02, prompt : « Redesign the whole page with a dark theme, a menu and three sections ». Laisser l'agent réécrire tout.
 2. Ouvrir. C'est cassé, ou moche, ou les deux. « Je veux revenir à avant. » Cmd+Z ne fait rien, les fichiers ont été réécrits.
 3. Silence. « Où est la version d'il y a deux minutes ? Nulle part. »
+4. Si quelqu'un cite `/rewind` ou double Échap : le montrer, puis fermer le terminal et rouvrir. Plus de checkpoint. Le filet de Claude vit dans la session ; git vit dans le projet, sur GitHub, et redéploie.
 
 ## 00:08–00:20 · Le concept, trois affirmations
 1. **Un commit est un point de sauvegarde nommé.** Comme une sauvegarde de jeu. Tu en fais un avant chaque chose risquée, donc tout le temps.
@@ -24,10 +27,10 @@ Notion unique : un commit est un point de sauvegarde. Branche et revert en corol
 Au tableau : fichiers → commit → commit → commit, une flèche « revert » qui remonte. Puis une flèche vers GitHub, puis GitHub → Cloudflare.
 
 ## 00:20–00:28 · La démo
-1. Dans le dossier S02 : `git init`, `git add .`, `git commit -m "Page after step 02"`. Montrer `git log`.
+1. Dans le dossier S02 : `git init -b main`, `git add .`, `git commit -m "Page after step 02"`. Montrer `git log`.
 2. Refaire le redesign destructeur. Constater. `git restore .` Tout revient. Applaudissements attendus.
 3. Refaire un vrai petit changement, commit. `git push` vers le dépôt GitHub. Montrer l'historique sur le site GitHub.
-4. Cloudflare : Workers & Pages → Create → Pages → Connect to Git → choisir le dépôt → aucune commande de build, output `/`. Attendre le déploiement. Changer un mot, commit, push : le site se met à jour seul.
+4. Cloudflare : Create → Pages → Connect to Git → un NOUVEAU projet, l'ancien nom est pris, l'URL change ce soir. Aucune commande de build, output `/`. Attendre. Changer un mot, commit, push : le site se met à jour seul. C'est le bonus des étudiants, pas leur DoD.
 
 ## 00:28–00:30 · Lancement
 Énoncé projeté. Prévenir : l'agent peut faire les commandes git pour vous, mais lisez ce qu'il fait.

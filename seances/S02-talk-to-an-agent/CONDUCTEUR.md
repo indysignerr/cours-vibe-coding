@@ -12,8 +12,8 @@ Notion unique : un brief, pas un souhait. Contexte, spec, plan, itération. Pas 
 « Ce soir vous ne changez pas d'outil, vous changez de façon de lui parler. À 00:60, votre page est trois fois meilleure et vous savez pourquoi. »
 
 ## 00:03–00:08 · L'échec
-1. `claude`, prompt : « make me a beautiful website ». Laisser tourner. Résultat générique, bleu, Inter, hero + trois cartes. La salle reconnaît le template.
-2. Prompt : « make it better ». C'est pire, ou différent, jamais mieux. Montrer que l'agent a tout réécrit.
+1. Dans un dossier VIDE préparé la veille, `claude`, prompt : « make me a beautiful website ». Laisser tourner. Résultat générique, hero + trois cartes. La salle reconnaît le template. Si ça dépasse 90 s, basculer sur le résultat pré-généré.
+2. Prompt : « make it better ». C'est différent, jamais mieux. Montrer que l'agent a tout réécrit.
 3. Question à la salle : qu'est-ce qu'il ne savait pas ?
 
 ## 00:08–00:20 · Le concept, trois affirmations
@@ -36,3 +36,4 @@ Avant/après côte à côte. Demander : quel prompt a fait la plus grande diffé
 
 ## Après
 Déverrouiller le corrigé. RETEX.
+Envoyer dans le groupe le devoir « avant la séance 3 » de la page Setup : git, gh, identité git, `gh auth login`. Sans ça la séance 3 dure 45 minutes.

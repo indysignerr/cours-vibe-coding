@@ -4,6 +4,7 @@ import { Board } from "./board";
 
 export const metadata: Metadata = {
   title: "Season board",
+  description: "Points and completed steps for the season. Members only.",
   robots: { index: false, follow: false },
 };
 

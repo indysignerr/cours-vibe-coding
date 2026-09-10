@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mascot } from "@/components/mascot";
 import { getSupabase } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/types";
@@ -10,8 +10,23 @@ import type { Profile } from "@/lib/types";
  * le pseudo GitHub, et le consentement RGPD à la publication du nom
  * dans les résultats. Le profil garde la date pour ne plus le montrer.
  */
-export function Onboarding({ profile, onDone }: { profile: Profile; onDone: () => void }) {
+export function Onboarding({
+  profile,
+  onDone,
+  onCancel,
+}: {
+  profile: Profile;
+  onDone: () => void;
+  /** Fourni en mode édition depuis /me : affiche Annuler et « Save ». */
+  onCancel?: () => void;
+}) {
   const [step, setStep] = useState(0);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const editing = Boolean(onCancel);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [step]);
   const [name, setName] = useState(profile.full_name);
   const [github, setGithub] = useState(profile.github_login ?? "");
   const [consent, setConsent] = useState(profile.consent_publish);
@@ -35,15 +50,15 @@ export function Onboarding({ profile, onDone }: { profile: Profile; onDone: () =
     onDone();
   }
 
-  const field = "tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line";
+  const field = "tap mt-2 w-full rounded-2xl border-2 border-line-strong bg-surface px-4 text-base focus:border-accent-line";
 
   return (
     <div className="card-3d anim-pop mx-auto max-w-lg p-7 md:p-9">
       <div className="flex items-center gap-4">
         <Mascot size={72} mood={step === 2 ? "party" : "happy"} className="anim-float" />
         <div>
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.15em] text-muted">Welcome · {step + 1} of 3</p>
-          <h2 className="font-display text-2xl font-extrabold">
+          <p className="eyebrow text-muted">{editing ? "Edit profile" : "Welcome"} · {step + 1} of 3</p>
+          <h2 ref={headingRef} tabIndex={-1} className="font-display text-2xl font-extrabold outline-none">
             {step === 0 ? "How should we call you?" : step === 1 ? "Where does your code live?" : "One honest question"}
           </h2>
         </div>
@@ -57,7 +72,7 @@ export function Onboarding({ profile, onDone }: { profile: Profile; onDone: () =
 
       {step === 0 ? (
         <>
-          <label className="mt-7 block text-sm font-bold" htmlFor="ob-name">Your name, as shown on the board</label>
+          <label className="mt-7 block font-bold" htmlFor="ob-name">Your name, as shown on the board</label>
           <input id="ob-name" value={name} onChange={(e) => setName(e.target.value)} className={field} />
           <p className="mt-2 text-sm text-muted">First name and surname. You can change it later.</p>
         </>
@@ -65,7 +80,7 @@ export function Onboarding({ profile, onDone }: { profile: Profile; onDone: () =
 
       {step === 1 ? (
         <>
-          <label className="mt-7 block text-sm font-bold" htmlFor="ob-gh">GitHub username</label>
+          <label className="mt-7 block font-bold" htmlFor="ob-gh">GitHub username</label>
           <input id="ob-gh" value={github} onChange={(e) => setGithub(e.target.value)} placeholder="octocat" className={field} />
           <p className="mt-2 text-sm text-muted">Optional now, required before the first contest. It links your submissions to your profile.</p>
         </>
@@ -85,7 +100,10 @@ export function Onboarding({ profile, onDone }: { profile: Profile; onDone: () =
 
       {error ? <p role="alert" className="mt-5 rounded-2xl border-2 border-accent-line bg-surface p-4">{error}</p> : null}
 
-      <div className="mt-7 flex gap-3">
+      <div className="mt-7 flex flex-wrap gap-3">
+        {editing && step === 0 ? (
+          <button type="button" className="btn-3d btn-3d--ghost" onClick={onCancel}>Cancel</button>
+        ) : null}
         {step > 0 ? (
           <button type="button" className="btn-3d btn-3d--ghost" onClick={() => setStep(step - 1)}>Back</button>
         ) : null}
@@ -93,7 +111,7 @@ export function Onboarding({ profile, onDone }: { profile: Profile; onDone: () =
           <button type="button" className="btn-3d flex-1" onClick={() => setStep(step + 1)}>Next</button>
         ) : (
           <button type="button" className="btn-3d btn-3d--done flex-1" disabled={busy} onClick={() => void finish()}>
-            {busy ? "Saving…" : "Start my path"}
+            {busy ? "Saving…" : editing ? "Save" : "Start my path"}
           </button>
         )}
       </div>

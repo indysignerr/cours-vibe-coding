@@ -6,7 +6,13 @@ import path from "node:path";
 
 const root = "seances";
 const dirs = (await readdir(root)).filter((d) => /^S\d{2}-/.test(d)).sort();
-const q = (s) => `$md$${s.trim()}$md$`;
+// Balise de dollar-quoting choisie pour ne jamais apparaître dans le texte.
+const TAG = "$vcc_md$";
+const q = (s) => {
+  if (s == null) return "null";
+  if (String(s).includes(TAG)) throw new Error(`le texte contient ${TAG}`);
+  return `${TAG}${String(s).trim()}${TAG}`;
+};
 let out = `-- Généré par scripts/sessions-to-sql.mjs. Ne pas éditer à la main.\n-- À exécuter après bootstrap.sql. Chaque séance est remplacée entièrement.\n\nbegin;\n`;
 
 for (const d of dirs) {

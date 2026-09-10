@@ -4,7 +4,6 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  robots: { index: false, follow: true },
 };
 
 export default function PrivacyPage() {
@@ -57,8 +56,9 @@ export default function PrivacyPage() {
         <h2>Who sees what</h2>
         <p>
           The two organisers of the association can see every account, submission and score. Other
-          members can see the name and project of contest winners once results are published, and
-          nothing else about you. Session material is only visible to signed-in members, and locked
+          members see the season board, which shows your points and completed steps, and the name
+          and project of contest winners once results are published. If you did not consent to
+          your full name being shown, the board and the results show your first name and initial. Session material is only visible to signed-in members, and locked
           sessions are not merely hidden in the page, they are refused by the database.
         </p>
 

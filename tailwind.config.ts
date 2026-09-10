@@ -26,6 +26,11 @@ export default {
         xp: "var(--xp)",
         "xp-line": "var(--xp-line)",
         "xp-strong": "var(--xp-strong)",
+        "on-fill": "var(--on-fill)",
+        "ink-line": "var(--ink-line)",
+        "line-strong": "var(--line-strong)",
+        "code-bg": "var(--code-bg)",
+        "code-ink": "var(--code-ink)",
       },
       fontFamily: {
         display: ["var(--font-display)", "system-ui", "sans-serif"],
@@ -33,7 +38,10 @@ export default {
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       fontSize: {
-        // Le support est projeté : rien sous 1rem dans le corps de texte.
+        // Le support est projeté : jamais sous 17 px en courant. text-sm = 16 px
+        // pour les libellés, text-xs reste réservé aux surtitres et captions.
+        sm: ["1rem", { lineHeight: "1.5" }],
+        base: ["1.0625rem", { lineHeight: "1.6" }],
         "display-xl": ["clamp(3rem, 9vw, 7.5rem)", { lineHeight: "0.92", letterSpacing: "-0.03em" }],
         "display-lg": ["clamp(2.25rem, 5.5vw, 4.5rem)", { lineHeight: "0.98", letterSpacing: "-0.02em" }],
         "display-md": ["clamp(1.75rem, 3.5vw, 2.75rem)", { lineHeight: "1.05", letterSpacing: "-0.01em" }],
@@ -41,7 +49,7 @@ export default {
       },
       maxWidth: { measure: "68ch", stage: "88rem" },
       boxShadow: { lift: "var(--lift)" },
-      borderRadius: { card: "18px", pill: "999px" },
+      borderRadius: { card: "20px", pill: "999px" },
       transitionTimingFunction: { swift: "cubic-bezier(0.22, 1, 0.36, 1)" },
     },
   },

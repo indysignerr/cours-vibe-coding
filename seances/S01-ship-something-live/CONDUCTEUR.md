@@ -5,6 +5,8 @@ Notion unique : la boucle prompt → code → déploiement. Rien d'autre. Pas de
 
 ## Avant la séance
 - Starter testé la veille : `public/starters/s01-ship-something-live.zip` s'ouvre et s'affiche.
+- Refaire le chemin exact Cloudflare « Upload assets » la veille, capturer chaque écran, corriger les libellés dans ENONCE et CORRIGE si le dashboard a changé.
+- Clé API partagée du club chargée et son plafond vérifié, pour les étudiants sans abonnement.
 - Compte Cloudflare de démo connecté, un projet Pages vide déjà créé pour gagner 2 minutes.
 - Vérifier que la séance 1 est **ouverte** dans l'admin, sinon personne ne voit les prompts.
 - Salle ouverte 10 min avant pour le dépannage setup. Un étudiant sans `claude` qui répond ne suit pas, il regarde : binôme immédiat.

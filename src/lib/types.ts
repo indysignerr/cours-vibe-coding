@@ -21,7 +21,27 @@ export type LeaderboardRow = {
   xp: number;
   steps_done: number;
   submissions: number;
-  consent_publish: boolean;
+};
+
+export type Invitation = {
+  email: string;
+  full_name: string | null;
+  code: string;
+  claimed_at: string | null;
+};
+
+export type NodeState = "done" | "current" | "open" | "locked";
+
+export type PathNode = {
+  number: number;
+  slug: string;
+  title: string;
+  promise: string;
+  weekOf: string;
+  kind: "lesson" | "contest";
+  state: NodeState;
+  progress: number;
+  href?: string;
 };
 
 export type Session = {

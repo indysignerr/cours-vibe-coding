@@ -7,12 +7,15 @@ export function ProgressRing({
   size = 84,
   stroke = 9,
   tone = "done",
+  label,
   children,
 }: {
   value: number; // 0 à 1
   size?: number;
   stroke?: number;
   tone?: "done" | "accent" | "xp" | "streak";
+  /** Annoncé aux lecteurs d'écran, par exemple « 3 sur 5 ». */
+  label?: string;
   children?: React.ReactNode;
 }) {
   const r = (size - stroke) / 2;
@@ -20,7 +23,7 @@ export function ProgressRing({
   const clamped = Math.max(0, Math.min(1, value));
 
   return (
-    <div className="relative inline-grid place-items-center" style={{ width: size, height: size }}>
+    <div className="relative inline-grid place-items-center" style={{ width: size, height: size }} role={label ? "img" : undefined} aria-label={label}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>
         <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--line)" strokeWidth={stroke} fill="none" />
         <circle

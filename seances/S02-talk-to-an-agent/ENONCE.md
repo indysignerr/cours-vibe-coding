@@ -6,9 +6,13 @@ The same page as last week, rebuilt in exactly three iterations, back online, wi
 
 Open a terminal in your step 01 folder, type `claude`. Take a screenshot of the page as it is now: that is your "before".
 
+No step 01 folder? Download the step 01 starter, run its first prompt, then continue here.
+
+Re-upload, when you are done: Cloudflare → Workers & Pages → your project → Deployments → Create deployment → drag the folder. Same project, same address.
+
 ## Constraints
 
-- **Three prompts, no more.** One brief, then two single changes. Write them in a file called `notes.md` in the folder.
+- **Three prompts that change the page, no more.** One brief, then two single changes. Answering the agent's questions or saying "go ahead" does not count. Write the three in a file called `notes.md` in the folder.
 - Each change prompt names one thing and ends with "do not touch anything else".
 - No new page, no new tool. Same folder, same Cloudflare project, re-upload.
 

@@ -4,7 +4,6 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Legal notice",
-  robots: { index: false, follow: true },
 };
 
 export default function LegalPage() {
@@ -13,7 +12,7 @@ export default function LegalPage() {
       <div className="prose">
         <h2>Publisher</h2>
         <p>
-          This site is published by {SITE.name}, {SITE.legalMention.toLowerCase()} It is run by{" "}
+          This site is published by {SITE.name}. {SITE.legalMention} It is run by{" "}
           {SITE.founders.join(" and ")}, students at {SITE.school}, and is not a service of the school. Opinions and content here are those of
           the association, not of {SITE.school}.
         </p>

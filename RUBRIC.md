@@ -64,8 +64,12 @@ constraints, so each is worth roughly 8 points.
 | Clean public repo | Readable commit history, a README, and no secret committed. |
 
 Using an agent is the subject of this club, never cheating. The only fraud
-possible is submitting someone else work. A single giant commit is not
+possible is submitting someone else's work. A single giant commit is not
 forbidden, it just raises the Ownership question.
+
+## Frozen lines at contest 1
+
+The grid scores things taught later in the path. At contest 1, these lines are frozen at 2 for everyone: "Holds at 375 pixels", "Loading, empty and error states", and "Typography". They come back at contest 2.
 
 ## Protocol for two judges
 

@@ -31,12 +31,22 @@
   --done-strong: #0d6b4f;
 
   --streak: #ffb43d;
-  --streak-line: #b57a00;
+  --streak-line: #ad7400;
   --streak-strong: #8a5200;
 
   --xp: #a678f0;
   --xp-line: #7a48c4;
   --xp-strong: #6b3b8f;
+
+  /* Texte posé sur un aplat coloré : toujours sombre, dans les deux thèmes. */
+  --on-fill: #14121a;
+  --ink-line: #000000;
+  --line-strong: #857c6c;
+  --mascot-body: #14121a;
+  --mascot-face: #f4f1ea;
+  --code-bg: #14121a;
+  --code-ink: #f4f1ea;
+  --scrim: rgba(20, 18, 26, 0.6);
 
   --grain: 0.03;
   --lift: 0 2px 0 var(--line), 0 10px 24px -14px rgba(20, 18, 26, 0.35);
@@ -70,6 +80,15 @@
   --xp: #b892f5;
   --xp-line: #b892f5;
   --xp-strong: #cbb0f8;
+
+  --on-fill: #14121a;
+  --ink-line: #c9c3b6;
+  --line-strong: #7d766c;
+  --mascot-body: #14121a;
+  --mascot-face: #f4f1ea;
+  --code-bg: #0f0e13;
+  --code-ink: #f4f1ea;
+  --scrim: rgba(0, 0, 0, 0.7);
 
   --lift: 0 2px 0 var(--line), 0 10px 24px -14px rgba(0, 0, 0, 0.6);
   color-scheme: dark;
@@ -107,7 +126,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 3px solid var(--accent-line);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -135,6 +154,8 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* Le +XP doit rester lisible : pas d'animation, pleine opacité. */
+  .xp-toast { animation: none !important; opacity: 1 !important; }
 }
 
 /* Typo des pages rédactionnelles et du markdown venu de Supabase. */
@@ -143,14 +164,16 @@
     max-width: 68ch;
   }
   .prose h2 {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 800;
     font-size: clamp(1.75rem, 3vw, 2.5rem);
     line-height: 1.1;
     margin-top: 2.75rem;
     margin-bottom: 0.85rem;
   }
   .prose h3 {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 800;
     font-size: 1.5rem;
     line-height: 1.2;
     margin-top: 2rem;
@@ -188,9 +211,9 @@
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 1.25rem;
     line-height: 1.5;
-    background: var(--ink);
-    color: var(--paper);
-    border-radius: 10px;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 20px;
     padding: 1.25rem 1.4rem;
     margin-bottom: 1.4rem;
     overflow-x: auto;
@@ -241,7 +264,7 @@
     border-radius: 16px;
     font-weight: 800;
     letter-spacing: 0.01em;
-    color: var(--ink);
+    color: var(--on-fill);
     background: var(--accent);
     border: 2px solid var(--accent-line);
     border-bottom-width: 6px;
@@ -261,10 +284,10 @@
     opacity: 0.7;
     transform: none;
   }
-  .btn-3d--ink   { background: var(--ink);    border-color: #000;              color: var(--paper); }
+  .btn-3d--ink   { background: var(--ink);    border-color: var(--ink-line);   color: var(--paper); }
   .btn-3d--done  { background: var(--done);   border-color: var(--done-line); }
   .btn-3d--xp    { background: var(--xp);     border-color: var(--xp-line); }
-  .btn-3d--ghost { background: var(--surface); border-color: var(--line); }
+  .btn-3d--ghost { background: var(--surface); border-color: var(--line); color: var(--ink); }
 
   /* Carte : bordure fine partout, épaisse en bas. */
   .card-3d {
@@ -273,10 +296,29 @@
     border-bottom-width: 5px;
     border-radius: 20px;
   }
-  .card-3d--accent { border-color: var(--accent-line); background: var(--accent); }
-  .card-3d--done   { border-color: var(--done-line);   background: var(--done); }
-  .card-3d--streak { border-color: var(--streak-line); background: var(--streak); }
-  .card-3d--xp     { border-color: var(--xp-line);     background: var(--xp); }
+  .card-3d--accent { border-color: var(--accent-line); background: var(--accent); color: var(--on-fill); }
+  .card-3d--done   { border-color: var(--done-line);   background: var(--done);   color: var(--on-fill); }
+  .card-3d--streak { border-color: var(--streak-line); background: var(--streak); color: var(--on-fill); }
+  .card-3d--xp     { border-color: var(--xp-line);     background: var(--xp);     color: var(--on-fill); }
+  .card-3d--ink    { border-color: var(--ink-line);    background: var(--ink);    color: var(--paper); }
+
+  /* Surtitre unique pour tout le site. */
+  .eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  /* Texte atténué sur fond d'encre. */
+  .on-ink-muted { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+  /* Bloc de code hors prose. */
+  .code-block {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 20px;
+  }
+  .fill-text { color: var(--on-fill); }
 
   /* Pastille de stat : icône + gros chiffre. */
   .pill {
@@ -288,9 +330,14 @@
     border-radius: 999px;
     border: 2px solid var(--line);
     background: var(--surface);
+    color: var(--ink);
     font-weight: 800;
     font-family: var(--font-display), system-ui, sans-serif;
   }
+  .pill--accent { background: var(--accent); border-color: var(--accent-line); color: var(--on-fill); }
+  .pill--done   { background: var(--done);   border-color: var(--done-line);   color: var(--on-fill); }
+  .pill--streak { background: var(--streak); border-color: var(--streak-line); color: var(--on-fill); }
+  .pill--xp     { background: var(--xp);     border-color: var(--xp-line);     color: var(--on-fill); }
 
   .blob {
     position: absolute;
@@ -318,8 +365,8 @@
   96%           { transform: scaleY(0.08); }
 }
 @keyframes pulse-ring {
-  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
-  100% { box-shadow: 0 0 0 18px transparent; }
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(1.45); opacity: 0; }
 }
 @keyframes dash {
   to { stroke-dashoffset: 0; }
@@ -328,7 +375,16 @@
 .anim-pop    { animation: pop-in 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .anim-float  { animation: float-y 3.4s ease-in-out infinite; }
 .anim-wiggle { animation: wiggle 2.2s ease-in-out infinite; transform-origin: 50% 90%; }
-.anim-pulse  { animation: pulse-ring 1.8s ease-out infinite; }
+.anim-pulse  { position: relative; }
+.anim-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  background: var(--accent);
+  z-index: -1;
+  animation: pulse-ring 1.8s ease-out 3;
+}
 
 @keyframes xp-rise {
   0%   { transform: translateY(16px) scale(0.8); opacity: 0; }
@@ -354,6 +410,7 @@
 [data-projector] header,
 [data-projector] footer,
 [data-projector] .projector-hide { display: none !important; }
+/* L'attribut n'est posé que par la page de séance (useProjector). */
 [data-projector] main { max-width: 100rem; font-size: 1.35rem; }
 [data-projector] main > h1 { font-size: clamp(3rem, 7vw, 6rem); }
 [data-projector] .prose { max-width: 60ch; font-size: 1.6rem; line-height: 1.5; }
@@ -367,3 +424,5 @@
   border-top: 3px dashed var(--line);
 }
 [data-projector] .projector-section:first-of-type { border-top: 0; }
+
+@keyframes cursor-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }

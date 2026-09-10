@@ -7,12 +7,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: { default: `${SITE.name} — ${SITE.tagline}`, template: `%s — ${SITE.name}` },
   description: `A student association at ${SITE.school}. One hour a week, you build and deploy real apps with AI agents. No prior code required.`,
+  alternates: { canonical: "./" },
   openGraph: {
     type: "website",
-    url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: `One hour a week at ${SITE.school}. You build, you deploy, you show it.`,
     images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE.tagline }],
   },
   twitter: { card: "summary_large_image", images: ["/og.png"] },
@@ -29,17 +27,33 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// Schéma Organization, identique sur toutes les pages.
+const ORGANIZATION = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: SITE.name,
+  url: SITE.url,
+  logo: `${SITE.url}/android-chrome-512x512.png`,
+  description: `A student association at ${SITE.school}: build and ship real apps with AI agents, one hour a week.`,
+  founder: SITE.founders.map((name) => ({ "@type": "Person", name })),
+  parentOrganization: { "@type": "EducationalOrganization", name: SITE.school },
+};
+
 export const viewport: Viewport = {
   themeColor: "#ff4d2e",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
       <body>
         <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION) }}
+        />
+        <script
           dangerouslySetInnerHTML={{
-            __html: "try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.dataset.theme='dark';if(localStorage.getItem('projector')==='1')document.documentElement.dataset.projector='1'}catch(e){}",
+            __html: "try{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}",
           }}
         />
         <a

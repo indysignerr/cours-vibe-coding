@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowRight, Award, Flame, Rocket, Sparkles, Zap } from "lucide-react";
+import Link from "next/link";
 import { Countdown } from "@/components/countdown";
 import { Mascot } from "@/components/mascot";
 import { ProgressRing } from "@/components/progress-ring";
@@ -11,6 +12,7 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: `${SITE.name} — ${SITE.tagline}`,
+  description: `A student association at ${SITE.school}. One hour a week, you build and deploy real apps with AI agents. No coding background required.`,
 };
 
 const HOUR = [
@@ -31,7 +33,8 @@ const OUTCOMES = [
     body: "How to brief one, when to stop it, and how to spot confident nonsense." },
 ];
 
-const TONES = ["bg-accent border-accent-line", "bg-done border-done-line", "bg-streak border-streak-line", "bg-xp border-xp-line"];
+const TONES = ["bg-accent border-accent-line fill-text", "bg-done border-done-line fill-text", "bg-streak border-streak-line fill-text", "bg-xp border-xp-line fill-text"];
+const FIRST_WEEK = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", timeZone: "Europe/Paris" }).format(new Date(`${SITE.startsWeekOf}T12:00:00`));
 
 export default function Home() {
   const preview = CURRICULUM.slice(0, 5);
@@ -40,7 +43,7 @@ export default function Home() {
     <>
       <SiteHeader />
 
-      <main id="main" className="pb-20 sm:pb-0">
+      <main id="main">
         {/* Hero */}
         <section className="relative mx-auto max-w-stage overflow-hidden px-5 pb-16 pt-6 md:px-10 md:pb-28 md:pt-14">
           <span aria-hidden className="blob -left-24 top-10 size-72 bg-streak opacity-40" />
@@ -48,13 +51,13 @@ export default function Home() {
           <span aria-hidden className="blob bottom-0 left-1/3 size-56 bg-done opacity-30" />
 
           <div className="relative grid items-center gap-10 md:grid-cols-12">
-            <div className="md:col-span-7">
+            <div className="md:col-span-8">
               <p className="anim-pop inline-flex items-center gap-2 rounded-full border-2 border-line bg-surface px-4 py-1.5 text-sm font-bold">
                 <Flame aria-hidden className="size-4 text-streak-strong" />
                 {SITE.eyebrow}
               </p>
 
-              <h1 className="anim-pop mt-6 max-w-[14ch] font-display text-display-xl font-extrabold [animation-delay:80ms]">
+              <h1 className="mt-6 max-w-[14ch] font-display text-display-xl font-extrabold">
                 Ship something real, every week.
               </h1>
 
@@ -71,33 +74,27 @@ export default function Home() {
                     <ArrowRight aria-hidden className="size-5" />
                   </a>
                 ) : (
-                  <a className="btn-3d text-lg" href="/setup/">
+                  <Link className="btn-3d text-lg" href="/setup/">
                     Start the setup
                     <ArrowRight aria-hidden className="size-5" />
-                  </a>
+                  </Link>
                 )}
-                <a className="btn-3d btn-3d--ghost" href="/programme/">
-                  See the path
-                </a>
+                <Link className="btn-3d btn-3d--ghost" href="/programme/">See the path</Link>
               </div>
               <p className="mt-4 text-sm text-muted">
                 Places are handed out by hand. We add your email, then send you the link.
               </p>
             </div>
 
-            <div className="relative md:col-span-5">
+            <div className="relative md:col-span-4">
               <div className="anim-float mx-auto w-fit">
                 <Mascot size={260} mood="happy" className="anim-pop [animation-delay:200ms]" />
               </div>
-              <div className="anim-pop absolute -left-2 top-6 rotate-[-6deg] [animation-delay:400ms] md:left-2">
-                <span className="pill border-streak-line bg-streak">
-                  <Flame aria-hidden className="size-5" /> 3 week streak
-                </span>
+              <div aria-hidden className="anim-pop absolute -left-2 top-6 rotate-[-6deg] [animation-delay:400ms] md:left-2">
+                <span className="pill pill--streak"><Flame className="size-5" /> 3 week streak</span>
               </div>
-              <div className="anim-pop absolute -right-1 bottom-10 rotate-[5deg] [animation-delay:520ms] md:right-4">
-                <span className="pill border-xp-line bg-xp">
-                  <Zap aria-hidden className="size-5" /> +40 XP
-                </span>
+              <div aria-hidden className="anim-pop absolute -right-1 bottom-10 rotate-[5deg] [animation-delay:520ms] md:right-4">
+                <span className="pill pill--xp"><Zap className="size-5" /> +40 XP</span>
               </div>
             </div>
           </div>
@@ -131,29 +128,30 @@ export default function Home() {
                   one unlocks. Three of the steps are contests.
                 </p>
               </div>
-              <a className="btn-3d btn-3d--ink" href="/programme/">See all twelve</a>
+              <Link className="btn-3d btn-3d--ink" href="/programme/">See all twelve</Link>
             </div>
 
-            <ol className="mt-12 flex flex-wrap items-center gap-6 md:gap-4">
+            <ol className="mt-12 flex flex-wrap items-start gap-6 md:gap-4">
               {preview.map((s, i) => {
                 const done = i < 2;
                 const current = i === 2;
+                const state = done ? "completed" : current ? "next up" : "locked";
                 return (
-                  <li key={s.slug} className="flex items-center gap-4 md:gap-3">
+                  <li key={s.slug} className="flex items-start gap-4 md:gap-3">
                     <div className="flex flex-col items-center gap-2">
-                      <ProgressRing value={done ? 1 : current ? 0.4 : 0} size={88} tone={done ? "done" : "accent"}>
+                      <ProgressRing value={done ? 1 : current ? 0.4 : 0} size={88} tone={done ? "done" : "accent"} label={`Example: step ${s.number}, ${state}`}>
                         <span
                           className={`grid size-[62px] place-items-center rounded-full border-2 font-display text-2xl font-extrabold ${
-                            done ? "border-done-line bg-done" : current ? "anim-pulse border-accent-line bg-accent" : "border-line bg-surface text-muted"
+                            done ? "border-done-line bg-done fill-text" : current ? "border-accent-line bg-accent fill-text ring-4 ring-accent-line ring-offset-4 ring-offset-sunken" : "border-line bg-surface text-muted"
                           }`}
                         >
                           {String(s.number).padStart(2, "0")}
                         </span>
                       </ProgressRing>
-                      <span className="max-w-[10ch] text-center text-xs font-bold leading-tight">{s.title}</span>
+                      <span className="max-w-[12ch] text-center text-sm font-bold leading-tight">{s.title}</span>
                     </div>
                     {i < preview.length - 1 ? (
-                      <span aria-hidden className="hidden h-1.5 w-8 rounded-full bg-line md:block" />
+                      <span aria-hidden className="mt-[41px] hidden h-1.5 w-8 rounded-full bg-line md:block" />
                     ) : null}
                   </li>
                 );
@@ -170,7 +168,7 @@ export default function Home() {
               <li key={h.title} className={`card-3d ${h.tone} p-7`}>
                 <div className="flex items-center justify-between">
                   <h.icon aria-hidden className="size-7" />
-                  <span className="rounded-full bg-surface/70 px-3 py-1 font-mono text-sm font-bold">{h.time}</span>
+                  <span className="pill min-h-0 py-1 font-mono text-sm">{h.time}</span>
                 </div>
                 <h3 className="mt-5 font-display text-2xl font-extrabold">{h.title}</h3>
                 <p className="mt-2 font-medium">{h.body}</p>
@@ -221,15 +219,13 @@ export default function Home() {
 
           <div className="card-3d card-3d--accent relative overflow-hidden p-7 md:col-span-7">
             <Mascot size={150} mood="party" className="anim-wiggle absolute -bottom-4 right-2 hidden md:block" />
-            <p className="inline-block rounded-full bg-surface/70 px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.15em]">
-              Step 01 · week of 14 September
-            </p>
+            <p className="eyebrow pill min-h-0 py-1">Step 01 · week of {FIRST_WEEK}</p>
             <h2 className="mt-4 max-w-[16ch] font-display text-display-lg font-extrabold">{CURRICULUM[0].title}</h2>
             <p className="mt-4 max-w-[36ch] font-medium">{CURRICULUM[0].promise}</p>
-            <a className="btn-3d btn-3d--ink mt-8" href="/setup/">
+            <Link className="btn-3d btn-3d--ink mt-8" href="/setup/">
               Do the setup first
               <ArrowRight aria-hidden className="size-5" />
-            </a>
+            </Link>
           </div>
         </section>
       </main>

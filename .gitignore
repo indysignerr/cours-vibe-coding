@@ -43,3 +43,6 @@ next-env.d.ts
 # env local
 .env.local
 .env*.local
+
+# le gabarit d'environnement doit être suivi
+!.env.example

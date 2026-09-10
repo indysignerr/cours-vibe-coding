@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mascot } from "@/components/mascot";
 import type { Badge } from "@/lib/badges";
 
@@ -23,6 +23,12 @@ export const reward = {
 };
 
 const COLORS = ["var(--accent)", "var(--done)", "var(--streak)", "var(--xp)"];
+const TILE: Record<Badge["tone"], string> = {
+  accent: "border-accent-line bg-accent",
+  done: "border-done-line bg-done",
+  streak: "border-streak-line bg-streak",
+  xp: "border-xp-line bg-xp",
+};
 
 function reducedMotion() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -32,6 +38,24 @@ export function RewardLayer() {
   const [toasts, setToasts] = useState<{ id: number; amount: number }[]>([]);
   const [confetti, setConfetti] = useState<number | null>(null);
   const [badge, setBadge] = useState<Badge | null>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<Element | null>(null);
+
+  // Piège le focus dans la modale, ferme sur Escape, rend le focus à l'ouvreur.
+  useEffect(() => {
+    if (!badge) return;
+    openerRef.current = document.activeElement;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setBadge(null);
+      if (e.key === "Tab") { e.preventDefault(); closeRef.current?.focus(); }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      (openerRef.current as HTMLElement | null)?.focus?.();
+    };
+  }, [badge]);
 
   useEffect(() => {
     if (!bus) return;
@@ -60,7 +84,7 @@ export function RewardLayer() {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="pill mb-2 border-xp-line bg-xp text-lg"
+            className="pill pill--xp xp-toast mb-2 text-lg"
             style={{ animation: "xp-rise 1.4s cubic-bezier(0.22, 1, 0.36, 1) both" }}
           >
             {t.amount > 0 ? `+${t.amount}` : t.amount} XP
@@ -95,7 +119,7 @@ export function RewardLayer() {
           role="dialog"
           aria-modal
           aria-labelledby="badge-title"
-          className="fixed inset-0 z-50 grid place-items-center bg-ink/60 p-6"
+          className="fixed inset-0 z-50 grid place-items-center bg-[var(--scrim)] p-6"
           onClick={() => setBadge(null)}
         >
           <div
@@ -103,13 +127,13 @@ export function RewardLayer() {
             onClick={(e) => e.stopPropagation()}
           >
             <Mascot size={96} mood="party" className="anim-wiggle mx-auto" />
-            <p className="mt-4 font-mono text-xs font-bold uppercase tracking-[0.15em] text-muted">New badge</p>
-            <div className={`mx-auto mt-3 grid size-20 place-items-center rounded-3xl border-[3px] border-${badge.tone}-line bg-${badge.tone}`} style={{ animation: "badge-flip 900ms cubic-bezier(0.34, 1.56, 0.64, 1) both" }}>
+            <p className="eyebrow mt-4 text-muted">New badge</p>
+            <div className={`fill-text mx-auto mt-3 grid size-20 place-items-center rounded-3xl border-[3px] ${TILE[badge.tone]}`} style={{ animation: "badge-flip 900ms cubic-bezier(0.34, 1.56, 0.64, 1) both" }}>
               <badge.icon aria-hidden className="size-10" />
             </div>
             <h2 id="badge-title" className="mt-4 font-display text-3xl font-extrabold">{badge.label}</h2>
             <p className="mt-2 text-muted">{badge.description}</p>
-            <button type="button" className="btn-3d mt-6 w-full" onClick={() => setBadge(null)} autoFocus>
+            <button ref={closeRef} type="button" className="btn-3d mt-6 w-full" onClick={() => setBadge(null)}>
               Nice
             </button>
           </div>

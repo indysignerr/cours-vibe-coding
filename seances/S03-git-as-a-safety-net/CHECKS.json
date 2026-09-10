@@ -1,7 +1,22 @@
 [
-  {"label": "My repository is on GitHub with at least three commits", "is_bonus": false},
-  {"label": "One undo is visible: a restore in my notes or a revert in the history", "is_bonus": false},
-  {"label": "Cloudflare is connected to the repository and deployed my last push by itself", "is_bonus": false},
-  {"label": "I posted the repository link and the live URL in the club group", "is_bonus": false},
-  {"label": "Bonus: I tried something on a branch and merged it", "is_bonus": true}
+  {
+    "label": "My repository is on GitHub with at least two commits and a readable message on each",
+    "is_bonus": false
+  },
+  {
+    "label": "One undo is visible: a revert in the history, or the restore command in notes.md",
+    "is_bonus": false
+  },
+  {
+    "label": "I can say in one sentence what a commit is",
+    "is_bonus": false
+  },
+  {
+    "label": "I posted the repository link in the club group",
+    "is_bonus": false
+  },
+  {
+    "label": "Bonus: Cloudflare is connected to the repository and deployed my last push by itself",
+    "is_bonus": true
+  }
 ]

@@ -1,7 +1,6 @@
-import type { NodeState, PathNode } from "@/components/path";
 import { CURRICULUM } from "@/lib/curriculum";
 import { getSupabase } from "@/lib/supabase/client";
-import type { Session, SessionCheck } from "@/lib/types";
+import type { NodeState, PathNode, Session, SessionCheck } from "@/lib/types";
 
 export const XP_PER_CHECK = 10;
 export const XP_PER_SUBMISSION = 40;
@@ -13,6 +12,7 @@ export type Stats = {
   badges: string[];
   checksDone: number;
   submissions: number;
+  error: string | null;
 };
 
 /**
@@ -30,6 +30,7 @@ export async function loadStats(userId: string): Promise<Stats> {
     supabase.from("submissions").select("id").eq("profile_id", userId),
   ]);
 
+  const error = sessions.error?.message ?? checks.error?.message ?? done.error?.message ?? subs.error?.message ?? null;
   const open = new Map(((sessions.data as Pick<Session, "id" | "slug">[]) ?? []).map((s) => [s.slug, s.id]));
   const doneIds = new Set(((done.data as { check_id: string }[]) ?? []).map((d) => d.check_id));
   const bySession = new Map<string, Pick<SessionCheck, "id" | "is_bonus">[]>();
@@ -51,9 +52,12 @@ export async function loadStats(userId: string): Promise<Stats> {
     const ticked = required.filter((c) => doneIds.has(c.id)).length;
     const progress = required.length ? ticked / required.length : 0;
 
+    // Une séance ouverte sans checklist (les concours, ou une séance pas encore
+    // écrite) n'est ni « en cours » ni un cran de série : elle est juste ouverte.
     let state: NodeState;
     if (!id) state = "locked";
-    else if (required.length && ticked === required.length) state = "done";
+    else if (!required.length) state = "open";
+    else if (ticked === required.length) state = "done";
     else if (!currentAssigned) { state = "current"; currentAssigned = true; }
     else state = "open";
 
@@ -61,7 +65,7 @@ export async function loadStats(userId: string): Promise<Stats> {
       badges.push(`session-${entry.number}`);
       if (streakAlive) streak += 1;
       if (bonus.length && bonus.every((c) => doneIds.has(c.id))) polished = true;
-    } else if (id) {
+    } else if (id && required.length) {
       streakAlive = false;
     }
 
@@ -72,15 +76,18 @@ export async function loadStats(userId: string): Promise<Stats> {
   if (submissions > 0) badges.push("first-submission");
   if (streak >= 3) badges.push("streak-3");
   if (streak >= 6) badges.push("streak-6");
-  if (nodes.every((n) => n.state === "done")) badges.push("all-twelve");
+  if (nodes.filter((n) => n.kind === "lesson").every((n) => n.state === "done")) badges.push("all-twelve");
   if (polished) badges.push("polish");
 
+  // Même règle que leaderboard() : seules les cases d'une séance ouverte comptent.
+  const countedChecks = ((checks.data as Pick<SessionCheck, "id">[]) ?? []).filter((c) => doneIds.has(c.id)).length;
   return {
     nodes,
     streak,
-    xp: doneIds.size * XP_PER_CHECK + submissions * XP_PER_SUBMISSION,
+    xp: countedChecks * XP_PER_CHECK + submissions * XP_PER_SUBMISSION,
     badges,
-    checksDone: doneIds.size,
+    checksDone: countedChecks,
     submissions,
+    error,
   };
 }

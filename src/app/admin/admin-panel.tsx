@@ -4,38 +4,43 @@ import { useEffect, useState } from "react";
 import { AuthGate, SignOutButton } from "@/components/auth-gate";
 import { getSupabase } from "@/lib/supabase/client";
 import { ClassBoard } from "./class-board";
-import type { Session } from "@/lib/types";
+import { Skeleton } from "@/components/skeleton";
+import type { Invitation, Session } from "@/lib/types";
 
-type Invitation = { email: string; full_name: string | null; claimed_at: string | null };
 
 function Locks() {
   const [rows, setRows] = useState<Session[] | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
+
   async function load() {
-    const { data } = await getSupabase().from("sessions").select("*").order("number");
+    const { data, error: err } = await getSupabase().from("sessions").select("*").order("number");
+    if (err) return setError(err.message);
     setRows((data as Session[]) ?? []);
   }
 
   useEffect(() => {
-    void load();
+    queueMicrotask(() => void load());
   }, []);
 
   async function toggle(row: Session) {
     setBusy(row.id);
-    await getSupabase().from("sessions").update({ is_unlocked: !row.is_unlocked }).eq("id", row.id);
+    const { error: err } = await getSupabase().from("sessions").update({ is_unlocked: !row.is_unlocked }).eq("id", row.id);
+    if (err) setError(err.message);
     await load();
     setBusy(null);
   }
 
-  if (rows === null) return <p className="text-base text-muted">Loading…</p>;
+  if (error) return <p role="alert" className="rounded-2xl border-2 border-accent-line bg-surface p-4">{error}</p>;
+  if (rows === null) return <Skeleton rows={4} />;
 
   return (
     <ul className="grid gap-4">
       {rows.map((row) => (
         <li
           key={row.id}
-          className="flex flex-wrap items-center justify-between gap-4 bg-surface p-5 md:p-6"
+          className="card-3d flex flex-wrap items-center justify-between gap-4 p-5 md:p-6"
         >
           <div>
             <span className="font-mono text-sm tabular-nums text-muted">
@@ -48,13 +53,10 @@ function Locks() {
             type="button"
             disabled={busy === row.id}
             onClick={() => void toggle(row)}
-            className={`tap inline-flex items-center whitespace-nowrap rounded-full px-6 text-sm font-medium transition-colors duration-200 disabled:opacity-60 ${
-              row.is_unlocked
-                ? "bg-accent text-accent-ink"
-                : "border border-line text-muted hover:border-accent hover:text-accent-strong"
-            }`}
+            aria-pressed={row.is_unlocked}
+            className={`btn-3d min-h-[44px] whitespace-nowrap text-sm ${row.is_unlocked ? "btn-3d--done" : "btn-3d--ghost"}`}
           >
-            {row.is_unlocked ? "Open to members" : "Locked"}
+            {row.is_unlocked ? "Open to members" : "Locked · open it"}
           </button>
         </li>
       ))}
@@ -67,18 +69,21 @@ function Invites({ adminId }: { adminId: string }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState<string | null>(null);
 
   async function load() {
-    const { data } = await getSupabase()
+    const { data, error: err } = await getSupabase()
       .from("invitations")
-      .select("email, full_name, claimed_at")
+      .select("email, full_name, code, claimed_at")
       .order("created_at", { ascending: false });
+    if (err) return setError(err.message);
     setRows((data as Invitation[]) ?? []);
   }
 
   useEffect(() => {
-    void load();
+    queueMicrotask(() => void load());
   }, []);
 
   async function add(e: React.FormEvent) {
@@ -96,11 +101,16 @@ function Invites({ adminId }: { adminId: string }) {
     if (err) return setError(err.message);
     setEmail("");
     setName("");
+    setStatus("Invitation added. Send the code with the link to the site.");
     await load();
   }
 
   async function remove(target: string) {
-    await getSupabase().from("invitations").delete().eq("email", target);
+    if (confirming !== target) return setConfirming(target);
+    const { error: err } = await getSupabase().from("invitations").delete().eq("email", target);
+    setConfirming(null);
+    if (err) return setError(err.message);
+    setStatus("Invitation removed.");
     await load();
   }
 
@@ -108,7 +118,7 @@ function Invites({ adminId }: { adminId: string }) {
     <>
       <form className="grid gap-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end" onSubmit={add} noValidate>
         <div>
-          <label className="block text-sm font-medium" htmlFor="invite-email">
+          <label className="block font-bold" htmlFor="invite-email">
             Email
           </label>
           <input
@@ -117,11 +127,11 @@ function Invites({ adminId }: { adminId: string }) {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line"
+            className="tap mt-2 w-full rounded-2xl border-2 border-line-strong bg-surface px-4 text-base focus:border-accent-line"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium" htmlFor="invite-name">
+          <label className="block font-bold" htmlFor="invite-name">
             First name and surname
           </label>
           <input
@@ -129,26 +139,23 @@ function Invites({ adminId }: { adminId: string }) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line"
+            className="tap mt-2 w-full rounded-2xl border-2 border-line-strong bg-surface px-4 text-base focus:border-accent-line"
           />
         </div>
-        <button
-          type="submit"
-          disabled={busy}
-          className="tap inline-flex items-center justify-center whitespace-nowrap rounded-full bg-ink px-7 font-medium text-paper disabled:opacity-60"
-        >
+        <button type="submit" disabled={busy} className="btn-3d btn-3d--ink whitespace-nowrap">
           {busy ? "Adding…" : "Invite"}
         </button>
       </form>
 
       {error ? (
-        <p role="alert" className="mt-5 rounded-lg border border-accent bg-surface p-4 text-base">
-          {error}
-        </p>
+        <p role="alert" className="mt-5 rounded-2xl border-2 border-accent-line bg-surface p-4">{error}</p>
       ) : null}
+      <p role="status" aria-live="polite" className={status ? "mt-5 rounded-2xl border-2 border-line bg-surface p-4" : "sr-only"}>
+        {status ?? ""}
+      </p>
 
       {rows === null ? (
-        <p className="mt-8 text-base text-muted">Loading…</p>
+        <div className="mt-8"><Skeleton rows={3} /></div>
       ) : rows.length === 0 ? (
         <p className="mt-8 text-base text-muted">
           Nobody invited yet. Add yourself and your co-organiser first.
@@ -226,8 +233,9 @@ export function AdminPanel() {
               Invitations
             </h2>
             <p className="mt-3 max-w-measure text-base text-muted">
-              Nobody can create an account without being on this list. Add the students before the
-              session, not during it.
+              Nobody can create an account without being on this list and typing the six-character
+              code next to their name. Add the students before the session, then send each one the
+              link to the site and their code.
             </p>
             <div className="mt-8">
               <Invites adminId={state.userId} />

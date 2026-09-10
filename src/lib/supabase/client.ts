@@ -18,7 +18,7 @@ function normalizeUrl(raw: string | undefined): string | null {
   for (const candidate of candidates) {
     try {
       const url = new URL(candidate);
-      const usableProtocol = url.protocol === "https:" || url.protocol === "http:";
+      const usableProtocol = url.protocol === "https:";
       // Un hôte sans point n'est jamais un projet Supabase : on le rejette
       // pour que le diagnostic s'affiche au lieu d'un échec réseau opaque.
       if (usableProtocol && url.hostname.includes(".")) return url.origin;
@@ -60,7 +60,7 @@ export function configurationProblem(): string | null {
 
   if (!rawUrl) return "NEXT_PUBLIC_SUPABASE_URL is not set.";
   if (!url) {
-    return "NEXT_PUBLIC_SUPABASE_URL is not a usable address. It has to look like https://<project>.supabase.co";
+    return "NEXT_PUBLIC_SUPABASE_URL is not a usable https address. It has to look like https://<project>.supabase.co";
   }
   if (!key) return "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY is not set.";
   return null;
@@ -78,4 +78,13 @@ export function getSupabase(): SupabaseClient {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
   });
   return cached;
+}
+
+/** Vrai si une session Supabase est mémorisée dans ce navigateur, sans charger le client. */
+export function hasStoredSession(): boolean {
+  try {
+    return Object.keys(localStorage).some((k) => k.startsWith("sb-") && k.endsWith("-auth-token"));
+  } catch {
+    return false;
+  }
 }

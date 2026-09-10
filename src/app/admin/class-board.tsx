@@ -15,6 +15,7 @@ type Cell = { ticked: number; required: number };
  */
 export function ClassBoard() {
   const [grid, setGrid] = useState<{ students: Profile[]; cells: Map<string, Cell> } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -26,6 +27,8 @@ export function ClassBoard() {
         supabase.from("check_completions").select("profile_id, check_id"),
       ]);
 
+      const firstError = profiles.error ?? sessions.error ?? checks.error ?? done.error;
+      if (firstError) return setError(firstError.message);
       const sessionByCheck = new Map<string, string>();
       const requiredBySession = new Map<string, number>();
       for (const c of (checks.data as Pick<SessionCheck, "id" | "session_id" | "is_bonus">[]) ?? []) {
@@ -53,6 +56,7 @@ export function ClassBoard() {
     void load();
   }, []);
 
+  if (error) return <p role="alert" className="rounded-2xl border-2 border-accent-line bg-surface p-4">{error}</p>;
   if (!grid) return <Skeleton rows={4} />;
   if (grid.students.length === 0) return <p className="text-muted">No student account yet.</p>;
 
@@ -61,10 +65,10 @@ export function ClassBoard() {
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr>
-            <th className="sticky left-0 bg-surface px-4 py-3 text-left font-bold">Student</th>
+            <th scope="col" className="sticky left-0 bg-surface px-4 py-3 text-left font-bold">Student</th>
             {CURRICULUM.map((e) => (
-              <th key={e.slug} className="px-2 py-3 font-mono text-xs font-bold text-muted" title={e.title}>
-                {String(e.number).padStart(2, "0")}
+              <th key={e.slug} scope="col" className="px-2 py-3 font-mono text-xs font-bold text-muted">
+                {String(e.number).padStart(2, "0")}<span className="sr-only"> {e.title}</span>
               </th>
             ))}
           </tr>
@@ -72,7 +76,7 @@ export function ClassBoard() {
         <tbody>
           {grid.students.map((s) => (
             <tr key={s.id} className="border-t-2 border-line">
-              <td className="sticky left-0 whitespace-nowrap bg-surface px-4 py-2 font-bold">{s.full_name}</td>
+              <th scope="row" className="sticky left-0 whitespace-nowrap bg-surface px-4 py-2 text-left font-bold">{s.full_name}</th>
               {CURRICULUM.map((e) => {
                 const cell = grid.cells.get(`${s.id}:${e.number}`);
                 const value = cell && cell.required ? cell.ticked / cell.required : 0;
@@ -80,11 +84,9 @@ export function ClassBoard() {
                 return (
                   <td key={e.slug} className="px-1 py-2 text-center">
                     {cell ? (
-                      <ProgressRing value={value} size={36} stroke={5} tone={complete ? "done" : "accent"}>
-                        <span className="sr-only">{cell.ticked} of {cell.required}</span>
-                      </ProgressRing>
+                      <ProgressRing value={value} size={36} stroke={5} tone={complete ? "done" : "accent"} label={`${cell.ticked} of ${cell.required}`} />
                     ) : (
-                      <span className="inline-block size-3 rounded-full bg-line" aria-label="locked" />
+                      <span className="inline-block size-3 rounded-full bg-line" role="img" aria-label="locked" />
                     )}
                   </td>
                 );

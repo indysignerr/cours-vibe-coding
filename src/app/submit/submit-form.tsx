@@ -1,18 +1,16 @@
 "use client";
 
 import { AlertTriangle, Check } from "lucide-react";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useId, useState } from "react";
 import { AuthGate } from "@/components/auth-gate";
+import { Skeleton } from "@/components/skeleton";
 import { CURRICULUM } from "@/lib/curriculum";
 import { getSupabase } from "@/lib/supabase/client";
 import type { Contest, ContestConstraint, Submission } from "@/lib/types";
 
 const DATE = new Intl.DateTimeFormat("en-GB", {
-  weekday: "long",
-  day: "numeric",
-  month: "long",
-  hour: "2-digit",
-  minute: "2-digit",
+  weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris",
 });
 
 type Loaded = {
@@ -67,18 +65,11 @@ function Closed() {
         {dates.map((d) => (
           <li key={d.slug}>
             {d.title} · week of{" "}
-            {new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long" }).format(
-              new Date(d.weekOf)
-            )}
+            {new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", timeZone: "Europe/Paris" }).format(new Date(`${d.weekOf}T12:00:00`))}
           </li>
         ))}
       </ul>
-      <a
-        className="tap mt-8 inline-flex items-center font-medium text-accent-strong hover:underline"
-        href="/contests/"
-      >
-        Read the judging grid
-      </a>
+      <Link className="btn-3d btn-3d--ghost mt-8" href="/contests/">Read the judging grid</Link>
     </div>
   );
 }
@@ -92,6 +83,7 @@ function Form({ userId }: { userId: string }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const fid = useId();
 
   useEffect(() => {
     async function load() {
@@ -140,7 +132,7 @@ function Form({ userId }: { userId: string }) {
     void load();
   }, [userId]);
 
-  if (data === null) return <p className="text-base text-muted">Loading…</p>;
+  if (data === null) return <Skeleton rows={3} />;
   if (!data.contest) return <Closed />;
 
   const { contest, constraints, mine } = data;
@@ -161,7 +153,11 @@ function Form({ userId }: { userId: string }) {
     if (!note.trim()) next.note = "Write the thirty seconds you would say to the jury.";
 
     setErrors(next);
-    if (Object.keys(next).length) return;
+    const first = ["title", "live", "repo", "note"].find((k) => next[k]);
+    if (first) {
+      document.getElementById(`${fid}-${first}`)?.focus();
+      return;
+    }
 
     setBusy(true);
     const supabase = getSupabase();
@@ -174,47 +170,34 @@ function Form({ userId }: { userId: string }) {
       note: note.trim(),
     };
 
-    const { error } = mine
-      ? await supabase.from("submissions").update(row).eq("id", mine.id)
-      : await supabase.from("submissions").insert(row);
-
-    if (error) {
-      setBusy(false);
-      return setErrors({ form: error.message });
-    }
-
-    // On relit la ligne : après une insertion on n'a pas encore son id, et
-    // sans lui la modification suivante viserait `id = undefined`.
-    const { data: fresh } = await supabase
-      .from("submissions")
-      .select("*")
-      .eq("contest_id", contest.id)
-      .eq("profile_id", userId)
-      .maybeSingle();
+    // L'écriture renvoie la ligne : après une insertion on connaît son id.
+    const { data: fresh, error } = mine
+      ? await supabase.from("submissions").update(row).eq("id", mine.id).select().single()
+      : await supabase.from("submissions").insert(row).select().single();
 
     setBusy(false);
+    if (error) {
+      const msg = error.message.includes("duplicate") ? "You already have a submission for this contest. Reload the page to edit it." : error.message;
+      return setErrors({ form: msg });
+    }
     setSaved(true);
     setData({ contest, constraints, mine: (fresh as Submission) ?? null });
   }
 
-  const field =
-    "tap mt-2 w-full rounded-2xl border-2 border-line bg-surface px-4 text-base focus:border-accent-line";
+  const field = "tap mt-2 w-full rounded-2xl border-2 border-line-strong bg-surface px-4 text-base focus:border-accent-line";
+  const err = (key: string) => errors[key] ? { "aria-invalid": true as const, "aria-describedby": `${fid}-${key}-error` } : {};
 
   return (
     <>
-      <div className="card-3d border-black bg-ink p-6 text-paper md:p-8">
-        <p className="font-mono text-sm uppercase tracking-wider text-paper/70">
-          {contest.title} · closes {DATE.format(new Date(contest.deadline))}
-        </p>
+      <div className="card-3d card-3d--ink p-6 md:p-8">
+        <p className="eyebrow on-ink-muted">{contest.title} · closes {DATE.format(new Date(contest.deadline))}</p>
         {constraints.length ? (
           <>
             <h2 className="mt-4 font-display text-display-md font-extrabold">The constraints</h2>
             <ol className="mt-5 grid gap-3">
               {constraints.map((c, i) => (
                 <li key={c.id} className="flex gap-4">
-                  <span className="font-mono text-sm text-paper/60">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                  <span className="on-ink-muted font-mono font-bold">{String(i + 1).padStart(2, "0")}</span>
                   <span className="text-project">{c.body}</span>
                 </li>
               ))}
@@ -234,51 +217,26 @@ function Form({ userId }: { userId: string }) {
           not wait for the last minute.
         </p>
 
-        <label className="mt-8 block text-sm font-medium" htmlFor="title">
-          Project name
-        </label>
-        <input
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className={field}
-        />
-        {errors.title ? <p className="mt-2 text-sm text-accent-strong">{errors.title}</p> : null}
+        <label className="mt-8 block font-bold" htmlFor={`${fid}-title`}>Project name</label>
+        <input id={`${fid}-title`} value={title} onChange={(e) => setTitle(e.target.value)} className={field} {...err("title")} />
+        {errors.title ? <p id={`${fid}-title-error`} className="mt-2 font-bold text-accent-strong">{errors.title}</p> : null}
 
-        <label className="mt-6 block text-sm font-medium" htmlFor="live">
-          Live URL
-        </label>
-        <p className="mt-1 text-sm text-muted">
-          The address a judge opens on a phone. Not localhost, not your repository.
-        </p>
-        <input
-          id="live"
-          inputMode="url"
-          placeholder="https://"
-          value={live}
-          onChange={(e) => setLive(e.target.value)}
-          className={field}
-        />
+        <label className="mt-6 block font-bold" htmlFor={`${fid}-live`}>Live URL</label>
+        <p id={`${fid}-live-hint`} className="mt-1 text-muted">The address a judge opens on a phone. Not localhost, not your repository.</p>
+        <input id={`${fid}-live`} inputMode="url" placeholder="https://" value={live} onChange={(e) => setLive(e.target.value)} className={field}
+          aria-describedby={errors.live ? `${fid}-live-error` : `${fid}-live-hint`} aria-invalid={errors.live ? true : undefined} />
         {errors.live ? (
-          <p className="mt-2 flex items-start gap-2 text-sm text-accent-strong">
-            <AlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0" />
+          <p id={`${fid}-live-error`} className="mt-2 flex items-start gap-2 font-bold text-accent-strong">
+            <AlertTriangle aria-hidden className="mt-1 size-4 shrink-0" />
             {errors.live}
           </p>
         ) : null}
 
-        <label className="mt-6 block text-sm font-medium" htmlFor="repo">
-          Repository URL
-        </label>
-        <p className="mt-1 text-sm text-muted">Public, with its commit history.</p>
-        <input
-          id="repo"
-          inputMode="url"
-          placeholder="https://github.com/"
-          value={repo}
-          onChange={(e) => setRepo(e.target.value)}
-          className={field}
-        />
-        {errors.repo ? <p className="mt-2 text-sm text-accent-strong">{errors.repo}</p> : null}
+        <label className="mt-6 block font-bold" htmlFor={`${fid}-repo`}>Repository URL</label>
+        <p id={`${fid}-repo-hint`} className="mt-1 text-muted">Public, with its commit history.</p>
+        <input id={`${fid}-repo`} inputMode="url" placeholder="https://github.com/" value={repo} onChange={(e) => setRepo(e.target.value)} className={field}
+          aria-describedby={errors.repo ? `${fid}-repo-error` : `${fid}-repo-hint`} aria-invalid={errors.repo ? true : undefined} />
+        {errors.repo ? <p id={`${fid}-repo-error`} className="mt-2 font-bold text-accent-strong">{errors.repo}</p> : null}
 
         <label className="mt-6 block text-sm font-medium" htmlFor="note">
           Your thirty seconds
@@ -296,35 +254,20 @@ function Form({ userId }: { userId: string }) {
         {errors.note ? <p className="mt-2 text-sm text-accent-strong">{errors.note}</p> : null}
 
         {errors.form ? (
-          <p role="alert" className="mt-6 rounded-lg border border-accent bg-surface p-4 text-base">
-            {errors.form}
-          </p>
+          <p role="alert" className="mt-6 rounded-2xl border-2 border-accent-line bg-surface p-4">{errors.form}</p>
         ) : null}
 
         {saved ? (
-          <p
-            role="status"
-            className="mt-6 flex items-center gap-2 rounded-lg border border-line bg-surface p-4 text-base"
-          >
+          <p role="status" className="mt-6 flex items-center gap-2 rounded-2xl border-2 border-done-line bg-surface p-4">
             <Check aria-hidden className="size-5 text-accent-strong" />
             Saved. You can keep editing until the deadline.
           </p>
         ) : null}
 
-        <button
-          type="submit"
-          disabled={busy}
-          className="tap mt-8 inline-flex w-full items-center justify-center rounded-full bg-accent px-7 font-medium text-accent-ink transition-transform duration-200 ease-swift hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-60"
-        >
+        <button type="submit" disabled={busy} className="btn-3d mt-8 w-full text-lg">
           {busy ? "Saving…" : mine ? "Update my submission" : "Submit"}
         </button>
-
-        <a
-          className="tap mt-4 inline-flex w-full items-center justify-center text-sm font-medium text-accent-strong hover:underline"
-          href="/contests/"
-        >
-          Score yourself against the grid first
-        </a>
+        <Link className="btn-3d btn-3d--ghost mt-4 w-full" href="/contests/">Score yourself against the grid first</Link>
       </form>
     </>
   );

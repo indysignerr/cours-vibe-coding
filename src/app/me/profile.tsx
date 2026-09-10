@@ -10,6 +10,13 @@ import { BADGES } from "@/lib/badges";
 import { loadStats, type Stats } from "@/lib/progress";
 import type { Profile } from "@/lib/types";
 
+const TONE: Record<"accent" | "done" | "streak" | "xp", string> = {
+  accent: "card-3d--accent",
+  done: "card-3d--done",
+  streak: "card-3d--streak",
+  xp: "card-3d--xp",
+};
+
 function Me({ profile, userId, reload }: { profile: Profile | null; userId: string; reload: () => void }) {
   const [stats, setStats] = useState<Stats | null>(null);
   const [editing, setEditing] = useState(false);
@@ -18,7 +25,9 @@ function Me({ profile, userId, reload }: { profile: Profile | null; userId: stri
     void loadStats(userId).then(setStats);
   }, [userId]);
 
-  if (editing && profile) return <Onboarding profile={profile} onDone={() => { setEditing(false); reload(); }} />;
+  if (editing && profile) {
+    return <Onboarding profile={profile} onDone={() => { setEditing(false); reload(); }} onCancel={() => setEditing(false)} />;
+  }
   if (!stats) return <Skeleton rows={4} />;
 
   const earned = new Set(stats.badges);
@@ -52,10 +61,10 @@ function Me({ profile, userId, reload }: { profile: Profile | null; userId: stri
           return (
             <li
               key={b.id}
-              className={`card-3d anim-pop flex items-center gap-4 p-5 ${on ? `card-3d--${b.tone}` : "opacity-60 grayscale"}`}
+              className={`card-3d anim-pop flex items-center gap-4 p-5 ${on ? TONE[b.tone] : "opacity-60 grayscale"}`}
               style={{ animationDelay: `${i * 40}ms` }}
             >
-              <span className={`grid size-14 shrink-0 place-items-center rounded-2xl border-2 ${on ? "border-black/20 bg-surface/60" : "border-line bg-sunken"}`}>
+              <span className={`grid size-14 shrink-0 place-items-center rounded-2xl border-2 ${on ? "border-ink-line bg-surface" : "border-line bg-sunken"}`}>
                 <b.icon aria-hidden className="size-7" />
               </span>
               <div>

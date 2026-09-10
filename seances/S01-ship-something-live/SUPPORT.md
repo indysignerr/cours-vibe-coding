@@ -14,7 +14,11 @@ You double-clicked `index.html` and it looked perfect. Then you sent the address
 
 > You describe → the agent writes the files → you copy the files to Cloudflare → a URL exists.
 
-Tonight you do the loop by hand, with a drag and drop. In three weeks, step 03 makes the copy happen by itself every time you save. Same loop, less clicking.
+Tonight you do the loop by hand, with a drag and drop. In two weeks, step 03 makes the copy happen by itself every time you save. Same loop, less clicking.
+
+## Before you paste a prompt
+
+Replace everything between < and > with your own words before you press Enter. The agent takes placeholders literally.
 
 ## What Claude Code is, in one sentence
 

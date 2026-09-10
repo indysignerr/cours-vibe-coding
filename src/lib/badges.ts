@@ -36,5 +36,4 @@ export const BADGES: Badge[] = [
   { id: "polish",           label: "Polisher",     description: "Every bonus line of a step, ticked.", icon: Wand2, tone: "done" },
 ];
 
-export const badgeById = (id: string) => BADGES.find((b) => b.id === id);
 export const badgeForSession = (n: number) => BADGES.find((b) => b.session === n);
