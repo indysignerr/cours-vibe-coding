@@ -3,21 +3,30 @@
 > Quatre offres, pas plus. Chacune tient en trois semaines et se démontre en dix minutes.
 > Les prix sont des forfaits, acompte de 30 % à la signature, solde à la recette.
 
-## 1. L'audit des tâches répétitives — 1 200 €
+## 1. L'état des lieux IA et le dossier qui va avec — 2 500 €
 
-**Ce que le client reçoit.** Une cartographie de dix tâches de son quotidien, chronométrées, classées par gain potentiel et par risque, et une recommandation écrite sur les trois à traiter en premier. Une restitution d'une heure.
+**Ce que le client reçoit.**
+- La **cartographie des outils d'IA déjà utilisés** dans l'entreprise, déclarés ou non. Il y en a toujours, et le dirigeant est toujours surpris.
+- Dix tâches répétitives chronométrées, classées par gain et par risque.
+- Le **tri de ses données en quatre catégories**, processus par processus.
+- Le **dossier** : registre des traitements à jour, durées de conservation y compris des historiques de conversation, notice d'information, charte d'usage interne, et le point sur la consultation du comité social et économique.
+- Une recommandation écrite sur les trois processus à traiter en premier, et ceux à ne pas toucher.
 
-**Durée.** Deux semaines. Trois demi-journées sur site ou en visio.
+**Durée.** Trois semaines. Quatre demi-journées sur site ou en visio.
 
-**Pourquoi c'est la bonne première mission.** Aucun accès aux systèmes, aucune donnée personnelle traitée, aucun livrable technique à maintenir. Le risque est nul et la valeur est immédiatement lisible. C'est aussi le meilleur entonnoir : l'audit vend les missions suivantes.
+**Pourquoi c'est la meilleure offre du catalogue.** Aucun accès aux systèmes, aucune donnée personnelle traitée, aucun livrable technique à maintenir. Le risque est nul. Et c'est ce qui manque réellement à toutes les PME : pas un modèle, un dossier présentable à un contrôle ou à un client grand compte qui les audite. C'est aussi le meilleur entonnoir, parce qu'il vend les trois autres offres.
 
-**Ce qui n'est pas inclus.** La mise en œuvre, la formation des équipes, tout accès à un logiciel du client.
+**L'accroche en rendez-vous.** « Votre comité social et économique a-t-il été consulté sur les outils d'IA déjà utilisés chez vous ? » La réponse est presque toujours non, et depuis 2025 les tribunaux suspendent des déploiements pour ce motif, y compris en phase pilote.
+
+**Financement.** Le Diag Data IA de Bpifrance est pris en charge à 40 % depuis juin 2026. À mentionner : ça vous positionne et ça peut financer la phase amont.
+
+**Ce qui n'est pas inclus.** La mise en œuvre, la formation des équipes, l'analyse d'impact complète, tout accès à un logiciel du client, et **toute certification de conformité**, que nous ne délivrons jamais.
 
 ---
 
 ## 2. L'assistant sur vos documents — 3 500 €
 
-**Ce que le client reçoit.** Un assistant interne qui répond aux questions de ses équipes à partir de ses propres documents, procédures, catalogues, contrats types, avec la source citée à chaque réponse. Hébergement au choix du client, y compris sur ses machines.
+**Ce que le client reçoit.** Un assistant interne qui répond aux questions de ses équipes à partir de ses propres documents, procédures, catalogues, contrats types, avec la source citée à chaque réponse. Hébergé par défaut sur une interface européenne avec contrat de sous-traitance ; sur ses machines si ses données l'exigent, et le durcissement est alors facturé en plus.
 
 **Durée.** Trois semaines.
 
@@ -53,9 +62,19 @@
 
 ## Ce qu'on refuse, et pourquoi on le dit au client
 
-Tout ce qui décide à la place d'un humain sur une personne : tri de candidatures, évaluation de salariés, notation de clients, décision de crédit, santé. Le règlement européen sur l'IA classe ces usages à haut risque, et ils n'ont rien à faire dans une structure étudiante.
+Tout ce qui décide à la place d'un humain sur une personne : tri de candidatures, évaluation de salariés, notation de clients, décision de crédit, santé. Le règlement européen sur l'IA classe ces usages à haut risque à partir de décembre 2027.
+
+**Et il y a une raison qui n'est pas que morale.** L'article 25 du règlement fait de vous un **fournisseur** si vous modifiez la destination d'un système généraliste pour le rendre à haut risque, ou si vous livrez sous votre marque. Configurer un modèle pour trier des candidatures suffit. Vous héritez alors de l'évaluation de conformité, du système de gestion des risques, de la documentation technique et du marquage CE.
 
 Le refuser explicitement en rendez-vous est un argument de sérieux, pas un aveu de faiblesse.
+
+## Le modèle de livraison, imposé par les licences
+
+**Le client porte sa licence et son infrastructure. Vous facturez la mise en œuvre.**
+
+Ce n'est pas une préférence, c'est une contrainte : la licence de n8n interdit d'héberger les workflows et identifiants de vos clients chez vous et d'en facturer l'accès. Aider un client à installer sa propre instance ne demande en revanche aucune licence commerciale de votre côté.
+
+Ce modèle a trois autres vertus : il supprime votre responsabilité d'hébergeur, il évite qu'une panne chez vous arrête la production d'un client, et il rend la fin de mission propre.
 
 ## Règles de tarification
 
