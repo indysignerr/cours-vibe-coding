@@ -10,8 +10,8 @@ type Step = { title: string; body: string; command?: string; expect?: string };
 
 const STEPS: Step[] = [
   {
-    title: "Get a Claude account that can run Claude Code",
-    body: "This one costs money, and we say it up front. Claude Code does not work on the free plan: you need your own Claude Pro subscription, or your own API key with credits. The club does not provide a shared key, so budget for it before you join. Everything else on this page is free.",
+    title: "Check which subscription you picked",
+    body: "Albert School already requires a paid ChatGPT or Claude subscription, so you are probably covered. One catch, and it is the only thing in this club that costs money: Claude Code runs on a Claude plan only. If you picked ChatGPT for school, you need Claude Pro on top, or an API key with credits. The club does not provide a shared key.",
   },
   {
     title: "Install Claude Code",
