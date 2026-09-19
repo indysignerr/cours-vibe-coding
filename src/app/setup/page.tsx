@@ -11,7 +11,7 @@ type Step = { title: string; body: string; command?: string; expect?: string };
 const STEPS: Step[] = [
   {
     title: "Get a Claude account that can run Claude Code",
-    body: "Claude Code does not work on the free plan. You need Claude Pro, or an API key with credits. No budget for it? Tell us before 14 September: the club has a shared key for the room, and we give it to you at the door.",
+    body: "This one costs money, and we say it up front. Claude Code does not work on the free plan: you need your own Claude Pro subscription, or your own API key with credits. The club does not provide a shared key, so budget for it before you join. Everything else on this page is free.",
   },
   {
     title: "Install Claude Code",

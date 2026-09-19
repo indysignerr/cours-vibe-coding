@@ -82,7 +82,8 @@ export default function Home() {
                 <Link className="btn-3d btn-3d--ghost" href="/programme/">See the path</Link>
               </div>
               <p className="mt-4 text-sm text-muted">
-                Places are handed out by hand. We add your email, then send you the link.
+                Places are handed out by hand. We add your email, then send you the link. One paid
+                thing is required: your own Claude subscription. Everything else is free.
               </p>
             </div>
 
