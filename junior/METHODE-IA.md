@@ -41,9 +41,17 @@ Cause racine : Ollama n'a **aucune authentification native**, et une seule varia
 
 ## Les trois arguments qui ouvrent vraiment les portes
 
-### 1. La consultation du comité social et économique
+### 1. Le droit du travail, et il est italien
 
-**C'est le risque le plus immédiat pour votre client, et le meilleur argument de vente.** Plus immédiat que le RGPD, parce que la sanction est visible : un juge arrête le déploiement.
+> **La structure est à Milan.** Ce qui suit décrit le cadre français, conservé parce que vos
+> clients peuvent être français. **Pour l'Italie, l'équivalent est plus fort encore** :
+> l'article 4 du Statuto dei Lavoratori exige un accord syndical ou une autorisation de
+> l'inspection du travail avant tout outil permettant un contrôle à distance des salariés,
+> sous sanction **pénale**. S'y ajoutent le décret transparence et la loi italienne sur l'IA
+> d'octobre 2025, première du genre dans l'Union. Détail dans `junior/FORMALITES-IT.md`,
+> section 7.
+
+**En France, c'est le risque le plus immédiat pour votre client, et le meilleur argument de vente.** Plus immédiat que le RGPD, parce que la sanction est visible : un juge arrête le déploiement.
 
 L'article L. 2312-8 du code du travail impose d'informer et consulter le comité sur l'introduction de nouvelles technologies. La jurisprudence de 2025 et 2026 est sévère et constante :
 

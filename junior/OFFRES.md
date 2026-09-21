@@ -1,6 +1,7 @@
 # Catalogue d'offres · structure junior AI-bert
 
-> Quatre offres, pas plus. Chacune tient en trois semaines et se démontre en dix minutes.
+> Cinq offres. Chacune tient en trois semaines et se démontre en dix minutes.
+> Structure basée à **Milan**, clients italiens et internationaux.
 > Les prix sont des forfaits, acompte de 30 % à la signature, solde à la recette.
 
 ## 1. L'état des lieux IA et le dossier qui va avec — 2 500 €
@@ -21,6 +22,29 @@
 **Financement.** Le Diag Data IA de Bpifrance est pris en charge à 40 % depuis juin 2026. À mentionner : ça vous positionne et ça peut financer la phase amont.
 
 **Ce qui n'est pas inclus.** La mise en œuvre, la formation des équipes, l'analyse d'impact complète, tout accès à un logiciel du client, et **toute certification de conformité**, que nous ne délivrons jamais.
+
+---
+
+## 1 bis. IA conforme au poste de travail — 3 000 €
+
+> Offre propre au marché italien. C'est la plus différenciante du catalogue.
+
+**Ce que le client reçoit.** Le dossier qui débloque un déploiement d'IA touchant au travail des salariés :
+
+- la **qualification de l'outil au regard de l'article 4 du Statuto dei Lavoratori** : simple outil de travail, ou instrument permettant un contrôle à distance ;
+- la préparation de l'**accord avec les représentants syndicaux**, ou du dossier d'autorisation de l'inspection du travail ;
+- la **note d'information** au titre du décret transparence, avec la logique du système et les paramètres d'entraînement ;
+- la note sur le **contrôle humain** au titre de la loi italienne sur l'IA de 2025 ;
+- le registre de sous-traitant et le contrat de sous-traitance ;
+- un support de **formation des salariés**, que la loi impose.
+
+**Durée.** Trois semaines.
+
+**Pourquoi elle se vend.** La violation de l'article 4 est **pénalement sanctionnée** et les preuves obtenues sont inutilisables. Le concurrent typique, un indépendant qui branche un agent sur les données du personnel, ignore ces trois textes. Vous vendez le déblocage réglementaire, et vous livrez l'automatisation avec.
+
+**La frontière à expliquer en rendez-vous.** Ce n'est pas l'outil qui compte, c'est la fonctionnalité. Un logiciel de relation client est un outil de travail ; le même augmenté d'un score de productivité par commercial devient un instrument de contrôle et bascule sous obligation d'accord.
+
+**Ce qui n'est pas inclus.** La négociation syndicale elle-même, la représentation devant l'inspection, et toute certification de conformité.
 
 ---
 
