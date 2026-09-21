@@ -65,8 +65,13 @@ s += [table([
      "Les <b>paramètres, règles et instructions</b> des algorithmes affectant les conditions de travail, "
      "l'accès à l'emploi et son maintien, y compris le profilage",
      "Sanction administrative, contentieux"],
-    ["<b>Suisse et<br/>Royaume-<br/>Uni</b>", "Hors cadre de l'Union sur la représentation du personnel, nettement "
-     "moins contraignant",
+    ["<b>Royaume-<br/>Uni</b>", "<b>Aucun veto, et aucune consultation obligatoire</b> sur l'outil en "
+     "tant que tel. Mais une obligation de consultation <b>santé-sécurité</b> déclenchée nommément par "
+     "l'introduction de nouvelles technologies",
+     "L'introduction de nouvelles technologies, <b>y compris au stade de la planification</b>, et "
+     "<b>sans seuil d'effectif</b>",
+     "Pénalité jusqu'à 75 000 £ pour le volet information-consultation"],
+    ["<b>Suisse</b>", "Nettement moins contraignant sur la représentation du personnel",
      "—", "—"],
 ], [24*mm, (W-24*mm)*0.30, (W-24*mm)*0.40, (W-24*mm)*0.30])]
 s += [Spacer(1, 8)]
@@ -130,14 +135,45 @@ s += [para("Espagne — l'information sur les algorithmes, un angle différent",
           "intégrateur ne sait produire : expliquer en langage clair la logique et les paramètres d'un "
           "système. <b>C'est un livrable, et vous savez le faire.</b>", "body")]
 
-s += [para("Suisse et Royaume-Uni — plus simples qu'on ne le croit", "h2"),
-     para("Sur les données, les deux bénéficient d'une décision d'adéquation de la Commission européenne. "
-          "Celle du Royaume-Uni a été <b>renouvelée en décembre 2025 jusqu'à fin 2031</b>. "
-          "Conséquence concrète : <b>transférer des données vers ces deux pays ne demande aucune clause "
-          "contractuelle type</b>, contrairement aux États-Unis. C'est un argument de simplicité à connaître.", "body"),
-     para("Sur la représentation du personnel, les contraintes y sont nettement plus faibles. Ce sont donc "
-          "des marchés où votre argument de déblocage porte moins, mais où votre offre d'automatisation "
-          "reste vendable sur sa valeur propre.", "body")]
+s += [para("Royaume-Uni — moins contraignant qu'on ne le dit, mais pas pour les raisons attendues", "h2"),
+     para("<b>Il n'existe aucune obligation générale de consulter des représentants du personnel avant de "
+          "déployer un outil numérique ou d'IA.</b> Le dispositif d'information et de consultation se "
+          "déclenche sur demande de 2 % des salariés, avec un minimum de quinze, dans les entreprises d'au "
+          "moins cinquante. Et il ne confère <b>aucun droit de veto</b> : le texte prévoit expressément "
+          "qu'aucune décision de l'instance d'arbitrage ne peut suspendre ou modifier un acte de "
+          "l'employeur. La pénalité plafonne à 75 000 £, versée au Trésor et non aux salariés.", "body"),
+]
+s += [callout("Le levier britannique que presque personne ne cite",
+              "Deux règlements de santé et sécurité imposent de consulter les salariés sur les conséquences "
+              "de <b>l'introduction de nouvelles technologies sur le lieu de travail, y compris au stade de "
+              "la planification</b>. Ensemble ils couvrent toute la main-d'œuvre, syndiquée ou non, et "
+              "<b>sans aucun seuil d'effectif</b>.<br/><br/>"
+              "Pour un outil qui intensifie le rythme, note la productivité ou surveille en continu, "
+              "l'argument santé-sécurité est juridiquement plus direct que l'argument de la représentation "
+              "du personnel. C'est votre angle sur ce marché.", "accent")]
+s += [para("Et une divergence majeure sur les données, en votre faveur", "h2"),
+     para("Depuis février 2026, le Royaume-Uni a remplacé le régime européen de la décision automatisée. "
+          "La prohibition de principe a disparu : pour des données non sensibles, une décision entièrement "
+          "automatisée devient <b>licite par défaut</b>, sous réserve de quatre garanties, information de "
+          "la personne, possibilité de présenter des observations, intervention humaine et droit de "
+          "contester. Les données sensibles restent sous régime strict.", "body"),
+     para("La charge de l'entreprise a donc changé de nature : il ne s'agit plus de trouver une exception, "
+          "mais de <b>documenter les garanties</b>. C'est exactement un livrable, et c'est le vôtre. "
+          "Le régulateur britannique a d'ailleurs constaté en janvier 2026 que beaucoup d'employeurs "
+          "pratiquant le recrutement automatisé s'appuient probablement sur des décisions entièrement "
+          "automatisées <b>sans le savoir</b>.", "body"),
+     para("Son action récente vise nettement l'emploi : injonction contre un exploitant de centres de "
+          "loisirs qui imposait la reconnaissance faciale et l'empreinte digitale à plus de deux mille "
+          "salariés pour le pointage, le consentement étant jugé invalide du fait du déséquilibre de "
+          "pouvoir ; blâme contre un établissement scolaire ayant organisé un simple droit de retrait là où "
+          "un accord explicite était requis. Dans les deux cas, <b>aucune amende, mais une obligation "
+          "d'arrêter et de détruire les données</b>.", "body"),
+     para("Enfin, le Royaume-Uni <b>n'a pas de loi générale sur l'IA</b> et le projet annoncé a été "
+          "abandonné. L'IA au travail n'y est régulée qu'indirectement.", "body")]
+s += [para("Suisse — le marché le plus simple, et le moins vendeur", "h2"),
+     para("Contraintes de représentation du personnel nettement plus faibles, et décision d'adéquation en "
+          "vigueur pour les données. C'est un marché où votre argument central porte peu : vous y seriez un "
+          "prestataire d'automatisation parmi d'autres, sans votre différence.", "body")]
 
 # ---------------------------------------------------------------- 4
 s += section("4. L'offre, et sa déclinaison par pays") + [
@@ -179,8 +215,10 @@ s += [table([
      "explicitement</b> dans vos conditions générales, avec le tribunal compétent : c'est une ligne qui "
      "évite un contentieux à l'étranger."],
     ["<b>Transfert de données</b>", "Vers le Royaume-Uni et la Suisse : <b>aucune formalité</b>, décision "
-     "d'adéquation en vigueur, celle du Royaume-Uni renouvelée jusqu'en 2031. Vers les États-Unis : "
-     "encadrement nécessaire. C'est une différence à connaître quand vous choisissez un outil."],
+     "d'adéquation en vigueur, celle du Royaume-Uni renouvelée en décembre 2025 jusqu'à fin 2031. "
+     "Vers les États-Unis : encadrement nécessaire. Attention toutefois : depuis février 2026 le droit "
+     "britannique des données <b>diverge</b> du droit européen sur la décision automatisée, ce qui ne "
+     "change rien au transfert mais change le conseil que vous donnez à un client britannique."],
     ["<b>Langue</b>", "L'anglais suffit aux Pays-Bas et dans les grandes entreprises allemandes. "
      "En Italie, en Espagne et en France, la langue locale est attendue, au moins pour les documents "
      "destinés aux représentants du personnel. <b>Un dossier syndical en anglais ne passe pas.</b>"],
@@ -208,9 +246,11 @@ s += section("6. Les trois marchés à attaquer, et dans cet ordre") + [
 s += [callout("Ce que je ne recommande pas en premier",
               "La France, malgré la langue, parce que la friction y est moindre qu'en Allemagne ou aux "
               "Pays-Bas et que vous n'y avez aucune présence. L'Espagne, parce que le droit d'information "
-              "sans veto crée un besoin plus faible. Et le Royaume-Uni ou la Suisse, où votre argument "
-              "central porte peu : vous y seriez un prestataire d'automatisation parmi d'autres, sans votre "
-              "différence.", "streak")]
+              "sans veto crée un besoin plus faible. La Suisse, où votre argument central ne porte pas.<br/><br/>"
+              "<b>Le Royaume-Uni est un cas à part</b>, et je l'aurais écarté à tort : pas de veto, mais "
+              "une consultation santé-sécurité sans seuil d'effectif sur l'introduction de nouvelles "
+              "technologies, et un régime de décision automatisée qui vient de basculer vers une logique de "
+              "garanties à documenter. C'est un marché de quatrième rang, pas un marché à exclure.", "streak")]
 
 # ---------------------------------------------------------------- 7
 s += section("7. Ce qui reste à vérifier avant de démarcher") + [
