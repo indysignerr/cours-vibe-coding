@@ -1,5 +1,10 @@
 # Positionnement · structure junior AI-bert
 
+> **Périmètre : campus de Milan, clients internationaux.** Tout ce document reste valable :
+> le RGPD et le règlement européen sur l'IA sont européens. Seul l'argument de la
+> consultation du comité social et économique, décrit dans `METHODE-IA.md`, est propre à
+> la France et doit être remplacé par son équivalent italien.
+
 ## La phrase
 
 > Nous automatisons vos processus avec de l'IA, sans créer de problème RGPD.

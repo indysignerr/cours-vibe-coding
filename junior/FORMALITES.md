@@ -1,5 +1,15 @@
 # Formalités · créer la structure junior
 
+> ⚠️ **DOCUMENT SUSPENDU — 21 septembre 2026.** Le campus de rattachement est celui de
+> **Milan**, et les clients visés sont internationaux. Ce document décrit le droit
+> **français** et ne s'applique donc pas en l'état. Il est conservé pour deux raisons :
+> une partie du raisonnement reste valable si la structure est finalement domiciliée en
+> France, et la comparaison entre les deux pays est un vrai arbitrage.
+>
+> **Le volet italien est dans `junior/FORMALITES-IT.md`.** Ce qui reste valable quel que
+> soit le pays : `POSITIONNEMENT.md`, `OFFRES.md` et `METHODE-IA.md`, parce que le RGPD
+> et le règlement européen sur l'IA ne connaissent pas de frontière.
+
 > État du droit au 19 septembre 2026. Document de travail, pas un conseil juridique.
 > Les points marqués 🔴 doivent être validés par un professionnel avant la première facture.
 
