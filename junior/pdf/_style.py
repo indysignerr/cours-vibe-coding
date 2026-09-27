@@ -10,8 +10,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
-    BaseDocTemplate, CondPageBreak, Flowable, Frame, KeepTogether, PageTemplate,
-    Paragraph, Spacer, Table, TableStyle,
+    BaseDocTemplate, CondPageBreak, Flowable, Frame, KeepTogether, PageBreak,
+    PageTemplate, Paragraph, Spacer, Table, TableStyle,
 )
 
 PAPER = colors.HexColor("#F4F1EA")
@@ -20,6 +20,8 @@ INK = colors.HexColor("#14121A")
 MUTED = colors.HexColor("#5F5647")
 LINE = colors.HexColor("#DDD6C9")
 ACCENT = colors.HexColor("#C2341A")
+ACCENT_LINE = colors.HexColor("#D13A1C")
+XP_LINE = colors.HexColor("#7A48C4")
 ACCENT_FILL = colors.HexColor("#FF4D2E")
 DONE = colors.HexColor("#0D6B4F")
 STREAK = colors.HexColor("#8A5200")
@@ -58,6 +60,12 @@ S = {
                               fontSize=9.7, leading=14, textColor=INK),
     "calloutb": ParagraphStyle("calloutb", parent=_base["Normal"], fontName="Helvetica-Bold",
                                fontSize=9.7, leading=14, textColor=INK),
+    "h3": ParagraphStyle("h3", parent=_base["Normal"], fontName="Helvetica-Bold",
+                         fontSize=10.3, leading=14, textColor=INK, spaceBefore=9, spaceAfter=3),
+    "codeblock": ParagraphStyle("codeblock", parent=_base["Normal"], fontName="Courier",
+                                fontSize=10.5, leading=15, textColor=colors.HexColor("#F4F1EA")),
+    "check": ParagraphStyle("check", parent=_base["Normal"], fontName="Helvetica",
+                            fontSize=10.5, leading=15, textColor=INK, leftIndent=2),
     "foot": ParagraphStyle("foot", parent=_base["Normal"], fontName="Helvetica",
                            fontSize=7.6, leading=10, textColor=MUTED),
 }
