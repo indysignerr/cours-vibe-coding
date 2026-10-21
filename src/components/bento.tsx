@@ -34,11 +34,18 @@ function DataSort() {
   }, [cats.length]);
 
   return (
-    <ul className="flex h-full flex-col justify-between gap-2">
+    /*
+     * Les pastilles remplissent la hauteur au lieu de s'écarter.
+     * La tuile s'étire pour suivre la colonne de droite, et un
+     * justify-between laissait alors 36 px entre chaque pastille — le
+     * groupe se défaisait. flex-1 les fait grandir ensemble, et le
+     * plafond évite quatre bandes démesurées sur un très grand écran.
+     */
+    <ul className="flex h-full flex-col justify-center gap-2.5">
       {cats.map((c, i) => (
         <motion.li
           key={c.name}
-          className="flex items-baseline justify-between gap-3 rounded-btn px-3.5 py-2.5"
+          className="flex max-h-[5.5rem] flex-1 items-center justify-between gap-3 rounded-btn px-3.5 py-2.5"
           animate={{
             backgroundColor: i === on ? "var(--brand)" : "var(--sunken)",
             color: i === on ? "var(--on-brand)" : "var(--muted)",
