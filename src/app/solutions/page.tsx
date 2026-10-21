@@ -23,7 +23,7 @@ export default function ServicesPage() {
     <PageShell
       eyebrow="Solutions"
       title="Five engagements. Fixed price, three weeks."
-      lede="Each one is scoped tightly enough to finish, and written down precisely enough that you know what you are not getting. That second part is the one most proposals leave out."
+      lede="Each one is scoped to finish. Each one says what it does not include — the part most proposals leave out."
     >
       <Reveal as="ul" className="rows" stagger y={24}>
         {OFFERS.map((o) => (
@@ -71,19 +71,11 @@ export default function ServicesPage() {
         </Reveal>
         <Reveal className="md:col-span-6 md:col-start-7" stagger y={24}>
           <p className="lede">
-            CV screening, employee scoring, customer rating, credit decisions, health. The European AI
-            regulation classes these as high risk from December 2027.
+            CV screening, employee scoring, credit, health. Article 25 of the European AI regulation
+            turns an integrator into a <em>provider</em> the moment they configure a model for one of
+            them — conformity assessment, CE marking, the lot.
           </p>
-          <p className="mt-5">
-            There is a reason beyond the moral one. Article 25 of the regulation turns you into a{" "}
-            <em>provider</em> if you change the intended purpose of a general-purpose system to make it
-            high risk, or if you ship it under your own name. Configuring a model to sort job
-            applications is enough. You then inherit the conformity assessment, the risk-management
-            system, the technical documentation and the CE marking.
-          </p>
-          <p className="mt-5">
-            We say this in the first meeting rather than discovering it in month three.
-          </p>
+          <p className="mt-5">We say so in the first meeting, not in month three.</p>
         </Reveal>
       </section>
 
@@ -102,12 +94,12 @@ export default function ServicesPage() {
 
       <Reveal as="section" className="mt-20" y={30}>
         <div className="card card--ink px-7 py-12 md:px-14 md:py-16">
-          <h2 className="display-2 max-w-[20ch]" style={{ color: "var(--on-ink)" }}>
+          <h2 className="display-2 max-w-[20ch]">
             Not sure which one you need?
           </h2>
-          <p className="lede mt-5 max-w-measure" style={{ color: "var(--on-ink-muted)" }}>
-            Most companies start with the audit, because it is the one that tells you whether the other
-            four are worth doing. Forty-five minutes is enough to find out.
+          <p className="lede mt-5 max-w-measure">
+            Most start with the audit. It is the one that tells you whether the other four are worth
+            doing.
           </p>
           <Magnetic>
             <Link className="btn btn--brand mt-8" href="/contact/">

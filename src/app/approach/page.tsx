@@ -54,7 +54,7 @@ export default function ApproachPage() {
     <PageShell
       eyebrow="Approach"
       title="The method is the product. The software comes after."
-      lede="Most AI projects fail for reasons that have nothing to do with the model: the scope was too wide on day one, nobody measured the value before launch, and no human reviewed a deliverable that committed the company. We work in the opposite order."
+      lede="Most AI projects fail for reasons that have nothing to do with the model. We work in the opposite order."
     >
       <Reveal as="ol" className="rows" stagger y={24}>
         {STEPS.map((s) => (
@@ -106,8 +106,8 @@ export default function ApproachPage() {
           Local is not a principle. It is one answer out of three.
         </h2>
         <p className="lede mt-6 max-w-measure">
-          Running everything on your own hardware sounds safest and is usually the most expensive way to
-          be no more compliant. The data sort decides, not the fashion.
+          Running everything on your own hardware sounds safest and is usually the most expensive way
+          to be no more compliant. The data sort decides, not the fashion.
         </p>
         <Reveal as="dl" className="rows mt-10" stagger y={18}>
           {ROUTES.map(([route, when]) => (
@@ -127,19 +127,14 @@ export default function ApproachPage() {
         </Reveal>
         <Reveal className="md:col-span-6 md:col-start-7" stagger y={22}>
           <p className="lede">
-            Scope too wide on day one. No measurement of value before launch. Data quality
-            underestimated. No human review on a deliverable that commits the company. Substitution
-            instead of augmentation. And test environments nobody ever decommissions.
+            Scope too wide on day one. No measurement before launch. No human review on a deliverable
+            that commits the company. And test environments nobody decommissions — that last one
+            exposed sixty-four million job applicants at a restaurant group in 2025, through a 2019
+            test account with the password &ldquo;123456&rdquo;.
           </p>
           <p className="mt-5">
-            That last one is how sixty-four million job applicants&rsquo; records were exposed at a
-            large restaurant group in 2025: a test account from 2019, with the password
-            &ldquo;123456&rdquo;.
-          </p>
-          <p className="mt-5">
-            One figure is worth keeping. Pilots run by an internal team together with outside help
-            succeed about three times as often as pilots carried by an IT department alone. That gap is
-            the whole reason we work the way we do.
+            Pilots run by an internal team with outside help succeed about three times as often as
+            pilots carried by an IT department alone. That gap is the whole reason we work this way.
           </p>
           <Link className="btn btn--quiet underline-grow mt-6 -ml-2" href="/solutions/">
             See what that buys you

@@ -15,6 +15,10 @@
 /calendar       /events      301
 /calendar/*     /events      301
 
+# Le portfolio : les sites montrés appartenaient à un autre projet
+/work           /            301
+/work/*         /            301
+
 # Le parcours de cours et les concours sont devenus des évènements
 /contests       /events      301
 /contests/*     /events      301
