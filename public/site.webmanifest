@@ -1,10 +1,10 @@
 {
-  "name": "AI-bert",
-  "short_name": "AI-bert",
+  "name": "Albert L.I.G.H.T.",
+  "short_name": "Albert L.I.G.H.T.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fcfcfd",
-  "theme_color": "#0b1220",
+  "background_color": "#F8F4EC",
+  "theme_color": "#202448",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

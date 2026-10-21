@@ -27,7 +27,7 @@ export function HeaderSession() {
 
   if (Island) return <Island />;
   return (
-    <Link className={`btn-3d btn-3d--ink ml-2 min-h-[44px] px-5 text-sm ${stored ? "invisible" : ""}`} href="/sessions/" aria-hidden={stored}>
+    <Link className={`btn btn--primary ml-2 ${stored ? "invisible" : ""}`} href="/sessions/" aria-hidden={stored}>
       Sign in
     </Link>
   );

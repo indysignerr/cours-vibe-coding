@@ -37,6 +37,8 @@ const ORGANIZATION = {
   logo: `${SITE.url}/android-chrome-512x512.png`,
   description:
     "A student-run association that automates repetitive work inside companies and delivers the compliance file that lets them deploy it.",
+  email: SITE.contactEmail || undefined,
+  knowsLanguage: ["en", "it", "fr"],
   founder: SITE.founders.map((name) => ({ "@type": "Person", name })),
   parentOrganization: { "@type": "EducationalOrganization", name: SITE.school },
   address: { "@type": "PostalAddress", addressLocality: SITE.campus, addressCountry: "IT" },
@@ -44,7 +46,7 @@ const ORGANIZATION = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1220",
+  themeColor: "#202448",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

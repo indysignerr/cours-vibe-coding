@@ -3,43 +3,53 @@
 @tailwind utilities;
 
 /* =====================================================================
-   AI-bert — système visuel.
+   Albert L.I.G.H.T. — système visuel.
 
-   Registre : cabinet de conseil. Encre marine sur blanc chaud, un seul
-   accent employé avec parcimonie, bordures en ombre plutôt qu'en trait,
-   rayons conservateurs. Rien de rond, rien de criard, rien de gonflé.
+   Charte : marine #202448, beige #C9AE84, ivoire #F8F4EC.
+   Proportion visée : 60 % ivoire et sable, 25 % marine, 15 % beige.
+   Règle absolue de la charte : jamais de beige en texte sur l'ivoire —
+   on passe au bronze ou au marine.
 
-   Toutes les paires sont validées par scripts/check-contrast.mjs, à
-   relancer après chaque retouche.
+   Une seule famille, Inter. La hiérarchie vient de la graisse, de la
+   taille et du crénage, jamais d'un second caractère.
+
+   Toutes les paires sont validées par scripts/check-contrast.mjs,
+   à relancer après chaque retouche.
    ===================================================================== */
+
 :root {
-  /* Surfaces */
-  --canvas: #fcfcfd;
-  --surface: #ffffff;
-  --sunken: #f5f6f8;
-  --ink-surface: #0b1220;
+  /* ---- Surfaces ---- */
+  --canvas: #f8f4ec;        /* ivoire, fond principal */
+  --surface: #fffdf8;       /* carte posée sur l'ivoire */
+  --sunken: #eadfcb;        /* sable : panneaux, sections calmes */
+  --ink-surface: #202448;   /* marine : bandeaux et cartes sombres */
 
-  /* Texte */
-  --ink: #0b1220;          /* titres, marine profond plutôt que noir */
-  --body: #495567;         /* texte courant */
-  --muted: #626d7d;        /* légendes, métadonnées */
-  --on-ink: #e8ecf2;       /* texte sur fond marine */
-  --on-ink-muted: #94a1b4;
+  /* ---- Texte ---- */
+  --ink: #202448;           /* titres et texte courant */
+  --body: #2c3156;          /* paragraphes, à peine éclairci */
+  --muted: #5a5770;         /* ardoise : légendes, métadonnées */
+  --on-ink: #f8f4ec;        /* ivoire sur marine */
+  --on-ink-muted: #c9ae84;  /* beige sur marine */
 
-  /* Accent, employé rarement */
-  --accent: #b4441f;
-  --accent-hover: #933516;
-  --accent-tint: #fbf2ee;
-  --on-accent: #ffffff;
+  /* ---- Marque ---- */
+  --brand: #c9ae84;         /* beige : le pictogramme, les filets, les aplats */
+  --brand-soft: #e3cfae;    /* beige clair : l'accent sur fond marine */
+  /* Bronze. La charte donne #8C5A2E ; sur le sable il tombe à 4,40:1,
+     sous le seuil AA. Deux crans plus profond, la teinte ne bouge pas à
+     l'œil et toutes les surfaces passent. */
+  --accent: #845325;        /* bronze : liens, nombres, mots-clés */
+  --accent-hover: #6b4219;
+  --accent-tint: #f2e8d9;   /* fond d'un encart d'accent */
+  --on-accent: #f8f4ec;
 
-  /* Lignes et profondeur : l'ombre fait office de bordure */
-  --line: rgba(11, 18, 32, 0.09);
-  --line-strong: rgba(11, 18, 32, 0.16);
-  --hair: 0 0 0 1px rgba(11, 18, 32, 0.08);
-  --lift: 0 0 0 1px rgba(11, 18, 32, 0.07), 0 1px 2px rgba(11, 18, 32, 0.04),
-    0 8px 24px -16px rgba(11, 18, 32, 0.18);
-  --lift-lg: 0 0 0 1px rgba(11, 18, 32, 0.07), 0 2px 4px rgba(11, 18, 32, 0.04),
-    0 24px 48px -24px rgba(11, 18, 32, 0.22);
+  /* ---- Traits et ombres, toujours teintées marine ---- */
+  --line: rgba(32, 36, 72, 0.12);
+  --line-strong: rgba(32, 36, 72, 0.22);
+  --hair: 0 0 0 1px rgba(32, 36, 72, 0.1);
+  --lift: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 1px 2px rgba(32, 36, 72, 0.05),
+    0 10px 28px -18px rgba(32, 36, 72, 0.3);
+  --lift-lg: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 2px 5px rgba(32, 36, 72, 0.05),
+    0 22px 48px -24px rgba(32, 36, 72, 0.35);
 
   color-scheme: light;
 }
@@ -56,6 +66,7 @@
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
     font-size: 1.0625rem;
     line-height: 1.65;
+    font-feature-settings: "cv05" 1, "ss01" 1;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -66,47 +77,51 @@
 
   h1, h2, h3, h4 {
     color: var(--ink);
-    font-family: var(--font-display), Georgia, serif;
-    font-weight: 400;
-    letter-spacing: -0.015em;
+    font-weight: 600;
+    letter-spacing: -0.022em;
   }
 
+  /* Les chiffres s'alignent : prix, dates, compteurs. */
+  time, .tnum { font-variant-numeric: tabular-nums; }
+
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--ink);
     outline-offset: 3px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
 
   ::selection {
-    background: var(--accent);
-    color: var(--on-accent);
+    background: var(--brand);
+    color: var(--ink);
   }
 
   strong { color: var(--ink); font-weight: 600; }
 }
 
 @layer components {
-  /* ---- Boutons : plats, rayon court, une seule couleur pleine ---- */
+  /* ---- Boutons ---- */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-height: 44px;
-    padding: 0 1.25rem;
-    border-radius: 7px;
-    font-family: var(--font-body), sans-serif;
+    min-height: 46px;
+    padding: 0 1.35rem;
+    border-radius: 10px;
     font-size: 0.9375rem;
     font-weight: 500;
     letter-spacing: -0.005em;
-    transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+    transition: background-color 170ms ease, box-shadow 170ms ease, color 170ms ease,
+      transform 170ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   .btn--primary {
     background: var(--ink);
     color: var(--on-ink);
-    box-shadow: 0 1px 2px rgba(11, 18, 32, 0.16);
+    box-shadow: 0 1px 2px rgba(32, 36, 72, 0.2);
   }
-  .btn--primary:hover { background: #16213a; }
+  .btn--primary:hover { background: #2b3160; transform: translateY(-1px); }
+  .btn--brand { background: var(--brand); color: var(--ink); }
+  .btn--brand:hover { background: var(--brand-soft); transform: translateY(-1px); }
   .btn--accent { background: var(--accent); color: var(--on-accent); }
   .btn--accent:hover { background: var(--accent-hover); }
   .btn--ghost {
@@ -115,95 +130,122 @@
     box-shadow: var(--hair);
   }
   .btn--ghost:hover { background: var(--sunken); }
+  .btn--outline {
+    background: transparent;
+    color: var(--on-ink);
+    box-shadow: 0 0 0 1px rgba(248, 244, 236, 0.35);
+  }
+  .btn--outline:hover { background: rgba(248, 244, 236, 0.1); }
   .btn--quiet { color: var(--ink); padding: 0 0.5rem; }
   .btn--quiet:hover { color: var(--accent); }
 
-  /* ---- Cartes : la bordure est une ombre, pas un trait ---- */
+  /* ---- Cartes : la bordure est une ombre ---- */
   .card {
     background: var(--surface);
-    border-radius: 12px;
+    border-radius: 14px;
     box-shadow: var(--hair);
   }
   .card--raised { box-shadow: var(--lift); }
   .card--ink { background: var(--ink-surface); color: var(--on-ink); box-shadow: none; }
   .card--ink h2, .card--ink h3, .card--ink h4 { color: var(--on-ink); }
+  .card--sand { background: var(--sunken); box-shadow: none; }
   .card--tint { background: var(--accent-tint); box-shadow: var(--hair); }
 
-  /* ---- Surtitre : mono, petit, espacé ---- */
+  /* ---- Surtitre : capitales Medium, crénage large ---- */
   .eyebrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
   }
   .eyebrow--accent { color: var(--accent); }
+  .eyebrow--on-ink { color: var(--on-ink-muted); }
 
-  /* ---- Échelle de titrage : graisse légère, chasse resserrée ---- */
+  /* ---- Échelle de titres ---- */
   .display-1 {
-    font-family: var(--font-display), Georgia, serif;
-    font-size: clamp(2.75rem, 5.2vw, 4.25rem);
-    line-height: 1.05;
-    letter-spacing: -0.028em;
-    font-weight: 300;
+    font-size: clamp(2.5rem, 1.4rem + 4.4vw, 4.25rem);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
     color: var(--ink);
   }
   .display-2 {
-    font-family: var(--font-display), Georgia, serif;
-    font-size: clamp(2rem, 3.4vw, 2.875rem);
+    font-size: clamp(1.75rem, 1.2rem + 2.1vw, 2.5rem);
+    font-weight: 600;
     line-height: 1.12;
-    letter-spacing: -0.022em;
-    font-weight: 300;
+    letter-spacing: -0.028em;
     color: var(--ink);
   }
   .display-3 {
-    font-family: var(--font-display), Georgia, serif;
-    font-size: clamp(1.375rem, 2vw, 1.625rem);
-    line-height: 1.25;
-    letter-spacing: -0.015em;
-    font-weight: 400;
+    font-size: clamp(1.1875rem, 1.05rem + 0.6vw, 1.375rem);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.016em;
     color: var(--ink);
   }
   .lede {
-    font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+    font-size: clamp(1.125rem, 1.02rem + 0.5vw, 1.3125rem);
     line-height: 1.6;
     color: var(--body);
   }
 
-  /* ---- Règle fine pleine largeur ---- */
+  /* ---- Filets ---- */
   .rule { height: 1px; background: var(--line); }
+  .rule--brand { height: 3px; width: 48px; background: var(--brand); border-radius: 2px; }
 
-  /* ---- Liste à filets, le motif de mise en page dominant ---- */
+  /* Listes à filets : la seule « bordure » visible du système. */
   .rows > * + * { border-top: 1px solid var(--line); }
 
-  /* ---- Cible tactile ---- */
+  /* Compteur de section, en bronze comme l'exige la charte. */
+  .counter {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
   .tap { min-height: 44px; min-width: 44px; }
 
   /* Rangée de liens défilante : la barre de défilement n'apporte rien ici. */
   .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Champ de formulaire, un seul style pour tout le site. */
+  .field {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 0.95rem;
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition: box-shadow 160ms ease;
+  }
+  .field:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--ink);
+  }
+  .field::placeholder { color: var(--muted); }
+  .field[aria-invalid="true"] { box-shadow: inset 0 0 0 2px var(--accent); }
+  textarea.field { padding: 0.75rem 0.95rem; min-height: 8rem; line-height: 1.6; }
 }
 
-/* Typo des pages rédactionnelles et du markdown */
 @layer components {
-  .prose { max-width: 68ch; color: var(--body); }
+  .prose { max-width: 66ch; color: var(--body); }
   .prose h2 {
-    font-family: var(--font-display), Georgia, serif;
-    font-weight: 400;
-    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
-    line-height: 1.2;
-    letter-spacing: -0.018em;
-    margin-top: 2.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    margin-top: 2.6rem;
+    margin-bottom: 0.9rem;
   }
   .prose h3 {
-    font-family: var(--font-display), Georgia, serif;
-    font-weight: 500;
-    font-size: 1.25rem;
-    line-height: 1.3;
-    margin-top: 1.75rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.1875rem;
+    font-weight: 600;
+    margin-top: 1.9rem;
+    margin-bottom: 0.6rem;
   }
   .prose p, .prose ul, .prose ol, .prose blockquote { margin-bottom: 1.1rem; }
   .prose ul, .prose ol { padding-left: 1.3rem; }
@@ -214,43 +256,40 @@
     color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
   }
+  .prose a:hover { color: var(--accent-hover); }
   .prose code {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.875em;
     background: var(--sunken);
-    border-radius: 4px;
-    padding: 0.12em 0.36em;
+    padding: 0.12em 0.38em;
+    border-radius: 5px;
+    font-size: 0.92em;
   }
   .prose pre {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 1.125rem;
-    line-height: 1.55;
     background: var(--ink-surface);
     color: var(--on-ink);
-    border-radius: 10px;
-    padding: 1.15rem 1.35rem;
-    margin-bottom: 1.35rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: 12px;
     overflow-x: auto;
+    margin-bottom: 1.35rem;
+    font-size: 0.95rem;
   }
   .prose pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
   .prose blockquote {
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
+    border-left: 3px solid var(--brand);
+    padding-left: 1.1rem;
     color: var(--muted);
   }
   .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.35rem; font-size: 0.95em; }
   .prose th, .prose td {
-    border-bottom: 1px solid var(--line);
-    padding: 0.6rem 0.5rem;
     text-align: left;
+    padding: 0.6rem 0.8rem 0.6rem 0;
+    border-bottom: 1px solid var(--line);
     vertical-align: top;
   }
   .prose th { color: var(--ink); font-weight: 600; }
 }
 
-/* Entrées discrètes : opacité et quelques pixels, rien de plus */
+/* ---- La seule animation du site : une montée à l'entrée de page ---- */
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: none; }
@@ -264,6 +303,7 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .btn:hover { transform: none; }
 }
 
 /* =====================================================================
@@ -271,7 +311,7 @@
 
    Les pages membres ont été écrites avec l'ancien vocabulaire ludique
    (.btn-3d, .card-3d, .pill, .fill-text). Plutôt que de les réécrire
-   toutes d'un coup, on remappe ces classes sur le registre sobre : elles
+   toutes d'un coup, on remappe ces classes sur la nouvelle peau : elles
    basculent d'elles-mêmes et restent lisibles. À retirer quand chaque
    page aura été reprise à la main.
    ===================================================================== */
@@ -281,18 +321,17 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-height: 44px;
-    padding: 0 1.25rem;
-    border-radius: 7px;
-    font-family: var(--font-body), sans-serif;
+    min-height: 46px;
+    padding: 0 1.35rem;
+    border-radius: 10px;
     font-size: 0.9375rem;
     font-weight: 500;
     background: var(--ink);
     color: var(--on-ink);
-    box-shadow: 0 1px 2px rgba(11, 18, 32, 0.16);
-    transition: background-color 160ms ease;
+    box-shadow: 0 1px 2px rgba(32, 36, 72, 0.2);
+    transition: background-color 170ms ease;
   }
-  .btn-3d:hover { background: #16213a; }
+  .btn-3d:hover { background: #2b3160; }
   .btn-3d:disabled { opacity: 0.55; }
   .btn-3d--ghost,
   .btn-3d--ink {
@@ -302,13 +341,13 @@
   }
   .btn-3d--ghost:hover,
   .btn-3d--ink:hover { background: var(--sunken); }
-  .btn-3d--done { background: var(--accent); color: var(--on-accent); }
-  .btn-3d--done:hover { background: var(--accent-hover); }
+  .btn-3d--done { background: var(--brand); color: var(--ink); }
+  .btn-3d--done:hover { background: var(--brand-soft); }
   .btn-3d--xp { background: var(--ink); color: var(--on-ink); }
 
   .card-3d {
     background: var(--surface);
-    border-radius: 12px;
+    border-radius: 14px;
     box-shadow: var(--hair);
   }
   .card-3d--accent,
@@ -323,13 +362,13 @@
     gap: 0.4rem;
     min-height: 32px;
     padding: 0 0.7rem;
-    border-radius: 6px;
+    border-radius: 7px;
     background: var(--sunken);
     color: var(--ink);
     box-shadow: var(--hair);
-    font-family: var(--font-mono), monospace;
     font-size: 0.8125rem;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
   .pill--accent,
   .pill--done,
@@ -338,7 +377,11 @@
 
   .fill-text { color: var(--ink); }
   .on-ink-muted { color: var(--on-ink-muted); }
-  .code-block { background: var(--ink-surface); color: var(--on-ink); border-radius: 10px; }
+  .code-block { background: var(--ink-surface); color: var(--on-ink); border-radius: 12px; }
+
+  /* L'ancien champ de formulaire des pages membres. */
+  .border-accent-line { box-shadow: inset 0 0 0 2px var(--ink); border-color: transparent !important; }
+  .text-accent-strong { color: var(--accent); }
 
   /* Les animations de jeu disparaissent : il n'en reste qu'une montée discrète. */
   .anim-pop { animation: rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }

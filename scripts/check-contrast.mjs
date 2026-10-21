@@ -23,6 +23,15 @@ rows.push(["on-accent sur accent", ratio(T["on-accent"], T.accent), 4.5]);
 rows.push(["on-accent sur accent-hover", ratio(T["on-accent"], T["accent-hover"]), 4.5]);
 rows.push(["on-ink sur ink (bouton)", ratio(T["on-ink"], T.ink), 4.5]);
 rows.push(["accent vs canvas (repere)", ratio(T.accent, T.canvas), 3]);
+// Le beige n'est un repère porteur que sur le marine : sur l'ivoire il est
+// purement décoratif, et la charte interdit déjà de s'en servir comme texte.
+rows.push(["brand vs ink-surface (repere)", ratio(T.brand, T["ink-surface"]), 3]);
+rows.push(["brand-soft sur ink-surface", ratio(T["brand-soft"], T["ink-surface"]), 4.5]);
+rows.push(["ink sur brand (bouton)", ratio(T.ink, T.brand), 4.5]);
+
+// Garde-fou de la charte : si un jour le beige passait en texte sur l'ivoire,
+// ce serait un accident de palette, pas une autorisation.
+if (ratio(T.brand, T.canvas) >= 4.5) console.log("\nAttention : la regle « jamais de beige en texte sur l'ivoire » n'est plus protegee par le contraste.");
 
 let fails = 0;
 for (const [label, r, floor] of rows) {

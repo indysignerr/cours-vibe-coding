@@ -4,10 +4,11 @@ import { SITE } from "@/lib/site";
 /** Pages publiques uniquement : l'espace membre est derrière une session. */
 const PUBLIC = [
   { path: "", priority: 1 },
-  { path: "/services", priority: 0.9 },
+  { path: "/solutions", priority: 0.9 },
   { path: "/approach", priority: 0.8 },
   { path: "/contact", priority: 0.8 },
-  { path: "/team", priority: 0.7 },
+  { path: "/events", priority: 0.8 },
+  { path: "/about", priority: 0.7 },
   { path: "/join", priority: 0.7 },
   { path: "/programme", priority: 0.6 },
   { path: "/setup", priority: 0.5 },

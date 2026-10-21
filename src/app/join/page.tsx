@@ -48,19 +48,19 @@ export default function JoinPage() {
       <ol className="rows">
         {EXPECT.map((e) => (
           <li key={e.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
-            <span className="font-mono text-sm text-muted md:col-span-1">{e.n}</span>
+            <span className="counter md:col-span-1">{e.n}</span>
             <h2 className="display-3 md:col-span-4">{e.title}</h2>
             <p className="text-body md:col-span-6 md:col-start-6">{e.body}</p>
           </li>
         ))}
       </ol>
 
-      <section className="mt-20">
+      <section className="card card--sand mt-20 p-7 md:p-10">
         <p className="eyebrow">What to bring</p>
         <dl className="rows mt-8">
           {BRING.map(([term, detail]) => (
             <div key={term} className="grid gap-2 py-6 md:grid-cols-12 md:gap-8">
-              <dt className="font-mono text-sm text-ink md:col-span-3">{term}</dt>
+              <dt className="text-sm font-semibold text-ink md:col-span-3">{term}</dt>
               <dd className="text-body md:col-span-8">{detail}</dd>
             </div>
           ))}

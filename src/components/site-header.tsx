@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { HeaderSession } from "@/components/header-session";
-import { Wordmark } from "@/components/wordmark";
+import { Logo } from "@/components/brand";
 import { SITE } from "@/lib/site";
 
 const LINKS = [
-  { href: "/services/", label: "Services" },
+  { href: "/solutions/", label: "Solutions" },
   { href: "/approach/", label: "Approach" },
-  { href: "/team/", label: "Team" },
+  { href: "/about/", label: "About" },
   { href: "/join/", label: "Join us", quiet: true },
 ];
 
@@ -20,10 +20,10 @@ const LINKS = [
  */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-stage items-center justify-between px-5 py-3.5 md:px-8">
+    <header className="sticky top-0 z-40 border-b border-line bg-canvas/88 backdrop-blur-md">
+      <div className="mx-auto flex max-w-stage items-center justify-between px-5 py-3 md:px-8">
         <Link className="tap flex items-center" href="/" aria-label={`${SITE.name}, home`}>
-          <Wordmark />
+          <Logo />
         </Link>
 
         <nav aria-label="Main" className="flex items-center gap-1">
@@ -52,7 +52,7 @@ export function SiteHeader() {
         aria-label="Sections"
         className="no-scrollbar flex gap-1 overflow-x-auto border-t border-line px-3 md:hidden"
       >
-        {[...LINKS, { href: "/contact/", label: "Contact", quiet: false }].map((l) => (
+        {[...LINKS, { href: "/contact/", label: "Contact" }].map((l) => (
           <Link
             key={l.href}
             className="tap flex flex-none items-center px-3 text-sm text-body transition-colors hover:text-ink"

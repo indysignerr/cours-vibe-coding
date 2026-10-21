@@ -58,7 +58,7 @@ export default function ApproachPage() {
       <ol className="rows">
         {STEPS.map((s) => (
           <li key={s.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
-            <span className="font-mono text-sm text-muted md:col-span-1">{s.n}</span>
+            <span className="counter md:col-span-1">{s.n}</span>
             <h2 className="display-3 md:col-span-4">{s.title}</h2>
             <p className="text-body md:col-span-6 md:col-start-6">{s.body}</p>
           </li>
@@ -80,7 +80,7 @@ export default function ApproachPage() {
           <ul className="grid gap-3">
             {FILE_ITEMS.map((item) => (
               <li key={item} className="grid grid-cols-[auto_1fr] gap-3 text-body">
-                <span aria-hidden className="mt-[0.7em] h-px w-4 bg-line-strong" />
+                <span aria-hidden className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand" />
                 <span>{item}</span>
               </li>
             ))}
@@ -99,7 +99,7 @@ export default function ApproachPage() {
       </section>
 
       {/* Voie technique */}
-      <section className="mt-20">
+      <section className="card card--sand mt-20 p-7 md:p-10">
         <p className="eyebrow">Choosing the technical route</p>
         <h2 className="display-2 mt-4 max-w-[24ch]">
           Local is not a principle. It is one answer out of three.
@@ -140,7 +140,7 @@ export default function ApproachPage() {
             succeed about three times as often as pilots carried by an IT department alone. That gap is
             the whole reason we work the way we do.
           </p>
-          <Link className="btn btn--quiet mt-6 -ml-2" href="/services/">
+          <Link className="btn btn--quiet mt-6 -ml-2" href="/solutions/">
             See what that buys you
           </Link>
         </div>

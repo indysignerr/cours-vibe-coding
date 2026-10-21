@@ -1,0 +1,42 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Albert L.I.G.H.T.//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Albert L.I.G.H.T.
+X-WR-TIMEZONE:Europe/Rome
+BEGIN:VEVENT
+UID:peer-hour@albert-light
+DTSTAMP:20261021T163626Z
+DTSTART;TZID=Europe/Rome:20260916T180000
+DTEND;TZID=Europe/Rome:20260916T190000
+RRULE:FREQ=WEEKLY;BYDAY=WE;UNTIL=20261202T235959Z
+SUMMARY:Albert L.I.G.H.T. — Peer hour
+DESCRIPTION:Bring what is blocking you. Someone who already cleared it shows you how. No slides\, no one at the front of the room.
+LOCATION:Albert School\, Milano
+END:VEVENT
+BEGIN:VEVENT
+UID:contest-1@albert-light
+DTSTAMP:20261021T163626Z
+DTSTART;TZID=Europe/Rome:20261011T200000
+DTEND;TZID=Europe/Rome:20261011T235900
+SUMMARY:Albert L.I.G.H.T. — Contest #1
+DESCRIPTION:A landing page built under constraints\, submitted before midnight. Submissions close at midnight.
+END:VEVENT
+BEGIN:VEVENT
+UID:contest-2@albert-light
+DTSTAMP:20261021T163626Z
+DTSTART;TZID=Europe/Rome:20261108T200000
+DTEND;TZID=Europe/Rome:20261108T235900
+SUMMARY:Albert L.I.G.H.T. — Contest #2
+DESCRIPTION:An app backed by a database\, submitted before midnight. Submissions close at midnight.
+END:VEVENT
+BEGIN:VEVENT
+UID:demo-day@albert-light
+DTSTAMP:20261021T163626Z
+DTSTART;TZID=Europe/Rome:20261206T200000
+DTEND;TZID=Europe/Rome:20261206T235900
+SUMMARY:Albert L.I.G.H.T. — Demo Day
+DESCRIPTION:Your project\, presented to a jury\, in four minutes. Submissions close at midnight.
+END:VEVENT
+END:VCALENDAR

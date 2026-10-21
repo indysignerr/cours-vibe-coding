@@ -4,7 +4,7 @@ import { PageShell } from "@/components/page-shell";
 import { OFFERS } from "@/lib/offers";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Solutions",
   description:
     "Five fixed-price engagements, each three weeks long: AI audit and compliance file, workplace-ready AI, an assistant on your documents, an internal tool, and one automated chain of steps.",
 };
@@ -19,20 +19,20 @@ const TERMS = [
 export default function ServicesPage() {
   return (
     <PageShell
-      eyebrow="Services"
-      title="Five engagements, fixed price, three weeks."
+      eyebrow="Solutions"
+      title="Five engagements. Fixed price, three weeks."
       lede="Each one is scoped tightly enough to finish, and written down precisely enough that you know what you are not getting. That second part is the one most proposals leave out."
     >
       <ul className="rows">
         {OFFERS.map((o) => (
           <li key={o.slug} className="grid gap-8 py-12 first:pt-0 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-4">
-              <p className="font-mono text-sm text-muted">{o.n}</p>
+              <p className="counter">{o.n}</p>
               <h2 className="display-2 mt-3">{o.title}</h2>
-              <p className="mt-5 font-mono text-sm text-ink">{o.price}</p>
+              <p className="tnum mt-5 text-2xl font-semibold tracking-[-0.02em] text-ink">{o.price}</p>
               <p className="mt-1 text-sm text-muted">{o.duration}</p>
               {o.market ? (
-                <p className="mt-4 inline-block rounded-btn bg-accent-tint px-3 py-1 text-sm text-accent">
+                <p className="mt-4 inline-block rounded-btn bg-accent-tint px-3 py-1 text-sm font-medium text-accent">
                   {o.market}
                 </p>
               ) : null}
@@ -45,7 +45,7 @@ export default function ServicesPage() {
               <ul className="mt-4 grid gap-3">
                 {o.delivers.map((d) => (
                   <li key={d} className="grid grid-cols-[auto_1fr] gap-3 text-body">
-                    <span aria-hidden className="mt-[0.7em] h-px w-4 bg-line-strong" />
+                    <span aria-hidden className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand" />
                     <span>{d}</span>
                   </li>
                 ))}
@@ -86,12 +86,12 @@ export default function ServicesPage() {
       </section>
 
       {/* Conditions commerciales */}
-      <section className="mt-20">
+      <section className="card card--sand mt-20 p-7 md:p-10">
         <p className="eyebrow">Terms, the same for everyone</p>
         <dl className="rows mt-8">
           {TERMS.map(([term, detail]) => (
             <div key={term} className="grid gap-3 py-6 md:grid-cols-12 md:gap-8">
-              <dt className="font-mono text-sm text-ink md:col-span-3">{term}</dt>
+              <dt className="text-sm font-semibold text-ink md:col-span-3">{term}</dt>
               <dd className="text-body md:col-span-8">{detail}</dd>
             </div>
           ))}

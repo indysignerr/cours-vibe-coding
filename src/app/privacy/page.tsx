@@ -34,6 +34,11 @@ export default function PrivacyPage() {
             <strong>Your contest submissions</strong>, meaning a title, a live URL, a repository URL
             and your own written note.
           </li>
+          <li>
+            <strong>An event sign-up</strong>, if you put your name down for the peer hour, a contest
+            or Demo Day: your name, your email and the optional note you write. You do not need an
+            account for this, and the list is visible only to the organisers.
+          </li>
         </ul>
         <p>
           We do not use analytics, tracking pixels, advertising cookies, or any third party
@@ -73,6 +78,10 @@ export default function PrivacyPage() {
         <p>
           For as long as you are a member, and for one academic year afterwards so that a portfolio
           link keeps working. Ask and we delete your account sooner.
+        </p>
+        <p>
+          An event sign-up is deleted one month after the event. It is never merged into anything
+          else, and it is never passed on.
         </p>
 
         <h2>Your rights</h2>
