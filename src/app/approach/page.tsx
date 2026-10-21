@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { HorizontalSteps } from "@/components/motion/horizontal-steps";
+import { CardRail } from "@/components/card-rail";
 import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 
@@ -57,9 +57,7 @@ export default function ApproachPage() {
       title="The method is the product. The software comes after."
       lede="Most AI projects fail for reasons that have nothing to do with the model. We work in the opposite order."
     >
-      <div className="full-bleed">
-        <HorizontalSteps steps={STEPS} />
-      </div>
+      <CardRail cards={STEPS} />
 
       {/* Le vrai livrable */}
       <section className="mt-20 grid gap-10 md:grid-cols-12">

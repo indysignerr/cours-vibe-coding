@@ -13,31 +13,49 @@ import { useEffect, useState } from "react";
  * La peau, le contenu et les animations sont à nous.
  */
 
-/** Quatre catégories, mises en avant à tour de rôle. */
+/**
+ * Les quatre catégories, en pile.
+ *
+ * Verticale et non en ligne : la tuile fait deux rangées de haut, et quatre
+ * pastilles centrées y laissaient un trou au-dessus et au-dessous. Empilées,
+ * elles remplissent la hauteur et donnent à voir ce qu'est un tri.
+ */
 function DataSort() {
-  const cats = ["Public", "Internal", "Personal", "Sensitive"];
+  const cats = [
+    { name: "Public", note: "Anywhere" },
+    { name: "Internal", note: "EU, under contract" },
+    { name: "Personal", note: "EU, logged" },
+    { name: "Sensitive", note: "Your machines, or not at all" },
+  ];
   const [on, setOn] = useState(0);
   useEffect(() => {
-    const i = setInterval(() => setOn((p) => (p + 1) % cats.length), 1400);
+    const i = setInterval(() => setOn((p) => (p + 1) % cats.length), 1500);
     return () => clearInterval(i);
   }, [cats.length]);
 
   return (
-    <div className="flex h-full flex-wrap content-center gap-2">
+    <ul className="flex h-full flex-col justify-between gap-2">
       {cats.map((c, i) => (
-        <motion.span
-          key={c}
-          className="rounded-btn px-3 py-1.5 text-sm"
+        <motion.li
+          key={c.name}
+          className="flex items-baseline justify-between gap-3 rounded-btn px-3.5 py-2.5"
           animate={{
             backgroundColor: i === on ? "var(--brand)" : "var(--sunken)",
             color: i === on ? "var(--on-brand)" : "var(--muted)",
           }}
           transition={{ duration: 0.45 }}
         >
-          {c}
-        </motion.span>
+          <span className="font-medium">{c.name}</span>
+          <motion.span
+            className="text-right text-xs"
+            animate={{ opacity: i === on ? 0.75 : 0.45 }}
+            transition={{ duration: 0.45 }}
+          >
+            {c.note}
+          </motion.span>
+        </motion.li>
       ))}
-    </div>
+    </ul>
   );
 }
 
@@ -127,7 +145,7 @@ const TILES = [
 
 export function Bento() {
   return (
-    <div className="grid auto-rows-[minmax(190px,auto)] grid-cols-1 gap-4 md:grid-cols-6">
+    <div className="grid auto-rows-[minmax(176px,auto)] grid-cols-1 gap-4 md:grid-cols-6">
       {TILES.map((t, i) => (
         <motion.article
           key={t.title}
@@ -138,8 +156,8 @@ export function Bento() {
           transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
           whileHover={{ y: -3 }}
         >
-          <div className="min-h-[90px] flex-1">{t.visual}</div>
-          <div className="mt-6">
+          <div className="min-h-[72px] flex-1">{t.visual}</div>
+          <div className="mt-7">
             <h3 className="display-3">{t.title}</h3>
             <p className="mt-2 text-sm text-body">{t.body}</p>
           </div>

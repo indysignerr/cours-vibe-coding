@@ -56,11 +56,11 @@ export function SiteFooter() {
             {COLUMNS.map((col) => (
               <div key={col.title}>
                 <p className="eyebrow eyebrow--on-ink">{col.title}</p>
-                <ul className="mt-4 grid gap-2.5">
+                <ul className="mt-2 grid">
                   {col.links.map(([href, label]) => (
                     <li key={href}>
                       <Link
-                        className="text-sm text-on-ink/85 transition-colors hover:text-brand-soft"
+                        className="-my-1.5 inline-flex min-h-[44px] items-center text-sm text-on-ink/85 transition-colors hover:text-brand-soft"
                         href={href}
                       >
                         {label}
@@ -73,7 +73,7 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <p className="mt-14 border-t border-on-ink/15 pt-6 text-xs text-on-ink-muted">
+        <p className="mt-14 border-t border-on-ink/15 pt-6 text-sm text-on-ink-muted">
           {SITE.name} · {SITE.school} {SITE.campus}
         </p>
       </div>

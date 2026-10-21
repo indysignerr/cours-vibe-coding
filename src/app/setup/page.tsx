@@ -73,7 +73,7 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
         <li key={step.title} className="card lift-on-hover min-w-0 p-6 md:p-8">
           <div className="flex items-baseline gap-4">
             <span className="counter">{String(i + 1 + offset).padStart(2, "0")}</span>
-            <h3 className="display-3">{step.title}</h3>
+            <h2 className="display-3">{step.title}</h2>
           </div>
           <p className="mt-3 max-w-measure text-body">{step.body}</p>
           {step.command ? (

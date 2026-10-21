@@ -189,7 +189,9 @@
 
   /* ---- Surtitre : capitales Medium, crénage large ---- */
   .eyebrow {
-    font-size: 0.75rem;
+    /* 14 px et non 12 : le site sert aussi de support projeté, et un
+       libellé en capitales à 12 px ne se lit pas au fond d'une salle. */
+    font-size: 0.875rem;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -243,14 +245,6 @@
   }
 
   .tap { min-height: 44px; min-width: 44px; }
-
-  /* Sort d'un conteneur centré pour reprendre toute la largeur de l'écran.
-     Sert aux scènes épinglées, qui ne peuvent pas vivre dans une gouttière. */
-  .full-bleed {
-    width: 100vw;
-    margin-left: 50%;
-    transform: translateX(-50%);
-  }
 
   /* Rangée de liens défilante : la barre de défilement n'apporte rien ici. */
   .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
@@ -484,4 +478,51 @@
 @keyframes ray-in {
   from { opacity: 0; transform: scale(0.4); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* =====================================================================
+   Apparitions.
+
+   La visibilité est pilotée par une classe, pas par du style en ligne.
+   Trois raisons, toutes apprises à la dure :
+
+   1. Sans JavaScript, rien n'est caché — la classe n'est posée que par le
+      composant, donc une page sans script reste entièrement lisible.
+   2. Un filet inconditionnel révèle tout au bout de cinq secondes, quoi
+      qu'il arrive. Un observateur qui ne se déclenche pas laissait des
+      sections entières à opacité zéro ; une animation manquée est
+      préférable à une page vide.
+   3. prefers-reduced-motion annule l'état caché lui-même, pas seulement
+      la durée de la transition.
+   ===================================================================== */
+@layer components {
+  .reveal-armed > * ,
+  .reveal-armed:not(.reveal-stagger) {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 26px));
+  }
+  .reveal-armed:not(.reveal-stagger) > * { opacity: 1; transform: none; }
+
+  .reveal-armed.is-in,
+  .reveal-armed.is-in > * {
+    opacity: 1;
+    transform: none;
+    transition: opacity 850ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* La cascade : chaque enfant part un cran après le précédent. */
+  .reveal-armed.reveal-stagger.is-in > *:nth-child(2) { transition-delay: 90ms; }
+  .reveal-armed.reveal-stagger.is-in > *:nth-child(3) { transition-delay: 180ms; }
+  .reveal-armed.reveal-stagger.is-in > *:nth-child(4) { transition-delay: 270ms; }
+  .reveal-armed.reveal-stagger.is-in > *:nth-child(5) { transition-delay: 360ms; }
+  .reveal-armed.reveal-stagger.is-in > *:nth-child(n + 6) { transition-delay: 450ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-armed,
+  .reveal-armed > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

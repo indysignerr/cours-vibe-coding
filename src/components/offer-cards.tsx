@@ -23,7 +23,7 @@ export function OfferCards() {
         const isOpen = open === o.slug;
         return (
           <li key={o.slug}>
-            <h3>
+            <h2>
               <button
                 type="button"
                 aria-expanded={isOpen}
@@ -56,7 +56,7 @@ export function OfferCards() {
                   />
                 </span>
               </button>
-            </h3>
+            </h2>
 
             <AnimatePresence initial={false}>
               {isOpen ? (
