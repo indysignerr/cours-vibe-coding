@@ -102,46 +102,37 @@ function SometimesNo() {
 /**
  * Le tampon qui n'arrive jamais sur le papier.
  *
- * La barre va d'angle à angle : bas gauche vers haut droit. Un trait en
- * CSS ne peut pas faire ça tout seul — il faudrait connaître l'arc
- * tangente du rapport du badge, qui change avec la longueur du mot et la
- * taille du texte.
+ * La barre passe par le coin bas gauche et le coin haut droit, quelle que
+ * soit la taille du badge. C'est un dégradé et non un trait : avec un
+ * mot-clé de coin, la spécification CSS impose que la perpendiculaire à
+ * l'axe du dégradé passe exactement par les deux autres coins. « to top
+ * left » donne donc une bande qui relie bas gauche et haut droit, et le
+ * navigateur calcule l'angle du rectangle à notre place.
  *
- * D'où le SVG : la viewBox 0 0 100 100 est étirée aux dimensions réelles
- * par preserveAspectRatio="none", donc la diagonale tombe pile sur les
- * deux angles quelles que soient les proportions. vector-effect garde
- * l'épaisseur du trait constante, sinon l'étirement non uniforme
- * l'écraserait dans un sens et l'épaissirait dans l'autre.
+ * Deux choses qu'un SVG ne donnait pas : les extrémités sont rognées par
+ * le border-radius, donc elles ne dépassent plus des coins arrondis ; et
+ * l'épaisseur se mesure perpendiculairement à la bande, donc elle est
+ * juste sans correction d'échelle.
  */
 function NeverCertify() {
+  const stroke =
+    "linear-gradient(to top left, transparent calc(50% - 1px), var(--brand) calc(50% - 1px), var(--brand) calc(50% + 1px), transparent calc(50% + 1px))";
+
   return (
     <div className="flex h-full items-center justify-center">
       <span className="relative inline-block">
         <span className="block rounded-card px-6 py-4 text-center text-sm uppercase tracking-[0.18em] text-muted shadow-[inset_0_0_0_1px_var(--line-strong)]">
           Certified
         </span>
-        <svg
+        <motion.span
           aria-hidden
-          className="absolute inset-0 h-full w-full"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          fill="none"
-        >
-          <motion.line
-            x1="0"
-            y1="100"
-            x2="100"
-            y2="0"
-            stroke="var(--brand)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          />
-        </svg>
+          className="absolute inset-0 rounded-card"
+          style={{ backgroundImage: stroke }}
+          initial={{ clipPath: "inset(0 100% 0 0)" }}
+          whileInView={{ clipPath: "inset(0 0% 0 0)" }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        />
       </span>
     </div>
   );
