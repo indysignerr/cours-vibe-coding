@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
@@ -67,9 +68,9 @@ const BEFORE_HACKATHON: Step[] = [
 
 function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
   return (
-    <ol className="grid gap-4">
+    <Reveal as="ol" className="grid gap-4" stagger y={22}>
       {steps.map((step, i) => (
-        <li key={step.title} className="card min-w-0 p-6 md:p-8">
+        <li key={step.title} className="card lift-on-hover min-w-0 p-6 md:p-8">
           <div className="flex items-baseline gap-4">
             <span className="counter">{String(i + 1 + offset).padStart(2, "0")}</span>
             <h3 className="display-3">{step.title}</h3>
@@ -87,7 +88,7 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
           ) : null}
         </li>
       ))}
-    </ol>
+    </Reveal>
   );
 }
 

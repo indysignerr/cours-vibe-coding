@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AddToCalendar } from "@/components/add-to-calendar";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 import { EVENT_KINDS, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
@@ -49,7 +51,7 @@ export default function JoinPage() {
       title="Learn to build the thing, not to talk about it."
       lede="No syllabus, no attendance sheet, nothing weekly. We run hackathons, workshops and talks, and the members who ship something take on the paid client work."
     >
-      <ol className="rows">
+      <Reveal as="ol" className="rows" stagger y={24}>
         {EXPECT.map((e) => (
           <li key={e.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
             <span className="counter md:col-span-1">{e.n}</span>
@@ -57,11 +59,11 @@ export default function JoinPage() {
             <p className="text-body md:col-span-6 md:col-start-6">{e.body}</p>
           </li>
         ))}
-      </ol>
+      </Reveal>
 
       {/* Le prochain rendez-vous, puisque c'est la seule porte d'entrée */}
       {next.length > 0 ? (
-        <section className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16">
+        <Reveal as="section" className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16" y={30}>
           <p className="eyebrow eyebrow--on-ink">The door is the next event</p>
           <h2 className="display-2 mt-4 max-w-[22ch]" style={{ color: "var(--on-ink)" }}>
             {EVENT_KINDS[next[0].kind].label}: {next[0].title}.
@@ -70,24 +72,26 @@ export default function JoinPage() {
             {next[0].summary}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link className="btn btn--brand" href="/events/">
-              Sign up for it
-            </Link>
+            <Magnetic>
+              <Link className="btn btn--brand" href="/events/">
+                Sign up for it
+              </Link>
+            </Magnetic>
             <AddToCalendar event={next[0]} variant="outline" label="Add the date" />
           </div>
-        </section>
+        </Reveal>
       ) : null}
 
       <section className="card card--sand mt-20 p-7 md:p-10">
         <p className="eyebrow">What to bring</p>
-        <dl className="rows mt-8">
+        <Reveal as="dl" className="rows mt-8" stagger y={18}>
           {BRING.map(([term, detail]) => (
             <div key={term} className="grid gap-2 py-6 md:grid-cols-12 md:gap-8">
               <dt className="text-sm font-semibold text-ink md:col-span-3">{term}</dt>
               <dd className="text-body md:col-span-8">{detail}</dd>
             </div>
           ))}
-        </dl>
+        </Reveal>
         <Link className="btn btn--ghost mt-8" href="/setup/">
           Get your machine ready first
         </Link>
@@ -109,9 +113,11 @@ export default function JoinPage() {
             deadline rather than a school one.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link className="btn btn--primary" href="/events/">
-              See what is coming up
-            </Link>
+            <Magnetic>
+              <Link className="btn btn--primary" href="/events/">
+                See what is coming up
+              </Link>
+            </Magnetic>
             <Link className="btn btn--quiet" href="/about/">
               Who we are
             </Link>

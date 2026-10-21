@@ -394,3 +394,54 @@
   .anim-float, .anim-wiggle, .anim-pulse { animation: none; }
   .anim-pulse::after { display: none; }
 }
+
+/* =====================================================================
+   Mouvement.
+
+   Une seule règle tient tout : rien ne bouge si le système demande à ce
+   que rien ne bouge. Le bloc prefers-reduced-motion plus haut coupe déjà
+   les durées ; les composants coupent en plus leur logique JavaScript.
+   ===================================================================== */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee ul { animation: none !important; }
+}
+
+/* Masque dégradé sur les bords du bandeau : il entre et sort au lieu
+   d'être coupé net. */
+.marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7rem, #000 calc(100% - 7rem), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7rem, #000 calc(100% - 7rem), transparent);
+}
+
+/* Le trait qui se tire sous un lien au survol. */
+.underline-grow {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.underline-grow:hover,
+.underline-grow:focus-visible { background-size: 100% 1px; }
+
+/* Carte qui se soulève à peine. Le mouvement est de 2 px : on le sent
+   sans le voir, ce qui est le but. */
+.lift-on-hover {
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 420ms ease;
+}
+.lift-on-hover:hover { transform: translateY(-2px); box-shadow: var(--lift-lg); }
+
+/* Le pictogramme qui se dessine. */
+@keyframes draw {
+  from { stroke-dashoffset: var(--len); }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes ray-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: scale(1); }
+}

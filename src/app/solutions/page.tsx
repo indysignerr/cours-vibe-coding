@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 import { OFFERS } from "@/lib/offers";
 
@@ -23,7 +25,7 @@ export default function ServicesPage() {
       title="Five engagements. Fixed price, three weeks."
       lede="Each one is scoped tightly enough to finish, and written down precisely enough that you know what you are not getting. That second part is the one most proposals leave out."
     >
-      <ul className="rows">
+      <Reveal as="ul" className="rows" stagger y={24}>
         {OFFERS.map((o) => (
           <li key={o.slug} className="grid gap-8 py-12 first:pt-0 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-4">
@@ -59,15 +61,15 @@ export default function ServicesPage() {
             </div>
           </li>
         ))}
-      </ul>
+      </Reveal>
 
       {/* Ce qu'on refuse : dit tôt, c'est un argument de sérieux */}
       <section className="mt-20 grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-5">
+        <Reveal className="md:col-span-5" y={24}>
           <p className="eyebrow">What we refuse</p>
           <h2 className="display-2 mt-4">Anything that decides about a person.</h2>
-        </div>
-        <div className="md:col-span-6 md:col-start-7">
+        </Reveal>
+        <Reveal className="md:col-span-6 md:col-start-7" stagger y={24}>
           <p className="lede">
             CV screening, employee scoring, customer rating, credit decisions, health. The European AI
             regulation classes these as high risk from December 2027.
@@ -82,23 +84,23 @@ export default function ServicesPage() {
           <p className="mt-5">
             We say this in the first meeting rather than discovering it in month three.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* Conditions commerciales */}
       <section className="card card--sand mt-20 p-7 md:p-10">
         <p className="eyebrow">Terms, the same for everyone</p>
-        <dl className="rows mt-8">
+        <Reveal as="dl" className="rows mt-8" stagger y={18}>
           {TERMS.map(([term, detail]) => (
             <div key={term} className="grid gap-3 py-6 md:grid-cols-12 md:gap-8">
               <dt className="text-sm font-semibold text-ink md:col-span-3">{term}</dt>
               <dd className="text-body md:col-span-8">{detail}</dd>
             </div>
           ))}
-        </dl>
+        </Reveal>
       </section>
 
-      <section className="mt-20">
+      <Reveal as="section" className="mt-20" y={30}>
         <div className="card card--ink px-7 py-12 md:px-14 md:py-16">
           <h2 className="display-2 max-w-[20ch]" style={{ color: "var(--on-ink)" }}>
             Not sure which one you need?
@@ -107,11 +109,13 @@ export default function ServicesPage() {
             Most companies start with the audit, because it is the one that tells you whether the other
             four are worth doing. Forty-five minutes is enough to find out.
           </p>
-          <Link className="btn btn--accent mt-8" href="/contact/">
-            Book a first conversation
-          </Link>
+          <Magnetic>
+            <Link className="btn btn--brand mt-8" href="/contact/">
+              Book a first conversation
+            </Link>
+          </Magnetic>
         </div>
-      </section>
+      </Reveal>
     </PageShell>
   );
 }

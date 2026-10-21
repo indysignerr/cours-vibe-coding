@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandMark } from "@/components/brand";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/site";
 
@@ -77,7 +79,7 @@ export default function AboutPage() {
       lede={`${SITE.name} is run by students of ${SITE.school} in ${SITE.campus}. That is why our prices are a fraction of an agency’s, and it is why we are strict about what we take on.`}
     >
       {/* L'identité, posée sur sable avec le pictogramme en grand */}
-      <section className="card card--ink relative overflow-hidden px-7 py-14 md:px-14 md:py-20">
+      <Reveal as="section" className="card card--ink relative overflow-hidden px-7 py-14 md:px-14 md:py-20" y={30}>
         <BrandMark
           className="pointer-events-none absolute -right-10 -top-10 size-72 opacity-[0.07] md:size-96"
           outline="var(--on-ink)"
@@ -110,12 +112,12 @@ export default function AboutPage() {
             ))}
           </dl>
         ) : null}
-      </section>
+      </Reveal>
 
       {/* L'histoire */}
       <section className="mt-20">
         <p className="eyebrow">How we got here</p>
-        <ol className="rows mt-8">
+        <Reveal as="ol" className="rows mt-8" stagger y={24}>
           {STORY.map((s) => (
             <li key={s.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
               <span className="counter md:col-span-1">{s.n}</span>
@@ -123,14 +125,14 @@ export default function AboutPage() {
               <p className="text-body md:col-span-6 md:col-start-6">{s.body}</p>
             </li>
           ))}
-        </ol>
+        </Reveal>
       </section>
 
       {/* L'équipe */}
       <section className="mt-20">
         <p className="eyebrow">Who you would be working with</p>
         <h2 className="display-2 mt-4 max-w-[22ch]">Six people, and you meet the ones who build.</h2>
-        <ul className="mt-10 grid gap-px overflow-hidden rounded-card bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <Reveal as="ul" className="mt-10 grid gap-px overflow-hidden rounded-card bg-line sm:grid-cols-2 lg:grid-cols-3" stagger y={24}>
           {SITE.team.map((m) => (
             <li key={m.name} className="bg-surface p-7">
               <span
@@ -144,13 +146,13 @@ export default function AboutPage() {
               <p className="mt-2 text-sm text-muted">{m.focus}</p>
             </li>
           ))}
-        </ul>
+        </Reveal>
       </section>
 
       {/* Ce qui ne se négocie pas */}
       <section className="mt-20">
         <p className="eyebrow">What does not get negotiated</p>
-        <div className="mt-8 grid gap-px overflow-hidden rounded-card bg-line md:grid-cols-3">
+        <Reveal className="mt-8 grid gap-px overflow-hidden rounded-card bg-line md:grid-cols-3" stagger y={26}>
           {VALUES.map((v) => (
             <article key={v.title} className="bg-sunken p-7 md:p-8">
               <span aria-hidden className="rule--brand block" />
@@ -158,7 +160,7 @@ export default function AboutPage() {
               <p className="mt-3 text-body">{v.body}</p>
             </article>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* Les faits, et l'honnêteté sur ce qu'on refuse */}
@@ -190,9 +192,11 @@ export default function AboutPage() {
             meeting than discover it in month three.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link className="btn btn--primary" href="/contact/">
-              Book a first conversation
-            </Link>
+            <Magnetic>
+              <Link className="btn btn--primary" href="/contact/">
+                Book a first conversation
+              </Link>
+            </Magnetic>
             <Link className="btn btn--ghost" href="/solutions/">
               See the five solutions
             </Link>

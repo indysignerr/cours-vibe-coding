@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EventSignup } from "@/components/event-signup";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 import { embedUrl, googleCalendarUrl, icalFeedUrl, subscribeUrl } from "@/lib/calendar";
 import { EVENT_KINDS, past, readableSpan, upcoming } from "@/lib/events";
@@ -27,7 +29,7 @@ export default function EventsPage() {
       {/* Les quatre formats, dits une fois */}
       <section>
         <p className="eyebrow">Four formats</p>
-        <dl className="mt-8 grid gap-px overflow-hidden rounded-card bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal as="dl" className="mt-8 grid gap-px overflow-hidden rounded-card bg-line sm:grid-cols-2 lg:grid-cols-4" stagger y={22}>
           {Object.entries(EVENT_KINDS).map(([key, k]) => (
             <div key={key} className="bg-sunken p-6">
               <span aria-hidden className="rule--brand block" />
@@ -35,7 +37,7 @@ export default function EventsPage() {
               <dd className="mt-2 text-sm text-body">{k.blurb}</dd>
             </div>
           ))}
-        </dl>
+        </Reveal>
       </section>
 
       {/* Ce qui arrive */}
@@ -53,10 +55,10 @@ export default function EventsPage() {
             </Link>
           </div>
         ) : (
-          <ul className="mt-8 grid gap-10">
+          <Reveal as="ul" className="mt-8 grid gap-10" stagger y={32}>
             {next.map((e, i) => (
               <li key={e.slug}>
-                <article className="card card--raised overflow-hidden">
+                <article className="card card--raised lift-on-hover overflow-hidden">
                   <div className="grid md:grid-cols-12">
                     {/* La fiche, sur marine */}
                     <div className="bg-ink-surface p-7 md:col-span-5 md:p-10">
@@ -97,7 +99,7 @@ export default function EventsPage() {
                       </p>
 
                       <a
-                        className="btn btn--outline mt-8"
+                        className="btn btn--outline lift-on-hover mt-8"
                         href={googleCalendarUrl(e)}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -142,7 +144,7 @@ export default function EventsPage() {
                 </article>
               </li>
             ))}
-          </ul>
+          </Reveal>
         )}
       </section>
 
@@ -228,9 +230,11 @@ export default function EventsPage() {
             to live with the tools. Same format, your building, your problem.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link className="btn btn--primary" href="/contact/">
-              Talk to us about it
-            </Link>
+            <Magnetic>
+              <Link className="btn btn--primary" href="/contact/">
+                Talk to us about it
+              </Link>
+            </Magnetic>
             <Link className="btn btn--ghost" href="/solutions/">
               See the five solutions
             </Link>

@@ -4,6 +4,7 @@ import { SITE } from "@/lib/site";
 /** Pages publiques uniquement : /admin/ est derrière une connexion. */
 const PUBLIC = [
   { path: "", priority: 1 },
+  { path: "/work", priority: 0.9 },
   { path: "/solutions", priority: 0.9 },
   { path: "/approach", priority: 0.8 },
   { path: "/contact", priority: 0.8 },

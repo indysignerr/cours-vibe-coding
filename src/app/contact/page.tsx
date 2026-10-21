@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/site";
 
@@ -46,7 +48,7 @@ export default function ContactPage() {
     >
       {/* Le créneau, s'il existe : c'est le chemin le plus court */}
       {booking ? (
-        <section className="card card--ink mb-16 px-7 py-12 md:px-14 md:py-16">
+        <Reveal as="section" className="card card--ink mb-16 px-7 py-12 md:px-14 md:py-16" y={26}>
           <p className="eyebrow eyebrow--on-ink">Pick a slot</p>
           <h2 className="display-2 mt-4 max-w-[20ch]" style={{ color: "var(--on-ink)" }}>
             Choose a time in our calendar.
@@ -55,21 +57,25 @@ export default function ContactPage() {
             The slots you see are the ones that are genuinely free. You get the invitation
             immediately, with a video link if you are not in {SITE.campus}.
           </p>
-          <a className="btn btn--brand mt-8" href={booking} target="_blank" rel="noopener noreferrer">
-            Open the booking calendar
-          </a>
-        </section>
+          <Magnetic>
+            <a className="btn btn--brand mt-8" href={booking} target="_blank" rel="noopener noreferrer">
+              Open the booking calendar
+            </a>
+          </Magnetic>
+        </Reveal>
       ) : null}
 
       <div className="grid gap-14 md:grid-cols-12">
-        <section className="md:col-span-5">
+        <Reveal as="section" className="md:col-span-5" y={24}>
           <p className="eyebrow">How to reach us</p>
 
           {mailto ? (
             <>
-              <a className="btn btn--primary mt-6 w-full sm:w-auto" href={mailto}>
-                Write to us
-              </a>
+              <Magnetic>
+                <a className="btn btn--primary mt-6 w-full sm:w-auto" href={mailto}>
+                  Write to us
+                </a>
+              </Magnetic>
               <p className="mt-4 text-sm text-muted">
                 The link opens a message already structured. If you would rather write your own:{" "}
                 <a className="text-accent underline underline-offset-4" href={`mailto:${email}`}>
@@ -123,12 +129,12 @@ export default function ContactPage() {
           <p className="mt-3 text-body">
             If you are a student at {SITE.school}, the association is the door, not this page.
           </p>
-          <Link className="btn btn--quiet mt-3 -ml-2" href="/join/">
+          <Link className="btn btn--quiet underline-grow mt-3 -ml-2" href="/join/">
             Join the association
           </Link>
-        </section>
+        </Reveal>
 
-        <section className="md:col-span-6 md:col-start-7">
+        <Reveal as="section" className="md:col-span-6 md:col-start-7" y={24} delay={0.08}>
           <p className="eyebrow">What a useful first message contains</p>
           <p className="mt-4 text-body">
             Six lines are enough. Copy this, fill it in, and we will come back with a view rather than
@@ -139,21 +145,21 @@ export default function ContactPage() {
           </pre>
 
           <h2 className="eyebrow mt-12">What we ask in the meeting</h2>
-          <dl className="rows mt-6">
+          <Reveal as="dl" className="rows mt-6" stagger y={16}>
             {AGENDA.map(([term, detail]) => (
               <div key={term} className="grid gap-2 py-5 md:grid-cols-12 md:gap-6">
                 <dt className="display-3 md:col-span-5">{term}</dt>
                 <dd className="text-body md:col-span-7">{detail}</dd>
               </div>
             ))}
-          </dl>
+          </Reveal>
 
           <p className="mt-10 max-w-measure text-sm text-muted">
             We refuse engagements that decide about a person — CV screening, employee scoring, credit,
             health. If that is what you need, we will say so in this first meeting rather than three
             months later.
           </p>
-        </section>
+        </Reveal>
       </div>
     </PageShell>
   );

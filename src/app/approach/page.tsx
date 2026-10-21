@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default function ApproachPage() {
       title="The method is the product. The software comes after."
       lede="Most AI projects fail for reasons that have nothing to do with the model: the scope was too wide on day one, nobody measured the value before launch, and no human reviewed a deliverable that committed the company. We work in the opposite order."
     >
-      <ol className="rows">
+      <Reveal as="ol" className="rows" stagger y={24}>
         {STEPS.map((s) => (
           <li key={s.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
             <span className="counter md:col-span-1">{s.n}</span>
@@ -63,11 +64,11 @@ export default function ApproachPage() {
             <p className="text-body md:col-span-6 md:col-start-6">{s.body}</p>
           </li>
         ))}
-      </ol>
+      </Reveal>
 
       {/* Le vrai livrable */}
       <section className="mt-20 grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-5">
+        <Reveal className="md:col-span-5" y={24}>
           <p className="eyebrow">What companies actually lack</p>
           <h2 className="display-2 mt-4">The file, not the server.</h2>
           <p className="mt-5 text-body">
@@ -75,17 +76,17 @@ export default function ApproachPage() {
             you a legal basis, it does not set your retention periods, and it does not consult anyone.
             The file does.
           </p>
-        </div>
+        </Reveal>
         <div className="md:col-span-6 md:col-start-7">
-          <ul className="grid gap-3">
+          <Reveal as="ul" className="grid gap-3" stagger y={14}>
             {FILE_ITEMS.map((item) => (
               <li key={item} className="grid grid-cols-[auto_1fr] gap-3 text-body">
                 <span aria-hidden className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand" />
                 <span>{item}</span>
               </li>
             ))}
-          </ul>
-          <div className="card card--tint mt-8 p-6">
+          </Reveal>
+          <div className="card card--tint lift-on-hover mt-8 p-6">
             <p className="text-body">
               The sentence we repeat in every meeting and every quote:{" "}
               <strong className="text-ink">
@@ -108,23 +109,23 @@ export default function ApproachPage() {
           Running everything on your own hardware sounds safest and is usually the most expensive way to
           be no more compliant. The data sort decides, not the fashion.
         </p>
-        <dl className="rows mt-10">
+        <Reveal as="dl" className="rows mt-10" stagger y={18}>
           {ROUTES.map(([route, when]) => (
             <div key={route} className="grid gap-3 py-7 md:grid-cols-12 md:gap-8">
               <dt className="display-3 md:col-span-5">{route}</dt>
               <dd className="text-body md:col-span-6 md:col-start-7">{when}</dd>
             </div>
           ))}
-        </dl>
+        </Reveal>
       </section>
 
       {/* Pourquoi les projets échouent */}
       <section className="mt-20 grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-5">
+        <Reveal className="md:col-span-5" y={24}>
           <p className="eyebrow">Why pilots fail</p>
           <h2 className="display-2 mt-4">Rarely the model.</h2>
-        </div>
-        <div className="md:col-span-6 md:col-start-7">
+        </Reveal>
+        <Reveal className="md:col-span-6 md:col-start-7" stagger y={22}>
           <p className="lede">
             Scope too wide on day one. No measurement of value before launch. Data quality
             underestimated. No human review on a deliverable that commits the company. Substitution
@@ -140,10 +141,10 @@ export default function ApproachPage() {
             succeed about three times as often as pilots carried by an IT department alone. That gap is
             the whole reason we work the way we do.
           </p>
-          <Link className="btn btn--quiet mt-6 -ml-2" href="/solutions/">
+          <Link className="btn btn--quiet underline-grow mt-6 -ml-2" href="/solutions/">
             See what that buys you
           </Link>
-        </div>
+        </Reveal>
       </section>
     </PageShell>
   );
