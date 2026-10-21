@@ -1,0 +1,38 @@
+# Anciennes URL, gardées vivantes.
+#
+# Deux refontes sont passées par là : le parcours de cours a disparu au
+# profit des évènements, et deux pages ont été renommées. Un lien partagé
+# en septembre doit continuer de tomber quelque part d'utile, pas sur un 404.
+#
+# Cloudflare Pages n'applique ces règles que si aucun fichier statique ne
+# correspond : elles ne peuvent pas masquer une page vivante.
+
+# Renommages
+/services       /solutions   301
+/services/*     /solutions   301
+/team           /about       301
+/team/*         /about       301
+/calendar       /events      301
+/calendar/*     /events      301
+
+# Le parcours de cours et les concours sont devenus des évènements
+/contests       /events      301
+/contests/*     /events      301
+/programme      /events      301
+/programme/*    /events      301
+/sessions       /events      301
+/sessions/*     /events      301
+/signup         /events      301
+/signup/*       /events      301
+
+# L'appareil de notation n'a pas de remplaçant : retour à l'accueil
+/submit         /            301
+/submit/*       /            301
+/leaderboard    /            301
+/leaderboard/*  /            301
+/results        /            301
+/results/*      /            301
+/judge          /            301
+/judge/*        /            301
+/me             /            301
+/me/*           /            301
