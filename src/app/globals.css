@@ -3,426 +3,345 @@
 @tailwind utilities;
 
 /* =====================================================================
-   Identité d'AI-bert Vibe Coding.
-   Contraintes actées : pas les couleurs d'Albert School, pas la palette
-   Indysigner. Toutes les paires sont validées par scripts/check-contrast.mjs,
-   à relancer après chaque retouche.
+   AI-bert — système visuel.
 
-   Trois jetons par couleur sémantique :
-     --x        aplat vif, porte TOUJOURS du texte encre, jamais du blanc
-     --x-line   bordure d'un repère non textuel, 3:1 minimum sur le fond
-     --x-strong texte coloré sur fond clair, 4.5:1 minimum
+   Registre : cabinet de conseil. Encre marine sur blanc chaud, un seul
+   accent employé avec parcimonie, bordures en ombre plutôt qu'en trait,
+   rayons conservateurs. Rien de rond, rien de criard, rien de gonflé.
+
+   Toutes les paires sont validées par scripts/check-contrast.mjs, à
+   relancer après chaque retouche.
    ===================================================================== */
 :root {
-  --paper: #f4f1ea;
+  /* Surfaces */
+  --canvas: #fcfcfd;
   --surface: #ffffff;
-  --sunken: #ebe6da;
-  --ink: #14121a;
-  --muted: #5f5647;
-  --line: #ddd6c9;
+  --sunken: #f5f6f8;
+  --ink-surface: #0b1220;
 
-  --accent: #ff4d2e;
-  --accent-line: #d13a1c;
-  --accent-strong: #b8341a;
-  --accent-ink: #14121a;
+  /* Texte */
+  --ink: #0b1220;          /* titres, marine profond plutôt que noir */
+  --body: #495567;         /* texte courant */
+  --muted: #626d7d;        /* légendes, métadonnées */
+  --on-ink: #e8ecf2;       /* texte sur fond marine */
+  --on-ink-muted: #94a1b4;
 
-  --done: #16c08a;
-  --done-line: #0e8f66;
-  --done-strong: #0d6b4f;
+  /* Accent, employé rarement */
+  --accent: #b4441f;
+  --accent-hover: #933516;
+  --accent-tint: #fbf2ee;
+  --on-accent: #ffffff;
 
-  --streak: #ffb43d;
-  --streak-line: #ad7400;
-  --streak-strong: #8a5200;
+  /* Lignes et profondeur : l'ombre fait office de bordure */
+  --line: rgba(11, 18, 32, 0.09);
+  --line-strong: rgba(11, 18, 32, 0.16);
+  --hair: 0 0 0 1px rgba(11, 18, 32, 0.08);
+  --lift: 0 0 0 1px rgba(11, 18, 32, 0.07), 0 1px 2px rgba(11, 18, 32, 0.04),
+    0 8px 24px -16px rgba(11, 18, 32, 0.18);
+  --lift-lg: 0 0 0 1px rgba(11, 18, 32, 0.07), 0 2px 4px rgba(11, 18, 32, 0.04),
+    0 24px 48px -24px rgba(11, 18, 32, 0.22);
 
-  --xp: #a678f0;
-  --xp-line: #7a48c4;
-  --xp-strong: #6b3b8f;
-
-  /* Texte posé sur un aplat coloré : toujours sombre, dans les deux thèmes. */
-  --on-fill: #14121a;
-  --ink-line: #000000;
-  --line-strong: #857c6c;
-  --mascot-body: #14121a;
-  --mascot-face: #f4f1ea;
-  --code-bg: #14121a;
-  --code-ink: #f4f1ea;
-  --scrim: rgba(20, 18, 26, 0.6);
-
-  --grain: 0.03;
-  --lift: 0 2px 0 var(--line), 0 10px 24px -14px rgba(20, 18, 26, 0.35);
   color-scheme: light;
-}
-
-/* Thème sombre disponible pour un futur sélecteur, jamais imposé par le
-   réglage système. Volontairement moins noir que le premier essai : le
-   site sert de support projeté, un quasi-noir écrase la salle. */
-:root[data-theme="dark"] {
-  --paper: #1c1b21;
-  --surface: #26252d;
-  --sunken: #15141a;
-  --ink: #f4f1ea;
-  --muted: #a9a093;
-  --line: #383641;
-
-  --accent: #ff6a4d;
-  --accent-line: #ff6a4d;
-  --accent-strong: #ff8a72;
-  --accent-ink: #14121a;
-
-  --done: #2fd79f;
-  --done-line: #2fd79f;
-  --done-strong: #58e0b4;
-
-  --streak: #ffc25c;
-  --streak-line: #ffc25c;
-  --streak-strong: #ffd08a;
-
-  --xp: #b892f5;
-  --xp-line: #b892f5;
-  --xp-strong: #cbb0f8;
-
-  --on-fill: #14121a;
-  --ink-line: #c9c3b6;
-  --line-strong: #7d766c;
-  --mascot-body: #14121a;
-  --mascot-face: #f4f1ea;
-  --code-bg: #0f0e13;
-  --code-ink: #f4f1ea;
-  --scrim: rgba(0, 0, 0, 0.7);
-
-  --lift: 0 2px 0 var(--line), 0 10px 24px -14px rgba(0, 0, 0, 0.6);
-  color-scheme: dark;
 }
 
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
-    background-color: var(--paper);
-    color: var(--ink);
-    font-family: var(--font-body), system-ui, sans-serif;
-    /* Le site sert aussi de support projeté : le corps ne descend jamais
-       sous 17px, et 18px au-delà de la tablette. */
+    background-color: var(--canvas);
+    color: var(--body);
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
     font-size: 1.0625rem;
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   @media (min-width: 768px) {
-    body { font-size: 1.125rem; }
+    body { font-size: 1.09375rem; }
   }
 
-  /* Fond atmosphérique : grain SVG + halo, jamais un aplat uni. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: var(--grain);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  h1, h2, h3, h4 {
+    color: var(--ink);
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
   }
 
   :focus-visible {
-    outline: 3px solid var(--accent-line);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
 
   ::selection {
     background: var(--accent);
-    color: var(--accent-ink);
+    color: var(--on-accent);
   }
+
+  strong { color: var(--ink); font-weight: 600; }
 }
 
-/* Toute cible tactile fait au moins 44px. */
 @layer components {
-  .tap {
+  /* ---- Boutons : plats, rayon court, une seule couleur pleine ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     min-height: 44px;
-    min-width: 44px;
+    padding: 0 1.25rem;
+    border-radius: 7px;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    transition: background-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
   }
+  .btn--primary {
+    background: var(--ink);
+    color: var(--on-ink);
+    box-shadow: 0 1px 2px rgba(11, 18, 32, 0.16);
+  }
+  .btn--primary:hover { background: #16213a; }
+  .btn--accent { background: var(--accent); color: var(--on-accent); }
+  .btn--accent:hover { background: var(--accent-hover); }
+  .btn--ghost {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--hair);
+  }
+  .btn--ghost:hover { background: var(--sunken); }
+  .btn--quiet { color: var(--ink); padding: 0 0.5rem; }
+  .btn--quiet:hover { color: var(--accent); }
+
+  /* ---- Cartes : la bordure est une ombre, pas un trait ---- */
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: var(--hair);
+  }
+  .card--raised { box-shadow: var(--lift); }
+  .card--ink { background: var(--ink-surface); color: var(--on-ink); box-shadow: none; }
+  .card--ink h2, .card--ink h3, .card--ink h4 { color: var(--on-ink); }
+  .card--tint { background: var(--accent-tint); box-shadow: var(--hair); }
+
+  /* ---- Surtitre : mono, petit, espacé ---- */
+  .eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow--accent { color: var(--accent); }
+
+  /* ---- Échelle de titrage : graisse légère, chasse resserrée ---- */
+  .display-1 {
+    font-family: var(--font-display), Georgia, serif;
+    font-size: clamp(2.75rem, 5.2vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.028em;
+    font-weight: 300;
+    color: var(--ink);
+  }
+  .display-2 {
+    font-family: var(--font-display), Georgia, serif;
+    font-size: clamp(2rem, 3.4vw, 2.875rem);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    font-weight: 300;
+    color: var(--ink);
+  }
+  .display-3 {
+    font-family: var(--font-display), Georgia, serif;
+    font-size: clamp(1.375rem, 2vw, 1.625rem);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .lede {
+    font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+    line-height: 1.6;
+    color: var(--body);
+  }
+
+  /* ---- Règle fine pleine largeur ---- */
+  .rule { height: 1px; background: var(--line); }
+
+  /* ---- Liste à filets, le motif de mise en page dominant ---- */
+  .rows > * + * { border-top: 1px solid var(--line); }
+
+  /* ---- Cible tactile ---- */
+  .tap { min-height: 44px; min-width: 44px; }
+
+  /* Rangée de liens défilante : la barre de défilement n'apporte rien ici. */
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  /* Le +XP doit rester lisible : pas d'animation, pleine opacité. */
-  .xp-toast { animation: none !important; opacity: 1 !important; }
-}
-
-/* Typo des pages rédactionnelles et du markdown venu de Supabase. */
+/* Typo des pages rédactionnelles et du markdown */
 @layer components {
-  .prose {
-    max-width: 68ch;
-  }
+  .prose { max-width: 68ch; color: var(--body); }
   .prose h2 {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 800;
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    line-height: 1.1;
-    margin-top: 2.75rem;
-    margin-bottom: 0.85rem;
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.2vw, 1.875rem);
+    line-height: 1.2;
+    letter-spacing: -0.018em;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
   }
   .prose h3 {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 800;
-    font-size: 1.5rem;
-    line-height: 1.2;
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    margin-top: 1.75rem;
+    margin-bottom: 0.4rem;
   }
-  .prose p,
-  .prose ul,
-  .prose ol,
-  .prose blockquote {
-    margin-bottom: 1.1rem;
-  }
-  .prose ul,
-  .prose ol {
-    padding-left: 1.35rem;
-  }
+  .prose p, .prose ul, .prose ol, .prose blockquote { margin-bottom: 1.1rem; }
+  .prose ul, .prose ol { padding-left: 1.3rem; }
   .prose ul { list-style: disc; }
   .prose ol { list-style: decimal; }
-  .prose li { margin-bottom: 0.4rem; }
+  .prose li { margin-bottom: 0.35rem; }
   .prose a {
-    color: var(--accent-strong);
-    text-underline-offset: 3px;
+    color: var(--accent);
     text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
   }
-  .prose strong { font-weight: 700; }
   .prose code {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.9em;
-    background: var(--surface);
-    border: 1px solid var(--line);
+    font-size: 0.875em;
+    background: var(--sunken);
     border-radius: 4px;
-    padding: 0.1em 0.35em;
+    padding: 0.12em 0.36em;
   }
-  /* En séance le code est projeté : jamais sous 20px. */
   .prose pre {
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 1.25rem;
-    line-height: 1.5;
-    background: var(--code-bg);
-    color: var(--code-ink);
-    border-radius: 20px;
-    padding: 1.25rem 1.4rem;
-    margin-bottom: 1.4rem;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    background: var(--ink-surface);
+    color: var(--on-ink);
+    border-radius: 10px;
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 1.35rem;
     overflow-x: auto;
   }
-  .prose pre code {
-    background: none;
-    border: 0;
-    padding: 0;
-    font-size: inherit;
-    color: inherit;
-  }
+  .prose pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
   .prose blockquote {
-    border-left: 3px solid var(--accent);
+    border-left: 2px solid var(--accent);
     padding-left: 1rem;
     color: var(--muted);
   }
-  .prose table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1.4rem;
-    font-size: 0.95em;
-  }
-  .prose th,
-  .prose td {
+  .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.35rem; font-size: 0.95em; }
+  .prose th, .prose td {
     border-bottom: 1px solid var(--line);
     padding: 0.6rem 0.5rem;
     text-align: left;
     vertical-align: top;
   }
-  .prose th { font-weight: 700; }
+  .prose th { color: var(--ink); font-weight: 600; }
+}
+
+/* Entrées discrètes : opacité et quelques pixels, rien de plus */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.rise { animation: rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* =====================================================================
-   Briques du registre jeu : boutons épais qui s'enfoncent, cartes à
-   bordure basse, mouvements qui rebondissent. Tout est coupé par
-   prefers-reduced-motion en fin de fichier.
+   Compatibilité, transitoire.
+
+   Les pages membres ont été écrites avec l'ancien vocabulaire ludique
+   (.btn-3d, .card-3d, .pill, .fill-text). Plutôt que de les réécrire
+   toutes d'un coup, on remappe ces classes sur le registre sobre : elles
+   basculent d'elles-mêmes et restent lisibles. À retirer quand chaque
+   page aura été reprise à la main.
    ===================================================================== */
 @layer components {
-  /* Le bouton Duolingo : une épaisseur en bas qui s'écrase au clic. */
   .btn-3d {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-height: 52px;
-    padding: 0 1.6rem;
-    border-radius: 16px;
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    color: var(--on-fill);
-    background: var(--accent);
-    border: 2px solid var(--accent-line);
-    border-bottom-width: 6px;
-    transition:
-      transform 120ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-bottom-width 120ms cubic-bezier(0.22, 1, 0.36, 1),
-      filter 120ms;
-    transform: translateY(0);
+    min-height: 44px;
+    padding: 0 1.25rem;
+    border-radius: 7px;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    background: var(--ink);
+    color: var(--on-ink);
+    box-shadow: 0 1px 2px rgba(11, 18, 32, 0.16);
+    transition: background-color 160ms ease;
   }
-  .btn-3d:hover { filter: brightness(1.04); }
-  .btn-3d:active {
-    transform: translateY(4px);
-    border-bottom-width: 2px;
+  .btn-3d:hover { background: #16213a; }
+  .btn-3d:disabled { opacity: 0.55; }
+  .btn-3d--ghost,
+  .btn-3d--ink {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--hair);
   }
-  .btn-3d:disabled {
-    filter: saturate(0.4);
-    opacity: 0.7;
-    transform: none;
-  }
-  .btn-3d--ink   { background: var(--ink);    border-color: var(--ink-line);   color: var(--paper); }
-  .btn-3d--done  { background: var(--done);   border-color: var(--done-line); }
-  .btn-3d--xp    { background: var(--xp);     border-color: var(--xp-line); }
-  .btn-3d--ghost { background: var(--surface); border-color: var(--line); color: var(--ink); }
+  .btn-3d--ghost:hover,
+  .btn-3d--ink:hover { background: var(--sunken); }
+  .btn-3d--done { background: var(--accent); color: var(--on-accent); }
+  .btn-3d--done:hover { background: var(--accent-hover); }
+  .btn-3d--xp { background: var(--ink); color: var(--on-ink); }
 
-  /* Carte : bordure fine partout, épaisse en bas. */
   .card-3d {
     background: var(--surface);
-    border: 2px solid var(--line);
-    border-bottom-width: 5px;
-    border-radius: 20px;
+    border-radius: 12px;
+    box-shadow: var(--hair);
   }
-  .card-3d--accent { border-color: var(--accent-line); background: var(--accent); color: var(--on-fill); }
-  .card-3d--done   { border-color: var(--done-line);   background: var(--done);   color: var(--on-fill); }
-  .card-3d--streak { border-color: var(--streak-line); background: var(--streak); color: var(--on-fill); }
-  .card-3d--xp     { border-color: var(--xp-line);     background: var(--xp);     color: var(--on-fill); }
-  .card-3d--ink    { border-color: var(--ink-line);    background: var(--ink);    color: var(--paper); }
+  .card-3d--accent,
+  .card-3d--streak,
+  .card-3d--xp,
+  .card-3d--done { background: var(--accent-tint); color: var(--ink); }
+  .card-3d--ink { background: var(--ink-surface); color: var(--on-ink); }
 
-  /* Surtitre unique pour tout le site. */
-  .eyebrow {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-  }
-  /* Texte atténué sur fond d'encre. */
-  .on-ink-muted { color: color-mix(in srgb, var(--paper) 72%, transparent); }
-  /* Bloc de code hors prose. */
-  .code-block {
-    background: var(--code-bg);
-    color: var(--code-ink);
-    border-radius: 20px;
-  }
-  .fill-text { color: var(--on-fill); }
-
-  /* Pastille de stat : icône + gros chiffre. */
   .pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    padding: 0 0.9rem;
-    border-radius: 999px;
-    border: 2px solid var(--line);
-    background: var(--surface);
+    gap: 0.4rem;
+    min-height: 32px;
+    padding: 0 0.7rem;
+    border-radius: 6px;
+    background: var(--sunken);
     color: var(--ink);
-    font-weight: 800;
-    font-family: var(--font-display), system-ui, sans-serif;
+    box-shadow: var(--hair);
+    font-family: var(--font-mono), monospace;
+    font-size: 0.8125rem;
+    font-weight: 500;
   }
-  .pill--accent { background: var(--accent); border-color: var(--accent-line); color: var(--on-fill); }
-  .pill--done   { background: var(--done);   border-color: var(--done-line);   color: var(--on-fill); }
-  .pill--streak { background: var(--streak); border-color: var(--streak-line); color: var(--on-fill); }
-  .pill--xp     { background: var(--xp);     border-color: var(--xp-line);     color: var(--on-fill); }
+  .pill--accent,
+  .pill--done,
+  .pill--streak,
+  .pill--xp { background: var(--accent-tint); color: var(--accent); }
 
-  .blob {
-    position: absolute;
-    border-radius: 999px;
-    filter: blur(0.5px);
-    pointer-events: none;
-  }
-}
+  .fill-text { color: var(--ink); }
+  .on-ink-muted { color: var(--on-ink-muted); }
+  .code-block { background: var(--ink-surface); color: var(--on-ink); border-radius: 10px; }
 
-@keyframes pop-in {
-  0%   { transform: scale(0.6); opacity: 0; }
-  70%  { transform: scale(1.08); opacity: 1; }
-  100% { transform: scale(1); }
+  /* Les animations de jeu disparaissent : il n'en reste qu'une montée discrète. */
+  .anim-pop { animation: rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .anim-float, .anim-wiggle, .anim-pulse { animation: none; }
+  .anim-pulse::after { display: none; }
 }
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50%      { transform: rotate(3deg); }
-}
-@keyframes blink {
-  0%, 92%, 100% { transform: scaleY(1); }
-  96%           { transform: scaleY(0.08); }
-}
-@keyframes pulse-ring {
-  0%   { transform: scale(1);   opacity: 0.55; }
-  100% { transform: scale(1.45); opacity: 0; }
-}
-@keyframes dash {
-  to { stroke-dashoffset: 0; }
-}
-
-.anim-pop    { animation: pop-in 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-.anim-float  { animation: float-y 3.4s ease-in-out infinite; }
-.anim-wiggle { animation: wiggle 2.2s ease-in-out infinite; transform-origin: 50% 90%; }
-.anim-pulse  { position: relative; }
-.anim-pulse::after {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 999px;
-  background: var(--accent);
-  z-index: -1;
-  animation: pulse-ring 1.8s ease-out 3;
-}
-
-@keyframes xp-rise {
-  0%   { transform: translateY(16px) scale(0.8); opacity: 0; }
-  20%  { transform: translateY(0) scale(1.05); opacity: 1; }
-  75%  { transform: translateY(-10px) scale(1); opacity: 1; }
-  100% { transform: translateY(-40px) scale(0.9); opacity: 0; }
-}
-@keyframes confetti-fall {
-  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0.6; }
-}
-@keyframes badge-flip {
-  0%   { transform: rotateY(90deg) scale(0.6); opacity: 0; }
-  60%  { transform: rotateY(-15deg) scale(1.1); opacity: 1; }
-  100% { transform: rotateY(0) scale(1); }
-}
-
-/* =====================================================================
-   Mode projecteur : la page de séance passe en très gros caractères, une
-   section par écran, navigation aux flèches. L'en-tête et le pied de page
-   disparaissent, seul le contenu reste.
-   ===================================================================== */
-[data-projector] header,
-[data-projector] footer,
-[data-projector] .projector-hide { display: none !important; }
-/* L'attribut n'est posé que par la page de séance (useProjector). */
-[data-projector] main { max-width: 100rem; font-size: 1.35rem; }
-[data-projector] main > h1 { font-size: clamp(3rem, 7vw, 6rem); }
-[data-projector] .prose { max-width: 60ch; font-size: 1.6rem; line-height: 1.5; }
-[data-projector] .prose h2 { font-size: 3rem; }
-[data-projector] .prose pre,
-[data-projector] .projector-code { font-size: 1.9rem !important; line-height: 1.45; }
-[data-projector] .projector-section {
-  min-height: calc(100vh - 6rem);
-  scroll-margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 3px dashed var(--line);
-}
-[data-projector] .projector-section:first-of-type { border-top: 0; }
-
-@keyframes cursor-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }

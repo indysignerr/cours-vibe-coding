@@ -6,7 +6,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: { default: `${SITE.name} — ${SITE.tagline}`, template: `%s — ${SITE.name}` },
-  description: `A student association at ${SITE.school}. One hour a week, you build and deploy real apps with AI agents. No prior code required.`,
+  description:
+    "We automate the repetitive work inside your company with AI, and we hand you the compliance file that lets you deploy it. A student-run association at Albert School Milano.",
   alternates: { canonical: "./" },
   openGraph: {
     type: "website",
@@ -34,13 +35,16 @@ const ORGANIZATION = {
   name: SITE.name,
   url: SITE.url,
   logo: `${SITE.url}/android-chrome-512x512.png`,
-  description: `A student association at ${SITE.school}: build and ship real apps with AI agents, one hour a week.`,
+  description:
+    "A student-run association that automates repetitive work inside companies and delivers the compliance file that lets them deploy it.",
   founder: SITE.founders.map((name) => ({ "@type": "Person", name })),
   parentOrganization: { "@type": "EducationalOrganization", name: SITE.school },
+  address: { "@type": "PostalAddress", addressLocality: SITE.campus, addressCountry: "IT" },
+  areaServed: "EU",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ff4d2e",
+  themeColor: "#0b1220",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -51,14 +55,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION) }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "try{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}",
-          }}
-        />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-3 focus:text-paper"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-3 focus:text-on-ink"
         >
           Skip to content
         </a>

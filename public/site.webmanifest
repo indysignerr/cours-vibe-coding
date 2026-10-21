@@ -1,10 +1,10 @@
 {
-  "name": "AI-bert Vibe Coding",
+  "name": "AI-bert",
   "short_name": "AI-bert",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f1ea",
-  "theme_color": "#ff4d2e",
+  "background_color": "#fcfcfd",
+  "theme_color": "#0b1220",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

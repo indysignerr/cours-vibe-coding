@@ -1,36 +1,66 @@
 import Link from "next/link";
 import { HeaderSession } from "@/components/header-session";
-import { Mascot } from "@/components/mascot";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Wordmark } from "@/components/wordmark";
 import { SITE } from "@/lib/site";
 
 const LINKS = [
-  { href: "/programme/", label: "Path" },
-  { href: "/contests/", label: "Contests" },
-  { href: "/leaderboard/", label: "Board" },
-  { href: "/setup/", label: "Setup" },
+  { href: "/services/", label: "Services" },
+  { href: "/approach/", label: "Approach" },
+  { href: "/team/", label: "Team" },
+  { href: "/join/", label: "Join us", quiet: true },
 ];
 
 /**
- * En-tête partagé, rendu statique. La partie connectée est un îlot qui ne
- * charge le client Supabase que si une session est mémorisée : un visiteur
- * anonyme ne télécharge jamais supabase-js sur une page publique.
+ * En-tête sobre. Quatre liens au plus, une seule action primaire.
+ * Le volet étudiant est volontairement discret : le visiteur par défaut
+ * est une entreprise.
+ *
+ * Sous 768 px les liens passent dans une deuxième rangée défilante plutôt
+ * que derrière un menu : pas de JavaScript, et rien d'inatteignable.
  */
 export function SiteHeader() {
   return (
-    <header className="mx-auto flex max-w-stage items-center justify-between px-5 py-4 md:px-10 md:py-6">
-      <Link className="tap flex items-center gap-2 whitespace-nowrap font-display text-xl font-extrabold leading-none hover:text-accent-strong sm:text-2xl" href="/">
-        <Mascot size={34} />
-        {SITE.name}
-      </Link>
-      <nav aria-label="Main" className="flex items-center gap-1 text-sm">
-        {LINKS.map((l) => (
-          <Link key={l.href} className="tap hidden items-center rounded-full px-4 font-bold text-muted hover:bg-sunken hover:text-ink sm:flex" href={l.href}>
+    <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur-md">
+      <div className="mx-auto flex max-w-stage items-center justify-between px-5 py-3.5 md:px-8">
+        <Link className="tap flex items-center" href="/" aria-label={`${SITE.name}, home`}>
+          <Wordmark />
+        </Link>
+
+        <nav aria-label="Main" className="flex items-center gap-1">
+          {LINKS.map((l) => (
+            <Link
+              key={l.href}
+              className={`tap hidden items-center rounded-btn px-3 text-sm transition-colors hover:text-ink md:flex ${
+                l.quiet ? "text-muted lg:flex" : "text-body"
+              }`}
+              href={l.href}
+            >
+              {l.label}
+            </Link>
+          ))}
+          <span className="ml-2 flex items-center gap-2">
+            <Link className="btn btn--ghost hidden sm:inline-flex" href="/contact/">
+              Contact
+            </Link>
+            <HeaderSession />
+          </span>
+        </nav>
+      </div>
+
+      {/* Rangée mobile : les mêmes liens, atteignables au pouce */}
+      <nav
+        aria-label="Sections"
+        className="no-scrollbar flex gap-1 overflow-x-auto border-t border-line px-3 md:hidden"
+      >
+        {[...LINKS, { href: "/contact/", label: "Contact", quiet: false }].map((l) => (
+          <Link
+            key={l.href}
+            className="tap flex flex-none items-center px-3 text-sm text-body transition-colors hover:text-ink"
+            href={l.href}
+          >
             {l.label}
           </Link>
         ))}
-        <span className="ml-1 hidden sm:inline-flex"><ThemeToggle compact /></span>
-        <HeaderSession />
       </nav>
     </header>
   );

@@ -1,25 +1,34 @@
-import { Bricolage_Grotesque, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 
-// Registre d'app, pas de magazine : un display trapu et un peu bizarre pour
-// les gros chiffres et les titres, un courant rond et lisible, du mono pour
-// les prompts et les commandes, qui sont la partie la plus copiée du site.
-export const display = Bricolage_Grotesque({
+/**
+ * Registre : cabinet de conseil, pas startup.
+ *
+ * Newsreader en titrage, à graisse légère et interlettrage serré. Une serif
+ * de lecture, pas une serif d'affiche : elle signale le conseil sans crier.
+ * C'est ce qui nous distingue de toutes les sociétés d'IA, qui utilisent
+ * toutes la même grotesque.
+ *
+ * Geist en courant et en technique. Précis, neutre, excellent en petites
+ * tailles, et sa variante mono sert aux libellés techniques.
+ */
+export const display = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "800"],
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
 
-export const body = Plus_Jakarta_Sans({
+export const body = Geist({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
+  weight: ["400", "500", "600"],
   variable: "--font-body",
   display: "swap",
 });
 
-export const mono = JetBrains_Mono({
+export const mono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
