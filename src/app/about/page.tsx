@@ -10,6 +10,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Who we are",
   description: `${SITE.name} is a student-run association at ${SITE.school} ${SITE.campus}. We automate repetitive work inside companies and hand them the file that lets them deploy it.`,
+  openGraph: { images: [{ url: "/og/about.png", width: 1200, height: 630, alt: "Students. We say so first" }] },
 };
 
 /** Initiales pour l'avatar typographique : pas de photo tant qu'elles ne sont pas toutes bonnes. */

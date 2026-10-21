@@ -29,7 +29,7 @@ export const OFFERS: Offer[] = [
     price: "€2,500",
     duration: "Three weeks · four half-days",
     summary:
-      "A map of the AI already running in your company, ten repetitive tasks timed, your data sorted — and the file that lets you prove it.",
+      "The AI already running in your company, mapped. Ten tasks, timed. Your data, sorted. And the file that proves it.",
     delivers: [
       "A map of the AI tools already running in your company, declared or not. There are always some, and directors are always surprised.",
       "Ten repetitive tasks, timed, ranked by gain and by risk.",
@@ -50,7 +50,7 @@ export const OFFERS: Offer[] = [
     duration: "Three weeks",
     market: "Built for the Italian market",
     summary:
-      "The dossier that unblocks a deployment touching employees, under Italian labour law.",
+      "The dossier that unblocks a deployment touching employees. Italian labour law, handled.",
     delivers: [
       "Qualification of the tool under article 4 of the Statuto dei Lavoratori: ordinary work tool, or instrument capable of remote monitoring.",
       "Preparation of the agreement with union representatives, or of the labour inspectorate authorisation filing.",
@@ -71,7 +71,7 @@ export const OFFERS: Offer[] = [
     price: "€3,500",
     duration: "Three weeks",
     summary:
-      "An internal assistant that answers from your own documents and cites its source every time.",
+      "An assistant that answers from your own documents. It cites its source. Every time.",
     delivers: [
       "An internal assistant that answers your teams from your own documents — procedures, catalogues, standard contracts — with the source cited on every answer.",
       "Hosted on a European interface under a processing agreement by default. On your own machines when your data demands it; the hardening is quoted separately.",
@@ -89,7 +89,7 @@ export const OFFERS: Offer[] = [
     price: "€4,500",
     duration: "Three weeks",
     summary:
-      "A web application for one process. You own the code and the accounts from day one.",
+      "A web application for one process. Your code. Your accounts. From day one.",
     delivers: [
       "A web application for one precise process: request tracking, field entry, scheduling, a dashboard.",
       "Accounts for your team, and the code and the accounts in your name from day one.",
@@ -107,7 +107,7 @@ export const OFFERS: Offer[] = [
     price: "€2,500",
     duration: "Two to three weeks, depending on access",
     summary:
-      "One scenario linking two tools you already pay for. The manual re-entry stops.",
+      "One scenario, two tools you already pay for. The manual re-entry stops.",
     delivers: [
       "One scenario linking two tools you already pay for, removing a recurring manual re-entry.",
       "The scenario runs on your own instance, under your own licence. We bill the implementation, never the hosting.",

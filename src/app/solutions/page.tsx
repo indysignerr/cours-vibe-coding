@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Solutions",
   description:
     "Five fixed-price engagements, each three weeks long: AI audit and compliance file, workplace-ready AI, an assistant on your documents, an internal tool, and one automated chain of steps.",
+  openGraph: { images: [{ url: "/og/solutions.png", width: 1200, height: 630, alt: "Five engagements, fixed price" }] },
 };
 
 const TERMS = [

@@ -111,8 +111,13 @@
     letter-spacing: -0.022em;
   }
 
-  /* Les chiffres s'alignent : prix, dates, compteurs. */
-  time, .tnum { font-variant-numeric: tabular-nums; }
+  /* Les chiffres sont une donnée, pas une phrase : ils passent au mono et
+     s'alignent en colonne. */
+  time, .tnum {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
 
   :focus-visible {
     outline: 2px solid var(--brand);
@@ -191,6 +196,9 @@
   .eyebrow {
     /* 14 px et non 12 : le site sert aussi de support projeté, et un
        libellé en capitales à 12 px ne se lit pas au fond d'une salle. */
+    font-family: var(--font-mono), ui-monospace, monospace;
+    /* 14 px : un mono paraît optiquement plus petit qu'un sans à taille
+       égale, et le site sert aussi de support projeté. */
     font-size: 0.875rem;
     font-weight: 500;
     letter-spacing: 0.14em;
@@ -237,6 +245,7 @@
 
   /* Compteur de section, en bronze comme l'exige la charte. */
   .counter {
+    font-family: var(--font-mono), ui-monospace, monospace;
     font-variant-numeric: tabular-nums;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -526,3 +535,67 @@
     transform: none !important;
   }
 }
+
+/* =====================================================================
+   Matière.
+
+   Un aplat de marine parfaitement lisse se lit comme un remplissage, pas
+   comme une surface. Deux couches, toutes deux purement décoratives et
+   toutes deux sous le contenu : un grain très fin, et une lueur fixe en
+   haut de page. Aucune ne porte d'information, donc aucune n'a de rôle
+   d'accessibilité.
+   ===================================================================== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  /* Grain généré, pas une image à télécharger. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Le contenu passe au-dessus des deux couches. */
+body > * { position: relative; z-index: 1; }
+
+/* Une lueur haute, comme si la lumière venait du logo. */
+body::after {
+  content: "";
+  position: fixed;
+  left: 50%;
+  top: -22rem;
+  width: 70rem;
+  height: 44rem;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(201, 174, 132, 0.09), transparent 62%);
+}
+
+/* Sur l'ivoire, la matière s'inverse : le grain s'efface presque. */
+.on-paper { position: relative; }
+.on-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n2)' opacity='0.35'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+.on-paper > * { position: relative; }
+
+/* Barre de défilement : le détail qui dit que quelqu'un y a touché. */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: var(--sunken); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: 99px;
+    border: 3px solid var(--sunken);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--brand); }
+}
+* { scrollbar-color: var(--line-strong) var(--sunken); }

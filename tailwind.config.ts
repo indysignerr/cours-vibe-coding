@@ -32,7 +32,7 @@ export default {
       fontFamily: {
         display: ["var(--font-body)", "ui-sans-serif", "system-ui", "sans-serif"],
         sans: ["var(--font-body)", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-body)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       fontSize: {
         // Le corps ne descend jamais sous 17 px : le site sert aussi de support projeté.

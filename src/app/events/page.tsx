@@ -11,6 +11,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Events",
   description: `Hackathons, workshops, talks and company evenings run by ${SITE.name} at ${SITE.school} ${SITE.campus}. Sign up, and add the date to your calendar in one click.`,
+  openGraph: { images: [{ url: "/og/events.png", width: 1200, height: 630, alt: "We run the room, not a syllabus" }] },
 };
 
 export default function EventsPage() {

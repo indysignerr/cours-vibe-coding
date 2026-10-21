@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Book a first conversation. Forty-five minutes, no slide deck, and a written read on what is worth automating in your company and what is not.",
+  openGraph: { images: [{ url: "/og/contact.png", width: 1200, height: 630, alt: "Forty-five minutes. No slide deck" }] },
 };
 
 const AGENDA: [string, string][] = [

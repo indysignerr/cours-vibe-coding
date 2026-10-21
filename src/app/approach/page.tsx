@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Approach",
   description:
     "How we run an engagement: sort the data before choosing a tool, produce the file rather than the server, and keep every scope small enough to finish in three weeks.",
+  openGraph: { images: [{ url: "/og/approach.png", width: 1200, height: 630, alt: "The method is the product" }] },
 };
 
 const STEPS = [

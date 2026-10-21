@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Lightfall } from "@/components/motion/lightfall";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { body, display, mono } from "@/lib/fonts";
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <Lightfall />
         <SmoothScroll />
         <ScrollProgress />
         {children}
