@@ -92,22 +92,35 @@ function SometimesNo() {
   );
 }
 
-/** Le tampon qui n'arrive jamais sur le papier. */
+/**
+ * Le tampon qui n'arrive jamais sur le papier.
+ *
+ * La barre se mesure sur le badge et non sur la tuile : c'est le badge
+ * qui est le conteneur positionné, et la largeur est relative, donc elle
+ * suit le mot quelle que soit sa longueur ou la taille du texte.
+ *
+ * Elle pivote autour de son centre pour que les deux extrémités montent
+ * et descendent d'autant, et se dessine de gauche à droite par clip-path.
+ * Animer scaleX aurait forcé la même origine pour la rotation et pour le
+ * tracé, et la barre serait repartie de travers.
+ */
 function NeverCertify() {
   return (
-    <div className="relative flex h-full items-center justify-center">
-      <span className="rounded-card px-6 py-4 text-center text-sm uppercase tracking-[0.18em] text-muted shadow-[inset_0_0_0_1px_var(--line-strong)]">
-        Certified
+    <div className="flex h-full items-center justify-center">
+      <span className="relative inline-block">
+        <span className="block rounded-card px-6 py-4 text-center text-sm uppercase tracking-[0.18em] text-muted shadow-[inset_0_0_0_1px_var(--line-strong)]">
+          Certified
+        </span>
+        <motion.span
+          aria-hidden
+          className="absolute left-[-6%] w-[112%] rounded-full bg-brand"
+          style={{ top: "50%", height: 2, marginTop: -1, rotate: -7 }}
+          initial={{ clipPath: "inset(0 100% 0 0)" }}
+          whileInView={{ clipPath: "inset(0 0% 0 0)" }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.55, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        />
       </span>
-      <motion.span
-        aria-hidden
-        className="absolute h-0.5 w-40 rounded-full bg-brand"
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        style={{ rotate: -14, originX: 0 }}
-      />
     </div>
   );
 }
