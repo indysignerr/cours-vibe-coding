@@ -108,6 +108,10 @@
     min-height: 46px;
     padding: 0 1.35rem;
     border-radius: 10px;
+    /* Un libellé de bouton ne se coupe jamais sur deux lignes, et le bouton
+       ne se laisse pas écraser par un voisin plus gourmand. */
+    white-space: nowrap;
+    flex: none;
     font-size: 0.9375rem;
     font-weight: 500;
     letter-spacing: -0.005em;
@@ -324,6 +328,8 @@
     min-height: 46px;
     padding: 0 1.35rem;
     border-radius: 10px;
+    white-space: nowrap;
+    flex: none;
     font-size: 0.9375rem;
     font-weight: 500;
     background: var(--ink);

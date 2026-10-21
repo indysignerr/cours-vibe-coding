@@ -42,7 +42,7 @@ export function BrandMark({
  * sur le logo : c'est le seul jeu typographique de l'identité.
  */
 export function Wordmark({
-  className = "",
+  className = "tracking-[0.16em]",
   letters = "text-ink",
   dots = "text-brand",
 }: {
@@ -52,7 +52,7 @@ export function Wordmark({
 }) {
   return (
     <span
-      className={`whitespace-nowrap font-semibold uppercase tracking-[0.16em] ${letters} ${className}`}
+      className={`whitespace-nowrap font-semibold uppercase ${letters} ${className}`}
       aria-hidden
     >
       Albert L<span className={dots}>.</span>I<span className={dots}>.</span>G
@@ -71,14 +71,16 @@ export function Logo({
   onInk?: boolean;
 }) {
   return (
-    <span className="flex items-center gap-2.5">
+    <span className="flex min-w-0 items-center gap-2.5 overflow-hidden">
       <BrandMark
         className="size-8 shrink-0"
         outline={onInk ? "var(--on-ink)" : "var(--ink)"}
         glyph={onInk ? "var(--brand-soft)" : "var(--brand)"}
       />
+      {/* Sous 360 px — plus étroit que n'importe quel téléphone courant — le
+          nom serait tronqué en plein milieu. On ne garde que le pictogramme. */}
       <Wordmark
-        className="text-[0.9375rem]"
+        className="hidden text-[0.8125rem] tracking-[0.1em] min-[360px]:inline sm:text-[0.9375rem] sm:tracking-[0.16em]"
         letters={onInk ? "text-on-ink" : "text-ink"}
         dots={onInk ? "text-brand-soft" : "text-brand"}
       />
