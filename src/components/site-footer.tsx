@@ -12,20 +12,17 @@ const COLUMNS: { title: string; links: [string, string][] }[] = [
     ],
   },
   {
+    title: "Events",
+    links: [
+      ["/events/", "What is coming up"],
+      ["/setup/", "Before you come"],
+    ],
+  },
+  {
     title: "The association",
     links: [
       ["/about/", "Who we are"],
       ["/join/", "Join us"],
-      ["/events/", "Events"],
-    ],
-  },
-  {
-    title: "Members",
-    links: [
-      ["/signup/", "Create an account"],
-      ["/programme/", "The path"],
-      ["/sessions/", "Sessions"],
-      ["/contests/", "Contests"],
     ],
   },
   {

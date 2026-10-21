@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/brand";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { readableDate, siteEvents } from "@/lib/events";
+import { EVENT_KINDS, readableSpan, upcoming } from "@/lib/events";
 import { OFFERS } from "@/lib/offers";
 import { SITE } from "@/lib/site";
 
@@ -29,7 +29,7 @@ const PRINCIPLES = [
 ];
 
 export default function Home() {
-  const demoDay = siteEvents().find((e) => e.kind === "demo-day");
+  const nextEvent = upcoming()[0];
 
   return (
     <>
@@ -175,26 +175,26 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Demo Day : la preuve, et une inscription ouverte à tous */}
-        {demoDay ? (
+        {/* Le prochain évènement : la preuve, et une porte d'entrée ouverte */}
+        {nextEvent ? (
           <section className="border-b border-line bg-sunken">
             <div className="mx-auto grid max-w-stage gap-10 px-5 py-16 md:grid-cols-12 md:items-center md:px-8 md:py-20">
               <div className="md:col-span-7">
-                <p className="eyebrow">Come and see for yourself</p>
-                <h2 className="display-2 mt-4 max-w-[20ch]">
-                  Demo Day, {readableDate(demoDay.date)}.
+                <p className="eyebrow">Next in the room</p>
+                <h2 className="display-2 mt-4 max-w-[22ch]">
+                  {EVENT_KINDS[nextEvent.kind].label}: {nextEvent.title}.
                 </h2>
-                <p className="mt-5 max-w-measure text-body">
-                  Twelve weeks of work, four minutes per project, judged in public. It is the honest
-                  version of our credentials, and it is open to everyone.
+                <p className="tnum mt-4 text-sm text-muted">
+                  {readableSpan(nextEvent)} · {nextEvent.location}
                 </p>
+                <p className="mt-5 max-w-measure text-body">{nextEvent.summary}</p>
               </div>
               <div className="md:col-span-4 md:col-start-9">
                 <Link className="btn btn--brand w-full sm:w-auto" href="/events/">
-                  Sign up for the events
+                  See the events
                 </Link>
                 <p className="mt-3 text-sm text-muted">
-                  {demoDay.capacity} seats · {demoDay.location}
+                  {nextEvent.capacity ? `${nextEvent.capacity} seats` : "No cap"} · no account needed
                 </p>
               </div>
             </div>

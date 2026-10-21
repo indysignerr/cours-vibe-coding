@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 
-/** Pages publiques uniquement : l'espace membre est derrière une session. */
+/** Pages publiques uniquement : /admin/ est derrière une connexion. */
 const PUBLIC = [
   { path: "", priority: 1 },
   { path: "/solutions", priority: 0.9 },
@@ -10,9 +10,7 @@ const PUBLIC = [
   { path: "/events", priority: 0.8 },
   { path: "/about", priority: 0.7 },
   { path: "/join", priority: 0.7 },
-  { path: "/programme", priority: 0.6 },
   { path: "/setup", priority: 0.5 },
-  { path: "/contests", priority: 0.5 },
   { path: "/legal", priority: 0.3 },
   { path: "/privacy", priority: 0.3 },
 ];

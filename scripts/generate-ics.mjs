@@ -1,40 +1,36 @@
-// Produit public/albert-light.ics : l'heure d'entraide récurrente et les
-// trois concours. Pour ceux qui ne sont pas chez Google — Apple Calendar,
-// Outlook, Thunderbird. Relancer après un changement de calendrier.
-import { writeFile } from "node:fs/promises";
-import { readFileSync } from "node:fs";
+// Produit public/albert-light.ics : tout le programme d'évènements, pour
+// ceux qui ne sont pas chez Google — Apple Calendar, Outlook, Thunderbird.
+// Les dates sont lues dans src/lib/events.ts : une seule source.
+// Relancer après un changement de programme.
+import { writeFile, readFile } from "node:fs/promises";
 
-// On relit les deux sources TypeScript au lieu de dupliquer les dates :
-// un simple parsing suffit, elles sont écrites à plat.
-const site = readFileSync("src/lib/site.ts", "utf8");
-const curriculum = readFileSync("src/lib/curriculum.ts", "utf8");
+const site = await readFile("src/lib/site.ts", "utf8");
+const events = await readFile("src/lib/events.ts", "utf8");
 
 const field = (src, key) => src.match(new RegExp(`${key}:\\s*"([^"]*)"`))?.[1] ?? "";
 const NAME = field(site, "name");
 const TZ = field(site, "timezone");
-const WEEKLY = site.slice(site.indexOf("weekly: {"));
-const DAY = field(WEEKLY, "day");
-const START = field(WEEKLY, "start");
-const END = field(WEEKLY, "end");
-const LOCATION = field(WEEKLY, "location");
-const TITLE = field(WEEKLY, "title");
-const DETAILS = field(WEEKLY, "details");
 
-const entries = [...curriculum.matchAll(
-  /number: (\d+), slug: "([^"]+)", title: "([^"]+)", promise: "([^"]+)", weekOf: "([^"]+)", kind: "([^"]+)"/g,
-)].map((m) => ({ number: +m[1], slug: m[2], title: m[3], promise: m[4], weekOf: m[5], kind: m[6] }));
+// On ne parse que le bloc EVENTS, pour ne pas confondre avec les exemples
+// qui traînent ailleurs dans le fichier.
+const block = events.slice(events.indexOf("export const EVENTS"), events.indexOf("/** Les évènements encore à venir"));
+const entries = block
+  .split(/\n  \{\n/)
+  .slice(1)
+  .map((chunk) => ({
+    slug: field(chunk, "slug"),
+    title: field(chunk, "title"),
+    summary: field(chunk, "summary"),
+    date: field(chunk, "date"),
+    endDate: field(chunk, "endDate"),
+    start: field(chunk, "start"),
+    end: field(chunk, "end"),
+    location: field(chunk, "location").replace(/\$\{SITE\.school\}/, field(site, "school")).replace(/\$\{SITE\.campus\}/, field(site, "campus")),
+  }))
+  .filter((e) => e.slug && e.date);
 
-const WEEKDAY = { Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6 };
-const RRULE_DAY = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
-const pad = (n) => String(n).padStart(2, "0");
+if (entries.length === 0) throw new Error("aucun évènement lu dans src/lib/events.ts");
 
-function dateOfWeekday(weekOf, weekday) {
-  const [y, m, d] = weekOf.split("-").map(Number);
-  const start = new Date(Date.UTC(y, m - 1, d));
-  const shift = (WEEKDAY[weekday] - start.getUTCDay() + 7) % 7;
-  const out = new Date(start.getTime() + shift * 86_400_000);
-  return `${out.getUTCFullYear()}-${pad(out.getUTCMonth() + 1)}-${pad(out.getUTCDate())}`;
-}
 const stamp = (date, time) => `${date.replaceAll("-", "")}T${time.replace(":", "")}00`;
 // Les retours à la ligne et les virgules doivent être échappés dans un .ics.
 const esc = (s) => s.replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
@@ -49,46 +45,22 @@ const lines = [
   `X-WR-TIMEZONE:${TZ}`,
 ];
 
-function event({ uid, title, date, start, end, details, location, rrule }) {
+const now = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+for (const e of entries) {
   lines.push(
     "BEGIN:VEVENT",
-    `UID:${uid}@albert-light`,
-    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`,
-    `DTSTART;TZID=${TZ}:${stamp(date, start)}`,
-    `DTEND;TZID=${TZ}:${stamp(date, end)}`,
-    ...(rrule ? [`RRULE:${rrule}`] : []),
-    `SUMMARY:${esc(title)}`,
-    ...(details ? [`DESCRIPTION:${esc(details)}`] : []),
-    ...(location ? [`LOCATION:${esc(location)}`] : []),
+    `UID:${e.slug}@albert-light`,
+    `DTSTAMP:${now}`,
+    `DTSTART;TZID=${TZ}:${stamp(e.date, e.start)}`,
+    `DTEND;TZID=${TZ}:${stamp(e.endDate || e.date, e.end)}`,
+    `SUMMARY:${esc(`${NAME} — ${e.title}`)}`,
+    `DESCRIPTION:${esc(e.summary)}`,
+    `LOCATION:${esc(e.location)}`,
     "END:VEVENT",
   );
-}
-
-const first = entries[0];
-const last = entries[entries.length - 1];
-event({
-  uid: "peer-hour",
-  title: TITLE,
-  date: dateOfWeekday(first.weekOf, DAY),
-  start: START,
-  end: END,
-  details: DETAILS,
-  location: LOCATION,
-  rrule: `FREQ=WEEKLY;BYDAY=${RRULE_DAY[WEEKDAY[DAY]]};UNTIL=${dateOfWeekday(last.weekOf, DAY).replaceAll("-", "")}T235959Z`,
-});
-
-for (const e of entries.filter((x) => x.kind === "contest")) {
-  event({
-    uid: e.slug,
-    title: `${NAME} — ${e.title}`,
-    date: dateOfWeekday(e.weekOf, "Sunday"),
-    start: "20:00",
-    end: "23:59",
-    details: `${e.promise} Submissions close at midnight.`,
-  });
 }
 
 lines.push("END:VCALENDAR");
 // Le format impose CRLF.
 await writeFile("public/albert-light.ics", lines.join("\r\n") + "\r\n");
-console.log(`albert-light.ics généré — ${lines.filter((l) => l === "BEGIN:VEVENT").length} évènements`);
+console.log(`albert-light.ics généré — ${entries.length} évènements`);

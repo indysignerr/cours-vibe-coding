@@ -29,7 +29,7 @@ export const SITE = {
 
   /**
    * Google Agenda. Deux réglages indépendants :
-   * — calendarId : l'agenda public de l'association, affiché sur /calendar/
+   * — calendarId : l'agenda public de l'association, affiché sur /events/
    *   et proposé à l'abonnement. Format « xxxx@group.calendar.google.com ».
    * — bookingUrl : la page de rendez-vous Google (Appointment schedule) qui
    *   sert à réserver la première conversation depuis /contact/.
@@ -48,20 +48,4 @@ export const SITE = {
     { name: "Tomasso", role: "Client relations", focus: "Italian market" },
     { name: "Lucca", role: "Delivery", focus: "Automation and tooling" },
   ],
-
-  startsWeekOf: "2026-09-14",
-  weeks: 12,
-  prizeEur: 50,
-  contests: 3,
-
-  /** L'heure d'entraide hebdomadaire, telle qu'elle part dans l'agenda. */
-  weekly: {
-    title: "Albert L.I.G.H.T. — Peer hour",
-    day: "Wednesday",
-    start: "18:00",
-    end: "19:00",
-    location: "Albert School, Milano",
-    details:
-      "Bring what is blocking you. Someone who already cleared it shows you how. No slides, no one at the front of the room.",
-  },
 } as const;

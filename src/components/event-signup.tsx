@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { googleCalendarUrl } from "@/lib/calendar";
-import type { SiteEvent } from "@/lib/events";
+import { EVENT_KINDS, type SiteEvent } from "@/lib/events";
 import { isSupabaseConfigured, getSupabase } from "@/lib/supabase/client";
 
 /**
@@ -18,6 +18,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
+  const [organisation, setOrganisation] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<{ seatsLeft: number | null } | null>(null);
@@ -27,7 +28,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
       <div className="card card--sand p-6">
         <p className="text-body">
           Sign-ups are not switched on yet. The date is firm — add it to your calendar and we will
-          open the list before the week of the event.
+          open the list a fortnight before the {EVENT_KINDS[event.kind].label.toLowerCase()}.
         </p>
         <a
           className="btn btn--ghost mt-5"
@@ -82,6 +83,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
       p_slug: event.slug,
       p_name: name,
       p_email: email,
+      p_organisation: organisation || null,
       p_note: note || null,
     });
     setBusy(false);
@@ -133,6 +135,22 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         </div>
       </div>
 
+      {event.kind === "company" || event.kind === "talk" ? (
+        <>
+          <label className="mt-5 block text-sm font-medium text-ink" htmlFor={`${id}-org`}>
+            Company <span className="font-normal text-muted">Optional — leave empty if you are a student</span>
+          </label>
+          <input
+            id={`${id}-org`}
+            className="field mt-2"
+            maxLength={120}
+            autoComplete="organization"
+            value={organisation}
+            onChange={(e) => setOrganisation(e.target.value)}
+          />
+        </>
+      ) : null}
+
       <label className="mt-5 block text-sm font-medium text-ink" htmlFor={`${id}-note`}>
         Anything we should know? <span className="font-normal text-muted">Optional</span>
       </label>
@@ -141,7 +159,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         className="field mt-2 min-h-[5.5rem]"
         maxLength={500}
         rows={3}
-        placeholder="What you are stuck on, or what you want to see."
+        placeholder={event.kind === "hackathon" ? "Who you are coming with, or that you need a team." : "What you want to get out of it."}
         value={note}
         onChange={(e) => setNote(e.target.value)}
       />
@@ -153,7 +171,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
       ) : null}
 
       <button type="submit" disabled={busy} className="btn btn--primary mt-6 disabled:opacity-55">
-        {busy ? "One moment…" : "Sign me up"}
+        {busy ? "One moment…" : event.kind === "hackathon" ? "Count me in" : "Sign me up"}
       </button>
 
       <p className="mt-4 max-w-measure text-sm text-muted">

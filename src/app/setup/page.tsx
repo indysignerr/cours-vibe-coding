@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 
 export const metadata: Metadata = {
-  title: "Setup",
-  description: "Do this before the first session. Twenty minutes at home, so nobody loses the hour to installations.",
+  title: "Before you come",
+  description:
+    "Twenty minutes at home before a hackathon or a workshop, so the room is spent building rather than installing.",
 };
 
 type Step = { title: string; body: string; command?: string; expect?: string };
@@ -11,7 +12,7 @@ type Step = { title: string; body: string; command?: string; expect?: string };
 const STEPS: Step[] = [
   {
     title: "Check which subscription you picked",
-    body: "Albert School already requires a paid ChatGPT or Claude subscription, so you are probably covered. One catch, and it is the only thing in this club that costs money: Claude Code runs on a Claude plan only. If you picked ChatGPT for school, you need Claude Pro on top, or an API key with credits. The club does not provide a shared key.",
+    body: "Albert School already requires a paid ChatGPT or Claude subscription, so you are probably covered. One catch, and it is the only thing in this club that costs money: Claude Code runs on a Claude plan only. If you picked ChatGPT for school, you need Claude Pro on top, or an API key with credits. The association does not provide a shared key.",
   },
   {
     title: "Install Claude Code",
@@ -39,12 +40,12 @@ const STEPS: Step[] = [
   },
   {
     title: "Make one folder, and learn to open a terminal inside it",
-    body: "Everything you build in this club lives here. Mac: open Terminal, type cd followed by a space, drag the folder into the window, press Enter. Windows: open the folder in Explorer, click the address bar, type cmd, press Enter. You will do this at the start of every session.",
-    command: "mkdir -p ~/albert-vibecoding",
+    body: "Everything you build with us lives here. Mac: open Terminal, type cd followed by a space, drag the folder into the window, press Enter. Windows: open the folder in Explorer, click the address bar, type cmd, press Enter. You will do this at the start of every event.",
+    command: "mkdir -p ~/albert-light",
   },
 ];
 
-const BEFORE_S03: Step[] = [
+const BEFORE_HACKATHON: Step[] = [
   {
     title: "Install git and the GitHub tool",
     body: "Mac: type git in Terminal and accept the install it offers, then install gh with Homebrew. Windows: install Git for Windows and GitHub CLI from their sites.",
@@ -68,20 +69,20 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
   return (
     <ol className="grid gap-4">
       {steps.map((step, i) => (
-        <li key={step.title} className="card-3d min-w-0 p-6 md:p-8">
+        <li key={step.title} className="card min-w-0 p-6 md:p-8">
           <div className="flex items-baseline gap-4">
-            <span className="font-mono font-bold tabular-nums text-accent-strong">{String(i + 1 + offset).padStart(2, "0")}</span>
-            <h3 className="font-display text-2xl font-extrabold">{step.title}</h3>
+            <span className="counter">{String(i + 1 + offset).padStart(2, "0")}</span>
+            <h3 className="display-3">{step.title}</h3>
           </div>
-          <p className="mt-3 max-w-measure text-muted">{step.body}</p>
+          <p className="mt-3 max-w-measure text-body">{step.body}</p>
           {step.command ? (
-            <pre className="code-block mt-4 max-w-full overflow-x-auto whitespace-pre-wrap break-words px-5 py-4 font-mono text-xl">
+            <pre className="mt-4 max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-card bg-ink-surface px-5 py-4 text-lg text-on-ink">
               <code>{step.command}</code>
             </pre>
           ) : null}
           {step.expect ? (
             <p className="mt-3 max-w-measure text-muted">
-              <strong className="font-bold text-ink">Expected:</strong> {step.expect}
+              <strong className="text-ink">Expected:</strong> {step.expect}
             </p>
           ) : null}
         </li>
@@ -93,28 +94,33 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
 export default function SetupPage() {
   return (
     <PageShell
-      eyebrow="Before session 01"
-      title="Twenty minutes at home, so we never lose the hour."
-      lede="The fastest way to kill a club like this is to spend the first two sessions installing things. Do these seven steps before you come. If one of them fights back, come ten minutes early and we fix it together."
+      eyebrow="Before you come"
+      title="Twenty minutes at home, so the room is spent building."
+      lede="The fastest way to waste a hackathon is to spend its first three hours installing things. Do these seven steps before you turn up. If one of them fights back, come ten minutes early and we fix it together."
     >
       <Steps steps={STEPS} />
 
-      <section aria-labelledby="before-s03" className="mt-16">
-        <p className="eyebrow text-accent-strong">Before step 03 · week of 28 September</p>
-        <h2 id="before-s03" className="mt-3 font-display text-display-md font-extrabold">Three more, the week before git</h2>
-        <p className="mt-3 max-w-measure text-muted">
-          Step 03 puts your project on GitHub. These three need a browser and a password, so they happen at home, not in the room.
+      <section aria-labelledby="before-hackathon" className="mt-16">
+        <p className="eyebrow eyebrow--accent">Three more, before a hackathon</p>
+        <h2 id="before-hackathon" className="display-2 mt-3">
+          Only if you are coming to build
+        </h2>
+        <p className="mt-3 max-w-measure text-body">
+          A hackathon ends with your work on a public URL, which means pushing code. These three need a
+          browser and a password, so they happen at home, not in the room. A workshop or a talk does not
+          need them.
         </p>
         <div className="mt-8">
-          <Steps steps={BEFORE_S03} offset={7} />
+          <Steps steps={BEFORE_HACKATHON} offset={7} />
         </div>
       </section>
 
-      <div className="card-3d mt-12 p-6 md:p-8">
-        <h2 className="font-display text-2xl font-extrabold">If you get stuck</h2>
-        <p className="mt-3 max-w-measure text-muted">
-          Do not spend an evening on it. Post the exact error text in the club group, and someone answers.
-          An error message pasted in full gets fixed in two minutes. The words &ldquo;it does not work&rdquo; get fixed in twenty.
+      <div className="card card--sand mt-12 p-6 md:p-8">
+        <h2 className="display-3">If you get stuck</h2>
+        <p className="mt-3 max-w-measure text-body">
+          Do not spend an evening on it. Send the exact error text to the association group and someone
+          answers. An error message pasted in full gets fixed in two minutes. The words &ldquo;it does
+          not work&rdquo; get fixed in twenty.
         </p>
       </div>
     </PageShell>

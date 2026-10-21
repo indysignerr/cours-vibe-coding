@@ -55,18 +55,12 @@ export function useAuth() {
   return { state, reload };
 }
 
-/** Les messages bruts de Supabase sont illisibles pour un étudiant. */
+/** Les messages bruts de Supabase sont illisibles. */
 export function humanError(message: string): string {
   const m = message.toLowerCase();
-  if (m.includes("not been invited")) return "This email is not on the invite list. Ask an organiser to add it.";
-  if (m.includes("invite code missing")) return "The invite code is missing or wrong. It is the six characters an organiser sent you.";
-  if (m.includes("already been used")) return "This invitation was already used. If that was not you, tell an organiser now.";
-  if (m.includes("database error saving new user")) {
-    return "The database refused to create the account. Check your invite code, or ask an organiser.";
-  }
-  if (m.includes("invalid login credentials")) return "Wrong email or password. First time here? Use Create my password.";
-  if (m.includes("already registered") || m.includes("already been registered")) return "You already have a password. Use Sign in instead.";
-  if (m.includes("password should be at least")) return "Your password needs at least 6 characters.";
+  if (m.includes("invalid login credentials")) return "Wrong email or password.";
+  if (m.includes("email not confirmed")) return "This account still has to confirm its email address.";
+  if (m.includes("password should be at least")) return "That password is too short.";
   if (m.includes("rate limit") || m.includes("too many")) return "Too many attempts for now. Wait a minute and try again.";
   return message;
 }

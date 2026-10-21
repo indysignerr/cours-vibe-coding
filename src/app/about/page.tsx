@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AddToCalendar } from "@/components/add-to-calendar";
 import { BrandMark } from "@/components/brand";
 import { PageShell } from "@/components/page-shell";
-import { peerHour } from "@/lib/calendar";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -25,7 +23,7 @@ const STORY = [
   {
     n: "01",
     title: "It started as a way to learn in public",
-    body: `A handful of students at ${SITE.school} wanted to build real software with AI agents rather than read about it. No lectures: a path you walk at your own pace, and one hour a week where the room unblocks you.`,
+    body: `A handful of students at ${SITE.school} wanted to build real software with AI agents rather than read about it. We tried a weekly course and it did not hold. What does hold is a room, a deadline, and something that has to work by the end of it.`,
   },
   {
     n: "02",
@@ -39,10 +37,18 @@ const STORY = [
   },
 ];
 
+const RUNS = [
+  ["Hackathons", "A weekend, teams of three, one brief. Something that runs at the end, or it does not count."],
+  ["Workshops", "Three hours on one tool, on your own machine. You leave with it working."],
+  ["Talks", "One speaker, one hour, open to the whole campus."],
+  ["Company evenings", "Directors see what students actually ship, and ask the awkward questions."],
+];
+
 const FACTS: [string, string][] = [
   ["Campus", `${SITE.school} ${SITE.campus}`],
   ["Founded", "September 2026"],
   ["Members", `${SITE.team.length} active`],
+  ["What we run", "Hackathons, workshops, talks, company evenings"],
   ["Client work since", "January 2027"],
   ["Working languages", "English and Italian, French on request"],
   ["Legal form", "Student-run association, not a company"],
@@ -194,25 +200,33 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Pour les étudiants */}
+      {/* Ce qu'on organise */}
       <section className="card card--sand mt-20 p-7 md:p-10">
-        <div className="grid gap-8 md:grid-cols-12 md:items-center">
-          <div className="md:col-span-7">
+        <div className="grid gap-8 md:grid-cols-12">
+          <div className="md:col-span-5">
             <p className="eyebrow">For students</p>
-            <h2 className="display-2 mt-4">No lectures. One hour a week, and a path you walk alone.</h2>
+            <h2 className="display-2 mt-4">No syllabus. A room, a deadline, and something that works.</h2>
             <p className="mt-5 text-body">
-              The material lives on this site and each member works through it at their own pace. The
-              test for every module is the same: could you do this with nobody in the room?
+              There is no weekly course and nothing is graded. You come to what is useful to you, and
+              you leave with a thing on a public URL rather than a page of notes.
             </p>
-          </div>
-          <div className="md:col-span-4 md:col-start-9">
-            <AddToCalendar event={peerHour()} label="Add the weekly hour" />
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link className="btn btn--primary" href="/events/">
+                See what is coming up
+              </Link>
               <Link className="btn btn--ghost" href="/join/">
                 Join the association
               </Link>
             </div>
           </div>
+          <dl className="rows md:col-span-6 md:col-start-7">
+            {RUNS.map(([term, detail]) => (
+              <div key={term} className="py-5 first:pt-0">
+                <dt className="display-3">{term}</dt>
+                <dd className="mt-2 text-body">{detail}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

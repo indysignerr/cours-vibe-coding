@@ -1,4 +1,5 @@
-import { googleCalendarUrl, type CalendarEvent } from "@/lib/calendar";
+import { googleCalendarUrl } from "@/lib/calendar";
+import type { SiteEvent } from "@/lib/events";
 
 /**
  * « Ajouter à Google Agenda » + le fichier .ics pour tous les autres.
@@ -9,7 +10,7 @@ export function AddToCalendar({
   label = "Add to Google Calendar",
   variant = "ghost",
 }: {
-  event: CalendarEvent;
+  event: SiteEvent;
   label?: string;
   variant?: "ghost" | "primary" | "brand" | "outline";
 }) {

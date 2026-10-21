@@ -6,37 +6,39 @@ METHOD:PUBLISH
 X-WR-CALNAME:Albert L.I.G.H.T.
 X-WR-TIMEZONE:Europe/Rome
 BEGIN:VEVENT
-UID:peer-hour@albert-light
-DTSTAMP:20261021T163626Z
-DTSTART;TZID=Europe/Rome:20260916T180000
-DTEND;TZID=Europe/Rome:20260916T190000
-RRULE:FREQ=WEEKLY;BYDAY=WE;UNTIL=20261202T235959Z
-SUMMARY:Albert L.I.G.H.T. — Peer hour
-DESCRIPTION:Bring what is blocking you. Someone who already cleared it shows you how. No slides\, no one at the front of the room.
-LOCATION:Albert School\, Milano
+UID:hackathon-ship-in-24@albert-light
+DTSTAMP:20261021T165720Z
+DTSTART;TZID=Europe/Rome:20261121T100000
+DTEND;TZID=Europe/Rome:20261122T180000
+SUMMARY:Albert L.I.G.H.T. — Ship in 24
+DESCRIPTION:Twenty-four hours\, teams of three\, one brief handed out at the start. At 6 p.m. on Sunday everything is demonstrated live\, from a public URL\, or it does not count.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
-UID:contest-1@albert-light
-DTSTAMP:20261021T163626Z
-DTSTART;TZID=Europe/Rome:20261011T200000
-DTEND;TZID=Europe/Rome:20261011T235900
-SUMMARY:Albert L.I.G.H.T. — Contest #1
-DESCRIPTION:A landing page built under constraints\, submitted before midnight. Submissions close at midnight.
+UID:workshop-idea-to-url@albert-light
+DTSTAMP:20261021T165720Z
+DTSTART;TZID=Europe/Rome:20261105T180000
+DTEND;TZID=Europe/Rome:20261105T210000
+SUMMARY:Albert L.I.G.H.T. — From an idea to a live URL
+DESCRIPTION:Three hours\, from an empty folder to a page anyone in the world can open. We do it together\, on your machine\, and you leave with it working.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
-UID:contest-2@albert-light
-DTSTAMP:20261021T163626Z
-DTSTART;TZID=Europe/Rome:20261108T200000
-DTEND;TZID=Europe/Rome:20261108T235900
-SUMMARY:Albert L.I.G.H.T. — Contest #2
-DESCRIPTION:An app backed by a database\, submitted before midnight. Submissions close at midnight.
+UID:talk-what-the-law-says@albert-light
+DTSTAMP:20261021T165720Z
+DTSTART;TZID=Europe/Rome:20261203T190000
+DTEND;TZID=Europe/Rome:20261203T200000
+SUMMARY:Albert L.I.G.H.T. — What the law actually says about AI at work
+DESCRIPTION:An hour on the three texts that decide whether a company may use the tools its staff are already using — and why getting it wrong in Italy is a criminal matter\, not a fine.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
-UID:demo-day@albert-light
-DTSTAMP:20261021T163626Z
-DTSTART;TZID=Europe/Rome:20261206T200000
-DTEND;TZID=Europe/Rome:20261206T235900
-SUMMARY:Albert L.I.G.H.T. — Demo Day
-DESCRIPTION:Your project\, presented to a jury\, in four minutes. Submissions close at midnight.
+UID:company-demo-night@albert-light
+DTSTAMP:20261021T165720Z
+DTSTART;TZID=Europe/Rome:20270211T183000
+DTEND;TZID=Europe/Rome:20270211T213000
+SUMMARY:Albert L.I.G.H.T. — Demo night
+DESCRIPTION:Students show what they built\, directors say whether they would have paid for it\, and nobody shows a slide. The honest version of our credentials.
+LOCATION:
 END:VEVENT
 END:VCALENDAR

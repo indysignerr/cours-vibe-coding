@@ -22,8 +22,8 @@ export default function LegalPage() {
           </p>
         ) : (
           <p>
-            <strong>Contact address to be published before the first session.</strong> Until then,
-            reach the association through the student group.
+            <strong>Contact address to be published before the first event.</strong> Until then,
+            reach the association through any of its members.
           </p>
         )}
 
@@ -40,14 +40,13 @@ export default function LegalPage() {
 
         <h2>Intellectual property</h2>
         <p>
-          Course material on this site is written by the association and may be reused by its members
-          for their own learning. It may not be resold or republished as a commercial training
-          product.
+          Material written by the association for its events — briefs, workshop notes, slides — may be
+          reused by participants for their own learning. It may not be resold or republished as a
+          commercial training product.
         </p>
         <p>
-          Projects submitted to contests remain the property of the students who built them. By
-          submitting, you allow the association to show your project name, your name and your public
-          URL on this site and in the student group.
+          What you build at one of our events is yours. We ask separately, each time, before showing a
+          project, a name or a URL anywhere.
         </p>
 
         <h2>Trademarks</h2>

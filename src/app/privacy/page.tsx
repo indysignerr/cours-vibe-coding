@@ -17,71 +17,42 @@ export default function PrivacyPage() {
         <h2>What we collect</h2>
         <ul>
           <li>
-            <strong>Your email address</strong>, because you cannot have an account without one. We
-            add it by hand when you join.
+            <strong>An event sign-up</strong>: your name, your email, the company you give if you give
+            one, and the optional note you write. You do not need an account for this.
           </li>
           <li>
-            <strong>Your first name and surname</strong>, so contest results can name a winner.
-          </li>
-          <li>
-            <strong>Your GitHub username</strong>, only if you choose to add it.
-          </li>
-          <li>
-            <strong>Your progress in each session</strong>, meaning which checklist items you ticked.
-            Only you and the two organisers can see it.
-          </li>
-          <li>
-            <strong>Your contest submissions</strong>, meaning a title, a live URL, a repository URL
-            and your own written note.
-          </li>
-          <li>
-            <strong>An event sign-up</strong>, if you put your name down for the peer hour, a contest
-            or Demo Day: your name, your email and the optional note you write. You do not need an
-            account for this, and the list is visible only to the organisers.
+            <strong>An organiser account</strong>, for the handful of people who hold the sign-up
+            lists: an email address and a password we never see.
           </li>
         </ul>
         <p>
           We do not use analytics, tracking pixels, advertising cookies, or any third party
-          measurement. The only cookie-equivalent storage on this site is the one that keeps you
-          signed in.
+          measurement. The only cookie-equivalent storage on this site is the one that keeps an
+          organiser signed in.
         </p>
 
         <h2>Why</h2>
         <p>
-          To run the club: give you access to session material, record what you finished, and judge
-          contests fairly. Nothing else.
+          To know how many people are coming, so we put out the right number of chairs and order the
+          right amount of food. To write to you if a date, a room or a time changes. Nothing else.
         </p>
 
         <h2>Where it lives</h2>
         <p>
-          In a Supabase project hosted in the European Union. The site itself is served by Cloudflare
-          as static files and holds no database of its own.
+          In a database hosted in the European Union by Supabase, which acts as our processor. The
+          site itself is served by Cloudflare. Neither is given the list for any purpose of their own.
         </p>
 
         <h2>Who sees what</h2>
         <p>
-          The two organisers of the association can see every account, submission and score. Other
-          members see the season board, which shows your points and completed steps, and the name
-          and project of contest winners once results are published. If you did not consent to
-          your full name being shown, the board and the results show your first name and initial. Session material is only visible to signed-in members, and locked
-          sessions are not merely hidden in the page, they are refused by the database.
-        </p>
-
-        <h2>Published results</h2>
-        <p>
-          Contest results are published on this site with your first name and surname. You are asked
-          for written consent when you join. You can compete without being named: tell an organiser
-          and results will show your first name and initial instead.
+          Only the organisers. The list is never published, never shown on this site, and never passed
+          to a company — including a company sponsoring an event.
         </p>
 
         <h2>How long</h2>
         <p>
-          For as long as you are a member, and for one academic year afterwards so that a portfolio
-          link keeps working. Ask and we delete your account sooner.
-        </p>
-        <p>
-          An event sign-up is deleted one month after the event. It is never merged into anything
-          else, and it is never passed on.
+          A sign-up is deleted one month after the event it was for. It is never merged into anything
+          else.
         </p>
 
         <h2>Your rights</h2>
@@ -101,8 +72,8 @@ export default function PrivacyPage() {
           </p>
         ) : (
           <p>
-            <strong>Contact address to be published before the first session.</strong> Until then,
-            reach the association through the student group.
+            <strong>Contact address to be published before the first event.</strong> Until then,
+            reach the association through any of its members.
           </p>
         )}
       </div>
