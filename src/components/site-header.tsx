@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Logo } from "@/components/brand";
-import { SITE } from "@/lib/site";
+import { BrandLink } from "@/components/brand-link";
 
 const LINKS = [
   { href: "/solutions/", label: "Solutions" },
@@ -21,9 +20,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/88 backdrop-blur-md">
       <div className="mx-auto flex max-w-stage items-center justify-between px-5 py-3 md:px-8">
-        <Link className="tap flex items-center" href="/" aria-label={`${SITE.name}, home`}>
-          <Logo />
-        </Link>
+        <BrandLink />
 
         <nav aria-label="Main" className="flex items-center gap-1">
           {LINKS.map((l) => (

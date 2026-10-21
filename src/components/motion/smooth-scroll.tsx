@@ -1,8 +1,10 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { ScrollTrigger } from "@/components/motion/gsap";
+import { scrollToTop, setLenis } from "@/components/motion/lenis";
 
 /**
  * Défilement inertiel global.
@@ -12,6 +14,8 @@ import { ScrollTrigger } from "@/components/motion/gsap";
  * son défilement natif, ce qui est exactement ce qu'on veut.
  */
 export function SmoothScroll() {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -25,6 +29,7 @@ export function SmoothScroll() {
     // Lenis et ScrollTrigger doivent lire le même défilement : sans ce
     // branchement les apparitions se déclenchent au mauvais endroit, parce
     // que ScrollTrigger échantillonne pendant que Lenis interpole encore.
+    setLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
 
     let frame = 0;
@@ -54,9 +59,25 @@ export function SmoothScroll() {
       document.removeEventListener("click", onClick);
       lenis.off("scroll", ScrollTrigger.update);
       cancelAnimationFrame(frame);
+      setLenis(null);
       lenis.destroy();
     };
   }, []);
+
+  /**
+   * Remise à zéro à chaque changement de page.
+   *
+   * Next remet la fenêtre en haut après une navigation, mais Lenis tient
+   * sa propre position : au premier coup de molette il ramenait le
+   * visiteur là où il était sur la page précédente. On lui dit donc
+   * explicitement que la nouvelle page commence en haut.
+   */
+  useEffect(() => {
+    // Sauf si l'URL vise une ancre : quelqu'un qui arrive sur /page/#section
+    // veut cette section, pas le haut de la page.
+    if (window.location.hash) return;
+    scrollToTop({ immediate: true });
+  }, [pathname]);
 
   return null;
 }

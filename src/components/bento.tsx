@@ -95,14 +95,16 @@ function SometimesNo() {
 /**
  * Le tampon qui n'arrive jamais sur le papier.
  *
- * La barre se mesure sur le badge et non sur la tuile : c'est le badge
- * qui est le conteneur positionné, et la largeur est relative, donc elle
- * suit le mot quelle que soit sa longueur ou la taille du texte.
+ * La barre va d'angle à angle : bas gauche vers haut droit. Un trait en
+ * CSS ne peut pas faire ça tout seul — il faudrait connaître l'arc
+ * tangente du rapport du badge, qui change avec la longueur du mot et la
+ * taille du texte.
  *
- * Elle pivote autour de son centre pour que les deux extrémités montent
- * et descendent d'autant, et se dessine de gauche à droite par clip-path.
- * Animer scaleX aurait forcé la même origine pour la rotation et pour le
- * tracé, et la barre serait repartie de travers.
+ * D'où le SVG : la viewBox 0 0 100 100 est étirée aux dimensions réelles
+ * par preserveAspectRatio="none", donc la diagonale tombe pile sur les
+ * deux angles quelles que soient les proportions. vector-effect garde
+ * l'épaisseur du trait constante, sinon l'étirement non uniforme
+ * l'écraserait dans un sens et l'épaissirait dans l'autre.
  */
 function NeverCertify() {
   return (
@@ -111,15 +113,28 @@ function NeverCertify() {
         <span className="block rounded-card px-6 py-4 text-center text-sm uppercase tracking-[0.18em] text-muted shadow-[inset_0_0_0_1px_var(--line-strong)]">
           Certified
         </span>
-        <motion.span
+        <svg
           aria-hidden
-          className="absolute left-[-6%] w-[112%] rounded-full bg-brand"
-          style={{ top: "50%", height: 2, marginTop: -1, rotate: -7 }}
-          initial={{ clipPath: "inset(0 100% 0 0)" }}
-          whileInView={{ clipPath: "inset(0 0% 0 0)" }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.55, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        />
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          <motion.line
+            x1="0"
+            y1="100"
+            x2="100"
+            y2="0"
+            stroke="var(--brand)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </svg>
       </span>
     </div>
   );
