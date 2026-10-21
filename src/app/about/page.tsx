@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/brand";
 import { Magnetic } from "@/components/motion/magnetic";
 import { Reveal } from "@/components/motion/reveal";
+import { Timeline } from "@/components/motion/timeline";
 import { PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/site";
 
@@ -23,19 +24,19 @@ function initials(name: string) {
 
 const STORY = [
   {
-    n: "01",
-    title: "It started as a way to learn in public",
-    body: `A handful of students at ${SITE.school} wanted to build real software with AI agents rather than read about it. We tried a weekly course and it did not hold. What does hold is a room, a deadline, and something that has to work by the end of it.`,
+    when: "September 2026",
+    title: "A way to learn in public",
+    body: `Students at ${SITE.school} wanted to build software rather than read about it. We tried a weekly course; it did not hold. A room, a deadline, and something that has to work by the end of it does.`,
   },
   {
-    n: "02",
+    when: "November 2026",
     title: "Companies kept asking the same question",
-    body: "Not “can you build us a model”. “Are we allowed to use the tools our staff are already using?” Almost nobody could answer it, and in Italy getting it wrong is a criminal matter, not a fine.",
+    body: "Not \u201ccan you build us a model\u201d but \u201care we allowed to use the tools our staff already use?\u201d In Italy, getting that wrong is a criminal matter, not a fine.",
   },
   {
-    n: "03",
-    title: "So the association took on client work",
-    body: "Members who have shipped something real take the engagements. Fixed price, three weeks, and a written answer on where the data goes. Selection is on work delivered, never on an interview.",
+    when: "January 2027",
+    title: "The association took on client work",
+    body: "Members who have shipped something real take the engagements. Selection is on work delivered, never on an interview.",
   },
 ];
 
@@ -117,15 +118,9 @@ export default function AboutPage() {
       {/* L'histoire */}
       <section className="mt-20">
         <p className="eyebrow">How we got here</p>
-        <Reveal as="ol" className="rows mt-8" stagger y={24}>
-          {STORY.map((s) => (
-            <li key={s.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
-              <span className="counter md:col-span-1">{s.n}</span>
-              <h2 className="display-3 md:col-span-4">{s.title}</h2>
-              <p className="text-body md:col-span-6 md:col-start-6">{s.body}</p>
-            </li>
-          ))}
-        </Reveal>
+        <div className="mt-10">
+          <Timeline beats={STORY} />
+        </div>
       </section>
 
       {/* L'équipe */}

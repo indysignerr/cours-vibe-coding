@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandMark } from "@/components/brand";
+import { Bento } from "@/components/bento";
 import { Doors } from "@/components/doors";
+import { OfferCards } from "@/components/offer-cards";
+import { ToolRail } from "@/components/tool-rail";
 import { AutomationScene } from "@/components/motion/automation-scene";
 import { Magnetic } from "@/components/motion/magnetic";
-import { Marquee } from "@/components/motion/marquee";
 import { Reveal } from "@/components/motion/reveal";
 import { SplitLines } from "@/components/motion/split-lines";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { OFFERS } from "@/lib/offers";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -18,14 +19,6 @@ export const metadata: Metadata = {
     "We automate the repetitive work inside your company and hand you the file that lets you deploy it. Fixed price, three weeks. A student-run association at Albert School Milano.",
 };
 
-const TICKER = [
-  "Fixed price",
-  "Three weeks",
-  "Hosted in the EU",
-  "Your code, your accounts",
-  "We say no to high-risk uses",
-  "Milano",
-];
 
 export default function Home() {
   return (
@@ -35,10 +28,6 @@ export default function Home() {
       <main id="main">
         {/* Qui est là ? La question avant le discours. */}
         <Doors />
-
-        <div className="border-b border-line bg-sunken py-4 text-sm font-medium uppercase tracking-[0.14em] text-brand">
-          <Marquee items={TICKER} speed={44} />
-        </div>
 
         {/* La phrase, seule sur son écran. */}
         <section className="border-b border-line">
@@ -77,28 +66,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Les offres, nues. Le détail est sur la page Solutions. */}
+        {/* Les offres : cinq lignes, le détail au clic. */}
         <section className="border-b border-line">
           <div className="mx-auto max-w-stage px-5 py-20 md:px-8 md:py-28">
             <Reveal className="flex flex-wrap items-end justify-between gap-6" stagger y={18}>
               <h2 className="display-2 max-w-[14ch]">Five engagements.</h2>
               <Magnetic strength={0.2}>
                 <Link className="btn btn--ghost" href="/solutions/">
-                  What each one includes
+                  Scope, terms, exclusions
                 </Link>
               </Magnetic>
             </Reveal>
 
-            <Reveal as="ul" className="rows mt-14" stagger y={20}>
-              {OFFERS.map((o) => (
-                <li key={o.slug} className="group flex items-baseline justify-between gap-6 py-6">
-                  <span className="display-3 underline-grow">{o.title}</span>
-                  <span className="tnum shrink-0 text-lg font-semibold tracking-[-0.02em] text-muted transition-colors group-hover:text-brand">
-                    {o.price}
-                  </span>
-                </li>
-              ))}
-            </Reveal>
+            <div className="mt-14">
+              <OfferCards />
+            </div>
           </div>
         </section>
 
@@ -120,6 +102,34 @@ export default function Home() {
                 How we handle it
               </Link>
             </Reveal>
+          </div>
+        </section>
+
+        {/* Les principes, en grille. Chaque tuile montre au lieu d'écrire. */}
+        <section className="border-b border-line">
+          <div className="mx-auto max-w-stage px-5 py-20 md:px-8 md:py-28">
+            <Reveal stagger y={18}>
+              <p className="eyebrow">How we work</p>
+              <h2 className="display-2 mt-4 max-w-[20ch]">
+                The method is the product.
+              </h2>
+            </Reveal>
+            <div className="mt-14">
+              <Bento />
+            </div>
+          </div>
+        </section>
+
+        {/* Les outils, nommés. Ce qui remplace la preuve sociale qu'on n'a pas. */}
+        <section className="border-b border-line">
+          <div className="mx-auto max-w-stage px-5 py-20 md:px-8 md:py-24">
+            <Reveal stagger y={18}>
+              <p className="eyebrow">What we build with</p>
+              <h2 className="display-2 mt-4 max-w-[20ch]">Four tools, and we are fast in all four.</h2>
+            </Reveal>
+            <div className="mt-12">
+              <ToolRail />
+            </div>
           </div>
         </section>
 

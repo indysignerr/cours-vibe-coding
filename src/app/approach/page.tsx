@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HorizontalSteps } from "@/components/motion/horizontal-steps";
 import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 
@@ -56,15 +57,9 @@ export default function ApproachPage() {
       title="The method is the product. The software comes after."
       lede="Most AI projects fail for reasons that have nothing to do with the model. We work in the opposite order."
     >
-      <Reveal as="ol" className="rows" stagger y={24}>
-        {STEPS.map((s) => (
-          <li key={s.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
-            <span className="counter md:col-span-1">{s.n}</span>
-            <h2 className="display-3 md:col-span-4">{s.title}</h2>
-            <p className="text-body md:col-span-6 md:col-start-6">{s.body}</p>
-          </li>
-        ))}
-      </Reveal>
+      <div className="full-bleed">
+        <HorizontalSteps steps={STEPS} />
+      </div>
 
       {/* Le vrai livrable */}
       <section className="mt-20 grid gap-10 md:grid-cols-12">

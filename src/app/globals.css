@@ -244,6 +244,14 @@
 
   .tap { min-height: 44px; min-width: 44px; }
 
+  /* Sort d'un conteneur centré pour reprendre toute la largeur de l'écran.
+     Sert aux scènes épinglées, qui ne peuvent pas vivre dans une gouttière. */
+  .full-bleed {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
   /* Rangée de liens défilante : la barre de défilement n'apporte rien ici. */
   .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }

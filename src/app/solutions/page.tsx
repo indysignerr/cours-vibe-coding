@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Magnetic } from "@/components/motion/magnetic";
 import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
-import { OFFERS } from "@/lib/offers";
+import { OfferCards } from "@/components/offer-cards";
 
 export const metadata: Metadata = {
   title: "Solutions",
@@ -25,43 +25,7 @@ export default function ServicesPage() {
       title="Five engagements. Fixed price, three weeks."
       lede="Each one is scoped to finish. Each one says what it does not include — the part most proposals leave out."
     >
-      <Reveal as="ul" className="rows" stagger y={24}>
-        {OFFERS.map((o) => (
-          <li key={o.slug} className="grid gap-8 py-12 first:pt-0 md:grid-cols-12 md:gap-10">
-            <div className="md:col-span-4">
-              <p className="counter">{o.n}</p>
-              <h2 className="display-2 mt-3">{o.title}</h2>
-              <p className="tnum mt-5 text-2xl font-semibold tracking-[-0.02em] text-ink">{o.price}</p>
-              <p className="mt-1 text-sm text-muted">{o.duration}</p>
-              {o.market ? (
-                <p className="mt-4 inline-block rounded-btn bg-accent-tint px-3 py-1 text-sm font-medium text-accent">
-                  {o.market}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="md:col-span-7 md:col-start-6">
-              <p className="lede">{o.summary}</p>
-
-              <h3 className="eyebrow mt-9">What you receive</h3>
-              <ul className="mt-4 grid gap-3">
-                {o.delivers.map((d) => (
-                  <li key={d} className="grid grid-cols-[auto_1fr] gap-3 text-body">
-                    <span aria-hidden className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand" />
-                    <span>{d}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <h3 className="eyebrow mt-9">Why it holds</h3>
-              <p className="mt-3 text-body">{o.why}</p>
-
-              <h3 className="eyebrow mt-9">Not included</h3>
-              <p className="mt-3 text-body">{o.excludes}</p>
-            </div>
-          </li>
-        ))}
-      </Reveal>
+      <OfferCards />
 
       {/* Ce qu'on refuse : dit tôt, c'est un argument de sérieux */}
       <section className="mt-20 grid gap-10 md:grid-cols-12">

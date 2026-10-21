@@ -1,0 +1,150 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+/**
+ * La grille bento des principes.
+ *
+ * Structure reprise de « bento grid 01 » (avanishverma4, 21st.dev) : une
+ * grille de six colonnes en lignes de hauteur fixe, où chaque tuile choisit
+ * sa portée. L'idée qu'on lui emprunte vraiment est que chaque tuile
+ * contient une petite animation qui *montre* le principe au lieu de l'écrire.
+ * La peau, le contenu et les animations sont à nous.
+ */
+
+/** Quatre catégories, mises en avant à tour de rôle. */
+function DataSort() {
+  const cats = ["Public", "Internal", "Personal", "Sensitive"];
+  const [on, setOn] = useState(0);
+  useEffect(() => {
+    const i = setInterval(() => setOn((p) => (p + 1) % cats.length), 1400);
+    return () => clearInterval(i);
+  }, [cats.length]);
+
+  return (
+    <div className="flex h-full flex-wrap content-center gap-2">
+      {cats.map((c, i) => (
+        <motion.span
+          key={c}
+          className="rounded-btn px-3 py-1.5 text-sm"
+          animate={{
+            backgroundColor: i === on ? "var(--brand)" : "var(--sunken)",
+            color: i === on ? "var(--on-brand)" : "var(--muted)",
+          }}
+          transition={{ duration: 0.45 }}
+        >
+          {c}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+/** L'interrupteur qui finit sur « non ». */
+function SometimesNo() {
+  const [yes, setYes] = useState(true);
+  useEffect(() => {
+    const i = setInterval(() => setYes((p) => !p), 2200);
+    return () => clearInterval(i);
+  }, []);
+
+  return (
+    <div className="flex h-full items-center gap-4">
+      <motion.span
+        className="flex h-9 w-16 items-center rounded-full p-1"
+        animate={{ backgroundColor: yes ? "var(--brand)" : "var(--line-strong)" }}
+        transition={{ duration: 0.4 }}
+      >
+        <motion.span
+          className="size-7 rounded-full bg-canvas"
+          animate={{ x: yes ? 28 : 0 }}
+          transition={{ type: "spring", stiffness: 320, damping: 26 }}
+        />
+      </motion.span>
+      <motion.span
+        key={yes ? "y" : "n"}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-2xl font-semibold tracking-[-0.02em] text-ink"
+      >
+        {yes ? "Automate it" : "Leave it alone"}
+      </motion.span>
+    </div>
+  );
+}
+
+/** Le tampon qui n'arrive jamais sur le papier. */
+function NeverCertify() {
+  return (
+    <div className="relative flex h-full items-center justify-center">
+      <span className="rounded-card px-6 py-4 text-center text-sm uppercase tracking-[0.18em] text-muted shadow-[inset_0_0_0_1px_var(--line-strong)]">
+        Certified
+      </span>
+      <motion.span
+        aria-hidden
+        className="absolute h-0.5 w-40 rounded-full bg-brand"
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{ rotate: -14, originX: 0 }}
+      />
+    </div>
+  );
+}
+
+const TILES = [
+  {
+    span: "md:col-span-2 md:row-span-2",
+    title: "We sort your data before we choose a tool",
+    body: "Four categories, one page, one hour. The answer decides everything after it.",
+    visual: <DataSort />,
+  },
+  {
+    span: "md:col-span-4",
+    title: "Sometimes the honest answer is no AI",
+    body: "A plain rule is often better. Saying so is what separates an advisor from a vendor.",
+    visual: <SometimesNo />,
+  },
+  {
+    span: "md:col-span-2",
+    title: "We implement, we never certify",
+    body: "Your compliance stays yours and your counsel’s.",
+    visual: <NeverCertify />,
+  },
+  {
+    span: "md:col-span-2",
+    title: "Fixed price, or no price",
+    body: "A fixed price caps the risk on both sides. We have never billed by the day.",
+    visual: (
+      <p className="flex h-full items-center text-5xl font-semibold tracking-[-0.03em] text-brand">
+        €2,500
+      </p>
+    ),
+  },
+];
+
+export function Bento() {
+  return (
+    <div className="grid auto-rows-[minmax(190px,auto)] grid-cols-1 gap-4 md:grid-cols-6">
+      {TILES.map((t, i) => (
+        <motion.article
+          key={t.title}
+          className={`card flex flex-col justify-between overflow-hidden p-7 ${t.span}`}
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.65, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ y: -3 }}
+        >
+          <div className="min-h-[90px] flex-1">{t.visual}</div>
+          <div className="mt-6">
+            <h3 className="display-3">{t.title}</h3>
+            <p className="mt-2 text-sm text-body">{t.body}</p>
+          </div>
+        </motion.article>
+      ))}
+    </div>
+  );
+}

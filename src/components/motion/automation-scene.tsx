@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap, reducedMotion } from "@/components/motion/gsap";
+import { gsap } from "@/components/motion/gsap";
+import { useStill } from "@/components/motion/use-still";
 
 /**
  * La démonstration, en motion design.
@@ -44,15 +45,7 @@ export function AutomationScene() {
   const root = useRef<HTMLDivElement>(null);
   const [act, setAct] = useState(0);
   const [minutes, setMinutes] = useState(0);
-  /**
-   * Repli en texte. Deux cas :
-   * — le système demande moins de mouvement ;
-   * — l'écran est trop étroit. Épingler trois écrans de défilement sur un
-   *   téléphone, c'est confisquer la page à quelqu'un qui voulait lire.
-   */
-  const [still] = useState(
-    () => reducedMotion() || (typeof window !== "undefined" && window.innerWidth < 768),
-  );
+  const still = useStill();
 
   useEffect(() => {
     const el = root.current;
