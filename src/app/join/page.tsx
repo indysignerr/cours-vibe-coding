@@ -64,11 +64,11 @@ export default function JoinPage() {
       {/* Le prochain rendez-vous, puisque c'est la seule porte d'entrée */}
       {next.length > 0 ? (
         <Reveal as="section" className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16" y={30}>
-          <p className="eyebrow eyebrow--on-ink">The door is the next event</p>
-          <h2 className="display-2 mt-4 max-w-[22ch]" style={{ color: "var(--on-ink)" }}>
+          <p className="eyebrow eyebrow--accent">The door is the next event</p>
+          <h2 className="display-2 mt-4 max-w-[22ch]">
             {EVENT_KINDS[next[0].kind].label}: {next[0].title}.
           </h2>
-          <p className="lede mt-5 max-w-measure" style={{ color: "var(--on-ink-muted)" }}>
+          <p className="lede mt-5 max-w-measure">
             {next[0].summary}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">

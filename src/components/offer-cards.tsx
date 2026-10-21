@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { OFFERS } from "@/lib/offers";
 
@@ -29,46 +28,54 @@ export function OfferCards() {
                 aria-expanded={isOpen}
                 aria-controls={`offer-${o.slug}`}
                 onClick={() => setOpen(isOpen ? null : o.slug)}
-                className="group flex w-full items-baseline gap-5 py-7 text-left"
+                className="group flex w-full items-start gap-5 py-8 text-left"
               >
                 <span className="counter shrink-0">{o.n}</span>
 
                 <span className="flex-1">
-                  <span className="display-2 block transition-colors group-hover:text-brand">
+                  <span className="display-2 block transition-colors group-hover:text-accent">
                     {o.title}
                   </span>
                   <span className="mt-2 block text-sm text-muted">{o.duration}</span>
+
+                  {/* Les trois points, lus sans déplier. */}
+                  <span className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+                    {o.keyPoints.map((k) => (
+                      <span key={k} className="flex items-center gap-2 text-sm text-body">
+                        <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-brand" />
+                        {k}
+                      </span>
+                    ))}
+                  </span>
                 </span>
 
-                <span className="tnum shrink-0 text-xl font-semibold tracking-[-0.02em] text-ink">
-                  {o.price}
-                </span>
-
-                {/* Le signe qui bascule en croix */}
-                <span aria-hidden className="relative ml-2 size-5 shrink-0">
-                  <motion.span
-                    className="absolute left-0 top-1/2 h-0.5 w-5 -translate-y-1/2 rounded-full bg-brand"
-                  />
-                  <motion.span
-                    className="absolute left-0 top-1/2 h-0.5 w-5 -translate-y-1/2 rounded-full bg-brand"
-                    animate={{ rotate: isOpen ? 0 : 90 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  />
+                <span className="shrink-0 text-right">
+                  <span className="tnum block text-2xl font-semibold tracking-[-0.02em] text-ink">
+                    {o.price}
+                  </span>
+                  <span className="mt-2 block text-sm text-accent underline-grow">
+                    {isOpen ? "Close" : "Learn more"}
+                  </span>
                 </span>
               </button>
             </h2>
 
-            <AnimatePresence initial={false}>
-              {isOpen ? (
-                <motion.div
-                  id={`offer-${o.slug}`}
-                  key="body"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="overflow-hidden"
-                >
+            {/*
+              Le dépliage se fait par grid-template-rows, de 0fr à 1fr.
+              Pas d'AnimatePresence : il garde l'enfant sortant monté le
+              temps de l'animation, et React 19 levait « removeChild : the
+              node to be removed is not a child of this node » en tombant
+              sur un nœud qu'il croyait déjà parti. Le panneau reste ici
+              toujours monté — simplement replié à zéro — donc React garde
+              la main sur son arbre et la hauteur s'anime sans être mesurée.
+            */}
+            <div
+              id={`offer-${o.slug}`}
+              className="grid transition-[grid-template-rows,opacity] duration-500 ease-swift motion-reduce:transition-none"
+              style={{ gridTemplateRows: isOpen ? "1fr" : "0fr", opacity: isOpen ? 1 : 0 }}
+              aria-hidden={!isOpen}
+            >
+              <div className="overflow-hidden">
                   <div className="grid gap-8 pb-10 md:grid-cols-12">
                     <div className="md:col-span-5">
                       <p className="lede">{o.summary}</p>
@@ -97,9 +104,8 @@ export function OfferCards() {
                       <p className="mt-3 text-body">{o.excludes}</p>
                     </div>
                   </div>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
+              </div>
+            </div>
           </li>
         );
       })}

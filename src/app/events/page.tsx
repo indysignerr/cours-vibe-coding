@@ -64,17 +64,17 @@ export default function EventsPage() {
                     {/* La fiche, sur marine */}
                     <div className="bg-ink-surface p-7 md:col-span-5 md:p-10">
                       <div className="flex items-center gap-3">
-                        <span className="counter" style={{ color: "var(--brand-soft)" }}>
+                        <span className="counter">
                           {String(i + 1).padStart(2, "0")}
                         </span>
-                        <span className="eyebrow eyebrow--on-ink">{EVENT_KINDS[e.kind].label}</span>
+                        <span className="eyebrow eyebrow--accent">{EVENT_KINDS[e.kind].label}</span>
                       </div>
 
-                      <h2 className="display-2 mt-5" style={{ color: "var(--on-ink)" }}>
+                      <h2 className="display-2 mt-5">
                         {e.title}
                       </h2>
 
-                      <dl className="mt-7 grid gap-3 text-sm" style={{ color: "var(--on-ink-muted)" }}>
+                      <dl className="mt-7 grid gap-3 text-sm">
                         {(
                           [
                             ["When", readableSpan(e)],
@@ -84,7 +84,7 @@ export default function EventsPage() {
                           ] as [string, string][]
                         ).map(([term, detail]) => (
                           <div key={term} className="flex gap-3">
-                            <dt className="w-16 shrink-0" style={{ color: "var(--brand-soft)" }}>
+                            <dt className="w-16 shrink-0">
                               {term}
                             </dt>
                             <dd className="tnum">{detail}</dd>
@@ -92,10 +92,10 @@ export default function EventsPage() {
                         ))}
                       </dl>
 
-                      <p className="mt-7" style={{ color: "var(--on-ink)" }}>
+                      <p className="mt-7">
                         {e.summary}
                       </p>
-                      <p className="mt-3 text-sm" style={{ color: "var(--on-ink-muted)" }}>
+                      <p className="mt-3 text-sm">
                         {e.audience}
                       </p>
 

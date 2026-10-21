@@ -18,70 +18,74 @@
    ===================================================================== */
 
 :root {
-  /* ---- Surfaces. Le marine est maintenant le fond, pas l'exception. ---- */
-  --canvas: #202448;        /* marine de la charte, la dominante */
-  --surface: #262b54;       /* carte posée sur le marine */
-  --sunken: #1a1d3b;        /* bandeau plus profond */
-  --ink-surface: #1a1d3b;
+  /* ---- Surfaces. L'ivoire redevient la dominante. ---- */
+  --canvas: #f8f4ec;        /* ivoire : le fond du site */
+  --surface: #fffdf8;       /* carte posée sur l'ivoire */
+  --sunken: #eadfcb;        /* sable : panneaux et sections calmes */
+  --ink-surface: #0e1a2b;
 
-  /* ---- Texte sur marine ---- */
-  --ink: #f8f4ec;           /* titres : l'ivoire de la charte */
-  --body: #ddd9ea;          /* paragraphes */
-  --muted: #a3a1bb;         /* légendes, métadonnées */
+  /* ---- Texte sur clair ---- */
+  --ink: #0e1a2b;           /* marine : titres et texte fort */
+  --body: #1e2d40;          /* paragraphes */
+  --muted: #55616f;         /* légendes, métadonnées */
   --on-ink: #f8f4ec;
   --on-ink-muted: #c9ae84;
 
   /* ---- Marque ---- */
-  --brand: #c9ae84;         /* beige : les formes, les filets, le pictogramme */
-  --brand-soft: #e3cfae;    /* beige clair : l'accent sur marine, comme le dit la charte */
-  --on-brand: #202448;      /* marine sur un aplat beige */
-  /* Bronze éclairci : le #8C5A2E de la charte tombe à 2,57:1 sur le marine.
-     Même teinte, remontée jusqu'à passer. */
-  --accent: #d49a5f;
-  --accent-hover: #e3cfae;
-  --accent-tint: #2b3160;
-  --on-accent: #202448;
+  --brand: #c9ae84;         /* beige : boutons, numéros, mots en avant */
+  --brand-soft: #e3cfae;
+  --on-brand: #0e1a2b;      /* marine sur un aplat beige */
+  /* Beige foncé : le beige clair ne peut pas être du texte sur l'ivoire,
+     celui-ci le peut (5,62:1). C'est l'accent écrit des sections claires. */
+  --accent: #7a5c33;
+  --accent-hover: #5e4626;
+  --accent-tint: #f1e7d6;
+  --on-accent: #f8f4ec;
 
-  /* ---- Traits et ombres, sur fond sombre ---- */
-  --line: rgba(248, 244, 236, 0.13);
-  --line-strong: rgba(248, 244, 236, 0.26);
-  --hair: 0 0 0 1px rgba(248, 244, 236, 0.11);
-  --lift: 0 0 0 1px rgba(248, 244, 236, 0.1), 0 14px 40px -24px rgba(0, 0, 0, 0.8);
-  --lift-lg: 0 0 0 1px rgba(248, 244, 236, 0.14), 0 30px 70px -30px rgba(0, 0, 0, 0.9);
+  /* ---- Traits et ombres ---- */
+  --line: rgba(14, 26, 43, 0.12);
+  --line-strong: rgba(14, 26, 43, 0.22);
+  --hair: 0 0 0 1px rgba(14, 26, 43, 0.1);
+  --lift: 0 0 0 1px rgba(14, 26, 43, 0.07), 0 1px 2px rgba(14, 26, 43, 0.04),
+    0 12px 32px -20px rgba(14, 26, 43, 0.35);
+  --lift-lg: 0 0 0 1px rgba(14, 26, 43, 0.08), 0 2px 5px rgba(14, 26, 43, 0.05),
+    0 28px 60px -28px rgba(14, 26, 43, 0.4);
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* ---------------------------------------------------------------------
-   La section claire, devenue l'exception.
+   La section marine.
 
    On ne change pas de composants : on redéfinit les mêmes jetons à
-   l'intérieur du bloc. Tout ce qui est écrit pour le marine fonctionne
-   tel quel sur l'ivoire, et les valeurs sont celles déjà validées.
+   l'intérieur du bloc. Tout ce qui est écrit pour l'ivoire fonctionne
+   tel quel sur le marine. Réservé au haut de page et à l'appel final —
+   c'est la rareté qui lui donne son poids.
    --------------------------------------------------------------------- */
-.on-paper {
-  --canvas: #f8f4ec;
-  --surface: #fffdf8;
-  --sunken: #eadfcb;
-  --ink: #202448;
-  --body: #2c3156;
-  --muted: #5a5770;
+.on-ink {
+  --canvas: #0e1a2b;
+  --surface: #16263c;
+  --sunken: #0a1421;
+  --ink: #f8f4ec;
+  --body: #dde3ec;
+  --muted: #97a3b4;
   --brand: #c9ae84;
   --brand-soft: #e3cfae;
-  --on-brand: #202448;
-  --accent: #845325;
-  --accent-hover: #6b4219;
-  --accent-tint: #f2e8d9;
-  --on-accent: #f8f4ec;
-  --line: rgba(32, 36, 72, 0.12);
-  --line-strong: rgba(32, 36, 72, 0.22);
-  --hair: 0 0 0 1px rgba(32, 36, 72, 0.1);
-  --lift: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 10px 28px -18px rgba(32, 36, 72, 0.3);
-  --lift-lg: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 22px 48px -24px rgba(32, 36, 72, 0.35);
+  --on-brand: #0e1a2b;
+  /* Sur le marine, l'accent écrit est le beige lui-même. */
+  --accent: #c9ae84;
+  --accent-hover: #e3cfae;
+  --accent-tint: #16263c;
+  --on-accent: #0e1a2b;
+  --line: rgba(248, 244, 236, 0.14);
+  --line-strong: rgba(248, 244, 236, 0.26);
+  --hair: 0 0 0 1px rgba(248, 244, 236, 0.12);
+  --lift: 0 0 0 1px rgba(248, 244, 236, 0.1), 0 14px 40px -24px rgba(0, 0, 0, 0.8);
+  --lift-lg: 0 0 0 1px rgba(248, 244, 236, 0.14), 0 30px 70px -30px rgba(0, 0, 0, 0.9);
 
   background: var(--canvas);
   color: var(--body);
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 @layer base {
@@ -554,38 +558,29 @@ body::before {
   opacity: 0.4;
   /* Grain généré, pas une image à télécharger. */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
+  mix-blend-mode: multiply;
 }
 
 /* Le contenu passe au-dessus des deux couches. */
 body > * { position: relative; z-index: 1; }
 
 /* Une lueur haute, comme si la lumière venait du logo. */
-body::after {
-  content: "";
-  position: fixed;
-  left: 50%;
-  top: -22rem;
-  width: 70rem;
-  height: 44rem;
-  transform: translateX(-50%);
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(201, 174, 132, 0.09), transparent 62%);
-}
-
-/* Sur l'ivoire, la matière s'inverse : le grain s'efface presque. */
-.on-paper { position: relative; }
-.on-paper::before {
+/* La lueur ne vit que dans les sections marine, où elle se voit. */
+.on-ink { position: relative; overflow: hidden; }
+.on-ink::after {
   content: "";
   position: absolute;
-  inset: 0;
+  left: 50%;
+  top: -24rem;
+  width: 72rem;
+  height: 46rem;
+  transform: translateX(-50%);
   pointer-events: none;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n2)' opacity='0.35'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
+  background: radial-gradient(ellipse at center, rgba(201, 174, 132, 0.12), transparent 62%);
 }
-.on-paper > * { position: relative; }
+.on-ink > * { position: relative; }
+
+
 
 /* Barre de défilement : le détail qui dit que quelqu'un y a touché. */
 @supports selector(::-webkit-scrollbar) {

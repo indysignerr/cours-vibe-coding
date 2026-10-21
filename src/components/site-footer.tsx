@@ -36,12 +36,12 @@ const COLUMNS: { title: string; links: [string, string][] }[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-line bg-ink-surface">
+    <footer className="on-ink mt-24 border-t border-line">
       <div className="mx-auto max-w-stage px-5 py-16 md:px-8">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
             <Logo compact onInk />
-            <p className="mt-5 max-w-[34ch] text-sm text-on-ink-muted">{SITE.legalMention}</p>
+            <p className="mt-5 max-w-[34ch] text-sm text-muted">{SITE.legalMention}</p>
             {SITE.contactEmail ? (
               <a
                 className="mt-5 inline-block text-sm text-brand-soft underline underline-offset-4"
@@ -55,12 +55,12 @@ export function SiteFooter() {
           <nav aria-label="Footer" className="grid grid-cols-2 gap-8 md:col-span-8 md:grid-cols-4">
             {COLUMNS.map((col) => (
               <div key={col.title}>
-                <p className="eyebrow eyebrow--on-ink">{col.title}</p>
+                <p className="eyebrow eyebrow--accent">{col.title}</p>
                 <ul className="mt-2 grid">
                   {col.links.map(([href, label]) => (
                     <li key={href}>
                       <Link
-                        className="-my-1.5 inline-flex min-h-[44px] items-center text-sm text-on-ink/85 transition-colors hover:text-brand-soft"
+                        className="-my-1.5 inline-flex min-h-[44px] items-center text-sm text-body transition-colors hover:text-accent"
                         href={href}
                       >
                         {label}
@@ -73,7 +73,7 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <p className="mt-14 border-t border-on-ink/15 pt-6 text-sm text-on-ink-muted">
+        <p className="mt-14 border-t border-line pt-6 text-sm text-muted">
           {SITE.name} · {SITE.school} {SITE.campus}
         </p>
       </div>

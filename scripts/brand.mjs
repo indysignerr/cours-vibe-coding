@@ -1,12 +1,12 @@
 // La marque, dessinée une seule fois et partagée par le site, les favicons
 // et les fichiers livrés au client. Couleurs de la charte Albert L.I.G.H.T.
-export const NAVY = "#202448";
+export const NAVY = "#0E1A2B";
 export const BEIGE = "#C9AE84";
 export const LIGHT_BEIGE = "#E3CFAE";
 export const SAND = "#EADFCB";
 export const IVORY = "#F8F4EC";
-export const SLATE = "#5A5770";
-export const BRONZE = "#8C5A2E";
+export const SLATE = "#55616F";
+export const BRONZE = "#7A5C33";
 
 /**
  * Le pictogramme : ampoule au trait, « L » et rayons dans la couleur de marque.

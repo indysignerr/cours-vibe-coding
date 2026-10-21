@@ -82,10 +82,8 @@ export function AutomationScene() {
         scrollTrigger: {
           trigger: el,
           start: "top top",
-          end: "+=320%",
-          pin: true,
+          end: "bottom bottom",
           scrub: 0.6,
-          anticipatePin: 1,
           onUpdate: ({ progress: p }) => {
             const i = PHASES.findIndex(([a, b]) => p >= a && p < b);
             setAct(i === -1 ? PHASES.length - 1 : i);
@@ -137,10 +135,22 @@ export function AutomationScene() {
   const current = ACTS[act];
 
   return (
-    <div ref={root} className="relative min-h-[100svh] overflow-hidden">
-      <div className="mx-auto grid h-[100svh] max-w-stage items-center gap-10 px-5 md:grid-cols-12 md:px-8">
+    /*
+     * Collant, et non épinglé.
+     *
+     * L'épinglage de GSAP enveloppe l'élément dans un « pin-spacer » et le
+     * déplace dans le DOM. React ne retrouvait alors plus ses nœuds et
+     * levait « removeChild : the node to be removed is not a child of this
+     * node » au démontage, ce qui vidait la page.
+     *
+     * position: sticky donne exactement le même effet sans toucher à
+     * l'arbre : le conteneur haut fournit la course, l'intérieur reste
+     * collé, et ScrollTrigger se contente de lire l'avancement.
+     */
+    <div ref={root} className="relative h-[320svh]">
+      <div className="sticky top-0 mx-auto grid h-[100svh] max-w-stage items-center gap-10 px-5 md:grid-cols-12 md:px-8">
         {/* Le récit, qui change d'acte en acte */}
-        <div className="md:col-span-5">
+        <div className="md:col-span-4">
           <p className="eyebrow eyebrow--accent">{current.kicker}</p>
           <h3 className="display-2 mt-4 min-h-[2.4em] max-w-[16ch]">{current.title}</h3>
           <p className="mt-5 max-w-measure text-body md:min-h-[6em]">{current.note}</p>
@@ -165,8 +175,8 @@ export function AutomationScene() {
         </div>
 
         {/* La scène */}
-        <div className="md:col-span-6 md:col-start-7">
-          <svg viewBox="0 0 520 420" className="w-full" role="img" aria-label={current.title}>
+        <div className="md:col-span-7 md:col-start-6">
+          <svg viewBox="0 0 520 420" className="w-full max-w-[42rem]" role="img" aria-label={current.title}>
             {/* La boîte de réception */}
             <text x="8" y="22" className="fill-[var(--muted)]" fontSize="13" letterSpacing="2">
               INBOX

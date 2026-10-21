@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Lightfall } from "@/components/motion/lightfall";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { body, display, mono } from "@/lib/fonts";
@@ -49,7 +48,7 @@ const ORGANIZATION = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#202448",
+  themeColor: "#0e1a2b",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -66,7 +65,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <Lightfall />
         <SmoothScroll />
         <ScrollProgress />
         {children}

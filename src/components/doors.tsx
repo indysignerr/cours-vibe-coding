@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { BrandMark } from "@/components/brand";
+import { AnimatedMark } from "@/components/motion/animated-mark";
 
 /**
  * Les deux portes.
@@ -38,7 +38,7 @@ export function Doors() {
   return (
     <section
       aria-label="Choose your path"
-      className="relative grid min-h-[86svh] border-b border-line md:grid-cols-2"
+      className="on-ink relative grid min-h-[86svh] border-b border-line md:grid-cols-2"
     >
       {DOORS.map((d, i) => (
         <Link
@@ -73,12 +73,12 @@ export function Doors() {
         </Link>
       ))}
 
-      {/* Le pictogramme, posé sur la couture */}
+      {/* L'ampoule, posée sur la couture : elle s'allume au chargement. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 rounded-full bg-canvas p-5 md:block"
+        className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 rounded-full bg-canvas p-6 md:block"
       >
-        <BrandMark className="size-10" outline="var(--ink)" glyph="var(--brand)" />
+        <AnimatedMark className="size-16" outline="var(--ink)" glyph="var(--brand)" delay={0.4} />
       </span>
     </section>
   );

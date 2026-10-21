@@ -88,11 +88,11 @@ export default function AboutPage() {
           glyph="var(--brand)"
         />
         <div className="relative max-w-measure">
-          <p className="eyebrow eyebrow--on-ink">The name</p>
-          <h2 className="display-2 mt-4" style={{ color: "var(--on-ink)" }}>
+          <p className="eyebrow eyebrow--accent">The name</p>
+          <h2 className="display-2 mt-4">
             A bulb, not a brain.
           </h2>
-          <p className="lede mt-5" style={{ color: "var(--on-ink-muted)" }}>
+          <p className="lede mt-5">
             The work we do is rarely clever. It is someone finally writing down which tool touches
             which data, and what happens when it goes wrong. A light switched on in a room nobody had
             looked into.
@@ -104,10 +104,10 @@ export default function AboutPage() {
             {SITE.acronym.map((a) => (
               <div key={a.letter} className="bg-ink-surface p-5 shadow-[0_0_0_1px_rgba(248,244,236,0.14)]">
                 <dt className="text-3xl font-semibold text-brand-soft">{a.letter}</dt>
-                <dd className="mt-2 text-sm font-medium" style={{ color: "var(--on-ink)" }}>
+                <dd className="mt-2 text-sm font-medium">
                   {a.word}
                 </dd>
-                <dd className="mt-1 text-sm" style={{ color: "var(--on-ink-muted)" }}>
+                <dd className="mt-1 text-sm">
                   {a.line}
                 </dd>
               </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Magnetic } from "@/components/motion/magnetic";
 import { Reveal } from "@/components/motion/reveal";
+import { ContactForm } from "@/components/contact-form";
 import { PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/site";
 
@@ -50,11 +51,11 @@ export default function ContactPage() {
       {/* Le créneau, s'il existe : c'est le chemin le plus court */}
       {booking ? (
         <Reveal as="section" className="card card--ink mb-16 px-7 py-12 md:px-14 md:py-16" y={26}>
-          <p className="eyebrow eyebrow--on-ink">Pick a slot</p>
-          <h2 className="display-2 mt-4 max-w-[20ch]" style={{ color: "var(--on-ink)" }}>
+          <p className="eyebrow eyebrow--accent">Pick a slot</p>
+          <h2 className="display-2 mt-4 max-w-[20ch]">
             Choose a time in our calendar.
           </h2>
-          <p className="lede mt-5 max-w-measure" style={{ color: "var(--on-ink-muted)" }}>
+          <p className="lede mt-5 max-w-measure">
             The slots you see are the ones that are genuinely free. You get the invitation
             immediately, with a video link if you are not in {SITE.campus}.
           </p>
@@ -136,14 +137,11 @@ export default function ContactPage() {
         </Reveal>
 
         <Reveal as="section" className="md:col-span-6 md:col-start-7" y={24} delay={0.08}>
-          <p className="eyebrow">What a useful first message contains</p>
-          <p className="mt-4 text-body">
-            Six lines are enough. Copy this, fill it in, and we will come back with a view rather than
-            a request for a call to arrange a call.
-          </p>
-          <pre className="mt-6 overflow-x-auto rounded-card bg-sunken p-6 text-sm leading-relaxed text-body shadow-hair">
-            {BRIEF}
-          </pre>
+          <p className="eyebrow">Write to us</p>
+          <h2 className="display-2 mt-4 max-w-[18ch]">Four fields. That is the whole form.</h2>
+          <div className="mt-9">
+            <ContactForm />
+          </div>
 
           <h2 className="eyebrow mt-12">What we ask in the meeting</h2>
           <Reveal as="dl" className="rows mt-6" stagger y={16}>

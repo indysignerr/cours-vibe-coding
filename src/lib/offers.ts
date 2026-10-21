@@ -15,6 +15,7 @@ export type Offer = {
   price: string;
   duration: string;
   summary: string;
+  keyPoints: string[];
   delivers: string[];
   why: string;
   excludes: string;
@@ -30,6 +31,11 @@ export const OFFERS: Offer[] = [
     duration: "Three weeks · four half-days",
     summary:
       "The AI already running in your company, mapped. Ten tasks, timed. Your data, sorted. And the file that proves it.",
+    keyPoints: [
+      "The AI already in use, mapped",
+      "Ten tasks, timed and ranked",
+      "A file you can show an inspection",
+    ],
     delivers: [
       "A map of the AI tools already running in your company, declared or not. There are always some, and directors are always surprised.",
       "Ten repetitive tasks, timed, ranked by gain and by risk.",
@@ -51,6 +57,11 @@ export const OFFERS: Offer[] = [
     market: "Built for the Italian market",
     summary:
       "The dossier that unblocks a deployment touching employees. Italian labour law, handled.",
+    keyPoints: [
+      "Article 4 qualification",
+      "Union agreement prepared",
+      "Staff training material",
+    ],
     delivers: [
       "Qualification of the tool under article 4 of the Statuto dei Lavoratori: ordinary work tool, or instrument capable of remote monitoring.",
       "Preparation of the agreement with union representatives, or of the labour inspectorate authorisation filing.",
@@ -72,6 +83,11 @@ export const OFFERS: Offer[] = [
     duration: "Three weeks",
     summary:
       "An assistant that answers from your own documents. It cites its source. Every time.",
+    keyPoints: [
+      "Answers from your own documents",
+      "A source cited every time",
+      "Hosted in the EU by default",
+    ],
     delivers: [
       "An internal assistant that answers your teams from your own documents — procedures, catalogues, standard contracts — with the source cited on every answer.",
       "Hosted on a European interface under a processing agreement by default. On your own machines when your data demands it; the hardening is quoted separately.",
@@ -90,6 +106,11 @@ export const OFFERS: Offer[] = [
     duration: "Three weeks",
     summary:
       "A web application for one process. Your code. Your accounts. From day one.",
+    keyPoints: [
+      "One process, one application",
+      "Accounts for your team",
+      "Your code from day one",
+    ],
     delivers: [
       "A web application for one precise process: request tracking, field entry, scheduling, a dashboard.",
       "Accounts for your team, and the code and the accounts in your name from day one.",
@@ -108,6 +129,11 @@ export const OFFERS: Offer[] = [
     duration: "Two to three weeks, depending on access",
     summary:
       "One scenario, two tools you already pay for. The manual re-entry stops.",
+    keyPoints: [
+      "Two tools you already pay for",
+      "Runs on your own instance",
+      "Handover documentation",
+    ],
     delivers: [
       "One scenario linking two tools you already pay for, removing a recurring manual re-entry.",
       "The scenario runs on your own instance, under your own licence. We bill the implementation, never the hosting.",

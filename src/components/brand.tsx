@@ -9,7 +9,7 @@ import { SITE } from "@/lib/site";
 export function BrandMark({
   className = "size-8",
   outline = "var(--ink)",
-  glyph = "var(--brand)",
+  glyph = "var(--accent)",
 }: {
   className?: string;
   outline?: string;
@@ -44,7 +44,7 @@ export function BrandMark({
 export function Wordmark({
   className = "tracking-[0.16em]",
   letters = "text-ink",
-  dots = "text-brand",
+  dots = "text-accent",
 }: {
   className?: string;
   letters?: string;
@@ -75,17 +75,26 @@ export function Logo({
       <BrandMark
         className="size-8 shrink-0"
         outline={onInk ? "var(--on-ink)" : "var(--ink)"}
-        glyph={onInk ? "var(--brand-soft)" : "var(--brand)"}
+        glyph={onInk ? "var(--brand)" : "var(--accent)"}
       />
       {/* Sous 360 px — plus étroit que n'importe quel téléphone courant — le
           nom serait tronqué en plein milieu. On ne garde que le pictogramme. */}
       <Wordmark
         className="hidden text-[0.8125rem] tracking-[0.1em] min-[360px]:inline sm:text-[0.9375rem] sm:tracking-[0.16em]"
         letters={onInk ? "text-on-ink" : "text-ink"}
-        dots={onInk ? "text-brand-soft" : "text-brand"}
+        dots={onInk ? "text-brand" : "text-accent"}
       />
       {compact ? null : (
-        <span className="hidden border-l border-line pl-2.5 text-xs text-muted lg:inline">
+        /*
+         * La ville est un repère visuel, pas une partie du nom. Sans
+         * aria-hidden le texte accessible du logo devenait
+         * « Albert L.I.G.H.T.Milano », d'un seul tenant : le lien porte
+         * déjà son libellé, celle-ci n'a donc rien à ajouter.
+         */
+        <span
+          aria-hidden
+          className="hidden border-l border-line pl-2.5 text-sm text-muted lg:inline"
+        >
           {SITE.campus}
         </span>
       )}
