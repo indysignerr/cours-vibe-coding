@@ -18,39 +18,69 @@
    ===================================================================== */
 
 :root {
-  /* ---- Surfaces ---- */
-  --canvas: #f8f4ec;        /* ivoire, fond principal */
-  --surface: #fffdf8;       /* carte posée sur l'ivoire */
-  --sunken: #eadfcb;        /* sable : panneaux, sections calmes */
-  --ink-surface: #202448;   /* marine : bandeaux et cartes sombres */
+  /* ---- Surfaces. Le marine est maintenant le fond, pas l'exception. ---- */
+  --canvas: #202448;        /* marine de la charte, la dominante */
+  --surface: #262b54;       /* carte posée sur le marine */
+  --sunken: #1a1d3b;        /* bandeau plus profond */
+  --ink-surface: #1a1d3b;
 
-  /* ---- Texte ---- */
-  --ink: #202448;           /* titres et texte courant */
-  --body: #2c3156;          /* paragraphes, à peine éclairci */
-  --muted: #5a5770;         /* ardoise : légendes, métadonnées */
-  --on-ink: #f8f4ec;        /* ivoire sur marine */
-  --on-ink-muted: #c9ae84;  /* beige sur marine */
+  /* ---- Texte sur marine ---- */
+  --ink: #f8f4ec;           /* titres : l'ivoire de la charte */
+  --body: #ddd9ea;          /* paragraphes */
+  --muted: #a3a1bb;         /* légendes, métadonnées */
+  --on-ink: #f8f4ec;
+  --on-ink-muted: #c9ae84;
 
   /* ---- Marque ---- */
-  --brand: #c9ae84;         /* beige : le pictogramme, les filets, les aplats */
-  --brand-soft: #e3cfae;    /* beige clair : l'accent sur fond marine */
-  /* Bronze. La charte donne #8C5A2E ; sur le sable il tombe à 4,40:1,
-     sous le seuil AA. Deux crans plus profond, la teinte ne bouge pas à
-     l'œil et toutes les surfaces passent. */
-  --accent: #845325;        /* bronze : liens, nombres, mots-clés */
-  --accent-hover: #6b4219;
-  --accent-tint: #f2e8d9;   /* fond d'un encart d'accent */
-  --on-accent: #f8f4ec;
+  --brand: #c9ae84;         /* beige : les formes, les filets, le pictogramme */
+  --brand-soft: #e3cfae;    /* beige clair : l'accent sur marine, comme le dit la charte */
+  --on-brand: #202448;      /* marine sur un aplat beige */
+  /* Bronze éclairci : le #8C5A2E de la charte tombe à 2,57:1 sur le marine.
+     Même teinte, remontée jusqu'à passer. */
+  --accent: #d49a5f;
+  --accent-hover: #e3cfae;
+  --accent-tint: #2b3160;
+  --on-accent: #202448;
 
-  /* ---- Traits et ombres, toujours teintées marine ---- */
+  /* ---- Traits et ombres, sur fond sombre ---- */
+  --line: rgba(248, 244, 236, 0.13);
+  --line-strong: rgba(248, 244, 236, 0.26);
+  --hair: 0 0 0 1px rgba(248, 244, 236, 0.11);
+  --lift: 0 0 0 1px rgba(248, 244, 236, 0.1), 0 14px 40px -24px rgba(0, 0, 0, 0.8);
+  --lift-lg: 0 0 0 1px rgba(248, 244, 236, 0.14), 0 30px 70px -30px rgba(0, 0, 0, 0.9);
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------------
+   La section claire, devenue l'exception.
+
+   On ne change pas de composants : on redéfinit les mêmes jetons à
+   l'intérieur du bloc. Tout ce qui est écrit pour le marine fonctionne
+   tel quel sur l'ivoire, et les valeurs sont celles déjà validées.
+   --------------------------------------------------------------------- */
+.on-paper {
+  --canvas: #f8f4ec;
+  --surface: #fffdf8;
+  --sunken: #eadfcb;
+  --ink: #202448;
+  --body: #2c3156;
+  --muted: #5a5770;
+  --brand: #c9ae84;
+  --brand-soft: #e3cfae;
+  --on-brand: #202448;
+  --accent: #845325;
+  --accent-hover: #6b4219;
+  --accent-tint: #f2e8d9;
+  --on-accent: #f8f4ec;
   --line: rgba(32, 36, 72, 0.12);
   --line-strong: rgba(32, 36, 72, 0.22);
   --hair: 0 0 0 1px rgba(32, 36, 72, 0.1);
-  --lift: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 1px 2px rgba(32, 36, 72, 0.05),
-    0 10px 28px -18px rgba(32, 36, 72, 0.3);
-  --lift-lg: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 2px 5px rgba(32, 36, 72, 0.05),
-    0 22px 48px -24px rgba(32, 36, 72, 0.35);
+  --lift: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 10px 28px -18px rgba(32, 36, 72, 0.3);
+  --lift-lg: 0 0 0 1px rgba(32, 36, 72, 0.08), 0 22px 48px -24px rgba(32, 36, 72, 0.35);
 
+  background: var(--canvas);
+  color: var(--body);
   color-scheme: light;
 }
 
@@ -85,14 +115,14 @@
   time, .tnum { font-variant-numeric: tabular-nums; }
 
   :focus-visible {
-    outline: 2px solid var(--ink);
+    outline: 2px solid var(--brand);
     outline-offset: 3px;
     border-radius: 4px;
   }
 
   ::selection {
     background: var(--brand);
-    color: var(--ink);
+    color: var(--on-brand);
   }
 
   strong { color: var(--ink); font-weight: 600; }
@@ -118,14 +148,16 @@
     transition: background-color 170ms ease, box-shadow 170ms ease, color 170ms ease,
       transform 170ms cubic-bezier(0.22, 1, 0.36, 1);
   }
+  /* Sur le marine, l'action principale est un aplat beige : c'est la seule
+     chose chaude de l'écran, donc l'œil y va sans qu'on force. */
   .btn--primary {
-    background: var(--ink);
-    color: var(--on-ink);
-    box-shadow: 0 1px 2px rgba(32, 36, 72, 0.2);
+    background: var(--brand);
+    color: var(--on-brand);
   }
-  .btn--primary:hover { background: #2b3160; transform: translateY(-1px); }
-  .btn--brand { background: var(--brand); color: var(--ink); }
+  .btn--primary:hover { background: var(--brand-soft); transform: translateY(-1px); }
+  .btn--brand { background: var(--brand); color: var(--on-brand); }
   .btn--brand:hover { background: var(--brand-soft); transform: translateY(-1px); }
+  .btn--brand, .btn--primary { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
   .btn--accent { background: var(--accent); color: var(--on-accent); }
   .btn--accent:hover { background: var(--accent-hover); }
   .btn--ghost {
@@ -133,13 +165,13 @@
     color: var(--ink);
     box-shadow: var(--hair);
   }
-  .btn--ghost:hover { background: var(--sunken); }
+  .btn--ghost:hover { background: var(--sunken); transform: translateY(-1px); }
   .btn--outline {
     background: transparent;
-    color: var(--on-ink);
-    box-shadow: 0 0 0 1px rgba(248, 244, 236, 0.35);
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
   }
-  .btn--outline:hover { background: rgba(248, 244, 236, 0.1); }
+  .btn--outline:hover { background: var(--surface); }
   .btn--quiet { color: var(--ink); padding: 0 0.5rem; }
   .btn--quiet:hover { color: var(--accent); }
 
@@ -150,9 +182,9 @@
     box-shadow: var(--hair);
   }
   .card--raised { box-shadow: var(--lift); }
-  .card--ink { background: var(--ink-surface); color: var(--on-ink); box-shadow: none; }
+  .card--ink { background: var(--sunken); color: var(--ink); box-shadow: var(--hair); }
   .card--ink h2, .card--ink h3, .card--ink h4 { color: var(--on-ink); }
-  .card--sand { background: var(--sunken); box-shadow: none; }
+  .card--sand { background: var(--sunken); box-shadow: var(--hair); }
   .card--tint { background: var(--accent-tint); box-shadow: var(--hair); }
 
   /* ---- Surtitre : capitales Medium, crénage large ---- */

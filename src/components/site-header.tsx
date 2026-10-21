@@ -3,7 +3,6 @@ import { Logo } from "@/components/brand";
 import { SITE } from "@/lib/site";
 
 const LINKS = [
-  { href: "/work/", label: "Work" },
   { href: "/solutions/", label: "Solutions" },
   { href: "/approach/", label: "Approach" },
   { href: "/events/", label: "Events" },

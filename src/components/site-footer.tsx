@@ -6,7 +6,6 @@ const COLUMNS: { title: string; links: [string, string][] }[] = [
   {
     title: "Work with us",
     links: [
-      ["/work/", "Work"],
       ["/solutions/", "Solutions"],
       ["/approach/", "Approach"],
       ["/contact/", "Contact"],
