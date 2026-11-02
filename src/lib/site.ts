@@ -14,7 +14,16 @@ export const SITE = {
   legalMention:
     "A student-run association at Albert School Milano. Not affiliated with, endorsed by, or sponsored by the technology vendors named on this site.",
   tagline: "AI your lawyer can sign off on.",
-  url: "https://cours-vibe-coding.pages.dev",
+  /**
+   * Le domaine de production.
+   *
+   * Pilote le sitemap, le robots.txt, les URL canoniques, les images de
+   * partage et le lien de réinitialisation de mot de passe. L'adresse
+   * *.pages.dev reste servie par Cloudflare et on ne peut pas l'éteindre :
+   * c'est la balise canonique, construite à partir d'ici, qui dit à Google
+   * laquelle des deux fait foi.
+   */
+  url: "https://albertlight.com",
 
   /**
    * Développement de l'acronyme, à remplir par les fondateurs.
