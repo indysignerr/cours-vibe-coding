@@ -30,7 +30,8 @@ export function googleCalendarUrl(e: SiteEvent) {
     dates,
     ctz: SITE.timezone,
     details: e.summary,
-    location: e.location,
+    // Le plan ne nomme pas toujours la salle : on ne met rien plutôt qu'un lieu inventé.
+    location: e.location ?? "",
     action: "TEMPLATE",
   });
   return `https://calendar.google.com/calendar/render?${params}`;

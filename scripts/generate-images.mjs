@@ -1,10 +1,16 @@
 /**
  * Génère les visuels de marque avec Gemini.
  *
- * Ce sont des images abstraites, dans la charte : marine #0E1A2B, beige
- * #C9AE84, ivoire #F8F4EC. Pas de personnes, pas de texte dans l'image —
- * un modèle dessine mal les lettres, et une photo d'évènement fabriquée
- * serait un mensonge sur les pages qui disent qui nous sommes.
+ * Des scènes, étalonnées dans la charte : ombres marine #0E1A2B, lumière
+ * beige #C9AE84, hautes lumières ivoire #F8F4EC.
+ *
+ * Ces images sont générées : elles illustrent ce qu'on fait, elles
+ * n'attestent pas d'une séance précise. C'est pour cela qu'aucune ne
+ * porte de légende documentaire — pas de « pris au tournoi du 21 ». Le
+ * jour où il y a de vraies photos, elles prennent ces places.
+ *
+ * Les cadrages évitent les visages de face : de dos, de trois quarts ou à
+ * contre-jour. On n'invente pas le portrait de gens qui existent.
  *
  *   GOOGLE_AI_API_KEY=… node scripts/generate-images.mjs [nom…]
  */
@@ -18,42 +24,46 @@ if (!KEY) {
 }
 
 const PALETTE =
-  "Strict palette: deep navy #0E1A2B as the ground, warm sand beige #C9AE84 for light, " +
-  "pale ivory #F8F4EC for highlights. No other hues. Matte, filmic, fine grain, no gloss, " +
-  "no lens flare, no 3D render shine.";
+  "Color grade: navy #0E1A2B in the shadows, warm sand beige #C9AE84 in the light, " +
+  "pale ivory #F8F4EC in the highlights. Restrained, almost monochrome. " +
+  "35mm photograph, natural available light, shallow depth of field, fine film grain, " +
+  "matte contrast. Not a 3D render, no HDR, no glossy stock-photo look.";
 
 const RULES =
-  "Abstract, non-figurative. No people, no faces, no hands, no logos, no letters, no numbers, " +
-  "no words anywhere in the image. Generous empty space. Editorial art direction, " +
-  "the kind of still image an award-winning studio site uses behind type.";
+  "Documentary photography, candid, nobody posing or looking at the camera. " +
+  "Faces turned away, in three-quarter view or backlit — no clear frontal portraits. " +
+  "No logos, no brand names, no readable text, no letters or numbers on screens. " +
+  "Real room, real clutter, generous negative space for type to sit over.";
 
 const IMAGES = [
   {
-    name: "atmos-hero",
+    name: "scene-hero",
     prompt:
-      "A wide field of deep navy darkness with a single soft bloom of warm beige light rising " +
-      "from the lower left, as if one lamp were lit in a large dark room. Very gradual falloff, " +
-      "deep shadow across the upper right two thirds. Extremely minimal.",
+      "A wide shot of a university room in the evening, seen from the back. Six or seven students " +
+      "sit along a long table with open laptops, screens glowing warm against the dark room. " +
+      "One person stands at the far end, mid-sentence. Everyone is turned away from us. " +
+      "Deep shadow in the foreground, the light pooled around the table.",
   },
   {
-    name: "atmos-board",
+    name: "scene-board",
     prompt:
-      "Close overhead view of an empty matte navy surface lit from one side by warm beige light, " +
-      "with the faint geometry of a long table edge and soft shadow. Quiet, still, almost empty. " +
-      "Architectural photography feel, shallow contrast.",
+      "Four students around the corner of a table, laptops open, one pointing at another's screen. " +
+      "Shot from the side at table height, close. Hands, screens, a notebook, coffee cups. " +
+      "Warm light from one window out of frame, the rest of the room dark.",
   },
   {
-    name: "atmos-build",
+    name: "scene-build",
     prompt:
-      "Fine pale ivory lines on deep navy, forming a loose irregular lattice that thins out toward " +
-      "the edges, like a hand-drawn circuit or a constellation. Warm beige glow behind the densest " +
-      "part. Precise, sparse, lots of dark space.",
+      "Close over-the-shoulder shot of two people at one laptop, one typing, the other leaning in. " +
+      "Only hands, forearms and the edge of a shoulder in frame, the screen a soft warm blur. " +
+      "Night, a desk lamp the only light.",
   },
   {
-    name: "atmos-grain",
+    name: "scene-connect",
     prompt:
-      "An almost-empty deep navy surface with a slow vertical gradient to warm beige at the very " +
-      "bottom edge, heavy fine film grain, subtle paper texture. Nothing else. A backdrop.",
+      "A small group standing and talking after a talk, in a corridor outside a lecture room, " +
+      "seen from a distance down the corridor. Silhouettes against a bright doorway, " +
+      "warm light spilling out. Nobody identifiable.",
   },
 ];
 

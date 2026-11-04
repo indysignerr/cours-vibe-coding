@@ -67,7 +67,11 @@ export const SITE = {
    */
   team: [
     { name: "Benjamin", role: "Lead", focus: "Overall organisation" },
-    { name: "Jiali", role: "Social media", focus: "Instagram and LinkedIn" },
+    {
+      name: "Jiali",
+      role: "Communication & media",
+      focus: "Instagram and LinkedIn",
+    },
     { name: "Asia", role: "Secretary", focus: "Minutes and the shared sheet" },
     { name: "Lucca", role: "Tech", focus: "Open-ended" },
     { name: "Riccardo", role: "Tech", focus: "Open-ended" },

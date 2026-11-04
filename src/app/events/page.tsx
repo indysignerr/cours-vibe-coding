@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AddToCalendar } from "@/components/add-to-calendar";
-import { EventSchedule } from "@/components/event-schedule";
 import { EventSignup } from "@/components/event-signup";
 import { PageShell } from "@/components/page-shell";
 import { embedUrl, icalFeedUrl, subscribeUrl } from "@/lib/calendar";
@@ -81,13 +80,21 @@ export default function EventsPage() {
                                   ],
                                 ] as [string, string][])
                               : []),
-                            ["Where", e.location],
-                            [
-                              "Seats",
-                              e.capacity ? `${e.capacity} max` : "No cap",
-                            ],
+                            // Le plan ne donne ni salle ni jauge pour la plupart
+                            // des dates : on le dit, on ne l'invente pas.
+                            ["Where", e.location ?? "To be confirmed"],
+                            ...(e.capacity
+                              ? ([["Seats", `${e.capacity} max`]] as [
+                                  string,
+                                  string,
+                                ][])
+                              : []),
+                            ["Lead", e.lead],
                             ...(e.partner
                               ? ([["With", e.partner]] as [string, string][])
+                              : []),
+                            ...(e.prep
+                              ? ([["Before it", e.prep]] as [string, string][])
                               : []),
                           ] as [string, string][]
                         ).map(([term, detail]) => (
@@ -102,29 +109,6 @@ export default function EventsPage() {
 
                       <p className="mt-6 text-body">{e.summary}</p>
 
-                      {e.takeaways ? (
-                        <ul className="mt-6 grid gap-2.5">
-                          {e.takeaways.map((t) => (
-                            <li
-                              key={t}
-                              className="grid grid-cols-[auto_1fr] gap-3 text-sm text-body"
-                            >
-                              <span
-                                aria-hidden
-                                className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand"
-                              />
-                              <span>{t}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-
-                      {e.bring ? (
-                        <p className="mt-5 text-sm text-muted">
-                          <strong className="text-ink">Bring:</strong> {e.bring}
-                        </p>
-                      ) : null}
-
                       <div className="mt-7">
                         <AddToCalendar
                           event={e}
@@ -135,13 +119,6 @@ export default function EventsPage() {
                     </div>
 
                     <div className="md:col-span-6 md:col-start-7">
-                      {e.schedule ? (
-                        <>
-                          <EventSchedule event={e} />
-                          <div className="rule my-8" />
-                        </>
-                      ) : null}
-
                       <p className="eyebrow">
                         {e.kind === "compete"
                           ? "Put your name down"

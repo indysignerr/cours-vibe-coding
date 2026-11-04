@@ -6,84 +6,93 @@ METHOD:PUBLISH
 X-WR-CALNAME:Albert L.I.G.H.T.
 X-WR-TIMEZONE:Europe/Rome
 BEGIN:VEVENT
+UID:ai-discovery-day-maggiore@albert-light
+DTSTAMP:20261104T151335Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Albert L.I.G.H.T. — AI Discovery Day\, Lake Maggiore
+DESCRIPTION:A one to two hour session Albert School asked us to run\, on entrepreneurship with some data and AI.
+LOCATION:Lake Maggiore
+END:VEVENT
+BEGIN:VEVENT
 UID:tournament-1@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;TZID=Europe/Rome:20261121T140000
 DTEND;TZID=Europe/Rome:20261121T180000
 SUMMARY:Albert L.I.G.H.T. — Vibe coding tournament #1
-DESCRIPTION:Teams race the clock to build a working app under a theme. Four hours\, one jury\, and whatever you can get an AI model to actually produce.
-LOCATION:Albert School\, Milano
+DESCRIPTION:The first tournament of the year\, and the start of the calendar.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:codemotion-llms-python@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;TZID=Europe/Rome:20261205T100000
 DTEND;TZID=Europe/Rome:20261205T140000
 SUMMARY:Albert L.I.G.H.T. — Codemotion × Albert LIGHT: LLMs in Python
-DESCRIPTION:Build an LLM into your own Python code\, properly. Free\, hands-on\, and you leave with a certificate for your CV.
-LOCATION:Albert School\, Milano
+DESCRIPTION:A half day on large language models in Python\, prepared with Leonardo Ciabattini. Attendees get a certificate.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:build-lab-1@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;VALUE=DATE:20261215
 DTEND;VALUE=DATE:20261216
 SUMMARY:Albert L.I.G.H.T. — Build Lab #1
-DESCRIPTION:Bring your own project. An experienced member is there for the hour. That is the whole format.
-LOCATION:Albert School\, Milano
+DESCRIPTION:The first Build Lab. One fixed room and time\, with an experienced member there each session.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:crash-course-1@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;VALUE=DATE:20270114
 DTEND;VALUE=DATE:20270115
-SUMMARY:Albert L.I.G.H.T. — Crash course #1: AI coding tools and API keys
-DESCRIPTION:A speedrun through Cursor\, GitHub Copilot and Claude Code — then how API keys actually work\, and how not to leak them.
-LOCATION:Online
+SUMMARY:Albert L.I.G.H.T. — Crash course #1: AI coding tools speedrun and API keys
+DESCRIPTION:An online evening on AI coding tools and API keys.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:cinema-night@albert-light
-DTSTAMP:20261104T134818Z
-DTSTART;VALUE=DATE:20270128
-DTEND;VALUE=DATE:20270129
-SUMMARY:Albert L.I.G.H.T. — Cinema night: Artificial
-DESCRIPTION:The film\, then a panel. Run with other universities in Milan. Artificial opens in Italy on 20 January 2027.
-LOCATION:Milano
+DTSTAMP:20261104T151335Z
+DTSTART;VALUE=DATE:20270125
+DTEND;VALUE=DATE:20270201
+SUMMARY:Albert L.I.G.H.T. — Cinema night: Artificial\, and a discussion after
+DESCRIPTION:A screening of Artificial with a discussion after it\, open to other universities. The film opens in Italy on 20 January 2027\, distributed by I Wonder Pictures.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:tournament-2@albert-light
-DTSTAMP:20261104T134818Z
-DTSTART;TZID=Europe/Rome:20270213T140000
-DTEND;TZID=Europe/Rome:20270213T180000
+DTSTAMP:20261104T151335Z
+DTSTART;VALUE=DATE:20270213
+DTEND;VALUE=DATE:20270214
 SUMMARY:Albert L.I.G.H.T. — Vibe coding tournament #2
-DESCRIPTION:Same format\, new theme\, and the people who came in November know what they are doing now.
-LOCATION:Albert School\, Milano
+DESCRIPTION:The second tournament of the year.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:crash-course-2@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;VALUE=DATE:20270225
 DTEND;VALUE=DATE:20270226
 SUMMARY:Albert L.I.G.H.T. — Crash course #2: Docker and CI/CD
-DESCRIPTION:Why your thing works on your machine and nowhere else\, and how to stop that being true.
-LOCATION:Online
+DESCRIPTION:An online evening on Docker and CI/CD.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:crash-course-3@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;VALUE=DATE:20270311
 DTEND;VALUE=DATE:20270312
 SUMMARY:Albert L.I.G.H.T. — Crash course #3: cloud credits for student projects
-DESCRIPTION:Where the free compute is\, how to get it\, and how not to wake up to a bill.
-LOCATION:Online
+DESCRIPTION:An online evening on getting and using cloud credits for student projects.
+LOCATION:
 END:VEVENT
 BEGIN:VEVENT
 UID:demo-day@albert-light
-DTSTAMP:20261104T134818Z
+DTSTAMP:20261104T151335Z
 DTSTART;VALUE=DATE:20270515
 DTEND;VALUE=DATE:20270516
 SUMMARY:Albert L.I.G.H.T. — Demo Day
-DESCRIPTION:Everything built this year\, shown in four minutes a project. The evening the whole year becomes visible.
-LOCATION:Albert School\, Milano
+DESCRIPTION:Members show what they built this year.
+LOCATION:
 END:VEVENT
 END:VCALENDAR

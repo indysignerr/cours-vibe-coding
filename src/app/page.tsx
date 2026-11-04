@@ -81,6 +81,18 @@ export default function Home() {
           </div>
         </section>
 
+        {/* La bande. Rien d'écrit dessus : l'image a l'écran pour elle. */}
+        <section aria-hidden className="band">
+          <Image
+            src="/images/scene-connect.webp"
+            alt=""
+            width={1408}
+            height={768}
+            className="band__img"
+            sizes="100vw"
+          />
+        </section>
+
         {/* Qui tient tout ça. */}
         <section className="border-b border-line">
           <div className="mx-auto grid max-w-stage gap-12 px-5 py-24 md:grid-cols-12 md:px-8 md:py-32">
@@ -105,7 +117,7 @@ export default function Home() {
               {/* Visuel d'ambiance, pas une photo du bureau : il n'y en a
                   pas encore. Le jour où il y en aura, elle prend cette place. */}
               <Image
-                src="/images/atmos-board.webp"
+                src="/images/scene-board.webp"
                 alt=""
                 width={1408}
                 height={768}

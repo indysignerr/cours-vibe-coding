@@ -66,7 +66,7 @@ for (const e of entries) {
       : [`DTSTART;TZID=${TZ}:${stamp(e.date, e.start)}`, `DTEND;TZID=${TZ}:${stamp(end, e.end)}`]),
     `SUMMARY:${esc(`${NAME} — ${e.title}`)}`,
     `DESCRIPTION:${esc(e.summary)}`,
-    `LOCATION:${esc(e.location)}`,
+    `LOCATION:${esc(e.location ?? "")}`,
     "END:VEVENT",
   );
 }

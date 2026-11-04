@@ -90,7 +90,8 @@ export function YearTimeline({ events = EVENTS }: { events?: SiteEvent[] }) {
                   <span className="timeline__moreInner">
                     <span className="block text-balance">{e.summary}</span>
                     <span className="mt-3 block text-sm text-muted">
-                      {KIND_LABEL.get(e.kind)} · {e.location}
+                      {KIND_LABEL.get(e.kind)} ·{" "}
+                      {e.location ?? "Venue to be confirmed"}
                       {e.partner ? ` · with ${e.partner}` : ""}
                     </span>
                   </span>

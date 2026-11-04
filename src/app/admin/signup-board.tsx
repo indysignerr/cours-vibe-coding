@@ -37,7 +37,7 @@ function download(name: string, text: string) {
 
 function EventBlock({ event, rows }: { event: SiteEvent; rows: Row[] }) {
   const taken = rows.length;
-  const left = event.capacity === null ? null : event.capacity - taken;
+  const left = (event.capacity ?? 0) === null ? null : (event.capacity ?? 0) - taken;
 
   return (
     <section className="mt-14 first:mt-0">
@@ -50,7 +50,7 @@ function EventBlock({ event, rows }: { event: SiteEvent; rows: Row[] }) {
         <div className="text-right">
           <p className="tnum text-3xl font-semibold tracking-[-0.02em] text-ink">
             {taken}
-            {event.capacity === null ? "" : ` / ${event.capacity}`}
+            {(event.capacity ?? 0) === null ? "" : ` / ${(event.capacity ?? 0)}`}
           </p>
           <p className="text-sm text-muted">
             {left === null ? "no cap" : left > 0 ? `${left} left` : "full"}

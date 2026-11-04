@@ -28,7 +28,7 @@ const FACTS: [string, string][] = [
   ["Board", `${SITE.team.length} members`],
   ["Events", "At least one every two weeks, November to May"],
   ["Price", "Free. The only fixed cost is the domain renewal"],
-  ["Languages", "English and Italian"],
+  ["Languages", "English, Italian and French"],
 ];
 
 export default function AboutPage() {

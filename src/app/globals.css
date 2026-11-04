@@ -1439,16 +1439,53 @@ body::after {
   background-image:
     linear-gradient(
       105deg,
-      rgb(14 26 43 / 0.95) 0%,
-      rgb(14 26 43 / 0.9) 45%,
-      rgb(14 26 43 / 0.86) 100%
+      rgb(14 26 43 / 0.96) 0%,
+      rgb(14 26 43 / 0.92) 45%,
+      rgb(14 26 43 / 0.9) 100%
     ),
-    url("/images/atmos-hero.webp");
+    url("/images/scene-hero.webp");
   background-size: cover, cover;
   background-position:
     center,
-    65% 35%;
+    center 40%;
 }
 
 /* La lueur décorative des sections marine ferait double emploi ici. */
 .hero.on-ink::after { display: none; }
+
+/* =====================================================================
+   La bande d'image.
+
+   Pleine largeur, rien d'écrit par-dessus : c'est là qu'on voit vraiment
+   la scène, puisque derrière le nom elle est sous un voile à 0,90. Elle
+   se révèle au défilement et dérive un peu, ce qui lui donne de la
+   profondeur sans parallaxe en JavaScript.
+   ===================================================================== */
+.band {
+  position: relative;
+  overflow: clip;
+  border-block: 1px solid var(--line);
+  background: var(--canvas);
+}
+
+.band__img {
+  display: block;
+  width: 100%;
+  height: clamp(18rem, 46vw, 34rem);
+  object-fit: cover;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .band__img {
+      animation: band-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+@keyframes band-drift {
+  from { object-position: 50% 32%; }
+  to { object-position: 50% 68%; }
+}
