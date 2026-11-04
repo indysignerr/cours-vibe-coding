@@ -1,49 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { HangingBulb } from "@/components/hanging-bulb";
 import { Magnetic } from "@/components/motion/magnetic";
 import { EVENT_KINDS, readableSpan, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
 /**
- * Le haut de page : une pièce, une ampoule, une affiche.
+ * Le haut de page : l'affiche du prochain évènement.
  *
  * L'accueil a un seul travail — remplir le prochain évènement — donc
  * c'est son affiche qu'on lit en premier : format, titre, date, lieu,
  * places, bouton.
  *
- * L'ampoule est l'élément signature. On peut l'attraper et la faire
- * balancer, et sa cordelette allume la pièce : le fond bascule du marine
- * à l'ivoire. C'est la marque rendue manipulable au lieu d'être
- * expliquée, et ça se fait avec les deux peaux qui existent déjà.
+ * Pas d'objet décoratif à côté : sur les Sites of the Day que j'ai
+ * inspectés, les prix d'interaction vont au contenu lui-même — le
+ * programme, la line-up, le survol — jamais à un jouet posé à côté.
  */
 export function HomeHero() {
-  const [lit, setLit] = useState(false);
   const next = upcoming()[0];
 
   return (
     <section
-      /*
-       * Bascule instantanée, pas de fondu.
-       *
-       * Les variables CSS ne se transitionnent pas : le fond aurait fondu
-       * pendant que le texte, lui, sautait d'un coup. Et un interrupteur
-       * est instantané — c'est le filament qui met un instant à chauffer,
-       * ce que fait déjà la lueur de l'ampoule sur 500 ms.
-       */
-      className={`relative overflow-hidden border-b border-line ${lit ? "" : "on-ink"}`}
+      className="on-ink relative overflow-hidden border-b border-line"
       aria-label="Next event"
     >
-      <div className="mx-auto grid max-w-stage gap-10 px-5 pb-20 pt-6 md:grid-cols-12 md:px-8 md:pb-28">
-        {/* L'ampoule, suspendue au bord haut */}
-        <div className="flex justify-center md:col-span-4 md:order-2 md:justify-end">
-          <HangingBulb lit={lit} onToggle={() => setLit((v) => !v)} />
-        </div>
-
+      <div className="mx-auto max-w-stage px-5 pb-24 pt-16 md:px-8 md:pb-32 md:pt-24">
         {/* L'affiche */}
-        <div className="md:col-span-7 md:order-1 md:self-center md:pb-10">
+        <div className="max-w-[52rem]">
           <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
 
           {next ? (
@@ -107,10 +90,6 @@ export function HomeHero() {
         </div>
       </div>
 
-      {/* Ce que fait la cordelette, dit une fois. */}
-      <p className="pb-6 text-center text-sm text-muted">
-        <span aria-hidden>Pull the cord. Swing the bulb.</span>
-      </p>
     </section>
   );
 }

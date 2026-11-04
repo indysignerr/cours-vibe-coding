@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { EventSchedule } from "@/components/event-schedule";
 import { EventSignup } from "@/components/event-signup";
 import { Magnetic } from "@/components/motion/magnetic";
 import { Reveal } from "@/components/motion/reveal";
@@ -127,6 +128,13 @@ export default function EventsPage() {
                         <p className="mt-5 text-sm text-muted">
                           <strong className="text-ink">Bring:</strong> {e.bring}
                         </p>
+                      ) : null}
+
+                      {e.schedule ? (
+                        <>
+                          <div className="rule my-8" />
+                          <EventSchedule event={e} />
+                        </>
                       ) : null}
 
                       <div className="rule my-8" />

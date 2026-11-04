@@ -33,6 +33,20 @@ export type SiteEvent = {
   takeaways: string[];
   /** Ce qu'il faut apporter, le cas échéant. */
   bring?: string;
+  /**
+   * Le déroulé. Un bloc par journée, et dans chaque journée des créneaux
+   * horaires. C'est la pièce qui transforme une affiche en programme :
+   * on voit à quoi ressemble la journée avant de s'engager dessus.
+   */
+  schedule?: { day: string; date: string; slots: ScheduleSlot[] }[];
+};
+
+export type ScheduleSlot = {
+  at: string;
+  title: string;
+  /** Facultatif : « workshop », « break », « demo »… affiché en étiquette. */
+  tag?: string;
+  note?: string;
 };
 
 export const EVENT_KINDS: Record<EventKind, { label: string; blurb: string }> = {
@@ -74,6 +88,34 @@ export const EVENTS: SiteEvent[] = [
       "The habit of cutting scope until something ships.",
     ],
     bring: "A laptop and your own AI subscription. We bring the rest, and the food.",
+    schedule: [
+      {
+        day: "Saturday",
+        date: "2026-11-21",
+        slots: [
+          { at: "10:00", title: "Doors open, coffee, and finding two other people" },
+          { at: "11:00", title: "The brief, handed out", tag: "brief" },
+          { at: "11:30", title: "Scoping. The hour that decides your weekend" },
+          { at: "13:00", title: "Lunch", tag: "break" },
+          { at: "14:00", title: "Build" },
+          { at: "17:00", title: "Deploy something, however ugly", tag: "checkpoint", note: "If it is not online by now, cut the scope." },
+          { at: "20:00", title: "Dinner, and the room stays open", tag: "break" },
+        ],
+      },
+      {
+        day: "Sunday",
+        date: "2026-11-22",
+        slots: [
+          { at: "09:00", title: "Doors open again" },
+          { at: "12:00", title: "Feature freeze", tag: "checkpoint", note: "Everything after this is polish and bug fixing." },
+          { at: "13:00", title: "Lunch", tag: "break" },
+          { at: "15:00", title: "Write the two sentences you will say on stage" },
+          { at: "17:00", title: "Hands off the keyboard", tag: "checkpoint" },
+          { at: "17:30", title: "Demos. Four minutes each, from a public URL", tag: "demo" },
+          { at: "18:00", title: "Done" },
+        ],
+      },
+    ],
   },
   {
     slug: "workshop-idea-to-url",
@@ -93,6 +135,19 @@ export const EVENTS: SiteEvent[] = [
       "The two commands you will use every time after that.",
     ],
     bring: "A laptop. Any operating system.",
+    schedule: [
+      {
+        day: "Wednesday",
+        date: "2026-11-05",
+        slots: [
+          { at: "18:00", title: "Set-up check. We fix whatever did not install" },
+          { at: "18:30", title: "From an empty folder to a page", tag: "workshop" },
+          { at: "19:45", title: "Break", tag: "break" },
+          { at: "20:00", title: "Putting it online, on your own URL", tag: "workshop" },
+          { at: "20:45", title: "Open your phone. Open your page" },
+        ],
+      },
+    ],
   },
   {
     slug: "talk-what-the-law-says",
