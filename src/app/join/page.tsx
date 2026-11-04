@@ -9,8 +9,17 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Join us",
-  description: `For students at ${SITE.school} ${SITE.campus}: how the association works, what we run, and how members end up on paid client work.`,
-  openGraph: { images: [{ url: "/og/join.png", width: 1200, height: 630, alt: "Come once. Stay if it is useful" }] },
+  description: `For students at ${SITE.school} ${SITE.campus}: how the association works, what we run, and what membership gets you.`,
+  openGraph: {
+    images: [
+      {
+        url: "/og/join.png",
+        width: 1200,
+        height: 630,
+        alt: "Come once. Stay if it is useful",
+      },
+    ],
+  },
 };
 
 const EXPECT = [
@@ -27,20 +36,32 @@ const EXPECT = [
   {
     n: "03",
     title: "Help run the next one",
-    body: "Members write the briefs, set up the room, and answer questions during a hackathon. This is where you actually learn, and it is how we know who to trust.",
+    body: "Members write the briefs, set up the room and answer questions during an event. That is where you actually learn it.",
   },
   {
     n: "04",
-    title: "Take on paid client work",
-    body: "Members who have shipped something real take the client engagements. Selection is on work delivered, never on how long you have been around.",
+    title: "Compete, and build a portfolio",
+    body: "Members get the tournaments and Build Lab, every other Tuesday from December to May. What you build there is yours to show.",
   },
 ];
 
 const BRING: [string, string][] = [
-  ["A laptop", "Any machine that runs a browser and a terminal. macOS, Windows or Linux."],
-  ["An AI subscription", "You already need one at school. Everyone works on their own account; we never share keys."],
-  ["No code experience", "None is assumed. Most members come from business and data tracks, which is the point."],
-  ["A few hours, not a term", "There is no weekly commitment. You come to what is useful to you."],
+  [
+    "A laptop",
+    "Any machine that runs a browser and a terminal. macOS, Windows or Linux.",
+  ],
+  [
+    "An AI subscription",
+    "You already need one at school. Everyone works on their own account; we never share keys.",
+  ],
+  [
+    "No code experience",
+    "None is assumed. Most members come from business and data tracks, which is the point.",
+  ],
+  [
+    "A few hours, not a term",
+    "There is no weekly commitment. You come to what is useful to you.",
+  ],
 ];
 
 export default function JoinPage() {
@@ -50,11 +71,14 @@ export default function JoinPage() {
     <PageShell
       eyebrow={`For students at ${SITE.school} ${SITE.campus}`}
       title="Learn to build the thing, not to talk about it."
-      lede="No syllabus, no attendance sheet, nothing weekly. We run hackathons, workshops and talks, and the members who ship something take on the paid client work."
+      lede="No syllabus and no attendance sheet. Workshops and open nights are for anyone; tournaments and Build Lab are for members."
     >
       <Reveal as="ol" className="rows" stagger y={24}>
         {EXPECT.map((e) => (
-          <li key={e.n} className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8">
+          <li
+            key={e.n}
+            className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8"
+          >
             <span className="counter md:col-span-1">{e.n}</span>
             <h2 className="display-3 md:col-span-4">{e.title}</h2>
             <p className="text-body md:col-span-6 md:col-start-6">{e.body}</p>
@@ -64,21 +88,27 @@ export default function JoinPage() {
 
       {/* Le prochain rendez-vous, puisque c'est la seule porte d'entrée */}
       {next.length > 0 ? (
-        <Reveal as="section" className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16" y={30}>
+        <Reveal
+          as="section"
+          className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16"
+          y={30}
+        >
           <p className="eyebrow eyebrow--accent">The door is the next event</p>
           <h2 className="display-2 mt-4 max-w-[22ch]">
             {next[0].format}: {next[0].title}.
           </h2>
-          <p className="lede mt-5 max-w-measure">
-            {next[0].summary}
-          </p>
+          <p className="lede mt-5 max-w-measure">{next[0].summary}</p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Magnetic>
               <Link className="btn btn--brand" href="/events/">
                 Sign up for it
               </Link>
             </Magnetic>
-            <AddToCalendar event={next[0]} variant="outline" label="Add the date" />
+            <AddToCalendar
+              event={next[0]}
+              variant="outline"
+              label="Add the date"
+            />
           </div>
         </Reveal>
       ) : null}
@@ -87,8 +117,13 @@ export default function JoinPage() {
         <p className="eyebrow">What to bring</p>
         <Reveal as="dl" className="rows mt-8" stagger y={18}>
           {BRING.map(([term, detail]) => (
-            <div key={term} className="grid gap-2 py-6 md:grid-cols-12 md:gap-8">
-              <dt className="text-sm font-semibold text-ink md:col-span-3">{term}</dt>
+            <div
+              key={term}
+              className="grid gap-2 py-6 md:grid-cols-12 md:gap-8"
+            >
+              <dt className="text-sm font-semibold text-ink md:col-span-3">
+                {term}
+              </dt>
               <dd className="text-body md:col-span-8">{detail}</dd>
             </div>
           ))}
@@ -105,13 +140,9 @@ export default function JoinPage() {
         </div>
         <div className="md:col-span-6 md:col-start-7">
           <p className="lede">
-            A hackathon is a weekend, and nobody will chase you to finish. People who treat the
-            association as somewhere to have something finished with their name on it get a lot out of
-            it. People who treat it as a line on a CV drift away by November.
-          </p>
-          <p className="mt-5">
-            The client work is the same bargain. It is paid, it is real, and it is held to a client
-            deadline rather than a school one.
+            A tournament is four hours and nobody will chase you to finish.
+            People who come to leave with something built get a lot out of it.
+            People who come for a line on a CV drift away by November.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Magnetic>

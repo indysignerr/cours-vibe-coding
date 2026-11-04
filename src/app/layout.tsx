@@ -7,9 +7,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: { default: `${SITE.name} — ${SITE.tagline}`, template: `%s — ${SITE.name}` },
+  title: {
+    default: `${SITE.name} — ${SITE.tagline}`,
+    template: `%s — ${SITE.name}`,
+  },
   description:
-    "We automate the repetitive work inside your company with AI, and we hand you the compliance file that lets you deploy it. A student-run association at Albert School Milano.",
+    "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab, vibe coding tournaments and open nights — something on at least every two weeks. Free, and beginners welcome.",
   alternates: { canonical: "./" },
   openGraph: {
     type: "website",
@@ -38,12 +41,16 @@ const ORGANIZATION = {
   url: SITE.url,
   logo: `${SITE.url}/android-chrome-512x512.png`,
   description:
-    "A student-run association that automates repetitive work inside companies and delivers the compliance file that lets them deploy it.",
+    "A student association at Albert School Milano, recognised by the school: Lab of Intelligent, Generative, Hands-on Technology. Free events for students, at least every two weeks.",
   email: SITE.contactEmail || undefined,
   knowsLanguage: ["en", "it", "fr"],
   founder: SITE.founders.map((name) => ({ "@type": "Person", name })),
   parentOrganization: { "@type": "EducationalOrganization", name: SITE.school },
-  address: { "@type": "PostalAddress", addressLocality: SITE.campus, addressCountry: "IT" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: SITE.campus,
+    addressCountry: "IT",
+  },
   areaServed: "EU",
 };
 
@@ -51,9 +58,17 @@ export const viewport: Viewport = {
   themeColor: "#0e1a2b",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <script
           type="application/ld+json"

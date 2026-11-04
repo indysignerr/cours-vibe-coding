@@ -55,12 +55,18 @@ export const SITE = {
   timezone: "Europe/Rome",
 
   founders: ["Indy Francois", "Benjamin Gros-Piron", "Rafa"],
+
+  /**
+   * Le bureau, tel qu'il figure au plan annuel. Les rôles « Tech » sont
+   * ouverts : le plan dit que les autres restent à préciser.
+   */
   team: [
-    { name: "Indy Francois", role: "Co-founder", focus: "Delivery and the build" },
-    { name: "Benjamin Gros-Piron", role: "Co-founder", focus: "Scoping and method" },
-    { name: "Rafa", role: "Co-founder", focus: "Compliance file" },
-    { name: "Riccardo", role: "Client relations", focus: "Italian market" },
-    { name: "Tomasso", role: "Client relations", focus: "Italian market" },
-    { name: "Lucca", role: "Delivery", focus: "Automation and tooling" },
+    { name: "Benjamin", role: "Lead", focus: "Overall organisation" },
+    { name: "Jiali", role: "Social media", focus: "Instagram and LinkedIn" },
+    { name: "Asia", role: "Secretary", focus: "Minutes and the shared sheet" },
+    { name: "Lucca", role: "Tech", focus: "Open-ended" },
+    { name: "Riccardo", role: "Tech", focus: "Open-ended" },
+    { name: "Indy", role: "Tech", focus: "Open-ended" },
+    { name: "Rafa", role: "Tech", focus: "Open-ended" },
   ],
 } as const;
