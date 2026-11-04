@@ -25,43 +25,30 @@ export default function Home() {
       <main id="main">
         <HomeHero />
 
-        {/* Les quatre piliers : le concept, expliqué par sa structure. */}
+        {/* Les quatre piliers. Quatre lignes, pas quatre paragraphes : le
+            détail de chaque format vit sur la page Events, et le survol
+            suffit à montrer qu'il existe. */}
         <section className="on-ink border-b border-line" id="pillars">
           <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-36">
-            <div className="max-w-[48rem] scroll-in">
-              <p className="eyebrow eyebrow--accent">How it works</p>
-              <h2 className="display-1 mt-6 max-w-[16ch]">
-                Four pillars. Five formats.
-              </h2>
-              <p className="lede mt-8">
-                Each pillar delivers one part of what we promise. Together they
-                are the whole year.
-              </p>
-            </div>
+            <p className="eyebrow eyebrow--accent scroll-fade">How it works</p>
 
-            <ol className="mt-20 grid gap-px overflow-hidden rounded-card bg-line md:grid-cols-2 scroll-stagger">
+            <ol className="pillars mt-12 scroll-stagger">
               {PILLARS.map((p, i) => (
-                <li key={p.key} id={p.key} className="bg-canvas p-8 md:p-10">
-                  <div className="flex items-baseline gap-4">
-                    <span className="counter">
+                <li key={p.key} id={p.key}>
+                  <Link className="pillar" href="/events/">
+                    <span className="counter pillar__n">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="display-2">{p.title}</h3>
-                  </div>
-                  <p className="mt-4 text-accent">{p.verb}</p>
-                  <p className="mt-3 max-w-measure text-body">{p.delivers}</p>
-
-                  <dl className="rows mt-8">
-                    {p.formats.map((f) => (
-                      <div key={f.name} className="py-4 first:pt-0">
-                        <dt className="display-3">{f.name}</dt>
-                        <dd className="mt-1.5 text-sm text-body">{f.what}</dd>
-                        <dd className="tnum mt-2 text-sm text-muted">
-                          {f.who} · {f.length}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
+                    <span className="pillar__name">{p.title}</span>
+                    <span className="pillar__verb">{p.verb}</span>
+                    <span className="pillar__formats">
+                      {p.formats.map((f) => (
+                        <span key={f.name} className="tag">
+                          {f.name}
+                        </span>
+                      ))}
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ol>

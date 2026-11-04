@@ -1090,3 +1090,124 @@
     }
   }
 }
+
+/* =====================================================================
+   Les quatre piliers : quatre lignes, pas quatre paragraphes.
+
+   La version précédente tenait 196 mots sur 2,7 écrans — chaque pilier
+   avec son verbe, sa promesse, et chacun de ses formats décrit. C'est la
+   page Events qui porte ce détail. Ici il ne reste que le nom, en très
+   grand, et les étiquettes des formats : de quoi comprendre la structure
+   d'un coup d'œil, et aller voir si on veut.
+   ===================================================================== */
+.pillars > li + li { border-top: 1px solid var(--line); }
+
+.pillar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.35rem 1.25rem;
+  padding: 1.6rem 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (min-width: 768px) {
+  .pillar {
+    /* Quatre colonnes nommées explicitement : laissé à l'auto-placement,
+       le nom partait se ranger à droite derrière les étiquettes. */
+    grid-template-columns: 3.5rem auto minmax(0, 1fr) auto;
+    gap: 0 2.5rem;
+    padding: 2.1rem 0;
+  }
+}
+
+.pillar__n {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  transition: color 0.3s ease;
+}
+
+.pillar__name {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.3s ease;
+}
+
+.pillar__verb {
+  grid-column: 2;
+  grid-row: 2;
+  max-width: 34ch;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.pillar__formats {
+  grid-column: 2;
+  grid-row: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .pillar__verb {
+    grid-row: 1;
+    grid-column: 3;
+    align-self: center;
+    justify-self: end;
+    text-align: right;
+  }
+
+  .pillar__formats {
+    grid-row: 1;
+    grid-column: 4;
+    align-self: center;
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.pillar:hover .pillar__name {
+  color: var(--brand);
+  transform: translateX(0.6rem);
+}
+
+.pillar:hover .pillar__n { color: var(--brand); }
+
+.pillar:hover .tag {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.pillar:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
