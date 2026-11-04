@@ -40,6 +40,17 @@ export const SITE = {
 
   // Vides tant que l'adresse n'est pas créée. Les gabarits s'adaptent.
   whatsapp: "" as string,
+  /**
+   * Le code de vérification Google Search Console, méthode « balise HTML ».
+   * Coller ici le contenu de la balise (pas la balise entière) et pousser.
+   * Vide = aucune balise émise.
+   *
+   * La vérification par enregistrement TXT chez Cloudflare est préférable :
+   * elle couvre l'apex, le www et tous les sous-domaines d'un coup, et elle
+   * survit à une refonte du site. Celle-ci est là pour dépanner.
+   */
+  googleSiteVerification: "" as string,
+
   /** Prévue au plan pour le 8 novembre, via Cloudflare Email Routing. */
   contactEmail: "hello@albertlight.com" as string,
 

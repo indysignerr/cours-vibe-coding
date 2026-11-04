@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   description:
     "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab, vibe coding tournaments and open nights — something on at least every two weeks. Free, and beginners welcome.",
   alternates: { canonical: "./" },
+  ...(SITE.googleSiteVerification
+    ? { verification: { google: SITE.googleSiteVerification } }
+    : {}),
   openGraph: {
     type: "website",
     siteName: SITE.name,
@@ -43,6 +46,10 @@ const ORGANIZATION = {
   logo: `${SITE.url}/android-chrome-512x512.png`,
   description:
     "A student association at Albert School Milano, recognised by the school: Lab of Intelligent, Generative, Hands-on Technology. Free events for students, at least every two weeks.",
+  // Aligné sur ce que déclare la page LinkedIn : les signaux de marque
+  // doivent concorder d'une source à l'autre.
+  foundingDate: "2026",
+  nonprofitStatus: "https://schema.org/NonprofitType",
   sameAs: Object.values(SITE.social),
   email: SITE.contactEmail || undefined,
   knowsLanguage: ["en", "it", "fr"],

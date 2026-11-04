@@ -7,6 +7,17 @@
 # Cloudflare Pages n'applique ces règles que si aucun fichier statique ne
 # correspond : elles ne peuvent pas masquer une page vivante.
 
+# --- www vers l'apex -------------------------------------------------
+#
+# Les deux domaines servaient la même page en 200. La balise canonical
+# limitait les dégâts, mais deux URL pour un même contenu divisent les
+# signaux : une redirection 301 est ce que Google attend, et elle
+# concentre les liens entrants sur une seule adresse.
+#
+# Une règle absolue, avec le domaine, ne s'applique qu'à ce domaine :
+# elle ne touche pas l'aperçu *.pages.dev.
+https://www.albertlight.com/*   https://albertlight.com/:splat   301!
+
 # Renommages
 /services       /events      301
 /services/*     /events      301
