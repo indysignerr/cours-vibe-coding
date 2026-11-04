@@ -1,91 +1,104 @@
 import Link from "next/link";
-import { AddToCalendar } from "@/components/add-to-calendar";
-import { readableDate, shortDate, upcoming } from "@/lib/events";
+import { shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
 /**
  * Le haut de page.
  *
- * Deux choses, dans cet ordre : ce qu'est l'association, et la prochaine
- * date. Le plan annuel promet « quelque chose au moins toutes les deux
- * semaines » — donc le haut de page montre le compte d'évènements à
- * venir, parce que c'est cette promesse qui convainc.
+ * Le nom EST l'explication : Lab of Intelligent, Generative, Hands-on
+ * Technology. On ne le raconte donc pas en paragraphe, on le montre —
+ * cinq lettres qui tiennent l'écran, et le mot de chacune qui se révèle
+ * quand on la survole. C'est ce que le plan annuel demande, mot pour
+ * mot : « a simple wordmark logo, two colours, one font ».
  *
- * Composant serveur : pas une ligne de JavaScript n'est envoyée pour
- * l'afficher.
+ * Un écran, une trentaine de mots. L'ancienne version en faisait
+ * quatre-vingt-treize sur presque deux écrans, et la grosse carte du
+ * prochain évènement volait la vedette au titre ; elle est devenue une
+ * barre, en pied de hero.
+ *
+ * Composant serveur : pas une ligne de JavaScript n'est envoyée.
  */
+
+const GLYPHS: [string, string][] = [
+  ["L", "Lab"],
+  ["I", "Intelligent"],
+  ["G", "Generative"],
+  ["H", "Hands-on"],
+  ["T", "Technology"],
+];
+
+/** Dispersion au défilement : chaque lettre part à sa propre vitesse. */
+const DRIFT = [-18, 26, -34, 14, -8];
+
 export function HomeHero() {
   const next = upcoming();
   const first = next[0];
 
   return (
-    <section className="on-ink relative overflow-hidden border-b border-line">
-      <div className="mx-auto max-w-stage px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
+    <section className="on-ink hero border-b border-line">
+      <div className="hero__inner mx-auto w-full max-w-stage px-5 md:px-8">
         <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
 
-        <h1 className="display-1 rise mt-7 max-w-[15ch] [animation-delay:60ms]">
-          Albert School&rsquo;s student lab for AI and code.
+        <h1 className="hero__h1">
+          <span className="sr-only">
+            Albert L.I.G.H.T. — Lab of Intelligent, Generative, Hands-on
+            Technology. Albert School&rsquo;s lab for AI and code.
+          </span>
+
+          <span aria-hidden className="wordmark">
+            {GLYPHS.map(([letter, word], i) => (
+              <span
+                key={letter}
+                className="glyph"
+                style={
+                  { "--i": i, "--d": `${DRIFT[i]}px` } as React.CSSProperties
+                }
+              >
+                <span className="glyph__l">{letter}</span>
+                <span className="glyph__w">{word}</span>
+              </span>
+            ))}
+
+            {/* Une seule ligne sous le nom. Survoler une lettre la remplace par
+                le mot de cette lettre : le sigle se découvre en jouant avec, au
+                lieu d'être récité en plus. */}
+            <span className="wordmark__caption">
+              Albert School&rsquo;s lab for AI and code.
+            </span>
+          </span>
         </h1>
+      </div>
 
-        <p className="lede rise mt-8 max-w-measure [animation-delay:120ms]">
-          Something on at least every two weeks. Beginners welcome.
-        </p>
-
-        {/* La promesse, chiffrée. */}
-        <dl className="rise mt-12 flex flex-wrap gap-x-12 gap-y-6 [animation-delay:180ms]">
-          {(
-            [
-              ["Events booked", `${next.length}`],
-              ["Through", "May 2027"],
-              ["Price", "Free"],
-            ] as [string, string][]
-          ).map(([term, detail]) => (
-            <div key={term}>
-              <dt className="eyebrow">{term}</dt>
-              <dd className="tnum mt-2 text-3xl font-semibold tracking-[-0.03em] text-ink">
-                {detail}
-              </dd>
+      {/* Le pied : la promesse chiffrée, et la prochaine date. */}
+      <div className="hero__foot rise [animation-delay:720ms]">
+        <div className="mx-auto flex w-full max-w-stage flex-wrap items-center justify-between gap-x-10 gap-y-5 px-5 md:px-8">
+          <dl className="flex flex-wrap items-baseline gap-x-8 gap-y-2 text-sm">
+            <div className="flex items-baseline gap-2">
+              <dt className="eyebrow">Events</dt>
+              <dd className="tnum text-ink">{next.length}</dd>
             </div>
-          ))}
-        </dl>
-
-        {/* La prochaine date, en carte. */}
-        {first ? (
-          <div className="rise mt-14 max-w-[46rem] [animation-delay:240ms]">
-            <div className="card card--raised bg-surface p-7 md:p-9">
-              <div className="flex flex-wrap items-baseline justify-between gap-4">
-                <p className="eyebrow eyebrow--accent">Next · {first.format}</p>
-                <p className="tnum text-sm text-muted">{shortDate(first.date)}</p>
-              </div>
-
-              <h2 className="display-2 mt-4">{first.title}</h2>
-              <p className="mt-4 max-w-measure text-body">{first.summary}</p>
-
-              <dl className="mt-7 flex flex-wrap gap-x-9 gap-y-4 text-sm">
-                {(
-                  [
-                    ["When", readableDate(first.date)],
-                    ...(first.start ? ([["Time", `${first.start}–${first.end ?? ""}`]] as [string, string][]) : []),
-                    ["Where", first.location],
-                    ["For", first.audience],
-                  ] as [string, string][]
-                ).map(([term, detail]) => (
-                  <div key={term}>
-                    <dt className="eyebrow">{term}</dt>
-                    <dd className="tnum mt-1.5 text-body">{detail}</dd>
-                  </div>
-                ))}
-              </dl>
-
-              <div className="mt-9 flex flex-wrap items-center gap-3">
-                <Link className="btn btn--primary" href="/events/">
-                  Put my name down
-                </Link>
-                <AddToCalendar event={first} label="Add the date" />
-              </div>
+            <div className="flex items-baseline gap-2">
+              <dt className="eyebrow">Through</dt>
+              <dd className="tnum text-ink">May 2027</dd>
             </div>
-          </div>
-        ) : null}
+            <div className="flex items-baseline gap-2">
+              <dt className="eyebrow">Price</dt>
+              <dd className="text-ink">Free</dd>
+            </div>
+          </dl>
+
+          {first ? (
+            <Link className="hero__next group" href={`/events/#${first.slug}`}>
+              <span className="eyebrow eyebrow--accent">
+                Next · {shortDate(first.date)}
+              </span>
+              <span className="hero__nextTitle">{first.title}</span>
+              <span aria-hidden className="hero__arrow">
+                →
+              </span>
+            </Link>
+          ) : null}
+        </div>
       </div>
     </section>
   );

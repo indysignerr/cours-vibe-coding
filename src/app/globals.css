@@ -885,3 +885,208 @@
     }
   }
 }
+
+/* =====================================================================
+   Le haut de page : le nom, en monument.
+
+   Cinq lettres qui tiennent l'écran, et le mot de chacune qui se révèle
+   au survol. Rien de tout cela ne passe par JavaScript : le survol est
+   une transition, l'arrivée une animation à délais, la dispersion une
+   timeline de défilement. Le composant reste un composant serveur.
+   ===================================================================== */
+.hero {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: calc(100svh - 7.2rem);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 3.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.hero__h1 {
+  margin: clamp(1.75rem, 4vw, 3rem) 0 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.wordmark {
+  position: relative;
+  display: flex;
+  width: 100%;
+  /* Étalé bord à bord : cinq lettres serrées n'occupaient que la moitié de
+     l'écran, ce qui annulait l'effet de monument. */
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: clamp(0.15rem, 1vw, 1.1rem);
+  /* Les traits descendent sous les lettres, la légende sous les traits :
+     il faut réserver les deux, sinon l'un barre l'autre. */
+  padding-bottom: clamp(3.75rem, 7vw, 6rem);
+}
+
+.glyph {
+  display: block;
+  font-size: clamp(4rem, 19vw, 15.5rem);
+  font-weight: 600;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  font-variation-settings: "opsz" 48;
+  color: var(--ink);
+  transition:
+    opacity 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    color 0.35s ease;
+}
+
+.glyph__l {
+  position: relative;
+  display: block;
+}
+
+/* Le trait sous chaque lettre : il se dessine à l'arrivée, puis répond au survol. */
+.glyph__l::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.12em;
+  height: 2px;
+  background: var(--brand);
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+
+/* Le mot de la lettre, posé sous le bloc entier plutôt que sous sa lettre :
+   « Technology » déborderait l'écran s'il partait du T. */
+.glyph__w {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: clamp(0.95rem, 2.4vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  white-space: nowrap;
+  color: var(--brand);
+  opacity: 0;
+  transform: translateY(0.45em);
+  transition:
+    opacity 0.35s ease,
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+
+.wordmark__caption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  max-width: 100%;
+  font-size: clamp(1.05rem, 2.6vw, 1.65rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--body);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Survoler une lettre : elle seule reste allumée, et elle dit son mot. */
+.wordmark:hover .glyph { opacity: 0.26; }
+.wordmark:hover .wordmark__caption { opacity: 0; }
+
+.wordmark:hover .glyph:hover {
+  opacity: 1;
+  color: var(--brand);
+}
+
+.glyph:hover .glyph__w {
+  opacity: 1;
+  transform: none;
+}
+
+.hero__foot {
+  padding: 1.35rem 0 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.hero__next {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.hero__nextTitle {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  font-weight: 600;
+  color: var(--ink);
+  background-image: linear-gradient(var(--brand), var(--brand));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero__next:hover .hero__nextTitle { background-size: 100% 1px; }
+
+.hero__arrow {
+  color: var(--brand);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero__next:hover .hero__arrow { transform: translateX(0.35rem); }
+
+.hero__next:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+/* L'arrivée : les lettres montent l'une après l'autre, et leur trait suit. */
+@keyframes glyph-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* La sortie : en quittant le haut de page, les lettres se dispersent. */
+@keyframes glyph-drift {
+  to { transform: translateY(var(--d, 0)); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .glyph {
+    animation: glyph-in 900ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc(var(--i) * 85ms + 120ms);
+  }
+
+  .glyph__l::after {
+    animation: draw-under 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc(var(--i) * 85ms + 520ms);
+  }
+
+  @keyframes draw-under {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .glyph__l {
+      animation: glyph-drift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}

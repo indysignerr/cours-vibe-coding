@@ -1,12 +1,14 @@
-import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Mono } from "next/font/google";
 
 /**
- * Deux voix, pas une.
+ * Une voix de marque, et un registre pour les données.
  *
- * La charte impose Inter, et Inter reste la voix de la marque : titres,
- * paragraphes, boutons. Mais une seule famille sur tout un site donne un
- * ton parfaitement plat — c'est l'un des trois signes qui faisaient
- * « site généré ».
+ * Le plan annuel demande « two colours, one font ». Inter ne pouvait pas
+ * être cette police : le CLAUDE.md du dépôt l'interdit, et le jury
+ * Awwwards la cite nommément comme signe de gabarit. Bricolage Grotesque
+ * tient les deux bouts — un dessin à contre-formes irrégulières qui a du
+ * caractère en très grand, et une graisse variable qui reste lisible à
+ * 17 px. Une seule famille, donc, pour les titres comme pour le texte.
  *
  * Le mono n'est pas un second caractère de marque, c'est un registre :
  * il sert aux chiffres, aux prix, aux dates, aux libellés et aux
@@ -14,9 +16,9 @@ import { IBM_Plex_Mono, Inter } from "next/font/google";
  * parler. Plex Mono a des chiffres de même chasse et un dessin sobre qui
  * ne se bat pas avec Inter.
  */
-export const body = Inter({
+export const body = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  axes: ["opsz"],
   variable: "--font-body",
   display: "swap",
 });

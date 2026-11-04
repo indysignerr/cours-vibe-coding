@@ -25,41 +25,6 @@ export default function Home() {
       <main id="main">
         <HomeHero />
 
-        {/* Le nom, déplié. Il explique l'association mieux qu'un paragraphe. */}
-        <section className="border-b border-line">
-          <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-32">
-            <p className="eyebrow scroll-fade">The name</p>
-            <ul className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-5 scroll-stagger">
-              {[
-                ["L", "Lab", "A place to work, not a club to join"],
-                [
-                  "I",
-                  "Intelligent",
-                  "The tools are the subject, not the decoration",
-                ],
-                [
-                  "G",
-                  "Generative",
-                  "Models that make things, used to make things",
-                ],
-                ["H", "Hands-on", "Nobody here is only listening"],
-                ["T", "Technology", "It has to run, or it does not count"],
-              ].map(([letter, word, line]) => (
-                <li key={letter}>
-                  <span className="display-1 block text-accent">{letter}</span>
-                  <span className="display-3 mt-3 block">{word}</span>
-                  <span className="mt-2 block text-sm text-body">{line}</span>
-                </li>
-              ))}
-            </ul>
-
-            <p className="lede mt-16 max-w-measure scroll-in">
-              A student association at {SITE.school} in {SITE.campus},
-              recognised by the school.
-            </p>
-          </div>
-        </section>
-
         {/* Les quatre piliers : le concept, expliqué par sa structure. */}
         <section className="on-ink border-b border-line" id="pillars">
           <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-36">
