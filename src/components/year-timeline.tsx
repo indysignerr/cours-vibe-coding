@@ -65,7 +65,7 @@ export function YearTimeline({ events = EVENTS }: { events?: SiteEvent[] }) {
               </p>
             ) : null}
 
-            <Link className="timeline__item" href={`/events/#${e.slug}`}>
+            <Link className="timeline__item" href={`/events/${e.slug}/`}>
               <span aria-hidden className="timeline__dot" />
 
               <span className="timeline__day tnum">

@@ -102,7 +102,7 @@ export default function JoinPage() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 className="btn btn--primary"
-                href={`/events/#${first.slug}`}
+                href={`/events/${first.slug}/`}
               >
                 Sign up
               </Link>

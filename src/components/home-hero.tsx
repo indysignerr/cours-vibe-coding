@@ -92,7 +92,7 @@ export function HomeHero() {
           </dl>
 
           {first ? (
-            <Link className="hero__next group" href={`/events/#${first.slug}`}>
+            <Link className="hero__next group" href={`/events/${first.slug}/`}>
               <span className="eyebrow eyebrow--accent">
                 Next · {shortDate(first.date)}
               </span>
