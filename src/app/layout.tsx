@@ -42,6 +42,7 @@ const ORGANIZATION = {
   logo: `${SITE.url}/android-chrome-512x512.png`,
   description:
     "A student association at Albert School Milano, recognised by the school: Lab of Intelligent, Generative, Hands-on Technology. Free events for students, at least every two weeks.",
+  sameAs: Object.values(SITE.social),
   email: SITE.contactEmail || undefined,
   knowsLanguage: ["en", "it", "fr"],
   founder: SITE.founders.map((name) => ({ "@type": "Person", name })),

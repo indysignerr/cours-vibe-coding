@@ -54,6 +54,11 @@ export const SITE = {
   bookingUrl: "" as string,
   timezone: "Europe/Rome",
 
+  /** Les comptes publics de l'association. Seuls ceux qui existent vraiment. */
+  social: {
+    linkedin: "https://www.linkedin.com/company/albertlight/",
+  },
+
   founders: ["Indy Francois", "Benjamin Gros-Piron", "Rafa"],
 
   /**

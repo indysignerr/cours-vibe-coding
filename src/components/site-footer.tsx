@@ -19,6 +19,10 @@ const COLUMNS: { title: string; links: [string, string][] }[] = [
     ],
   },
   {
+    title: "Elsewhere",
+    links: [[SITE.social.linkedin, "LinkedIn"]],
+  },
+  {
     title: "Legal",
     links: [
       ["/legal/", "Legal notice"],
@@ -34,7 +38,9 @@ export function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
             <Logo compact onInk />
-            <p className="mt-5 max-w-[34ch] text-sm text-muted">{SITE.legalMention}</p>
+            <p className="mt-5 max-w-[34ch] text-sm text-muted">
+              {SITE.legalMention}
+            </p>
             {SITE.contactEmail ? (
               <a
                 className="mt-5 inline-block text-sm text-brand-soft underline underline-offset-4"
@@ -45,21 +51,40 @@ export function SiteFooter() {
             ) : null}
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-8 md:col-span-8 md:grid-cols-4">
+          <nav
+            aria-label="Footer"
+            className="grid grid-cols-2 gap-8 md:col-span-8 md:grid-cols-4"
+          >
             {COLUMNS.map((col) => (
               <div key={col.title}>
                 <p className="eyebrow eyebrow--accent">{col.title}</p>
                 <ul className="mt-2 grid">
-                  {col.links.map(([href, label]) => (
-                    <li key={href}>
-                      <Link
-                        className="-my-1.5 inline-flex min-h-[44px] items-center text-sm text-body transition-colors hover:text-accent"
-                        href={href}
-                      >
-                        {label}
-                      </Link>
-                    </li>
-                  ))}
+                  {col.links.map(([href, label]) => {
+                    // Un lien qui sort du site n'est pas une route interne :
+                    // il lui faut rel="noopener", que <Link> ne pose pas.
+                    const external = href.startsWith("http");
+                    const className =
+                      "-my-1.5 inline-flex min-h-[44px] items-center text-sm text-body transition-colors hover:text-accent";
+
+                    return (
+                      <li key={href}>
+                        {external ? (
+                          <a
+                            className={className}
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {label}
+                          </a>
+                        ) : (
+                          <Link className={className} href={href}>
+                            {label}
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}

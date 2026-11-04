@@ -1421,3 +1421,34 @@ body::after {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
+
+/* =====================================================================
+   Le fond de la hero.
+
+   Une image d'ambiance générée dans la charte, posée sous un voile
+   marine en dégradé. Le voile n'est pas décoratif : les lettres sont en
+   ivoire, et sans lui la lueur beige passerait sous elles en détruisant
+   le contraste. L'opacité et les arrêts du dégradé ont été réglés en
+   mesurant la luminance réelle derrière chaque lettre.
+   ===================================================================== */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      105deg,
+      rgb(14 26 43 / 0.95) 0%,
+      rgb(14 26 43 / 0.9) 45%,
+      rgb(14 26 43 / 0.86) 100%
+    ),
+    url("/images/atmos-hero.webp");
+  background-size: cover, cover;
+  background-position:
+    center,
+    65% 35%;
+}
+
+/* La lueur décorative des sections marine ferait double emploi ici. */
+.hero.on-ink::after { display: none; }

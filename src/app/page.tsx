@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeHero } from "@/components/home-hero";
-import { PhotoSlot } from "@/components/photo-slot";
+import Image from "next/image";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Split } from "@/components/split";
@@ -102,9 +102,15 @@ export default function Home() {
             </div>
 
             <div className="md:col-span-6 md:col-start-7 scroll-in">
-              <PhotoSlot
-                ratio="4 / 3"
-                label="The board at the campus, during a tournament. Taken on a phone, not bought."
+              {/* Visuel d'ambiance, pas une photo du bureau : il n'y en a
+                  pas encore. Le jour où il y en aura, elle prend cette place. */}
+              <Image
+                src="/images/atmos-board.webp"
+                alt=""
+                width={1408}
+                height={768}
+                className="rounded-card w-full"
+                sizes="(min-width: 768px) 46vw, 100vw"
               />
             </div>
           </div>

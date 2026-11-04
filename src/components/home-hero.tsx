@@ -36,6 +36,10 @@ export function HomeHero() {
 
   return (
     <section className="on-ink hero border-b border-line">
+      {/* Le fond : une lueur, générée dans la charte. Elle est décorative,
+          donc elle reste en CSS — rien à annoncer à un lecteur d'écran. */}
+      <span aria-hidden className="hero__bg" />
+
       <div className="hero__inner mx-auto w-full max-w-stage px-5 md:px-8">
         <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
 
