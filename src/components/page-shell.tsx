@@ -1,6 +1,7 @@
 import { BrandMark } from "@/components/brand";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Split } from "@/components/split";
 
 /**
  * En-tête, bandeau de titre, contenu, pied de page.
@@ -33,15 +34,23 @@ export function PageShell({
           />
           <div className="relative mx-auto max-w-stage px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
             <div className="md:pl-[6%]">
-              {eyebrow ? <p className="eyebrow eyebrow--accent rise">{eyebrow}</p> : null}
-              <h1 className="display-1 rise mt-5 max-w-[17ch] [animation-delay:60ms]">{title}</h1>
+              {eyebrow ? (
+                <p className="eyebrow eyebrow--accent rise">{eyebrow}</p>
+              ) : null}
+              <h1 className="display-1 mt-5 max-w-[17ch]">
+                <Split>{title}</Split>
+              </h1>
               {lede ? (
-                <p className="lede rise mt-7 max-w-measure [animation-delay:120ms]">{lede}</p>
+                <p className="lede rise mt-7 max-w-measure [animation-delay:120ms]">
+                  {lede}
+                </p>
               ) : null}
             </div>
           </div>
         </div>
-        <div className="mx-auto max-w-stage px-5 py-16 md:px-8 md:py-24">{children}</div>
+        <div className="mx-auto max-w-stage px-5 py-16 md:px-8 md:py-24">
+          {children}
+        </div>
       </main>
       <SiteFooter />
     </>

@@ -4,6 +4,7 @@ import { HomeHero } from "@/components/home-hero";
 import { PhotoSlot } from "@/components/photo-slot";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Split } from "@/components/split";
 import { YearTimeline } from "@/components/year-timeline";
 import { upcoming } from "@/lib/events";
 import { PILLARS } from "@/lib/pillars";
@@ -62,7 +63,7 @@ export default function Home() {
               <div className="max-w-[34rem]">
                 <p className="eyebrow">The year</p>
                 <h2 className="display-2 mt-5">
-                  November to May, without a gap.
+                  <Split>November to May, without a gap.</Split>
                 </h2>
               </div>
               <Link className="btn btn--ghost" href="/events/">
@@ -115,7 +116,7 @@ export default function Home() {
             <div className="max-w-[44rem] scroll-in">
               <p className="eyebrow eyebrow--accent">Coming along</p>
               <h2 className="display-1 mt-6 max-w-[13ch]">
-                You do not have to join anything.
+                <Split>You do not have to join anything.</Split>
               </h2>
               <p className="lede mt-8">
                 Put your name down for one event. No account, no application, no

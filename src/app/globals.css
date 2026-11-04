@@ -1211,3 +1211,193 @@
   outline-offset: 6px;
   border-radius: 6px;
 }
+
+/* =====================================================================
+   La page Events : un index qui s'ouvre.
+
+   Les neuf fiches dépliées tenaient 1 630 mots. `<details>` natif fait le
+   travail — clavier, mobile, et contenu toujours présent dans le HTML
+   pour l'indexation. L'ouverture s'anime via `::details-content` là où
+   c'est supporté ; ailleurs elle s'ouvre d'un coup, ce qui reste juste.
+   ===================================================================== */
+.evs > li + li { border-top: 1px solid var(--line); }
+
+.ev__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.4rem 1.5rem;
+  padding: 1.5rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.ev__head::-webkit-details-marker { display: none; }
+
+@media (min-width: 768px) {
+  .ev__head {
+    grid-template-columns: 7.5rem minmax(0, 1fr) auto 1.75rem;
+    gap: 0 2rem;
+    padding: 1.85rem 0;
+  }
+}
+
+.ev__date {
+  grid-column: 1;
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.ev__title {
+  grid-column: 1;
+  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.ev__meta {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  margin-top: 0.35rem;
+}
+
+@media (min-width: 768px) {
+  .ev__date { grid-row: 1; }
+  .ev__title { grid-row: 1; grid-column: 2; }
+  .ev__meta { grid-row: 1; grid-column: 3; margin-top: 0; justify-content: flex-end; }
+}
+
+/* Le signe + qui devient − une fois ouvert. Deux traits, pas une icône. */
+.ev__sign {
+  position: relative;
+  grid-row: 1;
+  grid-column: 2;
+  justify-self: end;
+  width: 1.1rem;
+  height: 1.1rem;
+  align-self: center;
+}
+
+@media (min-width: 768px) {
+  .ev__sign { grid-column: 4; }
+}
+
+.ev__sign::before,
+.ev__sign::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.5px;
+  background: var(--accent);
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ev__sign::after { transform: rotate(90deg); }
+
+.ev[open] .ev__sign::after { transform: rotate(0deg); }
+
+.ev__head:hover .ev__title { color: var(--accent); }
+
+.ev__head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+.ev__body { padding: 0.5rem 0 2.75rem; }
+
+@supports selector(::details-content) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ev::details-content {
+      block-size: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition:
+        block-size 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+        content-visibility 0.5s allow-discrete,
+        opacity 0.4s ease;
+      transition-behavior: allow-discrete;
+    }
+
+    .ev[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+}
+
+/* =====================================================================
+   Les titres qui se révèlent mot à mot.
+
+   Une fenêtre par mot, et le mot qui monte derrière. Le décalage passe
+   par la plage de défilement plutôt que par un délai, puisqu'une
+   timeline de défilement n'avance pas dans le temps.
+
+   Hors @supports, rien ne s'applique : le titre est simplement là.
+   ===================================================================== */
+.sw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.sw__i { display: inline-block; }
+
+@keyframes word-up {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sw__i {
+      animation: word-up linear both;
+      animation-timeline: view();
+      animation-range: entry calc(5% + var(--w, 0) * 3%) entry calc(48% + var(--w, 0) * 3%);
+    }
+  }
+}
+
+/* =====================================================================
+   Le grain.
+
+   Un aplat de marine ou d'ivoire parfaitement lisse se voit tout de
+   suite à l'écran : les dégradés y font des bandes et la surface paraît
+   morte. Un bruit très léger, posé une fois sur toute la page, suffit à
+   la rendre matière. Il est en `fixed` et ne se repeint pas au
+   défilement.
+   ===================================================================== */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =====================================================================
+   L'entrée de page.
+
+   En export statique, la navigation reste côté client : <main> est
+   remonté à chaque route, donc une animation CSS posée dessus rejoue
+   d'elle-même. Pas de bibliothèque de transitions, pas d'état.
+   ===================================================================== */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  main { animation: page-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+}
