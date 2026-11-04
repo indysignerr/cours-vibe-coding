@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EVENTS, EVENT_KINDS, readableSpan, type SiteEvent } from "@/lib/events";
+import { EVENTS, readableSpan, type SiteEvent } from "@/lib/events";
 import { getSupabase } from "@/lib/supabase/client";
 
 type Row = {
@@ -43,7 +43,7 @@ function EventBlock({ event, rows }: { event: SiteEvent; rows: Row[] }) {
     <section className="mt-14 first:mt-0">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="eyebrow">{EVENT_KINDS[event.kind].label}</p>
+          <p className="eyebrow">{event.format}</p>
           <h2 className="display-2 mt-3">{event.title}</h2>
           <p className="tnum mt-2 text-sm text-muted">{readableSpan(event)}</p>
         </div>

@@ -612,3 +612,276 @@
 @media (prefers-reduced-motion: reduce) {
   .scroll-progress { display: none; }
 }
+
+/* =====================================================================
+   Apparitions pilotées par le défilement, sans JavaScript.
+
+   `animation-timeline: view()` lie la progression de l'animation à la
+   traversée de la fenêtre par l'élément. Tout se passe dans le moteur de
+   rendu, sur le compositeur : on peut en mettre partout sans voler une
+   image au défilement. C'est ce que les sites primés obtiennent avec
+   GSAP ScrollTrigger ou Locomotive — en JavaScript, et c'est ce qui
+   faisait ramer le nôtre.
+
+   Sécurité : hors du bloc @supports, rien ne s'applique et le contenu
+   est simplement visible. Un navigateur qui ne connaît pas les
+   timelines ne peut pas laisser un bloc à opacité zéro — c'est le bug
+   que la version JavaScript pouvait produire.
+   ===================================================================== */
+@keyframes scroll-in {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes scroll-in-soft {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Une bande qui se dessine de gauche à droite au passage. */
+@keyframes scroll-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Un bloc qui se décale légèrement : parallaxe, gratuite. */
+@keyframes scroll-drift {
+  from { transform: translateY(var(--drift, 40px)); }
+  to { transform: translateY(calc(var(--drift, 40px) * -1)); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-in,
+    .scroll-stagger > * {
+      animation: scroll-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 52%;
+    }
+
+    /* La cascade : chaque enfant finit un peu plus tard que le précédent,
+       en décalant sa plage plutôt qu'avec un délai — un délai n'a pas de
+       sens sur une timeline de défilement, qui n'avance pas dans le temps. */
+    .scroll-stagger > *:nth-child(2) { animation-range: entry 4% entry 58%; }
+    .scroll-stagger > *:nth-child(3) { animation-range: entry 8% entry 64%; }
+    .scroll-stagger > *:nth-child(4) { animation-range: entry 12% entry 70%; }
+    .scroll-stagger > *:nth-child(5) { animation-range: entry 16% entry 76%; }
+    .scroll-stagger > *:nth-child(n + 6) { animation-range: entry 20% entry 82%; }
+
+    .scroll-fade {
+      animation: scroll-in-soft linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+
+    .scroll-draw {
+      transform-origin: 0 50%;
+      animation: scroll-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    .scroll-drift {
+      animation: scroll-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+  }
+}
+
+/* =====================================================================
+   La frise de l'année.
+
+   Le trait se dessine au passage, et chaque point s'allume quand il
+   atteint le milieu de l'écran — l'effet qu'on voit sur les frises
+   primées, obtenu ici sans un seul écouteur de défilement. Les deux
+   animations sont calées sur la même référence (le centre de la
+   fenêtre), donc la tête du trait et le point allumé coïncident.
+
+   Repli : hors @supports, le trait animé disparaît et les points sont
+   pleins. Rien ne reste à moitié dessiné.
+   ===================================================================== */
+.timeline {
+  --rail: 2.9rem;
+  --timeline-bg: var(--sunken);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .timeline { --rail: 5.25rem; }
+}
+
+.timeline__rail,
+.timeline__draw {
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  left: var(--rail);
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.timeline__draw {
+  width: 2px;
+  margin-left: -0.5px;
+  background: var(--accent);
+  transform-origin: 50% 0;
+  display: none;
+}
+
+.timeline__list { position: relative; }
+
+.timeline__month {
+  margin: 2.75rem 0 0.75rem;
+  padding-left: calc(var(--rail) + 1.25rem);
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.timeline__row:first-child .timeline__month { margin-top: 0; }
+
+.timeline__item {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: start;
+  padding: 0.9rem 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (min-width: 768px) {
+  .timeline__item {
+    grid-template-columns: 4.35rem minmax(0, 1fr);
+    column-gap: 1.75rem;
+  }
+}
+
+.timeline__dot {
+  position: absolute;
+  left: var(--rail);
+  width: 11px;
+  height: 11px;
+  margin-top: 1.4rem;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  transform: translateX(-50%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.timeline__day {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  line-height: 1;
+  text-align: right;
+  color: var(--accent);
+}
+
+.timeline__body { min-width: 0; }
+
+.timeline__head {
+  display: flex;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+}
+
+.timeline__meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.timeline__sep { color: var(--line-strong); }
+
+/* Se déplie au survol et au focus clavier. 0fr → 1fr s'anime, contrairement
+   à une hauteur automatique, et sans mesurer quoi que ce soit en JavaScript. */
+.timeline__more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.timeline__moreInner {
+  overflow: hidden;
+  max-width: 44ch;
+  opacity: 0;
+  color: var(--body);
+  transition: opacity 0.3s ease 0.05s;
+}
+
+.timeline__item:hover .timeline__more,
+.timeline__item:focus-visible .timeline__more {
+  grid-template-rows: 1fr;
+}
+
+.timeline__item:hover .timeline__moreInner,
+.timeline__item:focus-visible .timeline__moreInner {
+  padding-top: 0.85rem;
+  opacity: 1;
+}
+
+.timeline__item:hover .timeline__dot,
+.timeline__item:focus-visible .timeline__dot {
+  transform: translateX(-50%) scale(1.55);
+}
+
+.timeline__item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+@keyframes timeline-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* Le point passe du creux au plein quand il croise le milieu de l'écran.
+   Sa boîte ne fait que 11 px : sa plage `cover` couvre donc presque toute
+   la hauteur de la fenêtre, et `cover 50%` est très exactement l'instant
+   où il atteint le centre. */
+@keyframes timeline-arrive {
+  from {
+    background: var(--timeline-bg);
+    border-color: var(--line-strong);
+    transform: translateX(-50%) scale(0.62);
+  }
+  to {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .timeline__draw {
+      display: block;
+      animation: timeline-draw linear both;
+      animation-timeline: view();
+      /* 0 % et 100 % de l'échelle correspondent au moment où la tête du
+         trait traverse le centre de la fenêtre, d'où la plage resserrée. */
+      animation-range: cover 20% cover 80%;
+    }
+
+    .timeline__dot {
+      animation: timeline-arrive linear both;
+      animation-timeline: view();
+      animation-range: cover 44% cover 56%;
+    }
+
+    /* Le survol reprend la main sur l'animation de défilement. */
+    .timeline__item:hover .timeline__dot,
+    .timeline__item:focus-visible .timeline__dot {
+      animation: none;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+  }
+}

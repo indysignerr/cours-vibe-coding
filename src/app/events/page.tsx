@@ -1,193 +1,190 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AddToCalendar } from "@/components/add-to-calendar";
 import { EventSchedule } from "@/components/event-schedule";
 import { EventSignup } from "@/components/event-signup";
-import { Magnetic } from "@/components/motion/magnetic";
-import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
-import { embedUrl, googleCalendarUrl, icalFeedUrl, subscribeUrl } from "@/lib/calendar";
-import { EVENT_KINDS, past, readableSpan, upcoming } from "@/lib/events";
+import { embedUrl, icalFeedUrl, subscribeUrl } from "@/lib/calendar";
+import { BUILD_LAB_DATES, past, readableDate, readableSpan, shortDate, upcoming } from "@/lib/events";
+import { PILLARS } from "@/lib/pillars";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Events",
-  description: `Hackathons, workshops, talks and company evenings run by ${SITE.name} at ${SITE.school} ${SITE.campus}. Sign up, and add the date to your calendar in one click.`,
-  openGraph: { images: [{ url: "/og/events.png", width: 1200, height: 630, alt: "We run the room, not a syllabus" }] },
+  description: `Every Albert LIGHT date from November 2026 to May 2027: tournaments, workshops, crash courses, Build Lab and open nights at ${SITE.school} ${SITE.campus}. Free, and you sign up here.`,
+  openGraph: { images: [{ url: "/og/events.png", width: 1200, height: 630, alt: "Nobody here is only listening" }] },
 };
+
+const PILLAR_BY_KEY = Object.fromEntries(PILLARS.map((p) => [p.key, p]));
 
 export default function EventsPage() {
   const next = upcoming();
   const before = past();
-  const subscribe = subscribeUrl();
-  const feed = icalFeedUrl();
-  const embed = embedUrl();
 
   return (
     <PageShell
       eyebrow="Events"
-      title="We run the room, not a syllabus."
-      lede="Hackathons, workshops, talks and evenings where companies and students end up at the same table. Nothing weekly, nothing graded, and you never need an account to come."
+      title="Something on at least every two weeks."
+      lede="From the first tournament in November through Demo Day in May. Everything is free, and open events welcome people who have never written a line of code."
     >
-      {/* Les quatre formats, dits une fois */}
-      <section>
-        <p className="eyebrow">Four formats</p>
-        <Reveal as="dl" className="mt-8 grid gap-px overflow-hidden rounded-card bg-line sm:grid-cols-2 lg:grid-cols-4" stagger y={22}>
-          {Object.entries(EVENT_KINDS).map(([key, k]) => (
-            <div key={key} className="bg-sunken p-6">
-              <span aria-hidden className="rule--brand block" />
-              <dt className="display-3 mt-4">{k.label}</dt>
-              <dd className="mt-2 text-sm text-body">{k.blurb}</dd>
-            </div>
+      {/* Le repère rapide : tout le calendrier sur un écran. */}
+      <section aria-label="Calendar at a glance" className="scroll-in">
+        <p className="eyebrow">At a glance</p>
+        <ol className="rows mt-6">
+          {next.map((e) => (
+            <li key={e.slug}>
+              <a
+                href={`#${e.slug}`}
+                className="group grid items-baseline gap-2 py-4 md:grid-cols-12 md:gap-6"
+              >
+                <span className="tnum text-sm text-accent md:col-span-2">{shortDate(e.date)}</span>
+                <span className="underline-grow text-ink md:col-span-6">{e.title}</span>
+                <span className="eyebrow md:col-span-2">{e.format}</span>
+                <span className="text-sm text-muted md:col-span-2 md:text-right">{e.audience}</span>
+              </a>
+            </li>
           ))}
-        </Reveal>
+        </ol>
+        <p className="mt-6 text-sm text-muted">
+          Build Lab also runs every other Tuesday: {BUILD_LAB_DATES.length} more sessions from
+          January to May.
+        </p>
       </section>
 
-      {/* Ce qui arrive */}
-      <section className="mt-20">
-        <p className="eyebrow">What is coming up</p>
-        {next.length === 0 ? (
-          <div className="card card--sand mt-6 p-7">
-            <h2 className="display-3">Nothing on the calendar right now.</h2>
-            <p className="mt-3 text-body">
-              The next run of events is being put together. Write to us and we will tell you when the
-              dates are out.
-            </p>
-            <Link className="btn btn--ghost mt-5" href="/contact/">
-              Tell me when
-            </Link>
-          </div>
-        ) : (
-          <Reveal as="ul" className="mt-8 grid gap-10" stagger y={32}>
-            {next.map((e, i) => (
-              <li key={e.slug}>
-                <article className="card card--raised lift-on-hover overflow-hidden">
-                  <div className="grid md:grid-cols-12">
-                    {/* La fiche, sur marine */}
-                    <div className="bg-ink-surface p-7 md:col-span-5 md:p-10">
-                      <div className="flex items-center gap-3">
-                        <span className="counter">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="eyebrow eyebrow--accent">{EVENT_KINDS[e.kind].label}</span>
-                      </div>
-
-                      <h2 className="display-2 mt-5">
-                        {e.title}
-                      </h2>
-
-                      <dl className="mt-7 grid gap-3 text-sm">
-                        {(
-                          [
-                            ["When", readableSpan(e)],
-                            ["Time", `${e.start}–${e.end}`],
-                            ["Where", e.location],
-                            ["Seats", e.capacity ? `${e.capacity} max` : "No cap"],
-                          ] as [string, string][]
-                        ).map(([term, detail]) => (
-                          <div key={term} className="flex gap-3">
-                            <dt className="w-16 shrink-0">
-                              {term}
-                            </dt>
-                            <dd className="tnum">{detail}</dd>
-                          </div>
-                        ))}
-                      </dl>
-
-                      <p className="mt-7">
-                        {e.summary}
-                      </p>
-                      <p className="mt-3 text-sm">
-                        {e.audience}
-                      </p>
-
-                      <a
-                        className="btn btn--outline lift-on-hover mt-8"
-                        href={googleCalendarUrl(e)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Add to Google Calendar
-                      </a>
+      {/* Chaque évènement, en détail. */}
+      <ul className="mt-24 grid gap-14">
+        {next.map((e) => {
+          const pillar = PILLAR_BY_KEY[e.kind];
+          return (
+            <li key={e.slug} id={e.slug} className="scroll-in scroll-mt-28">
+              <article className="card card--raised overflow-hidden">
+                <div className="grid md:grid-cols-12">
+                  {/* La fiche */}
+                  <div className="on-ink p-7 md:col-span-5 md:p-10">
+                    <div className="flex flex-wrap items-baseline gap-3">
+                      <span className="eyebrow eyebrow--accent">{pillar?.title}</span>
+                      <span className="eyebrow">{e.format}</span>
                     </div>
 
-                    {/* Ce qu'on en repart avec, puis l'inscription */}
-                    <div className="p-7 md:col-span-7 md:p-10">
-                      <p className="eyebrow">What you leave with</p>
-                      <ul className="mt-4 grid gap-2.5">
-                        {e.takeaways.map((t) => (
-                          <li key={t} className="grid grid-cols-[auto_1fr] gap-3 text-body">
-                            <span
-                              aria-hidden
-                              className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand"
-                            />
-                            <span>{t}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      {e.bring ? (
-                        <p className="mt-5 text-sm text-muted">
-                          <strong className="text-ink">Bring:</strong> {e.bring}
-                        </p>
-                      ) : null}
+                    <h2 className="display-2 mt-5">{e.title}</h2>
 
-                      {e.schedule ? (
-                        <>
-                          <div className="rule my-8" />
-                          <EventSchedule event={e} />
-                        </>
-                      ) : null}
+                    <dl className="mt-8 grid gap-3 text-sm">
+                      {(
+                        [
+                          ["When", readableSpan(e)],
+                          ...(e.start
+                            ? ([["Time", `${e.start}${e.end ? `–${e.end}` : ""}`]] as [string, string][])
+                            : []),
+                          ["Where", e.location],
+                          ["For", e.audience],
+                          ["Seats", e.capacity ? `${e.capacity} max` : "No cap"],
+                          ...(e.partner ? ([["With", e.partner]] as [string, string][]) : []),
+                        ] as [string, string][]
+                      ).map(([term, detail]) => (
+                        <div key={term} className="flex gap-3">
+                          <dt className="w-16 shrink-0 text-accent">{term}</dt>
+                          <dd className="tnum">{detail}</dd>
+                        </div>
+                      ))}
+                    </dl>
 
-                      <div className="rule my-8" />
+                    <p className="mt-8 text-ink">{e.summary}</p>
 
-                      <p className="eyebrow">Sign up</p>
-                      <h3 className="display-3 mt-3">
-                        {e.kind === "hackathon"
-                          ? "Put your name down, team or no team."
-                          : "Tell us you are coming."}
-                      </h3>
-                      <div className="mt-7">
-                        <EventSignup event={e} />
-                      </div>
+                    <div className="mt-9">
+                      <AddToCalendar event={e} variant="outline" label="Add the date" />
                     </div>
                   </div>
-                </article>
+
+                  {/* Ce qu'on en repart avec, le déroulé, l'inscription */}
+                  <div className="p-7 md:col-span-7 md:p-10">
+                    {e.takeaways ? (
+                      <>
+                        <p className="eyebrow">What you leave with</p>
+                        <ul className="mt-4 grid gap-2.5">
+                          {e.takeaways.map((t) => (
+                            <li key={t} className="grid grid-cols-[auto_1fr] gap-3 text-body">
+                              <span
+                                aria-hidden
+                                className="mt-[0.72em] h-0.5 w-4 shrink-0 rounded-full bg-brand"
+                              />
+                              <span>{t}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        {e.bring ? (
+                          <p className="mt-5 text-sm text-muted">
+                            <strong className="text-ink">Bring:</strong> {e.bring}
+                          </p>
+                        ) : null}
+                        <div className="rule my-8" />
+                      </>
+                    ) : null}
+
+                    {e.schedule ? (
+                      <>
+                        <EventSchedule event={e} />
+                        <div className="rule my-8" />
+                      </>
+                    ) : null}
+
+                    <p className="eyebrow">Sign up</p>
+                    <h3 className="display-3 mt-3">
+                      {e.kind === "compete" ? "Put your name down." : "Tell us you are coming."}
+                    </h3>
+                    <div className="mt-7">
+                      <EventSignup event={e} />
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Build Lab, qui est un rythme plutôt qu'une date. */}
+      <section className="card card--sand mt-24 p-7 md:p-10 scroll-in">
+        <div className="grid gap-8 md:grid-cols-12">
+          <div className="md:col-span-5">
+            <p className="eyebrow">Every other Tuesday</p>
+            <h2 className="display-2 mt-5">Build Lab</h2>
+            <p className="mt-5 text-body">
+              One hour. Bring your own project, and an experienced member is there to unblock you.
+              Members only, and it runs all year.
+            </p>
+          </div>
+          <ol className="md:col-span-6 md:col-start-7">
+            <li className="tnum border-b border-line py-3 text-ink">
+              {readableDate("2026-12-15")} <span className="text-muted">· first session</span>
+            </li>
+            {BUILD_LAB_DATES.map((d) => (
+              <li key={d} className="tnum border-b border-line py-3 text-muted last:border-0">
+                {readableDate(d)}
               </li>
             ))}
-          </Reveal>
-        )}
+          </ol>
+        </div>
       </section>
 
-      {/* L'agenda partagé */}
-      <section className="mt-20">
-        <p className="eyebrow">The shared calendar</p>
-        {subscribe ? (
+      {/* L'agenda partagé. */}
+      <section className="mt-24 scroll-in">
+        <p className="eyebrow">Keep it in your calendar</p>
+        {subscribeUrl() ? (
           <>
-            <h2 className="display-2 mt-4 max-w-[22ch]">Subscribe once, stay in sync.</h2>
-            <p className="lede mt-5 max-w-measure">
-              New dates, room changes and cancellations land in your calendar without anyone having to
-              send a message.
-            </p>
+            <h2 className="display-2 mt-5 max-w-[22ch]">Subscribe once, stay in sync.</h2>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a className="btn btn--primary" href={subscribe} target="_blank" rel="noopener noreferrer">
+              <a className="btn btn--primary" href={subscribeUrl()!} target="_blank" rel="noopener noreferrer">
                 Add to my Google Calendar
               </a>
-              {feed ? (
-                <a
-                  className="tap inline-flex items-center text-sm text-muted underline underline-offset-4 hover:text-ink"
-                  href={feed}
-                >
+              {icalFeedUrl() ? (
+                <a className="tap inline-flex items-center text-sm text-muted underline underline-offset-4 hover:text-ink" href={icalFeedUrl()!}>
                   iCal feed for Apple or Outlook
                 </a>
               ) : null}
             </div>
-            {embed ? (
+            {embedUrl() ? (
               <div className="card card--raised mt-10 overflow-hidden">
-                <iframe
-                  title={`${SITE.name} calendar`}
-                  src={embed}
-                  className="h-[520px] w-full border-0"
-                  loading="lazy"
-                />
+                <iframe title={`${SITE.name} calendar`} src={embedUrl()!} className="h-[520px] w-full border-0" loading="lazy" />
               </div>
             ) : null}
           </>
@@ -195,59 +192,45 @@ export default function EventsPage() {
           <div className="card card--sand mt-5 p-7">
             <h2 className="display-3">One calendar for everything, soon.</h2>
             <p className="mt-3 text-body">
-              The dates above already work: every button adds the real event to your own calendar, and{" "}
+              Every date above adds itself to your own calendar, and{" "}
               <a className="text-accent underline underline-offset-4" href="/albert-light.ics" download>
-                the whole programme downloads as one file
+                the whole year downloads as one file
               </a>
-              . A single subscribable calendar will replace them once the association&rsquo;s Google
-              account exists.
-            </p>
-            <p className="mt-4 text-sm text-muted">
-              For the organisers: create a public Google calendar, paste its ID into{" "}
-              <code className="rounded bg-canvas px-1.5 py-0.5">calendarId</code> in{" "}
-              <code className="rounded bg-canvas px-1.5 py-0.5">src/lib/site.ts</code>, and this
-              section turns itself on.
+              .
             </p>
           </div>
         )}
       </section>
 
-      {/* Ce qui est déjà passé */}
       {before.length > 0 ? (
-        <section className="mt-20">
+        <section className="mt-24 scroll-in">
           <p className="eyebrow">Already happened</p>
-          <ul className="rows mt-8">
+          <ol className="rows mt-6">
             {before.map((e) => (
-              <li key={e.slug} className="grid gap-2 py-6 md:grid-cols-12 md:items-baseline md:gap-8">
-                <span className="eyebrow md:col-span-2">{EVENT_KINDS[e.kind].label}</span>
-                <h2 className="display-3 md:col-span-5">{e.title}</h2>
-                <p className="tnum text-sm text-muted md:col-span-4">{readableSpan(e)}</p>
+              <li key={e.slug} className="grid gap-2 py-5 md:grid-cols-12 md:items-baseline md:gap-6">
+                <span className="tnum text-sm text-muted md:col-span-2">{shortDate(e.date)}</span>
+                <span className="text-ink md:col-span-6">{e.title}</span>
+                <span className="eyebrow md:col-span-4">{e.format}</span>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       ) : null}
 
-      <section className="mt-20 grid gap-10 md:grid-cols-12">
+      <section className="mt-24 grid gap-10 md:grid-cols-12 scroll-in">
         <div className="md:col-span-5">
-          <p className="eyebrow">Want one in your company?</p>
-          <h2 className="display-2 mt-4">We run these on site too.</h2>
+          <p className="eyebrow">Never been?</p>
+          <h2 className="display-2 mt-5">Start with an open one.</h2>
         </div>
         <div className="md:col-span-6 md:col-start-7">
           <p className="lede">
-            A hackathon on a brief you actually care about, or a workshop for the team that will have
-            to live with the tools. Same format, your building, your problem.
+            Workshops, crash courses and the big nights are open to anyone at {SITE.school} —
+            including people who have never written a line of code. Tournaments and Build Lab are
+            for members, and becoming one takes a form.
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Magnetic>
-              <Link className="btn btn--primary" href="/contact/">
-                Talk to us about it
-              </Link>
-            </Magnetic>
-            <Link className="btn btn--ghost" href="/join/">
-              How to join
-            </Link>
-          </div>
+          <Link className="btn btn--primary mt-8" href="/join/">
+            How to join
+          </Link>
         </div>
       </section>
     </PageShell>

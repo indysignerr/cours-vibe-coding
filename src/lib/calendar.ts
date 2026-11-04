@@ -17,15 +17,30 @@ export function stamp(date: string, time: string) {
 
 /** Le lien « Ajouter à Google Agenda ». Ouvre le formulaire pré-rempli. */
 export function googleCalendarUrl(e: SiteEvent) {
+  const end = e.endDate ?? e.date;
+  // Sans horaire arrêté, on crée un évènement « journée entière » : la
+  // date de fin d'un all-day est exclusive, d'où le lendemain.
+  const allDay = !e.start || !e.end;
+  const dates = allDay
+    ? `${end.replaceAll("-", "")}/${nextDay(end)}`
+    : `${stamp(e.date, e.start!)}/${stamp(end, e.end!)}`;
+
   const params = new URLSearchParams({
     text: `${SITE.name} — ${e.title}`,
-    dates: `${stamp(e.date, e.start)}/${stamp(e.endDate ?? e.date, e.end)}`,
+    dates,
     ctz: SITE.timezone,
     details: e.summary,
     location: e.location,
     action: "TEMPLATE",
   });
   return `https://calendar.google.com/calendar/render?${params}`;
+}
+
+/** AAAA-MM-JJ → AAAAMMJJ du lendemain. */
+function nextDay(date: string) {
+  const d = new Date(`${date}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10).replaceAll("-", "");
 }
 
 /** Ajouter l'agenda public de l'association au sien. */

@@ -4,7 +4,7 @@ import { AddToCalendar } from "@/components/add-to-calendar";
 import { Magnetic } from "@/components/motion/magnetic";
 import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
-import { EVENT_KINDS, upcoming } from "@/lib/events";
+import { upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -67,7 +67,7 @@ export default function JoinPage() {
         <Reveal as="section" className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16" y={30}>
           <p className="eyebrow eyebrow--accent">The door is the next event</p>
           <h2 className="display-2 mt-4 max-w-[22ch]">
-            {EVENT_KINDS[next[0].kind].label}: {next[0].title}.
+            {next[0].format}: {next[0].title}.
           </h2>
           <p className="lede mt-5 max-w-measure">
             {next[0].summary}

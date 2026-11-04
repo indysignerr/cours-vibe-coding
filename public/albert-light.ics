@@ -6,39 +6,84 @@ METHOD:PUBLISH
 X-WR-CALNAME:Albert L.I.G.H.T.
 X-WR-TIMEZONE:Europe/Rome
 BEGIN:VEVENT
-UID:hackathon-ship-in-24@albert-light
-DTSTAMP:20261021T165720Z
-DTSTART;TZID=Europe/Rome:20261121T100000
-DTEND;TZID=Europe/Rome:20261122T180000
-SUMMARY:Albert L.I.G.H.T. — Ship in 24
-DESCRIPTION:Twenty-four hours\, teams of three\, one brief handed out at the start. At 6 p.m. on Sunday everything is demonstrated live\, from a public URL\, or it does not count.
-LOCATION:
+UID:tournament-1@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;TZID=Europe/Rome:20261121T140000
+DTEND;TZID=Europe/Rome:20261121T180000
+SUMMARY:Albert L.I.G.H.T. — Vibe coding tournament #1
+DESCRIPTION:Teams race the clock to build a working app under a theme. Four hours\, one jury\, and whatever you can get an AI model to actually produce.
+LOCATION:Albert School\, Milano
 END:VEVENT
 BEGIN:VEVENT
-UID:workshop-idea-to-url@albert-light
-DTSTAMP:20261021T165720Z
-DTSTART;TZID=Europe/Rome:20261105T180000
-DTEND;TZID=Europe/Rome:20261105T210000
-SUMMARY:Albert L.I.G.H.T. — From an idea to a live URL
-DESCRIPTION:Three hours\, from an empty folder to a page anyone in the world can open. We do it together\, on your machine\, and you leave with it working.
-LOCATION:
+UID:codemotion-llms-python@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;TZID=Europe/Rome:20261205T100000
+DTEND;TZID=Europe/Rome:20261205T140000
+SUMMARY:Albert L.I.G.H.T. — Codemotion × Albert LIGHT: LLMs in Python
+DESCRIPTION:Build an LLM into your own Python code\, properly. Free\, hands-on\, and you leave with a certificate for your CV.
+LOCATION:Albert School\, Milano
 END:VEVENT
 BEGIN:VEVENT
-UID:talk-what-the-law-says@albert-light
-DTSTAMP:20261021T165720Z
-DTSTART;TZID=Europe/Rome:20261203T190000
-DTEND;TZID=Europe/Rome:20261203T200000
-SUMMARY:Albert L.I.G.H.T. — What the law actually says about AI at work
-DESCRIPTION:An hour on the three texts that decide whether a company may use the tools its staff are already using — and why getting it wrong in Italy is a criminal matter\, not a fine.
-LOCATION:
+UID:build-lab-1@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:Albert L.I.G.H.T. — Build Lab #1
+DESCRIPTION:Bring your own project. An experienced member is there for the hour. That is the whole format.
+LOCATION:Albert School\, Milano
 END:VEVENT
 BEGIN:VEVENT
-UID:company-demo-night@albert-light
-DTSTAMP:20261021T165720Z
-DTSTART;TZID=Europe/Rome:20270211T183000
-DTEND;TZID=Europe/Rome:20270211T213000
-SUMMARY:Albert L.I.G.H.T. — Demo night
-DESCRIPTION:Students show what they built\, directors say whether they would have paid for it\, and nobody shows a slide. The honest version of our credentials.
-LOCATION:
+UID:crash-course-1@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;VALUE=DATE:20270114
+DTEND;VALUE=DATE:20270115
+SUMMARY:Albert L.I.G.H.T. — Crash course #1: AI coding tools and API keys
+DESCRIPTION:A speedrun through Cursor\, GitHub Copilot and Claude Code — then how API keys actually work\, and how not to leak them.
+LOCATION:Online
+END:VEVENT
+BEGIN:VEVENT
+UID:cinema-night@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;VALUE=DATE:20270128
+DTEND;VALUE=DATE:20270129
+SUMMARY:Albert L.I.G.H.T. — Cinema night: Artificial
+DESCRIPTION:The film\, then a panel. Run with other universities in Milan. Artificial opens in Italy on 20 January 2027.
+LOCATION:Milano
+END:VEVENT
+BEGIN:VEVENT
+UID:tournament-2@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;TZID=Europe/Rome:20270213T140000
+DTEND;TZID=Europe/Rome:20270213T180000
+SUMMARY:Albert L.I.G.H.T. — Vibe coding tournament #2
+DESCRIPTION:Same format\, new theme\, and the people who came in November know what they are doing now.
+LOCATION:Albert School\, Milano
+END:VEVENT
+BEGIN:VEVENT
+UID:crash-course-2@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;VALUE=DATE:20270225
+DTEND;VALUE=DATE:20270226
+SUMMARY:Albert L.I.G.H.T. — Crash course #2: Docker and CI/CD
+DESCRIPTION:Why your thing works on your machine and nowhere else\, and how to stop that being true.
+LOCATION:Online
+END:VEVENT
+BEGIN:VEVENT
+UID:crash-course-3@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;VALUE=DATE:20270311
+DTEND;VALUE=DATE:20270312
+SUMMARY:Albert L.I.G.H.T. — Crash course #3: cloud credits for student projects
+DESCRIPTION:Where the free compute is\, how to get it\, and how not to wake up to a bill.
+LOCATION:Online
+END:VEVENT
+BEGIN:VEVENT
+UID:demo-day@albert-light
+DTSTAMP:20261104T134818Z
+DTSTART;VALUE=DATE:20270515
+DTEND;VALUE=DATE:20270516
+SUMMARY:Albert L.I.G.H.T. — Demo Day
+DESCRIPTION:Everything built this year\, shown in four minutes a project. The evening the whole year becomes visible.
+LOCATION:Albert School\, Milano
 END:VEVENT
 END:VCALENDAR

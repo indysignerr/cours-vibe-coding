@@ -1,50 +1,73 @@
-"use client";
-
 import Link from "next/link";
-import { Magnetic } from "@/components/motion/magnetic";
-import { EVENT_KINDS, readableSpan, upcoming } from "@/lib/events";
+import { AddToCalendar } from "@/components/add-to-calendar";
+import { readableDate, shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
 /**
- * Le haut de page : l'affiche du prochain évènement.
+ * Le haut de page.
  *
- * L'accueil a un seul travail — remplir le prochain évènement — donc
- * c'est son affiche qu'on lit en premier : format, titre, date, lieu,
- * places, bouton.
+ * Deux choses, dans cet ordre : ce qu'est l'association, et la prochaine
+ * date. Le plan annuel promet « quelque chose au moins toutes les deux
+ * semaines » — donc le haut de page montre le compte d'évènements à
+ * venir, parce que c'est cette promesse qui convainc.
  *
- * Pas d'objet décoratif à côté : sur les Sites of the Day que j'ai
- * inspectés, les prix d'interaction vont au contenu lui-même — le
- * programme, la line-up, le survol — jamais à un jouet posé à côté.
+ * Composant serveur : pas une ligne de JavaScript n'est envoyée pour
+ * l'afficher.
  */
 export function HomeHero() {
-  const next = upcoming()[0];
+  const next = upcoming();
+  const first = next[0];
 
   return (
-    <section
-      className="on-ink relative overflow-hidden border-b border-line"
-      aria-label="Next event"
-    >
-      <div className="mx-auto max-w-stage px-5 pb-24 pt-16 md:px-8 md:pb-32 md:pt-24">
-        {/* L'affiche */}
-        <div className="max-w-[52rem]">
-          <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
+    <section className="on-ink relative overflow-hidden border-b border-line">
+      <div className="mx-auto max-w-stage px-5 pb-20 pt-16 md:px-8 md:pb-28 md:pt-24">
+        <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
 
-          {next ? (
-            <>
-              <p className="eyebrow rise mt-8 [animation-delay:60ms]">
-                Next · {EVENT_KINDS[next.kind].label}
-              </p>
-              <h1 className="display-1 rise mt-4 max-w-[14ch] [animation-delay:120ms]">
-                {next.title}
-              </h1>
+        <h1 className="display-1 rise mt-7 max-w-[15ch] [animation-delay:60ms]">
+          Albert School&rsquo;s student lab for AI and code.
+        </h1>
 
-              <dl className="rise mt-9 flex flex-wrap gap-x-10 gap-y-4 [animation-delay:180ms]">
+        <p className="lede rise mt-8 max-w-measure [animation-delay:120ms]">
+          Something on at least every two weeks. Beginners welcome.
+        </p>
+
+        {/* La promesse, chiffrée. */}
+        <dl className="rise mt-12 flex flex-wrap gap-x-12 gap-y-6 [animation-delay:180ms]">
+          {(
+            [
+              ["Events booked", `${next.length}`],
+              ["Through", "May 2027"],
+              ["Price", "Free"],
+            ] as [string, string][]
+          ).map(([term, detail]) => (
+            <div key={term}>
+              <dt className="eyebrow">{term}</dt>
+              <dd className="tnum mt-2 text-3xl font-semibold tracking-[-0.03em] text-ink">
+                {detail}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* La prochaine date, en carte. */}
+        {first ? (
+          <div className="rise mt-14 max-w-[46rem] [animation-delay:240ms]">
+            <div className="card card--raised bg-surface p-7 md:p-9">
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <p className="eyebrow eyebrow--accent">Next · {first.format}</p>
+                <p className="tnum text-sm text-muted">{shortDate(first.date)}</p>
+              </div>
+
+              <h2 className="display-2 mt-4">{first.title}</h2>
+              <p className="mt-4 max-w-measure text-body">{first.summary}</p>
+
+              <dl className="mt-7 flex flex-wrap gap-x-9 gap-y-4 text-sm">
                 {(
                   [
-                    ["When", readableSpan(next)],
-                    ["Time", `${next.start}–${next.end}`],
-                    ["Where", next.location],
-                    ["Seats", next.capacity ? `${next.capacity} max` : "No cap"],
+                    ["When", readableDate(first.date)],
+                    ...(first.start ? ([["Time", `${first.start}–${first.end ?? ""}`]] as [string, string][]) : []),
+                    ["Where", first.location],
+                    ["For", first.audience],
                   ] as [string, string][]
                 ).map(([term, detail]) => (
                   <div key={term}>
@@ -54,42 +77,16 @@ export function HomeHero() {
                 ))}
               </dl>
 
-              <p className="lede rise mt-9 max-w-measure [animation-delay:220ms]">
-                {next.summary}
-              </p>
-
-              <div className="rise mt-10 flex flex-wrap items-center gap-3 [animation-delay:280ms]">
-                <Magnetic>
-                  <Link className="btn btn--primary" href="/events/">
-                    Put my name down
-                  </Link>
-                </Magnetic>
-                <Link className="btn btn--ghost" href="/about/">
-                  Who we are
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Link className="btn btn--primary" href="/events/">
+                  Put my name down
                 </Link>
+                <AddToCalendar event={first} label="Add the date" />
               </div>
-            </>
-          ) : (
-            <>
-              <h1 className="display-1 rise mt-8 max-w-[14ch] [animation-delay:120ms]">
-                {SITE.tagline}
-              </h1>
-              <p className="lede rise mt-8 max-w-measure [animation-delay:180ms]">
-                The next run of events is being put together. Write to us and we will tell you when
-                the dates are out.
-              </p>
-              <div className="rise mt-10 [animation-delay:240ms]">
-                <Magnetic>
-                  <Link className="btn btn--primary" href="/contact/">
-                    Tell me when
-                  </Link>
-                </Magnetic>
-              </div>
-            </>
-          )}
-        </div>
+            </div>
+          </div>
+        ) : null}
       </div>
-
     </section>
   );
 }

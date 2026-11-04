@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLink } from "@/components/brand-link";
+import { Menu } from "@/components/menu";
 
 const LINKS = [
   { href: "/events/", label: "Events" },
@@ -31,9 +32,12 @@ export function SiteHeader() {
               {l.label}
             </Link>
           ))}
-          <Link className="btn btn--primary ml-2" href="/contact/">
-            Contact
+          <Link className="btn btn--primary ml-2 hidden sm:inline-flex" href="/events/">
+            Sign up
           </Link>
+          <span className="ml-1">
+            <Menu />
+          </span>
         </nav>
       </div>
 

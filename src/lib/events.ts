@@ -1,209 +1,245 @@
-import { SITE } from "@/lib/site";
+import type { Pillar } from "@/lib/pillars";
 
 /**
- * Le programme d'évènements.
+ * Le calendrier 2026/27, tel qu'il figure au plan annuel.
  *
- * C'EST ICI QU'ON ÉDITE. Les dates vivent dans le dépôt pour que l'affiche
- * soit lisible sans compte et indexable par Google. Les inscriptions, elles,
- * vivent dans Supabase : le `slug` ci-dessous est la clé commune, identique
- * à supabase/007_events.sql. Changer un slug ici sans le changer là-bas
- * casse l'inscription de cet évènement, et rien d'autre.
+ * C'EST ICI QU'ON ÉDITE. Les dates vivent dans le dépôt pour que
+ * l'affiche soit lisible sans compte et indexable. Les inscriptions
+ * vivent dans Supabase : le `slug` est la clé commune, identique à
+ * supabase/007_events.sql.
+ *
+ * La promesse du plan — « quelque chose au moins toutes les deux
+ * semaines » — n'est vraie que si cette liste reste à jour. Elle est
+ * donc la source de la frise comme du compteur.
  */
-export type EventKind = "hackathon" | "workshop" | "talk" | "demo";
+export type EventKind = Pillar["key"];
+
+export type ScheduleSlot = { at: string; title: string; tag?: string; note?: string };
 
 export type SiteEvent = {
   slug: string;
   kind: EventKind;
+  /** Le format, tel que nommé dans le plan. */
+  format: string;
   title: string;
-  /** La promesse en une phrase, à la première personne du pluriel. */
   summary: string;
   /** AAAA-MM-JJ */
   date: string;
-  /** AAAA-MM-JJ, pour un évènement qui court sur plusieurs jours. */
   endDate?: string;
-  /** HH:MM */
-  start: string;
-  end: string;
+  /** HH:MM. Vide quand l'heure n'est pas arrêtée. */
+  start?: string;
+  end?: string;
   location: string;
-  /** Jauge annoncée. null quand il n'y en a pas. */
+  /** « Open » ou « Members ». Le plan distingue les deux pour chaque format. */
+  audience: "Open to all" | "Members";
   capacity: number | null;
-  /** À qui ça s'adresse, dit franchement. */
-  audience: string;
-  /** Ce qu'on en repart avec. Trois lignes au plus. */
-  takeaways: string[];
-  /** Ce qu'il faut apporter, le cas échéant. */
+  /** Qui porte l'évènement. « To assign » tant que ce n'est pas tranché. */
+  lead: string;
+  takeaways?: string[];
   bring?: string;
-  /**
-   * Le déroulé. Un bloc par journée, et dans chaque journée des créneaux
-   * horaires. C'est la pièce qui transforme une affiche en programme :
-   * on voit à quoi ressemble la journée avant de s'engager dessus.
-   */
+  partner?: string;
   schedule?: { day: string; date: string; slots: ScheduleSlot[] }[];
-};
-
-export type ScheduleSlot = {
-  at: string;
-  title: string;
-  /** Facultatif : « workshop », « break », « demo »… affiché en étiquette. */
-  tag?: string;
-  note?: string;
-};
-
-export const EVENT_KINDS: Record<EventKind, { label: string; blurb: string }> = {
-  hackathon: {
-    label: "Hackathon",
-    blurb: "A weekend, teams of three, one theme, something that runs at the end.",
-  },
-  workshop: {
-    label: "Workshop",
-    blurb: "Three hours on one tool. You leave with it working on your own machine.",
-  },
-  talk: {
-    label: "Talk",
-    blurb: "One speaker, one hour, open to the whole campus.",
-  },
-  demo: {
-    label: "Demo night",
-    blurb: "Everything built this term, shown in four minutes each. Questions allowed.",
-  },
 };
 
 export const EVENTS: SiteEvent[] = [
   {
-    slug: "hackathon-ship-in-24",
-    kind: "hackathon",
-    title: "Ship in 24",
+    slug: "tournament-1",
+    kind: "compete",
+    format: "Vibe coding tournament",
+    title: "Vibe coding tournament #1",
     summary:
-      "Twenty-four hours, teams of three, one brief handed out at the start. At 6 p.m. on Sunday everything is demonstrated live, from a public URL, or it does not count.",
+      "Teams race the clock to build a working app under a theme. Four hours, one jury, and whatever you can get an AI model to actually produce.",
     date: "2026-11-21",
-    endDate: "2026-11-22",
-    start: "10:00",
+    start: "14:00",
     end: "18:00",
-    location: `${SITE.school}, ${SITE.campus}`,
+    location: "Albert School, Milano",
+    audience: "Members",
     capacity: 60,
-    audience: "Open to everyone on campus. No code experience assumed — half the room never has.",
+    lead: "To assign",
     takeaways: [
-      "One thing that works, on a public URL, with your name on it.",
-      "A team of three you did not know on Friday.",
+      "A working thing, built in four hours, with two other people.",
       "The habit of cutting scope until something ships.",
+      "A jury telling you what they actually saw.",
     ],
-    bring: "A laptop and your own AI subscription. We bring the rest, and the food.",
+    bring: "A laptop and your own AI subscription. We bring the rest.",
     schedule: [
       {
         day: "Saturday",
         date: "2026-11-21",
         slots: [
-          { at: "10:00", title: "Doors open, coffee, and finding two other people" },
-          { at: "11:00", title: "The brief, handed out", tag: "brief" },
-          { at: "11:30", title: "Scoping. The hour that decides your weekend" },
-          { at: "13:00", title: "Lunch", tag: "break" },
-          { at: "14:00", title: "Build" },
-          { at: "17:00", title: "Deploy something, however ugly", tag: "checkpoint", note: "If it is not online by now, cut the scope." },
-          { at: "20:00", title: "Dinner, and the room stays open", tag: "break" },
-        ],
-      },
-      {
-        day: "Sunday",
-        date: "2026-11-22",
-        slots: [
-          { at: "09:00", title: "Doors open again" },
-          { at: "12:00", title: "Feature freeze", tag: "checkpoint", note: "Everything after this is polish and bug fixing." },
-          { at: "13:00", title: "Lunch", tag: "break" },
-          { at: "15:00", title: "Write the two sentences you will say on stage" },
-          { at: "17:00", title: "Hands off the keyboard", tag: "checkpoint" },
-          { at: "17:30", title: "Demos. Four minutes each, from a public URL", tag: "demo" },
-          { at: "18:00", title: "Done" },
+          { at: "14:00", title: "Doors, teams of three, and the theme" , tag: "brief" },
+          { at: "14:30", title: "Scoping. The half hour that decides your afternoon" },
+          { at: "15:00", title: "Build" },
+          { at: "16:30", title: "Deploy something, however ugly", tag: "checkpoint", note: "If it is not online by now, cut the scope." },
+          { at: "17:30", title: "Hands off the keyboard", tag: "checkpoint" },
+          { at: "17:40", title: "Demos to the jury, four minutes each", tag: "demo" },
+          { at: "18:00", title: "Prizes, then we go for a drink" },
         ],
       },
     ],
   },
   {
-    slug: "workshop-idea-to-url",
-    kind: "workshop",
-    title: "From an idea to a live URL",
+    slug: "codemotion-llms-python",
+    kind: "learn",
+    format: "Workshop",
+    title: "Codemotion × Albert LIGHT: LLMs in Python",
     summary:
-      "Three hours, from an empty folder to a page anyone in the world can open. We do it together, on your machine, and you leave with it working.",
-    date: "2026-11-05",
-    start: "18:00",
-    end: "21:00",
-    location: `${SITE.school}, ${SITE.campus}`,
-    capacity: 25,
-    audience: "Beginners first. If you have already deployed something, come to the hackathon instead.",
+      "Build an LLM into your own Python code, properly. Free, hands-on, and you leave with a certificate for your CV.",
+    date: "2026-12-05",
+    start: "10:00",
+    end: "14:00",
+    location: "Albert School, Milano",
+    audience: "Open to all",
+    capacity: 30,
+    lead: "Benjamin",
+    partner: "Codemotion",
     takeaways: [
-      "A working environment: editor, agent, version control.",
-      "One page of your own, live, opened from your phone.",
-      "The two commands you will use every time after that.",
+      "An LLM wired into code you wrote yourself.",
+      "A certificate you can put on your CV.",
+      "The people from Codemotion, in the room, for four hours.",
     ],
-    bring: "A laptop. Any operating system.",
+    bring: "A laptop with Python installed. Beginners welcome.",
     schedule: [
       {
-        day: "Wednesday",
-        date: "2026-11-05",
+        day: "Saturday",
+        date: "2026-12-05",
         slots: [
-          { at: "18:00", title: "Set-up check. We fix whatever did not install" },
-          { at: "18:30", title: "From an empty folder to a page", tag: "workshop" },
-          { at: "19:45", title: "Break", tag: "break" },
-          { at: "20:00", title: "Putting it online, on your own URL", tag: "workshop" },
-          { at: "20:45", title: "Open your phone. Open your page" },
+          { at: "10:00", title: "Set-up check. We fix whatever did not install" },
+          { at: "10:30", title: "Calling a model from Python", tag: "workshop" },
+          { at: "12:00", title: "Break", tag: "break" },
+          { at: "12:15", title: "Making it reliable: keys, errors, cost", tag: "workshop" },
+          { at: "13:45", title: "Certificates" },
         ],
       },
     ],
   },
   {
-    slug: "talk-what-the-law-says",
-    kind: "talk",
-    title: "What the law actually says about AI at work",
+    slug: "build-lab-1",
+    kind: "build",
+    format: "Build Lab",
+    title: "Build Lab #1",
     summary:
-      "An hour on the three texts that decide whether a company may use the tools its staff are already using — and why getting it wrong in Italy is a criminal matter, not a fine.",
-    date: "2026-12-03",
-    start: "19:00",
-    end: "20:00",
-    location: `${SITE.school}, ${SITE.campus}`,
-    capacity: 100,
-    audience: "Open to the whole campus, and to anyone from a company who wants to come.",
+      "Bring your own project. An experienced member is there for the hour. That is the whole format.",
+    date: "2026-12-15",
+    location: "Albert School, Milano",
+    audience: "Members",
+    capacity: 20,
+    lead: "Rotates",
+    takeaways: ["One hour where someone unblocks you.", "Every other Tuesday, all year."],
+  },
+  {
+    slug: "crash-course-1",
+    kind: "learn",
+    format: "Crash course",
+    title: "Crash course #1: AI coding tools and API keys",
+    summary:
+      "A speedrun through Cursor, GitHub Copilot and Claude Code — then how API keys actually work, and how not to leak them.",
+    date: "2027-01-14",
+    start: "18:30",
+    location: "Online",
+    audience: "Open to all",
+    capacity: null,
+    lead: "To assign",
+  },
+  {
+    slug: "cinema-night",
+    kind: "connect",
+    format: "Big open event",
+    title: "Cinema night: Artificial",
+    summary:
+      "The film, then a panel. Run with other universities in Milan. Artificial opens in Italy on 20 January 2027.",
+    date: "2027-01-28",
+    location: "Milano",
+    audience: "Open to all",
+    capacity: 120,
+    lead: "To assign",
+    partner: "Floriano's team",
     takeaways: [
-      "Why it is the capability that triggers the rule, not the tool.",
-      "What a works council can and cannot block, country by country.",
-      "The one question to ask your own employer on Monday.",
+      "A film worth arguing about.",
+      "A panel that argues about it.",
+      "Students from other universities, which is rarer than it sounds.",
     ],
   },
   {
-    slug: "demo-night",
-    kind: "demo",
-    title: "Demo night",
-    summary:
-      "Everything built this term, four minutes a project, nobody shows a slide. The evening where you meet the people behind the work.",
-    date: "2027-02-11",
+    slug: "tournament-2",
+    kind: "compete",
+    format: "Vibe coding tournament",
+    title: "Vibe coding tournament #2",
+    summary: "Same format, new theme, and the people who came in November know what they are doing now.",
+    date: "2027-02-13",
+    start: "14:00",
+    end: "18:00",
+    location: "Albert School, Milano",
+    audience: "Members",
+    capacity: 60,
+    lead: "To assign",
+  },
+  {
+    slug: "crash-course-2",
+    kind: "learn",
+    format: "Crash course",
+    title: "Crash course #2: Docker and CI/CD",
+    summary: "Why your thing works on your machine and nowhere else, and how to stop that being true.",
+    date: "2027-02-25",
     start: "18:30",
-    end: "21:30",
-    location: `${SITE.school}, ${SITE.campus}`,
-    capacity: 80,
-    audience: "Open to everyone on campus. Bring someone who has never come.",
+    location: "Online",
+    audience: "Open to all",
+    capacity: null,
+    lead: "To assign",
+  },
+  {
+    slug: "crash-course-3",
+    kind: "learn",
+    format: "Crash course",
+    title: "Crash course #3: cloud credits for student projects",
+    summary: "Where the free compute is, how to get it, and how not to wake up to a bill.",
+    date: "2027-03-11",
+    start: "18:30",
+    location: "Online",
+    audience: "Open to all",
+    capacity: null,
+    lead: "To assign",
+  },
+  {
+    slug: "demo-day",
+    kind: "connect",
+    format: "Big open event",
+    title: "Demo Day",
+    summary: "Everything built this year, shown in four minutes a project. The evening the whole year becomes visible.",
+    date: "2027-05-15",
+    location: "Albert School, Milano",
+    audience: "Open to all",
+    capacity: 120,
+    lead: "To assign",
     takeaways: [
-      "Eight projects, four minutes each, questions allowed.",
-      "The term, visible in one evening.",
-      "The easiest room in which to meet everyone at once.",
+      "A year of work, in one room, in one evening.",
+      "Industry guests who came to see it.",
+      "The easiest place to meet everyone at once.",
     ],
   },
 ];
 
-/** Les évènements encore à venir, les plus proches d'abord. */
-export function upcoming(from = new Date()): SiteEvent[] {
+/** Les dates de Build Lab qui suivent la première, une ligne par séance. */
+export const BUILD_LAB_DATES = [
+  "2027-01-12", "2027-01-26", "2027-02-09", "2027-02-23",
+  "2027-03-09", "2027-03-23", "2027-04-06", "2027-04-20",
+  "2027-05-04", "2027-05-18",
+];
+
+export const upcoming = (from = new Date()) => {
   const today = from.toISOString().slice(0, 10);
   return EVENTS.filter((e) => (e.endDate ?? e.date) >= today).sort((a, b) =>
     a.date.localeCompare(b.date),
   );
-}
+};
 
-/** Les évènements passés, les plus récents d'abord. */
-export function past(from = new Date()): SiteEvent[] {
+export const past = (from = new Date()) => {
   const today = from.toISOString().slice(0, 10);
   return EVENTS.filter((e) => (e.endDate ?? e.date) < today).sort((a, b) =>
     b.date.localeCompare(a.date),
   );
-}
+};
 
-/** « 2026-11-21 » → « Saturday 21 November 2026 ». */
 export function readableDate(date: string) {
   return new Date(`${date}T12:00:00Z`).toLocaleDateString("en-GB", {
     weekday: "long",
@@ -214,14 +250,22 @@ export function readableDate(date: string) {
   });
 }
 
-/** « 21–22 November 2026 » pour un évènement sur deux jours, sinon la date longue. */
 export function readableSpan(e: SiteEvent) {
   if (!e.endDate) return readableDate(e.date);
   const d1 = new Date(`${e.date}T12:00:00Z`);
   const d2 = new Date(`${e.endDate}T12:00:00Z`);
   const month = (d: Date) => d.toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" });
-  const sameMonth = month(d1) === month(d2);
-  return sameMonth
+  return month(d1) === month(d2)
     ? `${d1.getUTCDate()}–${d2.getUTCDate()} ${month(d2)} ${d2.getUTCFullYear()}`
     : `${d1.getUTCDate()} ${month(d1)} – ${d2.getUTCDate()} ${month(d2)} ${d2.getUTCFullYear()}`;
+}
+
+/** « Sat 21 Nov », pour les listes denses. */
+export function shortDate(date: string) {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  });
 }

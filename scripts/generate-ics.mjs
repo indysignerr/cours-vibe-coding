@@ -25,7 +25,7 @@ const entries = block
     endDate: field(chunk, "endDate"),
     start: field(chunk, "start"),
     end: field(chunk, "end"),
-    location: field(chunk, "location").replace(/\$\{SITE\.school\}/, field(site, "school")).replace(/\$\{SITE\.campus\}/, field(site, "campus")),
+    location: field(chunk, "location"),
   }))
   .filter((e) => e.slug && e.date);
 
@@ -46,13 +46,24 @@ const lines = [
 ];
 
 const now = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+// Une date sans horaire devient un évènement « journée entière » : la
+// date de fin d'un all-day est exclusive, d'où le lendemain.
+const nextDay = (d) => {
+  const x = new Date(`${d}T12:00:00Z`);
+  x.setUTCDate(x.getUTCDate() + 1);
+  return x.toISOString().slice(0, 10).replaceAll("-", "");
+};
+
 for (const e of entries) {
+  const allDay = !e.start || !e.end;
+  const end = e.endDate || e.date;
   lines.push(
     "BEGIN:VEVENT",
     `UID:${e.slug}@albert-light`,
     `DTSTAMP:${now}`,
-    `DTSTART;TZID=${TZ}:${stamp(e.date, e.start)}`,
-    `DTEND;TZID=${TZ}:${stamp(e.endDate || e.date, e.end)}`,
+    ...(allDay
+      ? [`DTSTART;VALUE=DATE:${e.date.replaceAll("-", "")}`, `DTEND;VALUE=DATE:${nextDay(end)}`]
+      : [`DTSTART;TZID=${TZ}:${stamp(e.date, e.start)}`, `DTEND;TZID=${TZ}:${stamp(end, e.end)}`]),
     `SUMMARY:${esc(`${NAME} — ${e.title}`)}`,
     `DESCRIPTION:${esc(e.summary)}`,
     `LOCATION:${esc(e.location)}`,

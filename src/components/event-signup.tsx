@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { googleCalendarUrl } from "@/lib/calendar";
-import { EVENT_KINDS, type SiteEvent } from "@/lib/events";
+import type { SiteEvent } from "@/lib/events";
 import { isSupabaseConfigured, getSupabase } from "@/lib/supabase/client";
 
 /**
@@ -28,7 +28,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
       <div className="card card--sand p-6">
         <p className="text-body">
           Sign-ups are not switched on yet. The date is firm — add it to your calendar and we will
-          open the list a fortnight before the {EVENT_KINDS[event.kind].label.toLowerCase()}.
+          open the list a fortnight before the {event.format.toLowerCase()}.
         </p>
         <a
           className="btn btn--ghost mt-5"
@@ -135,7 +135,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         </div>
       </div>
 
-      {event.kind === "demo" || event.kind === "talk" ? (
+      {event.audience === "Open to all" ? (
         <>
           <label className="mt-5 block text-sm font-medium text-ink" htmlFor={`${id}-org`}>
             Course and year <span className="font-normal text-muted">Optional</span>
@@ -159,7 +159,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         className="field mt-2 min-h-[5.5rem]"
         maxLength={500}
         rows={3}
-        placeholder={event.kind === "hackathon" ? "Who you are coming with, or that you need a team." : "What you want to get out of it, or who you want to meet."}
+        placeholder={event.kind === "compete" ? "Who you are coming with, or that you need a team." : "What you want to get out of it, or who you want to meet."}
         value={note}
         onChange={(e) => setNote(e.target.value)}
       />
@@ -171,7 +171,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
       ) : null}
 
       <button type="submit" disabled={busy} className="btn btn--primary mt-6 disabled:opacity-55">
-        {busy ? "One moment…" : event.kind === "hackathon" ? "Count me in" : "Sign me up"}
+        {busy ? "One moment…" : event.kind === "compete" ? "Count me in" : "Sign me up"}
       </button>
 
       <p className="mt-4 max-w-measure text-sm text-muted">
