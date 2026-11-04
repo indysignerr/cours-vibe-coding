@@ -1,17 +1,16 @@
-"use client";
-
-import { motion, useScroll, useSpring } from "framer-motion";
-
-/** Un filet beige qui suit l'avancement de la page, sous l'en-tête. */
+/**
+ * Le filet d'avancement de page.
+ *
+ * Plus une ligne de JavaScript : `animation-timeline: scroll()` attache
+ * l'animation au défilement du document directement dans le moteur de
+ * rendu. Elle tourne sur le compositeur, hors du fil principal, donc
+ * elle ne peut pas saccader le défilement — ce qui était le cas de la
+ * version précédente, un ressort Framer abonné à chaque évènement.
+ *
+ * Les navigateurs qui ne connaissent pas les timelines de défilement
+ * n'appliquent simplement rien : la barre reste à zéro et personne ne
+ * perd rien d'important.
+ */
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 0.3 });
-
-  return (
-    <motion.div
-      aria-hidden
-      className="fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-brand"
-      style={{ scaleX }}
-    />
-  );
+  return <div aria-hidden className="scroll-progress" />;
 }

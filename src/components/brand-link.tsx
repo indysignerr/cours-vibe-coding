@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/brand";
-import { scrollToTop } from "@/components/motion/lenis";
 import { SITE } from "@/lib/site";
 
 /**
@@ -28,7 +27,12 @@ export function BrandLink() {
         if (!atHome) return;
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         e.preventDefault();
-        scrollToTop();
+        /*
+         * Défilement natif. Le navigateur gère « smooth » lui-même, sans
+         * boucle à entretenir, et respecte prefers-reduced-motion tout
+         * seul — ce qu'une bibliothèque d'interpolation ne fait pas.
+         */
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >
       <Logo />

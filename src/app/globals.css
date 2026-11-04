@@ -543,29 +543,15 @@
 /* =====================================================================
    Matière.
 
-   Un aplat de marine parfaitement lisse se lit comme un remplissage, pas
-   comme une surface. Deux couches, toutes deux purement décoratives et
-   toutes deux sous le contenu : un grain très fin, et une lueur fixe en
-   haut de page. Aucune ne porte d'information, donc aucune n'a de rôle
-   d'accessibilité.
+   Il y avait ici un grain plein écran en position: fixed avec
+   mix-blend-mode. C'était joli et c'était la première cause du
+   défilement saccadé : une couche fusionnée couvrant la fenêtre force
+   le compositeur à recalculer tout l'écran à chaque image, parce que le
+   résultat dépend de ce qui se trouve dessous.
+
+   La lueur des sections marine reste : elle est locale, non fusionnée,
+   et ne coûte rien pendant le défilement.
    ===================================================================== */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.4;
-  /* Grain généré, pas une image à télécharger. */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
-}
-
-/* Le contenu passe au-dessus des deux couches. */
-body > * { position: relative; z-index: 1; }
-
-/* Une lueur haute, comme si la lumière venait du logo. */
-/* La lueur ne vit que dans les sections marine, où elle se voit. */
 .on-ink { position: relative; overflow: hidden; }
 .on-ink::after {
   content: "";
@@ -580,8 +566,6 @@ body > * { position: relative; z-index: 1; }
 }
 .on-ink > * { position: relative; }
 
-
-
 /* Barre de défilement : le détail qui dit que quelqu'un y a touché. */
 @supports selector(::-webkit-scrollbar) {
   ::-webkit-scrollbar { width: 11px; height: 11px; }
@@ -594,3 +578,37 @@ body > * { position: relative; z-index: 1; }
   ::-webkit-scrollbar-thumb:hover { background: var(--brand); }
 }
 * { scrollbar-color: var(--line-strong) var(--sunken); }
+
+/* =====================================================================
+   Avancement de page, sans JavaScript.
+
+   @supports garde la règle silencieuse là où les timelines de
+   défilement n'existent pas : la barre reste simplement à zéro.
+   ===================================================================== */
+.scroll-progress {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 50;
+  height: 2px;
+  background: var(--brand);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll();
+  }
+}
+
+@keyframes scroll-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { display: none; }
+}
