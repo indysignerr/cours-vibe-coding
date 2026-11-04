@@ -236,8 +236,8 @@ export default function EventsPage() {
                 Talk to us about it
               </Link>
             </Magnetic>
-            <Link className="btn btn--ghost" href="/solutions/">
-              See the five solutions
+            <Link className="btn btn--ghost" href="/join/">
+              How to join
             </Link>
           </div>
         </div>

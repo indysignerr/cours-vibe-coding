@@ -39,7 +39,7 @@ create table public.events (
   slug        text primary key,
   title       text not null,
   kind        text not null
-                check (kind in ('hackathon', 'workshop', 'talk', 'company')),
+                check (kind in ('hackathon', 'workshop', 'talk', 'demo')),
   starts_at   timestamptz not null,
   ends_at     timestamptz not null check (ends_at > starts_at),
   location    text,
@@ -167,9 +167,9 @@ insert into public.events (slug, title, kind, starts_at, ends_at, location, summ
   ('talk-what-the-law-says', 'What the law actually says about AI at work', 'talk',
    '2026-12-03 19:00+01', '2026-12-03 20:00+01', 'Albert School, Milano',
    'The three texts that decide whether a company may use the tools its staff already use.', 100),
-  ('company-demo-night', 'Demo night', 'company',
+  ('demo-night', 'Demo night', 'demo',
    '2027-02-11 18:30+01', '2027-02-11 21:30+01', 'Albert School, Milano',
-   'Students show what they built, directors say whether they would have paid for it.', 80)
+   'Everything built this term, four minutes a project.', 80)
 on conflict (slug) do update set
   title = excluded.title, kind = excluded.kind,
   starts_at = excluded.starts_at, ends_at = excluded.ends_at,

@@ -8,12 +8,18 @@
 # correspond : elles ne peuvent pas masquer une page vivante.
 
 # Renommages
-/services       /solutions   301
-/services/*     /solutions   301
+/services       /events      301
+/services/*     /events      301
 /team           /about       301
 /team/*         /about       301
 /calendar       /events      301
 /calendar/*     /events      301
+
+# Le volet conseil est en pause : il ne vit plus sur le site
+/solutions      /events      301
+/solutions/*    /events      301
+/approach       /about       301
+/approach/*     /about       301
 
 # Le portfolio : les sites montrés appartenaient à un autre projet
 /work           /            301

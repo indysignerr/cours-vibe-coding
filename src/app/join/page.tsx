@@ -10,6 +10,7 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Join us",
   description: `For students at ${SITE.school} ${SITE.campus}: how the association works, what we run, and how members end up on paid client work.`,
+  openGraph: { images: [{ url: "/og/join.png", width: 1200, height: 630, alt: "Come once. Stay if it is useful" }] },
 };
 
 const EXPECT = [

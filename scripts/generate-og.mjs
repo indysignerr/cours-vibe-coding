@@ -10,12 +10,11 @@ const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
 
 /** Les pages qui méritent leur propre carte, avec leur accroche. */
 const PAGES = [
-  { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["AI your lawyer", "can sign off on."], foot: "FIXED PRICE · 3 WEEKS" },
-  { slug: "solutions", kicker: "SOLUTIONS", lines: ["Five engagements.", "Fixed price."], foot: "FROM €2,500" },
-  { slug: "approach", kicker: "APPROACH", lines: ["The method", "is the product."], foot: "SCOPED TO FINISH" },
-  { slug: "events", kicker: "EVENTS", lines: ["We run the room,", "not a syllabus."], foot: "HACKATHONS · WORKSHOPS · TALKS" },
-  { slug: "about", kicker: "WHO WE ARE", lines: ["Students.", "We say so first."], foot: "ALBERT SCHOOL MILANO" },
-  { slug: "contact", kicker: "CONTACT", lines: ["Forty-five minutes.", "No slide deck."], foot: "BOOK A CONVERSATION" },
+  { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["Understand AI at work.", "Meet the people building."], foot: "HACKATHONS · WORKSHOPS · TALKS" },
+  { slug: "events", kicker: "EVENTS", lines: ["Nobody here", "is only listening."], foot: "NO ACCOUNT NEEDED TO COME" },
+  { slug: "about", kicker: "WHO WE ARE", lines: ["Six students.", "No staff."], foot: "ALBERT SCHOOL MILANO" },
+  { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "NO APPLICATION, NO SUBSCRIPTION" },
+  { slug: "contact", kicker: "CONTACT", lines: ["Four fields.", "That is the form."], foot: "WRITE TO US" },
 ];
 
 const card = ({ kicker, lines, foot }) => `

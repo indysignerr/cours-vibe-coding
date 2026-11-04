@@ -193,8 +193,8 @@ export default function AboutPage() {
                 Book a first conversation
               </Link>
             </Magnetic>
-            <Link className="btn btn--ghost" href="/solutions/">
-              See the five solutions
+            <Link className="btn btn--ghost" href="/events/">
+              See what is coming up
             </Link>
           </div>
         </div>

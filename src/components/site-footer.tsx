@@ -4,18 +4,11 @@ import { SITE } from "@/lib/site";
 
 const COLUMNS: { title: string; links: [string, string][] }[] = [
   {
-    title: "Work with us",
-    links: [
-      ["/solutions/", "Solutions"],
-      ["/approach/", "Approach"],
-      ["/contact/", "Contact"],
-    ],
-  },
-  {
-    title: "Events",
+    title: "Come along",
     links: [
       ["/events/", "What is coming up"],
       ["/setup/", "Before you come"],
+      ["/contact/", "Contact"],
     ],
   },
   {

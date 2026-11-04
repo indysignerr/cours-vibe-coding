@@ -2,9 +2,8 @@ import Link from "next/link";
 import { BrandLink } from "@/components/brand-link";
 
 const LINKS = [
-  { href: "/solutions/", label: "Solutions" },
-  { href: "/approach/", label: "Approach" },
   { href: "/events/", label: "Events" },
+  { href: "/join/", label: "Join" },
   { href: "/about/", label: "About" },
 ];
 
@@ -43,7 +42,7 @@ export function SiteHeader() {
         aria-label="Sections"
         className="no-scrollbar flex gap-1 overflow-x-auto border-t border-line px-3 md:hidden"
       >
-        {[...LINKS, { href: "/join/", label: "Join us" }].map((l) => (
+        {[...LINKS, { href: "/contact/", label: "Contact" }].map((l) => (
           <Link
             key={l.href}
             className="tap flex flex-none items-center px-3 text-sm text-body transition-colors hover:text-ink"

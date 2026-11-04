@@ -9,7 +9,7 @@ import { SITE } from "@/lib/site";
  * à supabase/007_events.sql. Changer un slug ici sans le changer là-bas
  * casse l'inscription de cet évènement, et rien d'autre.
  */
-export type EventKind = "hackathon" | "workshop" | "talk" | "company";
+export type EventKind = "hackathon" | "workshop" | "talk" | "demo";
 
 export type SiteEvent = {
   slug: string;
@@ -48,9 +48,9 @@ export const EVENT_KINDS: Record<EventKind, { label: string; blurb: string }> = 
     label: "Talk",
     blurb: "One speaker, one hour, open to the whole campus.",
   },
-  company: {
-    label: "For companies",
-    blurb: "Where directors see what students actually ship, and ask us the awkward questions.",
+  demo: {
+    label: "Demo night",
+    blurb: "Everything built this term, shown in four minutes each. Questions allowed.",
   },
 };
 
@@ -113,21 +113,21 @@ export const EVENTS: SiteEvent[] = [
     ],
   },
   {
-    slug: "company-demo-night",
-    kind: "company",
+    slug: "demo-night",
+    kind: "demo",
     title: "Demo night",
     summary:
-      "Students show what they built, directors say whether they would have paid for it, and nobody shows a slide. The honest version of our credentials.",
+      "Everything built this term, four minutes a project, nobody shows a slide. The evening where you meet the people behind the work.",
     date: "2027-02-11",
     start: "18:30",
     end: "21:30",
     location: `${SITE.school}, ${SITE.campus}`,
     capacity: 80,
-    audience: "Companies, students, and anyone deciding whether to work with us.",
+    audience: "Open to everyone on campus. Bring someone who has never come.",
     takeaways: [
       "Eight projects, four minutes each, questions allowed.",
-      "A straight answer on what a student team can and cannot deliver.",
-      "The people who would actually do your work, in the room.",
+      "The term, visible in one evening.",
+      "The easiest room in which to meet everyone at once.",
     ],
   },
 ];

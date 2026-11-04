@@ -13,7 +13,13 @@ export const SITE = {
   eyebrow: "Student-run · Albert School Milano",
   legalMention:
     "A student-run association at Albert School Milano. Not affiliated with, endorsed by, or sponsored by the technology vendors named on this site.",
-  tagline: "AI your lawyer can sign off on.",
+  /**
+   * Deux temps, parce que l'association fait deux choses : on se rencontre,
+   * et on comprend ce que l'IA est en train de faire au travail. Une
+   * tagline qui ne dirait que la seconde serait un cours ; que la première,
+   * un club.
+   */
+  tagline: "Understand AI at work. Meet the people building with it.",
   /**
    * Le domaine de production.
    *

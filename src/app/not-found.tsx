@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const ELSEWHERE: [string, string][] = [
-  ["/solutions/", "The five engagements"],
+  ["/join/", "How to join"],
   ["/events/", "What is coming up"],
   ["/about/", "Who we are"],
   ["/contact/", "Book a conversation"],

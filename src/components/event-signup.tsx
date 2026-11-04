@@ -135,10 +135,10 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         </div>
       </div>
 
-      {event.kind === "company" || event.kind === "talk" ? (
+      {event.kind === "demo" || event.kind === "talk" ? (
         <>
           <label className="mt-5 block text-sm font-medium text-ink" htmlFor={`${id}-org`}>
-            Company <span className="font-normal text-muted">Optional — leave empty if you are a student</span>
+            Course and year <span className="font-normal text-muted">Optional</span>
           </label>
           <input
             id={`${id}-org`}
@@ -159,7 +159,7 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         className="field mt-2 min-h-[5.5rem]"
         maxLength={500}
         rows={3}
-        placeholder={event.kind === "hackathon" ? "Who you are coming with, or that you need a team." : "What you want to get out of it."}
+        placeholder={event.kind === "hackathon" ? "Who you are coming with, or that you need a team." : "What you want to get out of it, or who you want to meet."}
         value={note}
         onChange={(e) => setNote(e.target.value)}
       />
