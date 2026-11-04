@@ -99,11 +99,11 @@ export default function Home() {
             <div className="md:col-span-5 scroll-in">
               <p className="eyebrow">Who runs it</p>
               <h2 className="display-2 mt-5 max-w-[14ch]">
-                {SITE.team.length} students. No staff.
+                A board of {SITE.team.length}.
               </h2>
               <p className="lede mt-7">
-                We write the briefs, book the rooms and find the partners.
-                Nobody is paid and everything is free.
+                Events are free this year. The only fixed cost is the domain
+                renewal, and spending anything needs a majority of the board.
               </p>
               <Link
                 className="btn btn--quiet underline-grow mt-7 -ml-2"

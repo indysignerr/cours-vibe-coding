@@ -14,21 +14,31 @@ export const metadata: Metadata = {
   },
 };
 
-/** Les partenaires, dans l'ordre de priorité du plan annuel. */
+/**
+ * Les partenaires, dans l'ordre du plan, avec ce que le plan dit qu'on
+ * leur demande. Pas de description rédigée par-dessus : ce sont des
+ * tiers, et leur prêter un rôle qu'ils n'ont pas accepté serait pire
+ * qu'inexact.
+ */
 const PARTNERS: [string, string][] = [
-  ["Albert School", "The school itself. It recognises the association."],
-  ["Codemotion", "Runs the December workshop with us."],
-  ["n8n or Lovable", "Tooling, credits and a challenge to set."],
-  ["Albert Junior Consulting Enterprise", "A jury seat at the tournaments."],
+  [
+    "Albert School",
+    "Rooms, a small budget for prizes and snacks, event listings",
+  ],
+  ["Codemotion", "Co-organise the December workshop"],
+  ["Floriano's team", "Co-organise the cinema night"],
+  ["n8n or Lovable", "Credits and tournament prizes"],
+  ["Albert Junior Consulting Enterprise", "A jury member at the tournaments"],
 ];
 
+/** Chaque ligne est dans le plan. Rien d'autre ne figure ici. */
 const FACTS: [string, string][] = [
   ["Campus", `${SITE.school} ${SITE.campus}`],
   ["Status", "Student association, recognised by the school"],
   ["Board", `${SITE.team.length} members`],
-  ["Events", "At least one every two weeks, November to May"],
-  ["Price", "Free. The only fixed cost is the domain renewal"],
-  ["Languages", "English, Italian and French"],
+  ["Events", "At least one every two weeks, outside holidays"],
+  ["Price", "Free this year. The only fixed cost is the domain renewal"],
+  ["Languages", "English first, with Italian and French"],
 ];
 
 export default function AboutPage() {
@@ -36,7 +46,7 @@ export default function AboutPage() {
     <PageShell
       eyebrow="Who we are"
       title="A lab, not a club."
-      lede="Lab of Intelligent, Generative, Hands-on Technology — a student association at Albert School Milano, recognised by the school. Beginners welcome."
+      lede="Lab of Intelligent, Generative, Hands-on Technology — a student association at Albert School in Milan, recognised by the school. Beginners welcome."
     >
       {/* Ce qu'on fait, en quatre mots. Le détail vit sur la page d'accueil. */}
       <section className="scroll-in">
@@ -77,7 +87,7 @@ export default function AboutPage() {
 
       {/* Les partenaires. */}
       <section className="mt-20 scroll-in">
-        <p className="eyebrow">Partners</p>
+        <p className="eyebrow">Partners, and what we ask them for</p>
         <ol className="rows mt-6">
           {PARTNERS.map(([name, what]) => (
             <li

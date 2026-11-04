@@ -40,7 +40,7 @@ export default function EventsPage() {
     <PageShell
       eyebrow="Events"
       title="Something on at least every two weeks."
-      lede="From the first tournament in November through Demo Day in May. Everything is free, and open events welcome people who have never written a line of code."
+      lede="From the first tournament on 21 November through Demo Day in May. Free, and beginners welcome."
     >
       {/* Chaque évènement : une ligne, et le détail qui s'ouvre.
           Les neuf fiches dépliées d'un coup faisaient 1 630 mots sur la page.

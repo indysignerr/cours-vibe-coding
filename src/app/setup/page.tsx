@@ -19,7 +19,8 @@ const STEPS: Step[] = [
     title: "Install Claude Code",
     body: "It is the version of Claude that lives in your terminal and can actually edit files. Follow the official installer for your operating system, then start it once to log in.",
     command: "claude",
-    expect: "It asks you to log in the first time, then shows a prompt with a > sign. Type /exit to leave.",
+    expect:
+      "It asks you to log in the first time, then shows a prompt with a > sign. Type /exit to leave.",
   },
   {
     title: "Install Node.js",
@@ -56,7 +57,8 @@ const BEFORE_HACKATHON: Step[] = [
   {
     title: "Tell git who you are",
     body: "Once, on your machine. Use the same email as your GitHub account.",
-    command: "git config --global user.name \"Your Name\" && git config --global user.email \"you@example.com\" && git config --global init.defaultBranch main",
+    command:
+      'git config --global user.name "Your Name" && git config --global user.email "you@example.com" && git config --global init.defaultBranch main',
   },
   {
     title: "Connect your laptop to GitHub",
@@ -72,7 +74,9 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
       {steps.map((step, i) => (
         <li key={step.title} className="card lift-on-hover min-w-0 p-6 md:p-8">
           <div className="flex items-baseline gap-4">
-            <span className="counter">{String(i + 1 + offset).padStart(2, "0")}</span>
+            <span className="counter">
+              {String(i + 1 + offset).padStart(2, "0")}
+            </span>
             <h2 className="display-3">{step.title}</h2>
           </div>
           <p className="mt-3 max-w-measure text-body">{step.body}</p>
@@ -102,14 +106,16 @@ export default function SetupPage() {
       <Steps steps={STEPS} />
 
       <section aria-labelledby="before-hackathon" className="mt-16">
-        <p className="eyebrow eyebrow--accent">Three more, before a hackathon</p>
+        <p className="eyebrow eyebrow--accent">
+          Three more, before a hackathon
+        </p>
         <h2 id="before-hackathon" className="display-2 mt-3">
           Only if you are coming to build
         </h2>
         <p className="mt-3 max-w-measure text-body">
-          A hackathon ends with your work on a public URL, which means pushing code. These three need a
-          browser and a password, so they happen at home, not in the room. A workshop or a talk does not
-          need them.
+          A hackathon ends with your work on a public URL, which means pushing
+          code. These three need a browser and a password, so they happen at
+          home, not in the room. A workshop or a talk does not need them.
         </p>
         <div className="mt-8">
           <Steps steps={BEFORE_HACKATHON} offset={7} />
@@ -119,9 +125,10 @@ export default function SetupPage() {
       <div className="card card--sand mt-12 p-6 md:p-8">
         <h2 className="display-3">If you get stuck</h2>
         <p className="mt-3 max-w-measure text-body">
-          Do not spend an evening on it. Send the exact error text to the association group and someone
-          answers. An error message pasted in full gets fixed in two minutes. The words &ldquo;it does
-          not work&rdquo; get fixed in twenty.
+          Do not spend an evening on it. Send the exact error text to the
+          association group and someone answers. An error message pasted in full
+          gets fixed in two minutes. The words &ldquo;it does not work&rdquo;
+          get fixed in twenty.
         </p>
       </div>
     </PageShell>

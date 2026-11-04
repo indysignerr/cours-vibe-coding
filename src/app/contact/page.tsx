@@ -1,219 +1,101 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Magnetic } from "@/components/motion/magnetic";
-import { Reveal } from "@/components/motion/reveal";
 import { ContactForm } from "@/components/contact-form";
 import { PageShell } from "@/components/page-shell";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description:
-    "Book a first conversation. Forty-five minutes, no slide deck, and a written read on what is worth automating in your company and what is not.",
+  description: `Get in touch with Albert L.I.G.H.T. at ${SITE.school} ${SITE.campus} — students, partners and anyone who wants to speak at an event.`,
   openGraph: {
     images: [
-      {
-        url: "/og/contact.png",
-        width: 1200,
-        height: 630,
-        alt: "Forty-five minutes. No slide deck",
-      },
+      { url: "/og/contact.png", width: 1200, height: 630, alt: "Contact" },
     ],
   },
 };
 
-const AGENDA: [string, string][] = [
-  [
-    "What your week looks like",
-    "Not your strategy. The hours, and where they go.",
-  ],
-  [
-    "Which task makes you sigh",
-    "Frequency, duration, and who does it when that person is away.",
-  ],
-  [
-    "What happens when it goes wrong",
-    "The cost of an error is what decides whether a human stays in the loop.",
-  ],
-  [
-    "Who would have to agree",
-    "Works council, union representatives, a client who audits you, your own counsel.",
-  ],
+/**
+ * La page de contact.
+ *
+ * Elle vendait un rendez-vous de quarante-cinq minutes sur
+ * l'automatisation en entreprise — un reste de l'offre de conseil qui
+ * n'existe plus. Ce qui reste vient du plan : ce qu'un partenaire
+ * obtient, et ce qu'on lui demande.
+ */
+const PARTNER_GETS = [
+  "Their logo on the event and its posts",
+  "A five-minute talk slot",
+  "The chance to set a tournament challenge",
+  "First access to motivated tech students for internships and junior roles",
 ];
 
-/** Gabarit à copier : un premier message utile tient en six lignes. */
-const BRIEF = `Company:
-Size and sector:
-The task we would like to stop doing by hand:
-How often it happens, and how long it takes:
-What the data involved is (customer, staff, financial, none of these):
-Who would have to approve a change like this:`;
-
 export default function ContactPage() {
-  const email = SITE.contactEmail;
-  const whatsapp = SITE.whatsapp;
-  const booking = SITE.bookingUrl;
-  const mailto = email
-    ? `mailto:${email}?subject=${encodeURIComponent("First conversation")}&body=${encodeURIComponent(BRIEF)}`
-    : null;
-
   return (
     <PageShell
       eyebrow="Contact"
-      title="Forty-five minutes, and we do not talk about AI."
-      lede="You leave with a written read on what is worth automating in your company and what is not. Nothing is installed, nothing is signed, and there is no slide deck."
+      title="Talk to us."
+      lede="Students, partners, and anyone who would like to speak at an event."
     >
-      {/* Le créneau, s'il existe : c'est le chemin le plus court */}
-      {booking ? (
-        <Reveal
-          as="section"
-          className="card card--ink mb-16 px-7 py-12 md:px-14 md:py-16"
-          y={26}
-        >
-          <p className="eyebrow eyebrow--accent">Pick a slot</p>
-          <h2 className="display-2 mt-4 max-w-[20ch]">
-            Choose a time in our calendar.
-          </h2>
-          <p className="lede mt-5 max-w-measure">
-            The slots you see are the ones that are genuinely free. You get the
-            invitation immediately, with a video link if you are not in{" "}
-            {SITE.campus}.
-          </p>
-          <Magnetic>
-            <a
-              className="btn btn--brand mt-8"
-              href={booking}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open the booking calendar
-            </a>
-          </Magnetic>
-        </Reveal>
-      ) : null}
-
-      <div className="grid gap-14 md:grid-cols-12">
-        <Reveal as="section" className="md:col-span-5" y={24}>
-          <p className="eyebrow">How to reach us</p>
-
-          {mailto ? (
-            <>
-              <Magnetic>
-                <a
-                  className="btn btn--primary mt-6 w-full sm:w-auto"
-                  href={mailto}
-                >
-                  Write to us
-                </a>
-              </Magnetic>
-              <p className="mt-4 text-sm text-muted">
-                The link opens a message already structured. If you would rather
-                write your own:{" "}
-                <a
-                  className="text-accent underline underline-offset-4"
-                  href={`mailto:${email}`}
-                >
-                  {email}
-                </a>
-              </p>
-            </>
-          ) : (
-            <div className="card card--sand mt-6 p-6">
-              <p className="text-body">
-                Our contact address is being set up and will be published here
-                before the first association. Until then, reach us through{" "}
-                {SITE.school} {SITE.campus} or through any member of the team.
-              </p>
-            </div>
-          )}
-
-          {whatsapp ? (
-            <a className="btn btn--ghost mt-4 w-full sm:w-auto" href={whatsapp}>
-              Message us on WhatsApp
-            </a>
-          ) : null}
-
-          {!booking ? (
-            <div className="card card--sand mt-6 p-6">
-              <p className="eyebrow">Booking calendar</p>
-              <p className="mt-3 text-body">
-                We are setting up an appointment page so you can pick a slot
-                yourself. Until it is live, propose two or three times in your
-                message and we will confirm one.
-              </p>
-              <p className="mt-4 text-sm text-muted">
-                For the organisers: create a Google Calendar appointment
-                schedule, then paste its public link into{" "}
-                <code className="rounded bg-canvas px-1.5 py-0.5">
-                  bookingUrl
-                </code>{" "}
-                in{" "}
-                <code className="rounded bg-canvas px-1.5 py-0.5">
-                  src/lib/site.ts
-                </code>
-                .
-              </p>
-            </div>
-          ) : null}
-
-          <h2 className="eyebrow mt-12">Where we are</h2>
-          <p className="mt-3 text-body">
-            {SITE.school}, {SITE.campus}. We work with Italian companies in
-            person and with the rest of Europe remotely.
-          </p>
-
-          <h2 className="eyebrow mt-10">Working language</h2>
-          <p className="mt-3 text-body">
-            English or Italian for meetings and deliverables. French on request.
-          </p>
-
-          <h2 className="eyebrow mt-10">Not a company?</h2>
-          <p className="mt-3 text-body">
-            If you are a student at {SITE.school}, the association is the door,
-            not this page.
-          </p>
-          <Link
-            className="btn btn--quiet underline-grow mt-3 -ml-2"
-            href="/join/"
-          >
-            Join the association
-          </Link>
-        </Reveal>
-
-        <Reveal
-          as="section"
-          className="md:col-span-6 md:col-start-7"
-          y={24}
-          delay={0.08}
-        >
-          <p className="eyebrow">Write to us</p>
-          <h2 className="display-2 mt-4 max-w-[18ch]">
-            Four fields. That is the whole form.
-          </h2>
-          <div className="mt-9">
+      <div className="grid gap-16 md:grid-cols-12">
+        <div className="md:col-span-6 scroll-in">
+          <p className="eyebrow">Send a message</p>
+          <div className="mt-6">
             <ContactForm />
           </div>
+        </div>
 
-          <h2 className="eyebrow mt-12">What we ask in the meeting</h2>
-          <Reveal as="dl" className="rows mt-6" stagger y={16}>
-            {AGENDA.map(([term, detail]) => (
-              <div
-                key={term}
-                className="grid gap-2 py-5 md:grid-cols-12 md:gap-6"
+        <div className="md:col-span-5 md:col-start-8 scroll-in">
+          <p className="eyebrow">Elsewhere</p>
+          <ul className="rows mt-6">
+            <li className="py-4">
+              <a
+                className="underline-grow text-ink"
+                href={SITE.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <dt className="display-3 md:col-span-5">{term}</dt>
-                <dd className="text-body md:col-span-7">{detail}</dd>
-              </div>
-            ))}
-          </Reveal>
+                LinkedIn
+              </a>
+            </li>
+            <li className="py-4">
+              <a
+                className="underline-grow text-ink"
+                href={`mailto:${SITE.contactEmail}`}
+              >
+                {SITE.contactEmail}
+              </a>
+            </li>
+          </ul>
 
           <p className="mt-10 max-w-measure text-sm text-muted">
-            Partners get their logo on the event and its posts, a five-minute
-            slot, and the chance to set a tournament challenge. We ask for
-            prizes, credits, a speaker or food — never money.
+            We are at {SITE.school} {SITE.campus}, and the association is
+            recognised by the school.
           </p>
-        </Reveal>
+        </div>
       </div>
+
+      <section className="mt-24 grid gap-10 md:grid-cols-12 scroll-in">
+        <div className="md:col-span-5">
+          <p className="eyebrow eyebrow--accent">For partners</p>
+          <h2 className="display-2 mt-4">What a partner gets.</h2>
+        </div>
+        <div className="md:col-span-6 md:col-start-7">
+          <ul className="rows">
+            {PARTNER_GETS.map((line) => (
+              <li key={line} className="py-4 text-body">
+                {line}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-7 max-w-measure text-sm text-muted">
+            What we ask for: prizes, credits, a speaker or food, before any
+            money.
+          </p>
+          <Link className="btn btn--ghost mt-8" href="/about/">
+            Who we are
+          </Link>
+        </div>
+      </section>
     </PageShell>
   );
 }

@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AddToCalendar } from "@/components/add-to-calendar";
-import { Magnetic } from "@/components/motion/magnetic";
-import { Reveal } from "@/components/motion/reveal";
 import { PageShell } from "@/components/page-shell";
 import { upcoming } from "@/lib/events";
+import { PILLARS } from "@/lib/pillars";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Join us",
-  description: `For students at ${SITE.school} ${SITE.campus}: how the association works, what we run, and what membership gets you.`,
+  description: `For students at ${SITE.school} ${SITE.campus}: how to come to an event, and how you become a member.`,
   openGraph: {
     images: [
       {
@@ -22,140 +21,100 @@ export const metadata: Metadata = {
   },
 };
 
-const EXPECT = [
-  {
-    n: "01",
-    title: "Come to one thing",
-    body: "A workshop, a talk, or a hackathon. You sign up on the events page, you turn up, and that is the whole entry process. No application, no interview, no account.",
-  },
-  {
-    n: "02",
-    title: "Build something you can show",
-    body: "Everything we run ends with a thing that works and a URL with your name on it. That is the point of the format: nobody leaves with notes.",
-  },
-  {
-    n: "03",
-    title: "Help run the next one",
-    body: "Members write the briefs, set up the room and answer questions during an event. That is where you actually learn it.",
-  },
-  {
-    n: "04",
-    title: "Compete, and build a portfolio",
-    body: "Members get the tournaments and Build Lab, every other Tuesday from December to May. What you build there is yours to show.",
-  },
-];
-
-const BRING: [string, string][] = [
-  [
-    "A laptop",
-    "Any machine that runs a browser and a terminal. macOS, Windows or Linux.",
-  ],
-  [
-    "An AI subscription",
-    "You already need one at school. Everyone works on their own account; we never share keys.",
-  ],
-  [
-    "No code experience",
-    "None is assumed. Most members come from business and data tracks, which is the point.",
-  ],
-  [
-    "A few hours, not a term",
-    "There is no weekly commitment. You come to what is useful to you.",
-  ],
-];
-
+/**
+ * Comment on entre.
+ *
+ * Ce que le plan dit tient en trois faits : le formulaire d'inscription
+ * à un évènement porte la question « join Albert LIGHT », un QR code
+ * permet de rejoindre sur place le jour même, et les débutants sont
+ * bienvenus. La version précédente de cette page déroulait quatre
+ * étapes et une liste de matériel à apporter : rien de tout cela
+ * n'était décidé.
+ */
 export default function JoinPage() {
   const next = upcoming();
+  const first = next[0];
+  const membersOnly = PILLARS.flatMap((p) => p.formats)
+    .map((f) => f.name)
+    .filter(
+      (n) =>
+        n === "Crash course" ||
+        n === "Build Lab" ||
+        n === "Vibe coding tournament",
+    );
 
   return (
     <PageShell
       eyebrow={`For students at ${SITE.school} ${SITE.campus}`}
-      title="Learn to build the thing, not to talk about it."
-      lede="No syllabus and no attendance sheet. Workshops and open nights are for anyone; tournaments and Build Lab are for members."
+      title="Come once. Stay if it is useful."
+      lede="Beginners welcome. Open events need nothing but a sign-up; membership is a question on that same form."
     >
-      <Reveal as="ol" className="rows" stagger y={24}>
-        {EXPECT.map((e) => (
-          <li
-            key={e.n}
-            className="grid gap-4 py-9 first:pt-0 md:grid-cols-12 md:gap-8"
-          >
-            <span className="counter md:col-span-1">{e.n}</span>
-            <h2 className="display-3 md:col-span-4">{e.title}</h2>
-            <p className="text-body md:col-span-6 md:col-start-6">{e.body}</p>
+      <section className="scroll-in">
+        <p className="eyebrow">Two ways in</p>
+        <ol className="rows mt-6">
+          <li className="grid gap-2 py-6 md:grid-cols-12 md:items-baseline md:gap-6">
+            <span className="counter md:col-span-1">01</span>
+            <span className="display-3 md:col-span-4">
+              Sign up for an event
+            </span>
+            <span className="text-body md:col-span-7">
+              The form asks whether you want to join Albert L.I.G.H.T. Tick it,
+              and you are a member.
+            </span>
           </li>
-        ))}
-      </Reveal>
+          <li className="grid gap-2 py-6 md:grid-cols-12 md:items-baseline md:gap-6">
+            <span className="counter md:col-span-1">02</span>
+            <span className="display-3 md:col-span-4">
+              Or scan the code on the day
+            </span>
+            <span className="text-body md:col-span-7">
+              There is a QR code at every event for joining on the spot.
+            </span>
+          </li>
+        </ol>
+      </section>
 
-      {/* Le prochain rendez-vous, puisque c'est la seule porte d'entrée */}
-      {next.length > 0 ? (
-        <Reveal
-          as="section"
-          className="card card--ink mt-20 px-7 py-12 md:px-14 md:py-16"
-          y={30}
-        >
-          <p className="eyebrow eyebrow--accent">The door is the next event</p>
-          <h2 className="display-2 mt-4 max-w-[22ch]">
-            {next[0].format}: {next[0].title}.
-          </h2>
-          <p className="lede mt-5 max-w-measure">{next[0].summary}</p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Magnetic>
-              <Link className="btn btn--brand" href="/events/">
-                Sign up for it
+      <section className="mt-20 scroll-in">
+        <p className="eyebrow">What membership opens</p>
+        <ul className="mt-6 flex flex-wrap gap-2">
+          {membersOnly.map((name) => (
+            <li key={name}>
+              <Link className="tag tag--link" href="/events/">
+                {name}
               </Link>
-            </Magnetic>
-            <AddToCalendar
-              event={next[0]}
-              variant="outline"
-              label="Add the date"
-            />
-          </div>
-        </Reveal>
-      ) : null}
-
-      <section className="card card--sand mt-20 p-7 md:p-10">
-        <p className="eyebrow">What to bring</p>
-        <Reveal as="dl" className="rows mt-8" stagger y={18}>
-          {BRING.map(([term, detail]) => (
-            <div
-              key={term}
-              className="grid gap-2 py-6 md:grid-cols-12 md:gap-8"
-            >
-              <dt className="text-sm font-semibold text-ink md:col-span-3">
-                {term}
-              </dt>
-              <dd className="text-body md:col-span-8">{detail}</dd>
-            </div>
+            </li>
           ))}
-        </Reveal>
-        <Link className="btn btn--ghost mt-8" href="/setup/">
-          Get your machine ready first
-        </Link>
+        </ul>
+        <p className="mt-6 max-w-measure text-body">
+          Workshops and the big open events are open to anyone at {SITE.school},
+          member or not.
+        </p>
       </section>
 
-      <section className="mt-20 grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-5">
-          <p className="eyebrow">Being honest about it</p>
-          <h2 className="display-2 mt-4">This is work, not a club.</h2>
-        </div>
-        <div className="md:col-span-6 md:col-start-7">
-          <p className="lede">
-            A tournament is four hours and nobody will chase you to finish.
-            People who come to leave with something built get a lot out of it.
-            People who come for a line on a CV drift away by November.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Magnetic>
-              <Link className="btn btn--primary" href="/events/">
-                See what is coming up
-              </Link>
-            </Magnetic>
-            <Link className="btn btn--quiet" href="/about/">
-              Who we are
-            </Link>
+      {first ? (
+        <section className="mt-20 grid gap-10 md:grid-cols-12 scroll-in">
+          <div className="md:col-span-5">
+            <p className="eyebrow eyebrow--accent">Next up</p>
+            <h2 className="display-2 mt-4">{first.title}</h2>
           </div>
-        </div>
-      </section>
+          <div className="md:col-span-6 md:col-start-7">
+            <p className="lede">{first.summary}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                className="btn btn--primary"
+                href={`/events/#${first.slug}`}
+              >
+                Sign up
+              </Link>
+              <AddToCalendar
+                event={first}
+                variant="outline"
+                label="Add the date"
+              />
+            </div>
+          </div>
+        </section>
+      ) : null}
     </PageShell>
   );
 }

@@ -9,11 +9,16 @@ export type AuthState =
   | { status: "unconfigured" }
   | { status: "loading" }
   | { status: "anonymous" }
-  | { status: "ready"; userId: string; email: string | null; profile: Profile | null };
+  | {
+      status: "ready";
+      userId: string;
+      email: string | null;
+      profile: Profile | null;
+    };
 
 export function useAuth() {
   const [state, setState] = useState<AuthState>(
-    isSupabaseConfigured() ? { status: "loading" } : { status: "unconfigured" }
+    isSupabaseConfigured() ? { status: "loading" } : { status: "unconfigured" },
   );
 
   // Charge le profil pour une session donnée. Un seul appel réseau, pas de
@@ -58,9 +63,13 @@ export function useAuth() {
 /** Les messages bruts de Supabase sont illisibles. */
 export function humanError(message: string): string {
   const m = message.toLowerCase();
-  if (m.includes("invalid login credentials")) return "Wrong email or password.";
-  if (m.includes("email not confirmed")) return "This account still has to confirm its email address.";
-  if (m.includes("password should be at least")) return "That password is too short.";
-  if (m.includes("rate limit") || m.includes("too many")) return "Too many attempts for now. Wait a minute and try again.";
+  if (m.includes("invalid login credentials"))
+    return "Wrong email or password.";
+  if (m.includes("email not confirmed"))
+    return "This account still has to confirm its email address.";
+  if (m.includes("password should be at least"))
+    return "That password is too short.";
+  if (m.includes("rate limit") || m.includes("too many"))
+    return "Too many attempts for now. Wait a minute and try again.";
   return message;
 }

@@ -14,12 +14,12 @@ export const SITE = {
   legalMention:
     "A student-run association at Albert School Milano. Not affiliated with, endorsed by, or sponsored by the technology vendors named on this site.",
   /**
-   * Deux temps, parce que l'association fait deux choses : on se rencontre,
-   * et on comprend ce que l'IA est en train de faire au travail. Une
-   * tagline qui ne dirait que la seconde serait un cours ; que la première,
-   * un club.
+   * La « one line » du plan annuel, mot pour mot. Celle que j'avais
+   * écrite — « Understand AI at work. Meet the people building with
+   * it. » — sonnait mieux, mais personne ne l'avait décidée.
    */
-  tagline: "Understand AI at work. Meet the people building with it.",
+  tagline:
+    "The launchpad where Albert students build portfolio-ready AI projects, master modern developer tools and meet real professionals, together.",
   /**
    * Le domaine de production.
    *
@@ -40,7 +40,8 @@ export const SITE = {
 
   // Vides tant que l'adresse n'est pas créée. Les gabarits s'adaptent.
   whatsapp: "" as string,
-  contactEmail: "" as string,
+  /** Prévue au plan pour le 8 novembre, via Cloudflare Email Routing. */
+  contactEmail: "hello@albertlight.com" as string,
 
   /**
    * Google Agenda. Deux réglages indépendants :
