@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { BulbDrop } from "@/components/bulb-drop";
 import { Counter } from "@/components/motion/counter";
-import { shortDate, upcoming } from "@/lib/events";
+import { VaporCountdown } from "@/components/ui/vapor-countdown";
+import { eventStartMs, shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
 /**
@@ -73,6 +74,20 @@ export function HomeHero() {
             </span>
           </span>
         </h1>
+
+        {/* Le compte à rebours. Chaque seconde qui tombe se sublime en
+            grains : dans le noir, c'est ce qui dit que le site est vivant. */}
+        {first ? (
+          <div className="hero__count rise [animation-delay:560ms]">
+            <p className="eyebrow eyebrow--accent">
+              Next · {first.title} · {shortDate(first.date)}
+              {first.start ? ` · ${first.start}` : ""}
+            </p>
+            <div className="mt-4">
+              <VaporCountdown targetDate={eventStartMs(first)} />
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {/* Le pied : la promesse chiffrée, et la prochaine date. */}

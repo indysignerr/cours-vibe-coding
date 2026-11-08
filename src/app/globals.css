@@ -2126,3 +2126,7 @@ body::after {
 /* Au doigt : pas de lampe qui poursuit, et le curseur système revient. */
 .has-light--wide { cursor: auto; }
 .has-light--wide .lamp { display: none; }
+
+/* Le compte à rebours de la hero : sous la légende, avec de l'air au-dessus
+   pour que la vapeur des chiffres ne frotte pas le nom. */
+.hero__count { margin-top: clamp(2.5rem, 6vh, 4.5rem); }

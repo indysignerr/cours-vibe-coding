@@ -225,3 +225,26 @@ export function shortDate(date: string) {
     timeZone: "UTC",
   });
 }
+
+/**
+ * L'instant de début, en millisecondes, dans le fuseau de Milan.
+ *
+ * Le décalage est lu pour LA date concernée : +01:00 en hiver, +02:00
+ * après le dernier dimanche de mars. Un décalage codé en dur serait
+ * faux pour Demo Day, en mai. Sans heure arrêtée, la cible est minuit.
+ */
+export function eventStartMs(e: SiteEvent): number {
+  const time = e.start ?? "00:00";
+  const naive = new Date(`${e.date}T${time}:00Z`);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Europe/Rome",
+    timeZoneName: "longOffset",
+  }).formatToParts(naive);
+  const label =
+    parts.find((p) => p.type === "timeZoneName")?.value ?? "GMT+01:00";
+  const m = label.match(/([+-])(\d{2}):(\d{2})/);
+  const minutes = m
+    ? (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3]))
+    : 60;
+  return naive.getTime() - minutes * 60_000;
+}
