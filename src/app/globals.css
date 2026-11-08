@@ -1788,18 +1788,22 @@ body::after {
   z-index: 60;
   pointer-events: none;
   will-change: transform;
+  transition:
+    opacity 0.55s ease,
+    visibility 0s;
   /* Le cœur est franchement transparent — il faut pouvoir LIRE une
      phrase entière, sinon l'effet devient une devinette — puis la nuit
-     revient vite. La bordure chaude donne la couleur d'une ampoule
-     plutôt que celle d'une lampe de poche. */
+     tombe, et elle tombe vite : hors du halo il n'y a RIEN, pas une
+     pénombre où l'on devine la page. La bordure chaude donne la couleur
+     d'une ampoule plutôt que celle d'une lampe de poche. */
   background: radial-gradient(
     circle closest-side,
     transparent 0%,
-    transparent 11.5%,
-    rgb(201 174 132 / 0.06) 12.6%,
-    rgb(7 13 22 / 0.45) 15%,
-    rgb(7 13 22 / 0.88) 19%,
-    #070d16 23.5%
+    transparent 10%,
+    rgb(201 174 132 / 0.05) 11%,
+    rgb(4 8 14 / 0.62) 13%,
+    rgb(4 8 14 / 0.93) 16%,
+    #04080e 19.5%
   );
 }
 
@@ -1810,16 +1814,27 @@ body::after {
     circle closest-side,
     transparent 0%,
     transparent 11.5%,
-    rgb(7 13 22 / 0.4) 15.5%,
-    rgb(7 13 22 / 0.86) 22%,
-    #070d16 29%
+    rgb(4 8 14 / 0.5) 15%,
+    rgb(4 8 14 / 0.9) 21%,
+    #04080e 27%
   );
+}
+
+/* Éteinte : le voile s'efface et la pièce entière s'allume. `visibility`
+   suit avec le retard du fondu, pour qu'une couche de 260vmax invisible
+   ne reste pas à composer pour rien. */
+.light-off .veil {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.8s ease,
+    visibility 0s 0.8s;
 }
 
 /* Dans le noir, les couleurs claires du site deviennent le sujet : on
    remonte la densité du fond pour que le halo tranche vraiment. */
-.has-light body {
-  background: #070d16;
+.has-light:not(.light-off) body {
+  background: #04080e;
 }
 
 /* =====================================================================
@@ -1832,12 +1847,12 @@ body::after {
    ===================================================================== */
 .lamp { display: none; }
 
-.has-light { cursor: none; }
-.has-light a,
-.has-light button,
-.has-light summary,
-.has-light input,
-.has-light textarea { cursor: none; }
+/* Le curseur système disparaît tant que la lampe est allumée — et revient
+   dès qu'on l'éteint. */
+.has-light:not(.light-off) { cursor: none; }
+.has-light:not(.light-off) :is(a, button, summary, input, textarea, [role="button"]) {
+  cursor: none;
+}
 
 .has-light .lamp {
   display: block;
@@ -1856,6 +1871,21 @@ body::after {
   filter: drop-shadow(0 0 22px rgb(201 174 132 / 0.5));
 }
 
+/* Le bras : fil + ampoule. C'est lui qui redescend quand on rallume — avec
+   un peu d'élan, comme une suspension qu'on lâche — pendant que le parent
+   reste positionné par la boucle. */
+.has-light .lamp__arm {
+  display: block;
+  position: relative;
+  transition: transform 0.9s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+
+/* Éteinte : la lampe remonte au plafond, en accélérant. */
+.light-off .lamp__arm {
+  transform: translateY(-160vh);
+  transition: transform 0.8s cubic-bezier(0.55, 0, 0.8, 0.35);
+}
+
 /* Le fil : il monte hors de l'écran, l'ampoule est suspendue à quelque chose. */
 .has-light .lamp__cord {
   position: absolute;
@@ -1872,6 +1902,129 @@ body::after {
 /* Au doigt : pas de lampe qui poursuit, et le curseur système revient. */
 .has-light--wide { cursor: auto; }
 .has-light--wide .lamp { display: none; }
+
+/* =====================================================================
+   LE CORDON.
+
+   L'interrupteur de la lampe : un fil qui pend du haut de l'écran, à
+   droite, avec une perle au bout. Il vit au-dessus du voile, donc on le
+   voit même dans le noir — on ne cache jamais le moyen de rallumer. Il
+   n'existe que si la lumière existe : sans JavaScript ou en mouvement
+   réduit, il n'y a rien à commander.
+   ===================================================================== */
+.cord { display: none; }
+
+.has-light .cord {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 62;
+  width: 44px;
+  height: 96px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.has-light .cord:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
+  border-radius: 0.25rem;
+}
+
+/* Le fil, qui s'étire quand on s'en approche. Il ressort à chaque bascule
+   pour rejouer la secousse. */
+.cord__pull {
+  position: absolute;
+  top: 0;
+  left: 31px;
+  width: 1px;
+  height: 74px;
+  background: linear-gradient(to bottom, rgb(201 174 132 / 0), rgb(201 174 132 / 0.75));
+  transition: transform 0.3s cubic-bezier(0.3, 1.3, 0.5, 1);
+  animation: cord-tug 0.55s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+.cord:hover .cord__pull,
+.cord:focus-visible .cord__pull { transform: translateY(6px); }
+
+/* La perle. Lampe allumée : elle brille, fixe. Éteinte : elle respire —
+   c'est l'invitation. La lueur est un pseudo-élément dont seule l'opacité
+   bouge, donc rien à repeindre. */
+.cord__bead {
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--brand);
+}
+.cord__bead::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  box-shadow: 0 0 14px 2px rgb(201 174 132 / 0.75);
+  opacity: 1;
+}
+.light-off .cord__bead::after {
+  animation: bead-breathe 2.8s ease-in-out infinite;
+}
+
+/* Le rappel, sous la perle : quelques secondes à l'arrivée et à chaque
+   bascule, puis seulement au survol. `backwards` et non `both` : une fois
+   l'animation finie, c'est le survol qui décide. Tant que le cordon n'a
+   jamais été tiré, l'invitation reste affichée. */
+.cord--fresh .cord__hint {
+  opacity: 1;
+  animation: none;
+}
+.cord__hint {
+  position: absolute;
+  top: 86px;
+  right: 12px;
+  white-space: nowrap;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+  opacity: 0;
+  transition: opacity 0.3s;
+  animation: hint-show 6s ease backwards;
+}
+.cord:hover .cord__hint,
+.cord:focus-visible .cord__hint { opacity: 1; }
+
+/* Sous 768 px l'en-tête a deux rangées : le fil descend plus bas pour que
+   la perle et le rappel pendent sous elle, pas sur les liens. */
+@media (max-width: 767px) {
+  .has-light .cord { height: 136px; }
+  .cord__pull { height: 114px; }
+  .cord__hint { top: 126px; }
+}
+/* Pendant l'ouverture, le rappel attend : personne ne le verrait. */
+.is-opening .cord__hint,
+.is-opening .cord__pull { animation-play-state: paused; }
+
+@keyframes cord-tug {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(12px); }
+  60% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+@keyframes hint-show {
+  0%, 12% { opacity: 0; }
+  22%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes bead-breathe {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
 
 /* Le compte à rebours de la hero : sous la légende, avec de l'air au-dessus
    pour que la vapeur des chiffres ne frotte pas le nom. */
