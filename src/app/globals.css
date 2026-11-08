@@ -1500,3 +1500,179 @@ body::after {
   z-index: 0;
   pointer-events: none;
 }
+
+/* =====================================================================
+   L'ampoule qui prend la place du I.
+
+   L'hommage est assumé. Chez Pixar la lampe traverse l'écran en
+   sautillant et écrase le I ; ici le logo est une ampoule et le mot est
+   LIGHT, alors la lettre était désignée d'avance.
+
+   Entièrement en CSS, et jouée une seule fois : une fois la séquence
+   finie, plus rien ne tourne. Les déformations suivent la règle du
+   dessin animé — s'étirer en tombant, s'écraser en touchant — sans quoi
+   le mouvement ressemble à une translation de tableur.
+
+   Minutage, depuis le chargement :
+     0,75 s  l'ampoule entre par la droite
+     0,75 → 1,75 s  trois bonds de plus en plus courts
+     1,75 s  elle touche le I, qui s'écrase et disparaît
+     1,95 s  le filament chauffe
+     2,15 s  les rayons jaillissent, le halo se diffuse
+   ===================================================================== */
+.glyph--i { position: relative; }
+
+.bulb {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 1.08em;
+  height: 1.08em;
+  margin-left: -0.54em;
+  pointer-events: none;
+}
+
+.bulb__body {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+.bulb__svg { width: 100%; height: 100%; display: block; }
+
+/* L'ombre portée : elle dit où est le sol, donc elle rend le saut lisible. */
+.bulb__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -0.06em;
+  width: 0.8em;
+  height: 0.14em;
+  margin-left: -0.4em;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.5);
+  filter: blur(6px);
+  opacity: 0;
+}
+
+.bulb__rays { opacity: 0; transform-origin: 50% 50%; }
+.bulb__glow { opacity: 0; }
+.bulb__filament { opacity: 0.35; }
+
+/* Sans animation, rien de tout cela : l'ampoule est simplement en place,
+   allumée, et le I n'a jamais existé. C'est l'état final de la séquence. */
+@media (prefers-reduced-motion: reduce) {
+  .glyph--i .glyph__char { opacity: 0; }
+  .bulb__rays,
+  .bulb__glow { opacity: 1; }
+  .bulb__filament { opacity: 1; }
+  .bulb__shadow { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Le I : présent, puis écrasé net au moment de l'impact. */
+  .glyph--i .glyph__char {
+    display: inline-block;
+    transform-origin: 50% 100%;
+    animation: i-crush 2.2s cubic-bezier(0.3, 0, 0.1, 1) both;
+  }
+
+  @keyframes i-crush {
+    0%, 78% { transform: scaleY(1); opacity: 1; }
+    /* L'impact : la lettre s'enfonce d'un coup. */
+    82% { transform: scaleY(0.14) scaleX(1.3); opacity: 1; }
+    88%, 100% { transform: scaleY(0) scaleX(1.5); opacity: 0; }
+  }
+
+  /* La trajectoire : l'ampoule vient de la droite et perd de la vitesse. */
+  .bulb {
+    animation: bulb-travel 2.2s cubic-bezier(0.37, 0, 0.63, 1) both;
+  }
+
+  @keyframes bulb-travel {
+    0%, 32% { transform: translateX(62vw); opacity: 0; }
+    34% { opacity: 1; }
+    /* Trois appuis, de plus en plus rapprochés. */
+    48% { transform: translateX(26vw); }
+    62% { transform: translateX(11vw); }
+    74% { transform: translateX(3.2vw); }
+    82%, 100% { transform: translateX(0); opacity: 1; }
+  }
+
+  /* Les bonds : la hauteur, séparée du déplacement, pour pouvoir
+     ralentir l'un sans ralentir l'autre. */
+  .bulb__body {
+    animation: bulb-hop 2.2s linear both;
+  }
+
+  @keyframes bulb-hop {
+    0%, 32% { transform: translateY(-120%) scale(1); }
+    /* premier bond, le plus haut */
+    40% { transform: translateY(-115%) scaleY(1.16) scaleX(0.88); }
+    48% { transform: translateY(0) scaleY(0.8) scaleX(1.2); }
+    /* deuxième */
+    55% { transform: translateY(-66%) scaleY(1.12) scaleX(0.92); }
+    62% { transform: translateY(0) scaleY(0.84) scaleX(1.16); }
+    /* troisième */
+    68% { transform: translateY(-34%) scaleY(1.08) scaleX(0.95); }
+    74% { transform: translateY(0) scaleY(0.88) scaleX(1.12); }
+    /* l'appui final sur le I */
+    78% { transform: translateY(-52%) scaleY(1.14) scaleX(0.9); }
+    82% { transform: translateY(0) scaleY(0.72) scaleX(1.28); }
+    /* elle se redresse en oscillant */
+    88% { transform: translateY(-7%) scaleY(1.07) scaleX(0.95); }
+    94% { transform: translateY(0) scaleY(0.97) scaleX(1.02); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  .bulb__shadow {
+    animation: bulb-shadow 2.2s linear both;
+  }
+
+  @keyframes bulb-shadow {
+    0%, 33% { opacity: 0; transform: scale(0.3); }
+    40% { opacity: 0.18; transform: scale(0.55); }
+    48% { opacity: 0.5; transform: scale(1.05); }
+    55% { opacity: 0.26; transform: scale(0.7); }
+    62% { opacity: 0.5; transform: scale(1.02); }
+    68% { opacity: 0.34; transform: scale(0.82); }
+    74%, 82% { opacity: 0.5; transform: scale(1); }
+    100% { opacity: 0.42; transform: scale(0.96); }
+  }
+
+  /* L'allumage, après l'impact. Un filament chauffe avant d'éclairer. */
+  .bulb__filament { animation: filament-warm 2.2s ease-out both; }
+
+  @keyframes filament-warm {
+    0%, 80% { opacity: 0.35; }
+    86% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+
+  .bulb__glow { animation: bulb-glow 2.2s ease-out both; }
+
+  @keyframes bulb-glow {
+    0%, 84% { opacity: 0; }
+    /* Un clignotement, comme un tube qui s'amorce. */
+    88% { opacity: 0.5; }
+    91% { opacity: 0.12; }
+    100% { opacity: 0.32; }
+  }
+
+  .bulb__rays { animation: bulb-rays 2.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+  @keyframes bulb-rays {
+    0%, 86% { opacity: 0; transform: scale(0.55); }
+    92% { opacity: 1; transform: scale(1.12); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* La hero s'éclaire quand l'ampoule s'allume : le halo du fond monte. */
+  .hero__bg { animation: hero-lights-up 2.2s ease-out both; }
+
+  @keyframes hero-lights-up {
+    0%, 84% { filter: brightness(0.72); }
+    90% { filter: brightness(1.18); }
+    100% { filter: brightness(1); }
+  }
+}

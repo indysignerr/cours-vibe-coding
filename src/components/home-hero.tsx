@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BulbDrop } from "@/components/bulb-drop";
 import { HeroScene } from "@/components/three/hero-scene";
 import { shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
@@ -56,12 +57,16 @@ export function HomeHero() {
             {GLYPHS.map(([letter, word], i) => (
               <span
                 key={letter}
-                className="glyph"
+                className={`glyph${letter === "I" ? " glyph--i" : ""}`}
                 style={
                   { "--i": i, "--d": `${DRIFT[i]}px` } as React.CSSProperties
                 }
               >
-                <span className="glyph__l">{letter}</span>
+                <span className="glyph__l">
+                  <span className="glyph__char">{letter}</span>
+                  {/* Le I se fait écraser, et l'ampoule prend sa place. */}
+                  {letter === "I" ? <BulbDrop /> : null}
+                </span>
                 <span className="glyph__w">{word}</span>
               </span>
             ))}
