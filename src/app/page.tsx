@@ -4,6 +4,7 @@ import { HomeHero } from "@/components/home-hero";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ParticleWordLazy } from "@/components/three/particle-word-lazy";
+import { Magnetic } from "@/components/motion/magnetic";
 import { Split } from "@/components/split";
 import { YearTimeline } from "@/components/year-timeline";
 import { upcoming } from "@/lib/events";
@@ -104,8 +105,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="md:col-span-6 md:col-start-7 scroll-in">
-            </div>
+            <div className="md:col-span-6 md:col-start-7 scroll-in"></div>
           </div>
         </section>
 
@@ -129,9 +129,11 @@ export default function Home() {
                 fee.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
-                <Link className="btn btn--primary" href="/events/">
-                  See what is on
-                </Link>
+                <Magnetic>
+                  <Link className="btn btn--primary" href="/events/">
+                    See what is on
+                  </Link>
+                </Magnetic>
                 <Link className="btn btn--outline" href="/join/">
                   What membership means
                 </Link>

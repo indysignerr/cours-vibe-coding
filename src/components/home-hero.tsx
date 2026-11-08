@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BulbDrop } from "@/components/bulb-drop";
+import { Counter } from "@/components/motion/counter";
 import { shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
@@ -37,7 +38,6 @@ export function HomeHero() {
 
   return (
     <section className="on-ink hero border-b border-line">
-
       <div className="hero__inner mx-auto w-full max-w-stage px-5 md:px-8">
         <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
 
@@ -81,7 +81,9 @@ export function HomeHero() {
           <dl className="flex flex-wrap items-baseline gap-x-8 gap-y-2 text-sm">
             <div className="flex items-baseline gap-2">
               <dt className="eyebrow">Events</dt>
-              <dd className="tnum text-ink">{next.length}</dd>
+              <dd className="tnum text-ink">
+                <Counter to={next.length} />
+              </dd>
             </div>
             <div className="flex items-baseline gap-2">
               <dt className="eyebrow">Through</dt>
