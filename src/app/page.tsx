@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeHero } from "@/components/home-hero";
-import Image from "next/image";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ParticleWordLazy } from "@/components/three/particle-word-lazy";
@@ -30,7 +29,8 @@ export default function Home() {
         {/* Les quatre piliers. Quatre lignes, pas quatre paragraphes : le
             détail de chaque format vit sur la page Events, et le survol
             suffit à montrer qu'il existe. */}
-        <section className="on-ink border-b border-line" id="pillars">
+        <section className="plan on-ink border-b border-line" id="pillars">
+          <span aria-hidden className="plan__light" />
           <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-36">
             <p className="eyebrow eyebrow--accent scroll-fade">How it works</p>
 
@@ -58,7 +58,8 @@ export default function Home() {
         </section>
 
         {/* La frise. La promesse des deux semaines, rendue visible. */}
-        <section className="border-b border-line bg-sunken">
+        <section className="plan border-b border-line bg-sunken">
+          <span aria-hidden className="plan__light" />
           <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-32">
             <div className="flex flex-wrap items-end justify-between gap-6 scroll-in">
               <div className="max-w-[34rem]">
@@ -82,20 +83,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* La bande. Rien d'écrit dessus : l'image a l'écran pour elle. */}
-        <section aria-hidden className="band">
-          <Image
-            src="/images/scene-connect.webp"
-            alt=""
-            width={1408}
-            height={768}
-            className="band__img"
-            sizes="100vw"
-          />
-        </section>
-
         {/* Qui tient tout ça. */}
-        <section className="border-b border-line">
+        <section className="plan border-b border-line">
+          <span aria-hidden className="plan__light" />
           <div className="mx-auto grid max-w-stage gap-12 px-5 py-24 md:grid-cols-12 md:px-8 md:py-32">
             <div className="md:col-span-5 scroll-in">
               <p className="eyebrow">Who runs it</p>
@@ -115,16 +105,6 @@ export default function Home() {
             </div>
 
             <div className="md:col-span-6 md:col-start-7 scroll-in">
-              {/* Visuel d'ambiance, pas une photo du bureau : il n'y en a
-                  pas encore. Le jour où il y en aura, elle prend cette place. */}
-              <Image
-                src="/images/scene-board.webp"
-                alt=""
-                width={1408}
-                height={768}
-                className="rounded-card w-full"
-                sizes="(min-width: 768px) 46vw, 100vw"
-              />
             </div>
           </div>
         </section>
@@ -132,7 +112,8 @@ export default function Home() {
         {/* L'appel final, sur un mot en particules. Le canvas ne tourne que
             lorsque la section est à l'écran : jamais en même temps que celui
             de la hero. */}
-        <section className="on-ink relative isolate overflow-hidden">
+        <section className="plan on-ink relative isolate overflow-hidden">
+          <span aria-hidden className="plan__light" />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[32vh] md:h-[40vh]">
             <ParticleWordLazy word="BUILD" />
           </div>

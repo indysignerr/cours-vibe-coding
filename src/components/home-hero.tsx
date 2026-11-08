@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { BulbDrop } from "@/components/bulb-drop";
-import { HeroScene } from "@/components/three/hero-scene";
 import { shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
@@ -38,11 +37,6 @@ export function HomeHero() {
 
   return (
     <section className="on-ink hero border-b border-line">
-      {/* Le fond : une photo d'ambiance sous un voile, et par-dessus un
-          champ de points en WebGL. La photo tient seule si la 3D ne
-          charge pas — elle est en CSS, donc elle est déjà là. */}
-      <span aria-hidden className="hero__bg" />
-      <HeroScene />
 
       <div className="hero__inner mx-auto w-full max-w-stage px-5 md:px-8">
         <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>

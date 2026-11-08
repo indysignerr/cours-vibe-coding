@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cursor } from "@/components/motion/cursor";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { body, display, mono } from "@/lib/fonts";
+import { Opening } from "@/components/opening";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -79,6 +80,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
+        <Opening />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION) }}

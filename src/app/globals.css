@@ -1422,73 +1422,7 @@ body::after {
   outline-offset: 4px;
 }
 
-/* =====================================================================
-   Le fond de la hero.
 
-   Une image d'ambiance générée dans la charte, posée sous un voile
-   marine en dégradé. Le voile n'est pas décoratif : les lettres sont en
-   ivoire, et sans lui la lueur beige passerait sous elles en détruisant
-   le contraste. L'opacité et les arrêts du dégradé ont été réglés en
-   mesurant la luminance réelle derrière chaque lettre.
-   ===================================================================== */
-.hero__bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(
-      105deg,
-      rgb(14 26 43 / 0.96) 0%,
-      rgb(14 26 43 / 0.92) 45%,
-      rgb(14 26 43 / 0.9) 100%
-    ),
-    url("/images/scene-hero.webp");
-  background-size: cover, cover;
-  background-position:
-    center,
-    center 40%;
-}
-
-/* La lueur décorative des sections marine ferait double emploi ici. */
-.hero.on-ink::after { display: none; }
-
-/* =====================================================================
-   La bande d'image.
-
-   Pleine largeur, rien d'écrit par-dessus : c'est là qu'on voit vraiment
-   la scène, puisque derrière le nom elle est sous un voile à 0,90. Elle
-   se révèle au défilement et dérive un peu, ce qui lui donne de la
-   profondeur sans parallaxe en JavaScript.
-   ===================================================================== */
-.band {
-  position: relative;
-  overflow: clip;
-  border-block: 1px solid var(--line);
-  background: var(--canvas);
-}
-
-.band__img {
-  display: block;
-  width: 100%;
-  height: clamp(18rem, 46vw, 34rem);
-  object-fit: cover;
-}
-
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .band__img {
-      animation: band-drift linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-  }
-}
-
-@keyframes band-drift {
-  from { object-position: 50% 32%; }
-  to { object-position: 50% 68%; }
-}
 
 /* Le canvas de la hero.
    Une classe, pas un utilitaire : `.on-ink > *` impose `position: relative`
@@ -1668,11 +1602,225 @@ body::after {
   }
 
   /* La hero s'éclaire quand l'ampoule s'allume : le halo du fond monte. */
-  .hero__bg { animation: hero-lights-up 2.2s ease-out both; }
+}
 
-  @keyframes hero-lights-up {
-    0%, 84% { filter: brightness(0.72); }
-    90% { filter: brightness(1.18); }
-    100% { filter: brightness(1); }
+/* =====================================================================
+   L'ouverture, en quatre actes.
+
+   Un rideau par-dessus la page entière : la page est dessous, complète.
+   Tout ce qui est animé l'est en `transform` et `opacity`, donc sur le
+   compositeur — une ouverture qui rame serait pire que pas d'ouverture.
+   ===================================================================== */
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #070d16;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.is-opening,
+.is-opening body { overflow: hidden; }
+
+/* Les volets. Ils couvrent l'écran, puis s'écartent. */
+.op-shutter {
+  position: absolute;
+  left: -5%;
+  width: 110%;
+  height: 50.5%;
+  background: #070d16;
+  z-index: 4;
+}
+
+.op-shutter--top { top: 0; }
+.op-shutter--bottom { bottom: 0; }
+
+.op-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+}
+
+/* Acte I : le scanner. Cinq traits qui s'ouvrent du centre. */
+.op-scans {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8vw;
+  pointer-events: none;
+}
+
+.op-scan {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgb(201 174 132 / 0.5) 35%,
+    rgb(201 174 132 / 0.5) 65%,
+    transparent
+  );
+  transform-origin: 50% 50%;
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.op-count {
+  position: absolute;
+  right: 7vw;
+  bottom: 6vh;
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  letter-spacing: -0.04em;
+  color: rgb(201 174 132 / 0.85);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Acte II : le mot. */
+.op-word {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.02em, 0.4vw, 0.08em);
+  font-weight: 600;
+  font-size: clamp(2rem, 8.4vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #f8f4ec;
+  perspective: 800px;
+}
+
+.op-letter {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Acte III : l'ampoule, posée sur la huitième lettre. */
+.op-bulb {
+  position: absolute;
+  left: calc(7 / 11 * 100%);
+  top: 50%;
+  width: 1.25em;
+  height: 1.25em;
+  margin-left: -0.56em;
+  margin-top: -0.62em;
+  opacity: 0;
+  transform-origin: 50% 70%;
+}
+
+.op-bulb__svg { width: 100%; height: 100%; display: block; }
+.op-rays { opacity: 0; transform-origin: 50% 50%; }
+.op-filament { opacity: 0.25; }
+
+.op-burst,
+.op-ring {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.op-burst {
+  width: 1.1em;
+  height: 1.1em;
+  background: radial-gradient(circle, #fff 0%, rgb(227 207 174 / 0.8) 40%, transparent 70%);
+  opacity: 0;
+}
+
+.op-ring {
+  width: 1.4em;
+  height: 1.4em;
+  border: 2px solid rgb(201 174 132 / 0.9);
+  opacity: 1;
+}
+
+/* =====================================================================
+   Les plans.
+
+   L'ampoule est allumée en haut de la page ; sa lumière descend avec le
+   défilement. Chaque section arrive dans l'ombre et s'éclaire en
+   entrant, puis un trait de lumière la traverse — c'est la coupe entre
+   deux plans.
+
+   Tout passe par `animation-timeline: view()` : la progression est liée
+   à la position de l'élément dans la fenêtre, évaluée par le moteur de
+   rendu sur le compositeur. Aucun écouteur de défilement, donc aucun
+   des accrochages qu'on a déjà payés.
+
+   Hors @supports, les voiles n'existent pas et les sections sont
+   simplement visibles : une page éteinte serait pire que pas d'effet.
+   ===================================================================== */
+.plan { position: relative; }
+
+.plan__light {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  display: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .plan__light {
+      display: block;
+    }
+
+    /* Le voile : l'ombre d'où la section sort. */
+    .plan__light::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgb(8 16 27 / 0.88) 0%,
+        rgb(8 16 27 / 0.55) 45%,
+        rgb(8 16 27 / 0) 85%
+      );
+      animation: plan-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 72%;
+    }
+
+    /* Le trait de lumière qui passe : la coupe entre deux plans. */
+    .plan__light::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 36vh;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgb(201 174 132 / 0.16) 45%,
+        rgb(248 244 236 / 0.1) 50%,
+        rgb(201 174 132 / 0.16) 55%,
+        transparent
+      );
+      animation: plan-sweep linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 55%;
+    }
   }
+}
+
+@keyframes plan-reveal {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes plan-sweep {
+  from { transform: translateY(-40vh); opacity: 0; }
+  18% { opacity: 1; }
+  82% { opacity: 1; }
+  to { transform: translateY(120vh); opacity: 0; }
 }
