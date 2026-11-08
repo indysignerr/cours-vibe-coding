@@ -4,6 +4,8 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Legal notice",
+  description:
+    "Legal notice for albertlight.com: publisher, hosting, intellectual property and applicable law.",
 };
 
 export default function LegalPage() {

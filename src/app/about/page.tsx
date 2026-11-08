@@ -6,7 +6,8 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Who we are",
-  description: `Albert L.I.G.H.T. is the student lab for AI and code at ${SITE.school} ${SITE.campus}: Lab of Intelligent, Generative, Hands-on Technology. Recognised by the school, run by a board of seven, free to attend.`,
+  description:
+    "Albert L.I.G.H.T. — Lab of Intelligent, Generative, Hands-on Technology — is the student lab for AI and code at Albert School Milano, recognised by the school.",
   openGraph: {
     images: [
       { url: "/og/about.png", width: 1200, height: 630, alt: "Who we are" },
@@ -79,7 +80,6 @@ export default function AboutPage() {
             </li>
           ))}
         </ol>
-
       </section>
 
       {/* Les partenaires. */}

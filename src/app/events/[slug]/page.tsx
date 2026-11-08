@@ -3,7 +3,12 @@ import Link from "next/link";
 import { AddToCalendar } from "@/components/add-to-calendar";
 import { EventSignup } from "@/components/event-signup";
 import { PageShell } from "@/components/page-shell";
-import { breadcrumb, eventSchema, eventTitle } from "@/lib/event-schema";
+import {
+  breadcrumb,
+  eventDescription,
+  eventSchema,
+  eventTitle,
+} from "@/lib/event-schema";
 import { EVENTS, readableSpan, shortDate, upcoming } from "@/lib/events";
 import { PILLARS } from "@/lib/pillars";
 import { SITE } from "@/lib/site";
@@ -37,8 +42,8 @@ export async function generateMetadata({
   if (!e) return { title: "Event" };
 
   return {
-    title: eventTitle(e),
-    description: `${e.summary} ${e.audience === "Members" ? "For members" : "Open to all"}, free, at ${SITE.school} ${SITE.campus}.`,
+    title: { absolute: eventTitle(e) },
+    description: eventDescription(e),
     alternates: { canonical: `/events/${e.slug}/` },
     openGraph: {
       title: eventTitle(e),

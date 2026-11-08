@@ -16,7 +16,8 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Events",
-  description: `Every Albert LIGHT date from November 2026 to May 2027: tournaments, workshops, crash courses, Build Lab and open nights at ${SITE.school} ${SITE.campus}. Free, and you sign up here.`,
+  description:
+    "Every Albert LIGHT date from November 2026 to May 2027: tournaments, workshops, crash courses, Build Lab and open nights in Milan. Free, and you sign up here.",
   openGraph: {
     images: [
       {

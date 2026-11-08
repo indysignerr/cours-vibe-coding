@@ -4,6 +4,8 @@ import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy",
+  description:
+    "How Albert L.I.G.H.T. handles the data you give us when you sign up for an event, and your rights under the GDPR.",
 };
 
 export default function PrivacyPage() {

@@ -10,9 +10,11 @@ import { PILLARS } from "@/lib/pillars";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: `${SITE.name} — ${SITE.tagline}`,
+  title: {
+    absolute: `${SITE.name} — Albert School's student lab for AI and code`,
+  },
   description:
-    "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab, vibe coding tournaments and open nights — something on at least every two weeks. Beginners welcome.",
+    "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab and vibe coding tournaments, at least every two weeks. Free.",
 };
 
 /**

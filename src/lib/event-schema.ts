@@ -1,4 +1,4 @@
-import { EVENTS, type SiteEvent, readableDate } from "@/lib/events";
+import { EVENTS, type SiteEvent, shortDate } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
 /**
@@ -100,8 +100,22 @@ export function breadcrumb(e: SiteEvent) {
   };
 }
 
-/** Le titre d'onglet d'une date : le nom, le mois, la ville. */
+/** Le titre d'onglet d'une date : le nom et le jour. Google coupe vers 60 signes. */
 export function eventTitle(e: SiteEvent) {
-  const when = readableDate(e.date).replace(/^\w+, /, "");
-  return `${e.title} — ${when}, ${SITE.campus}`;
+  // Certains noms sont longs par nature (« Crash course #3: cloud credits
+  // for student projects ») : on coupe le nom, jamais la date.
+  return `${clip(e.title, 50)} — ${shortDate(e.date)}`;
+}
+
+/** Coupe un texte à `max` signes sur un mot entier, avec une ellipse. */
+export function clip(text: string, max: number) {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
+/** La description d'une page évènement, bornée à 160 signes. */
+export function eventDescription(e: SiteEvent) {
+  const tail = ` ${e.audience === "Members" ? "Members" : "Open to all"}, free, ${SITE.school} ${SITE.campus}.`;
+  return clip(e.summary, 160 - tail.length) + tail;
 }

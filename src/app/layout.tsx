@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: `%s — ${SITE.name}`,
   },
   description:
-    "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab, vibe coding tournaments and open nights — something on at least every two weeks. Free, and beginners welcome.",
+    "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab and vibe coding tournaments, at least every two weeks. Free.",
   alternates: { canonical: "./" },
   ...(SITE.googleSiteVerification
     ? { verification: { google: SITE.googleSiteVerification } }
