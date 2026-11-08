@@ -4,6 +4,7 @@ import { HomeHero } from "@/components/home-hero";
 import Image from "next/image";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ParticleWordLazy } from "@/components/three/particle-word-lazy";
 import { Split } from "@/components/split";
 import { YearTimeline } from "@/components/year-timeline";
 import { upcoming } from "@/lib/events";
@@ -102,8 +103,8 @@ export default function Home() {
                 A board of {SITE.team.length}.
               </h2>
               <p className="lede mt-7">
-                Events are free this year. The only fixed cost is the domain
-                renewal, and spending anything needs a majority of the board.
+                Students who run the workshops, book the rooms and bring in the
+                partners. Every event is free.
               </p>
               <Link
                 className="btn btn--quiet underline-grow mt-7 -ml-2"
@@ -128,9 +129,15 @@ export default function Home() {
           </div>
         </section>
 
-        {/* L'appel final. */}
-        <section className="on-ink">
-          <div className="mx-auto max-w-stage px-5 py-28 md:px-8 md:py-40">
+        {/* L'appel final, sur un mot en particules. Le canvas ne tourne que
+            lorsque la section est à l'écran : jamais en même temps que celui
+            de la hero. */}
+        <section className="on-ink relative isolate overflow-hidden">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[32vh] md:h-[40vh]">
+            <ParticleWordLazy word="BUILD" />
+          </div>
+
+          <div className="relative mx-auto max-w-stage px-5 pb-28 pt-[34vh] md:px-8 md:pb-40 md:pt-[42vh]">
             <div className="max-w-[44rem] scroll-in">
               <p className="eyebrow eyebrow--accent">Coming along</p>
               <h2 className="display-1 mt-6 max-w-[13ch]">

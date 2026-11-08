@@ -37,7 +37,7 @@ const FACTS: [string, string][] = [
   ["Status", "Student association, recognised by the school"],
   ["Board", `${SITE.team.length} members`],
   ["Events", "At least one every two weeks, outside holidays"],
-  ["Price", "Free this year. The only fixed cost is the domain renewal"],
+  ["Price", "Free"],
   ["Languages", "English first, with Italian and French"],
 ];
 
@@ -79,10 +79,7 @@ export default function AboutPage() {
             </li>
           ))}
         </ol>
-        <p className="mt-6 max-w-measure text-sm text-muted">
-          Spending money, signing anything or committing the association to a
-          partner needs a majority of the board.
-        </p>
+
       </section>
 
       {/* Les partenaires. */}
