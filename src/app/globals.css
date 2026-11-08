@@ -18,16 +18,17 @@
    ===================================================================== */
 
 :root {
-  /* ---- Surfaces. L'ivoire redevient la dominante. ---- */
-  --canvas: #f8f4ec;        /* ivoire : le fond du site */
-  --surface: #fffdf8;       /* carte posée sur l'ivoire */
-  --sunken: #eadfcb;        /* sable : panneaux et sections calmes */
+  /* ---- Surfaces. Le site vit dans le noir : la lumière qu'on porte est
+     ce qui le révèle, et une lampe sur une page ivoire n'a aucun sens. ---- */
+  --canvas: #0e1a2b;        /* marine : le fond du site */
+  --surface: #16263c;       /* carte posée sur le marine */
+  --sunken: #0a1421;        /* plus profond : panneaux et sections calmes */
   --ink-surface: #0e1a2b;
 
-  /* ---- Texte sur clair ---- */
-  --ink: #0e1a2b;           /* marine : titres et texte fort */
-  --body: #1e2d40;          /* paragraphes */
-  --muted: #55616f;         /* légendes, métadonnées */
+  /* ---- Texte sur sombre ---- */
+  --ink: #f8f4ec;           /* ivoire : titres et texte fort */
+  --body: #dde3ec;          /* paragraphes */
+  --muted: #97a3b4;         /* légendes, métadonnées */
   --on-ink: #f8f4ec;
   --on-ink-muted: #c9ae84;
 
@@ -35,14 +36,43 @@
   --brand: #c9ae84;         /* beige : boutons, numéros, mots en avant */
   --brand-soft: #e3cfae;
   --on-brand: #0e1a2b;      /* marine sur un aplat beige */
-  /* Beige foncé : le beige clair ne peut pas être du texte sur l'ivoire,
-     celui-ci le peut (5,62:1). C'est l'accent écrit des sections claires. */
+  /* Sur le marine, l'accent écrit est le beige lui-même (8,2:1). */
+  --accent: #c9ae84;
+  --accent-hover: #e3cfae;
+  --accent-tint: #16263c;
+  --on-accent: #0e1a2b;
+
+  /* ---- Traits et ombres ---- */
+  --line: rgba(248, 244, 236, 0.14);
+  --line-strong: rgba(248, 244, 236, 0.26);
+  --hair: 0 0 0 1px rgba(248, 244, 236, 0.12);
+  --lift: 0 0 0 1px rgba(248, 244, 236, 0.1), 0 14px 40px -24px rgba(0, 0, 0, 0.8);
+  --lift-lg: 0 0 0 1px rgba(248, 244, 236, 0.14), 0 30px 70px -30px rgba(0, 0, 0, 0.9);
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------------
+   La section claire.
+
+   L'ancienne peau par défaut, gardée pour les rares surfaces qui doivent
+   se lire comme du papier — les pages légales, un document. Mêmes
+   jetons, mêmes composants.
+   --------------------------------------------------------------------- */
+.on-light {
+  --canvas: #f8f4ec;
+  --surface: #fffdf8;
+  --sunken: #eadfcb;
+  --ink: #0e1a2b;
+  --body: #1e2d40;
+  --muted: #55616f;
+  --brand: #c9ae84;
+  --brand-soft: #e3cfae;
+  --on-brand: #0e1a2b;
   --accent: #7a5c33;
   --accent-hover: #5e4626;
   --accent-tint: #f1e7d6;
   --on-accent: #f8f4ec;
-
-  /* ---- Traits et ombres ---- */
   --line: rgba(14, 26, 43, 0.12);
   --line-strong: rgba(14, 26, 43, 0.22);
   --hair: 0 0 0 1px rgba(14, 26, 43, 0.1);
@@ -50,7 +80,6 @@
     0 12px 32px -20px rgba(14, 26, 43, 0.35);
   --lift-lg: 0 0 0 1px rgba(14, 26, 43, 0.08), 0 2px 5px rgba(14, 26, 43, 0.05),
     0 28px 60px -28px rgba(14, 26, 43, 0.4);
-
   color-scheme: light;
 }
 
@@ -1868,28 +1897,15 @@ body::after {
   .chapter > .chapter__inner { padding-inline: 2rem; }
 }
 
-/* Le recul : le chapitre s'éloigne et s'assombrit quand le suivant monte. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .chapter {
-      animation: chapter-recede linear both;
-      animation-timeline: view();
-      /* Seulement pendant la sortie : tant qu'on le lit, il ne bouge pas. */
-      animation-range: exit 0% exit 100%;
-    }
-  }
+/* Le bord du chapitre qui glisse par-dessus le précédent : un filet et une
+   ombre portée vers le haut, sinon deux marines identiques ne font qu'un. */
+.chapter {
+  box-shadow:
+    0 -1px 0 var(--line),
+    0 -40px 80px -40px rgb(0 0 0 / 0.85);
 }
 
-@keyframes chapter-recede {
-  from {
-    transform: scale(1);
-    filter: brightness(1);
-  }
-  to {
-    transform: scale(0.9);
-    filter: brightness(0.38);
-  }
-}
+.chapter--deep { background: var(--sunken); }
 
 /* =====================================================================
    Le défilement horizontal de l'année.
@@ -1913,7 +1929,11 @@ body::after {
   display: grid;
   align-content: center;
   overflow: hidden;
-  background: var(--canvas);
+  /* Plus profond que les chapitres voisins : c'est ce qui rend la glissade lisible. */
+  background: var(--sunken);
+  box-shadow:
+    0 -1px 0 var(--line),
+    0 -40px 80px -40px rgb(0 0 0 / 0.85);
 }
 
 .hreel__rail {
@@ -1928,7 +1948,12 @@ body::after {
     .hreel__rail {
       animation: hreel-slide linear both;
       animation-timeline: --hreel;
-      animation-range: entry 100% exit 0%;
+      /* Le bloc fait 320svh pour une fenêtre de 100svh : la scène est
+         collée de 23,8 % à 76,2 % de sa traversée (`cover`). La plage
+         « entry 100% → exit 0% » qu'on avait d'abord posée est VIDE pour
+         un bloc plus haut que la fenêtre : ses deux bornes s'inversent,
+         et rien ne bougeait. */
+      animation-range: cover 23.8% cover 76.2%;
     }
   }
 }

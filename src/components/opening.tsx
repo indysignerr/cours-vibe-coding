@@ -57,10 +57,24 @@ export function Opening() {
       const letters = q(".op-letter");
       const counter = el.querySelector(".op-count") as HTMLElement | null;
 
+      // Le relais : la lampe qu'on emporte naît exactement là où l'ampoule de
+      // l'ouverture s'est posée. Sans cela, deux ampoules sans rapport.
+      const handoff = () => {
+        const b = el.querySelector(".op-bulb");
+        if (!b) return;
+        const r = b.getBoundingClientRect();
+        window.dispatchEvent(
+          new CustomEvent("albert:lamp", {
+            detail: { x: r.left + r.width / 2, y: r.top + r.height * 0.62 },
+          }),
+        );
+      };
+
       const tl = gsap.timeline({
         defaults: { ease: "power3.out" },
         onComplete: () => {
           window.clearTimeout(net);
+          handoff();
           done();
         },
       });

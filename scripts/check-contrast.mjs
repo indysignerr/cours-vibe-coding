@@ -28,7 +28,9 @@ function check(label, fg, bg, floor) {
   console.log(`${ok ? "PASS" : "FAIL"}  ${r.toFixed(2)}  min ${floor}  ${label}`);
 }
 
-for (const [name, selector] of [["CLAIR", ":root"], ["MARINE", ".on-ink"]]) {
+// Le marine est la peau par défaut depuis que le site vit dans le noir ;
+// la claire ne sert plus qu'aux surfaces « papier ».
+for (const [name, selector] of [["MARINE (defaut)", ":root"], ["CLAIR", ".on-light"]]) {
   const T = tokens(selector);
   console.log(`\n── ${name} ──`);
   for (const bg of ["canvas", "surface", "sunken", "accent-tint"]) {
@@ -44,7 +46,7 @@ for (const [name, selector] of [["CLAIR", ":root"], ["MARINE", ".on-ink"]]) {
   // Il n'est porteur que sur le marine. Sur l'ivoire il est décoratif, et la
   // charte interdit déjà de s'en servir comme texte — on ne lui demande donc
   // pas un rapport qu'il ne peut pas tenir, on vérifie qu'il reste interdit.
-  if (selector === ".on-ink") {
+  if (selector === ":root") {
     check("brand vs canvas (repere)", T.brand, T.canvas, 3);
   } else if (ratio(T.brand, T.canvas) >= 4.5) {
     console.log("ATTENTION : le beige passerait en texte sur l'ivoire, la charte l'interdit.");

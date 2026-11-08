@@ -129,7 +129,7 @@ export default function Home() {
         </section>
 
         {/* V — L'appel */}
-        <section className="chapter on-ink">
+        <section className="chapter chapter--deep on-ink">
           <div className="chapter__inner">
             <p className="eyebrow eyebrow--accent scroll-fade">Coming along</p>
             <h2 className="display-1 mt-6 max-w-[13ch]">

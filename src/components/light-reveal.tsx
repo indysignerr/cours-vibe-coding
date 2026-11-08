@@ -66,11 +66,20 @@ export function LightReveal() {
     // Le balancement : l'ampoule penche à l'opposé de son déplacement,
     // puis revient. C'est ce qui lui donne du poids.
     let swing = 0;
+    // L'ouverture : sur un lien ou un bouton, le halo s'élargit — la lampe
+    // « regarde » ce qu'on peut saisir. Au clic, elle vacille.
+    let widen = 0;
+    let widenNow = 0;
+    let pulse = 0;
+    let moved = false;
 
     const draw = () => {
-      el.style.transform = `translate3d(${current.x}px, ${current.y}px, 0)`;
+      const scale = (1 + 0.34 * widenNow) * (1 - 0.14 * pulse);
+      el.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(${scale.toFixed(4)})`;
       // La lampe est posée au-dessus du halo : la lumière tombe d'elle.
-      bulb.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) rotate(${swing.toFixed(2)}deg)`;
+      bulb.style.transform =
+        `translate3d(${current.x}px, ${current.y}px, 0) rotate(${swing.toFixed(2)}deg)` +
+        ` scale(${(1 - 0.07 * pulse).toFixed(4)})`;
     };
 
     const tick = () => {
@@ -82,12 +91,18 @@ export function LightReveal() {
       // Le retard sur l'axe horizontal donne l'angle, borné à 18°.
       const lean = Math.max(-18, Math.min(18, dx * 0.12));
       swing += (lean - swing) * 0.12;
+      widenNow += (widen - widenNow) * 0.12;
+      pulse *= 0.86;
 
       draw();
 
       // Arrivée : on arrête la boucle. Un rAF qui tourne pour rien, c'est
       // exactement ce qui faisait ramer ce site.
-      if (Math.abs(dx) > 0.4 || Math.abs(dy) > 0.4) {
+      const settling =
+        Math.abs(widen - widenNow) > 0.004 ||
+        pulse > 0.01 ||
+        Math.abs(swing) > 0.05;
+      if (Math.abs(dx) > 0.4 || Math.abs(dy) > 0.4 || settling) {
         frame = requestAnimationFrame(tick);
       } else {
         frame = 0;
@@ -99,8 +114,39 @@ export function LightReveal() {
     };
 
     const onMove = (e: PointerEvent | MouseEvent) => {
+      moved = true;
       target.x = e.clientX;
       target.y = e.clientY;
+      wake();
+    };
+
+    const GRASPABLE =
+      "a, button, summary, [role='button'], input, textarea, select, label";
+    const onOver = (e: Event) => {
+      const node = e.target as Element | null;
+      widen = node?.closest?.(GRASPABLE) ? 1 : 0;
+      wake();
+    };
+    const onDown = () => {
+      pulse = 1;
+      wake();
+    };
+
+    // Le relais depuis l'ouverture : la lampe naît là où l'ampoule s'est
+    // posée, et y reste tant que la souris n'a pas bougé.
+    const onHandoff = (e: Event) => {
+      const d = (e as CustomEvent<{ x: number; y: number }>).detail;
+      if (!d) return;
+      // La lampe est dessinée au-dessus du halo : on décale pour que ce
+      // soit l'ampoule, pas le halo, qui coïncide.
+      current.x = d.x;
+      current.y = d.y + 54;
+      if (!moved) {
+        target.x = current.x;
+        target.y = current.y;
+      }
+      swing = 16;
+      draw();
       wake();
     };
 
@@ -119,12 +165,18 @@ export function LightReveal() {
     // perdre le suivi du curseur ferait du site une page noire.
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("mousemove", onMove, { passive: true });
+    document.addEventListener("pointerover", onOver, { passive: true });
+    document.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("albert:lamp", onHandoff);
     document.addEventListener("focusin", onFocus, true);
 
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("pointerover", onOver);
+      document.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("albert:lamp", onHandoff);
       document.removeEventListener("focusin", onFocus, true);
       document.documentElement.classList.remove("has-light", "has-light--wide");
     };
