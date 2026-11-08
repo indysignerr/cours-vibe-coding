@@ -897,7 +897,7 @@
 .hero {
   display: grid;
   grid-template-rows: 1fr auto;
-  min-height: calc(100svh - 7.2rem);
+  align-content: stretch;
 }
 
 .hero__inner {
@@ -1824,3 +1824,305 @@ body::after {
   82% { opacity: 1; }
   to { transform: translateY(120vh); opacity: 0; }
 }
+
+/* =====================================================================
+   LA BOBINE.
+
+   La page d'accueil n'est plus une colonne de sections qui défilent :
+   c'est une suite de chapitres plein écran qui s'empilent. Chacun reste
+   collé pendant qu'on le lit, puis le suivant glisse par-dessus et le
+   recouvre — le chapitre qui part recule et s'assombrit, comme un plan
+   qui passe derrière le suivant.
+
+   Tout est en CSS : `position: sticky` pour l'empilement, et
+   `animation-timeline: view()` pour le recul. Aucun écouteur de
+   défilement, donc rien à voler au scroll.
+   ===================================================================== */
+.reel {
+  /* Un `overflow` ici tuerait le `sticky` des enfants. */
+  position: relative;
+}
+
+.chapter {
+  position: sticky;
+  top: 0;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  /* Opaque, sinon le chapitre du dessous transparaît pendant le recouvrement. */
+  background: var(--canvas);
+  /* Son propre contexte d'empilement : les chapitres se recouvrent dans
+     l'ordre du document, le plus récent au-dessus. */
+  isolation: isolate;
+}
+
+.chapter > .chapter__inner {
+  width: 100%;
+  margin-inline: auto;
+  max-width: var(--stage, 72rem);
+  padding-inline: 1.25rem;
+  padding-block: 4rem;
+}
+
+@media (min-width: 768px) {
+  .chapter > .chapter__inner { padding-inline: 2rem; }
+}
+
+/* Le recul : le chapitre s'éloigne et s'assombrit quand le suivant monte. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .chapter {
+      animation: chapter-recede linear both;
+      animation-timeline: view();
+      /* Seulement pendant la sortie : tant qu'on le lit, il ne bouge pas. */
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+
+@keyframes chapter-recede {
+  from {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  to {
+    transform: scale(0.9);
+    filter: brightness(0.38);
+  }
+}
+
+/* =====================================================================
+   Le défilement horizontal de l'année.
+
+   La hauteur du bloc donne la course : tant qu'on le traverse, la scène
+   reste collée et le rail glisse latéralement. La plage est calée sur
+   « entièrement entré » → « commence à sortir », c'est-à-dire exactement
+   la durée où le sticky tient.
+   ===================================================================== */
+.hreel {
+  position: relative;
+  height: 320svh;
+  view-timeline-name: --hreel;
+  view-timeline-axis: block;
+}
+
+.hreel__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  align-content: center;
+  overflow: hidden;
+  background: var(--canvas);
+}
+
+.hreel__rail {
+  display: flex;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-inline: max(1.25rem, calc((100vw - var(--stage, 72rem)) / 2));
+  will-change: transform;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hreel__rail {
+      animation: hreel-slide linear both;
+      animation-timeline: --hreel;
+      animation-range: entry 100% exit 0%;
+    }
+  }
+}
+
+/* Sans timeline, on retombe sur un défilement latéral à la main. */
+@supports not (animation-timeline: view()) {
+  .hreel { height: auto; }
+  .hreel__stage { position: static; height: auto; }
+  .hreel__rail { overflow-x: auto; scroll-snap-type: x mandatory; }
+}
+
+@keyframes hreel-slide {
+  to { transform: translateX(calc(-100% + 92vw)); }
+}
+
+/* Les cartes du calendrier horizontal. */
+.card-date {
+  flex: 0 0 auto;
+  width: min(78vw, 24rem);
+}
+
+.card-date__link {
+  display: grid;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 2rem 1.75rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface, transparent);
+  transition:
+    border-color 0.35s ease,
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.card-date__link:hover {
+  border-color: var(--brand);
+  transform: translateY(-6px);
+}
+
+.card-date__link:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 6px;
+}
+
+.card-date__n {
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.card-date__when {
+  font-size: 0.9rem;
+  color: var(--brand);
+}
+
+.card-date__title {
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.card-date__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.card-date__go {
+  font-size: 1.4rem;
+  color: var(--brand);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.card-date__link:hover .card-date__go { transform: translateX(0.4rem); }
+
+/* =====================================================================
+   LA LUMIÈRE.
+
+   Le voile est un disque percé beaucoup plus grand que l'écran : le
+   centre est transparent — on y voit la page — et tout autour est
+   opaque. On le déplace en `transform`, donc sur le compositeur ; animer
+   la position d'un masque repeindrait l'écran entier à chaque image.
+
+   `.has-light` n'est posée que si le JavaScript tourne : sans lui, le
+   voile n'existe pas et le site est simplement visible. C'est la règle
+   de sécurité de tout cet effet — on ne cache jamais quelque chose
+   qu'on ne saurait pas redécouvrir.
+   ===================================================================== */
+.veil {
+  display: none;
+}
+
+.has-light .veil {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260vmax;
+  height: 260vmax;
+  margin-left: -130vmax;
+  margin-top: -130vmax;
+  z-index: 60;
+  pointer-events: none;
+  will-change: transform;
+  /* Le cœur est franchement transparent — il faut pouvoir LIRE une
+     phrase entière, sinon l'effet devient une devinette — puis la nuit
+     revient vite. La bordure chaude donne la couleur d'une ampoule
+     plutôt que celle d'une lampe de poche. */
+  background: radial-gradient(
+    circle closest-side,
+    transparent 0%,
+    transparent 11.5%,
+    rgb(201 174 132 / 0.06) 12.6%,
+    rgb(7 13 22 / 0.45) 15%,
+    rgb(7 13 22 / 0.88) 19%,
+    #070d16 23.5%
+  );
+}
+
+/* Au doigt : large, posée au centre, immobile. On lit normalement. */
+.has-light--wide .veil {
+  transform: translate3d(50vw, 46vh, 0);
+  background: radial-gradient(
+    circle closest-side,
+    transparent 0%,
+    transparent 9%,
+    rgb(7 13 22 / 0.4) 13%,
+    rgb(7 13 22 / 0.86) 19%,
+    #070d16 26%
+  );
+}
+
+/* Dans le noir, les couleurs claires du site deviennent le sujet : on
+   remonte la densité du fond pour que le halo tranche vraiment. */
+.has-light body {
+  background: #070d16;
+}
+
+/* =====================================================================
+   LA LAMPE.
+
+   L'ampoule est le curseur. Elle suit la souris avec le même retard que
+   le halo, se balance quand on l'emporte, et la lumière tombe d'elle.
+   Le curseur système disparaît : deux pointeurs à l'écran, c'est un
+   pointeur de trop.
+   ===================================================================== */
+.lamp { display: none; }
+
+.has-light { cursor: none; }
+.has-light a,
+.has-light button,
+.has-light summary,
+.has-light input,
+.has-light textarea { cursor: none; }
+
+.has-light .lamp {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 61;
+  width: 5.6rem;
+  /* Le point de pivot est en haut : elle se balance comme une suspension. */
+  transform-origin: 50% -90%;
+  margin-left: -2.8rem;
+  /* Elle se tient au-dessus du halo, pas au centre. */
+  margin-top: -6.2rem;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 0 22px rgb(201 174 132 / 0.5));
+}
+
+/* Le fil : il monte hors de l'écran, l'ampoule est suspendue à quelque chose. */
+.has-light .lamp__cord {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 1px;
+  height: 140vh;
+  background: linear-gradient(to top, rgb(201 174 132 / 0.5), rgb(201 174 132 / 0));
+}
+
+.has-light .lamp__svg { width: 100%; height: auto; display: block; }
+.has-light .lamp__rays { opacity: 0.9; }
+
+/* Au doigt : pas de lampe qui poursuit, et le curseur système revient. */
+.has-light--wide { cursor: auto; }
+.has-light--wide .lamp { display: none; }

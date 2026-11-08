@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeHero } from "@/components/home-hero";
+import { Magnetic } from "@/components/motion/magnetic";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { ParticleWordLazy } from "@/components/three/particle-word-lazy";
-import { Magnetic } from "@/components/motion/magnetic";
 import { Split } from "@/components/split";
-import { YearTimeline } from "@/components/year-timeline";
-import { upcoming } from "@/lib/events";
+import { shortDate, upcoming } from "@/lib/events";
 import { PILLARS } from "@/lib/pillars";
 import { SITE } from "@/lib/site";
 
@@ -17,6 +15,18 @@ export const metadata: Metadata = {
     "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab, vibe coding tournaments and open nights — something on at least every two weeks. Beginners welcome.",
 };
 
+/**
+ * La page d'accueil est une bobine, plus une colonne.
+ *
+ * Chaque chapitre occupe l'écran entier, reste collé pendant qu'on le
+ * lit, puis recule pendant que le suivant glisse par-dessus. L'année ne
+ * se lit plus de haut en bas mais latéralement : on traverse le
+ * calendrier.
+ *
+ * Rien de tout cela n'écoute le défilement. L'empilement est du
+ * `position: sticky`, le recul et la course horizontale sont des
+ * timelines de défilement évaluées par le moteur de rendu.
+ */
 export default function Home() {
   const next = upcoming();
 
@@ -24,18 +34,16 @@ export default function Home() {
     <>
       <SiteHeader />
 
-      <main id="main">
+      <main id="main" className="reel">
+        {/* I — Le nom */}
         <HomeHero />
 
-        {/* Les quatre piliers. Quatre lignes, pas quatre paragraphes : le
-            détail de chaque format vit sur la page Events, et le survol
-            suffit à montrer qu'il existe. */}
-        <section className="plan on-ink border-b border-line" id="pillars">
-          <span aria-hidden className="plan__light" />
-          <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-36">
+        {/* II — Ce qu'on fait, en quatre mots qui tiennent l'écran */}
+        <section className="chapter on-ink" id="pillars">
+          <div className="chapter__inner">
             <p className="eyebrow eyebrow--accent scroll-fade">How it works</p>
 
-            <ol className="pillars mt-12 scroll-stagger">
+            <ol className="pillars mt-10 scroll-stagger">
               {PILLARS.map((p, i) => (
                 <li key={p.key} id={p.key}>
                   <Link className="pillar" href="/events/">
@@ -58,86 +66,88 @@ export default function Home() {
           </div>
         </section>
 
-        {/* La frise. La promesse des deux semaines, rendue visible. */}
-        <section className="plan border-b border-line bg-sunken">
-          <span aria-hidden className="plan__light" />
-          <div className="mx-auto max-w-stage px-5 py-24 md:px-8 md:py-32">
-            <div className="flex flex-wrap items-end justify-between gap-6 scroll-in">
-              <div className="max-w-[34rem]">
-                <p className="eyebrow">The year</p>
-                <h2 className="display-2 mt-5">
-                  <Split>November to May, without a gap.</Split>
-                </h2>
-              </div>
-              <Link className="btn btn--ghost" href="/events/">
-                Every date, and sign-up
-              </Link>
-            </div>
-
-            <div className="mt-16">
-              <YearTimeline events={next} />
-            </div>
-
-            <p className="mt-10 text-sm text-muted scroll-fade">
-              Plus Build Lab every other Tuesday, from December through May.
-            </p>
-          </div>
-        </section>
-
-        {/* Qui tient tout ça. */}
-        <section className="plan border-b border-line">
-          <span aria-hidden className="plan__light" />
-          <div className="mx-auto grid max-w-stage gap-12 px-5 py-24 md:grid-cols-12 md:px-8 md:py-32">
-            <div className="md:col-span-5 scroll-in">
-              <p className="eyebrow">Who runs it</p>
-              <h2 className="display-2 mt-5 max-w-[14ch]">
-                A board of {SITE.team.length}.
-              </h2>
-              <p className="lede mt-7">
-                Students who run the workshops, book the rooms and bring in the
-                partners. Every event is free.
-              </p>
-              <Link
-                className="btn btn--quiet underline-grow mt-7 -ml-2"
-                href="/about/"
-              >
-                Meet the board
-              </Link>
-            </div>
-
-            <div className="md:col-span-6 md:col-start-7 scroll-in"></div>
-          </div>
-        </section>
-
-        {/* L'appel final, sur un mot en particules. Le canvas ne tourne que
-            lorsque la section est à l'écran : jamais en même temps que celui
-            de la hero. */}
-        <section className="plan on-ink relative isolate overflow-hidden">
-          <span aria-hidden className="plan__light" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-[32vh] md:h-[40vh]">
-            <ParticleWordLazy word="BUILD" />
-          </div>
-
-          <div className="relative mx-auto max-w-stage px-5 pb-28 pt-[34vh] md:px-8 md:pb-40 md:pt-[42vh]">
-            <div className="max-w-[44rem] scroll-in">
-              <p className="eyebrow eyebrow--accent">Coming along</p>
-              <h2 className="display-1 mt-6 max-w-[13ch]">
-                <Split>You do not have to join anything.</Split>
-              </h2>
-              <p className="lede mt-8">
-                Put your name down for one event. No account, no application, no
-                fee.
-              </p>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Magnetic>
-                  <Link className="btn btn--primary" href="/events/">
-                    See what is on
-                  </Link>
-                </Magnetic>
-                <Link className="btn btn--outline" href="/join/">
-                  What membership means
+        {/* III — L'année, qu'on traverse latéralement */}
+        <div className="hreel">
+          <div className="hreel__stage on-ink">
+            <div className="chapter__inner pb-0 pt-0">
+              <div className="flex flex-wrap items-end justify-between gap-6">
+                <div>
+                  <p className="eyebrow eyebrow--accent">The year</p>
+                  <h2 className="display-2 mt-4 max-w-[18ch]">
+                    <Split>November to May, without a gap.</Split>
+                  </h2>
+                </div>
+                <Link className="btn btn--ghost" href="/events/">
+                  Every date
                 </Link>
               </div>
+            </div>
+
+            <ol className="hreel__rail mt-12">
+              {next.map((e, i) => (
+                <li key={e.slug} className="card-date">
+                  <Link href={`/events/${e.slug}/`} className="card-date__link">
+                    <span className="card-date__n">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="card-date__when tnum">
+                      {shortDate(e.date)}
+                    </span>
+                    <span className="card-date__title">{e.title}</span>
+                    <span className="card-date__meta">
+                      <span className="eyebrow">{e.format}</span>
+                      <span className="text-sm text-muted">{e.audience}</span>
+                    </span>
+                    <span aria-hidden className="card-date__go">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        {/* IV — Qui le fait */}
+        <section className="chapter">
+          <div className="chapter__inner">
+            <p className="eyebrow scroll-fade">Who runs it</p>
+            <h2 className="display-1 mt-6 max-w-[16ch]">
+              <Split>A board of seven students.</Split>
+            </h2>
+            <p className="lede mt-8 max-w-measure scroll-fade">
+              Students who run the workshops, book the rooms and bring in the
+              partners. Every event is free.
+            </p>
+            <Link
+              className="btn btn--quiet underline-grow mt-8 -ml-2"
+              href="/about/"
+            >
+              Meet the board
+            </Link>
+          </div>
+        </section>
+
+        {/* V — L'appel */}
+        <section className="chapter on-ink">
+          <div className="chapter__inner">
+            <p className="eyebrow eyebrow--accent scroll-fade">Coming along</p>
+            <h2 className="display-1 mt-6 max-w-[13ch]">
+              <Split>You do not have to join anything.</Split>
+            </h2>
+            <p className="lede mt-8 max-w-measure scroll-fade">
+              Put your name down for one event. No account, no application, no
+              fee.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Magnetic>
+                <Link className="btn btn--primary" href="/events/">
+                  See what is on
+                </Link>
+              </Magnetic>
+              <Link className="btn btn--ghost" href="/join/">
+                What membership means
+              </Link>
             </div>
           </div>
         </section>

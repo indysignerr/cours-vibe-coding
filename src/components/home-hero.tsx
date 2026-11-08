@@ -37,7 +37,7 @@ export function HomeHero() {
   const first = next[0];
 
   return (
-    <section className="on-ink hero border-b border-line">
+    <section className="chapter on-ink hero">
       <div className="hero__inner mx-auto w-full max-w-stage px-5 md:px-8">
         <p className="eyebrow eyebrow--accent rise">{SITE.eyebrow}</p>
 

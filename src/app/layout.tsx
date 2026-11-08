@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Cursor } from "@/components/motion/cursor";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { body, display, mono } from "@/lib/fonts";
+import { LightReveal } from "@/components/light-reveal";
 import { Opening } from "@/components/opening";
-import { ScrollMotion } from "@/components/motion/scroll-motion";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -82,7 +82,7 @@ export default function RootLayout({
     >
       <body>
         <Opening />
-        <ScrollMotion />
+        <LightReveal />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION) }}
