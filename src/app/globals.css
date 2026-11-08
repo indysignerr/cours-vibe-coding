@@ -1809,10 +1809,10 @@ body::after {
   background: radial-gradient(
     circle closest-side,
     transparent 0%,
-    transparent 9%,
-    rgb(7 13 22 / 0.4) 13%,
-    rgb(7 13 22 / 0.86) 19%,
-    #070d16 26%
+    transparent 11.5%,
+    rgb(7 13 22 / 0.4) 15.5%,
+    rgb(7 13 22 / 0.86) 22%,
+    #070d16 29%
   );
 }
 

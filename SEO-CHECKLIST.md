@@ -19,7 +19,7 @@ Dernière mise à jour : 4 novembre 2026.
 | `Organization` | avec `sameAs` (LinkedIn), `alternateName`, `foundingDate` |
 | Titres et descriptions | uniques sur chaque page |
 | `canonical` | sur chaque page |
-| Images | WebP, dimensions déclarées |
+| Audit statique | `node scripts/audit.mjs` — 22 pages, zéro défaut |
 
 ---
 

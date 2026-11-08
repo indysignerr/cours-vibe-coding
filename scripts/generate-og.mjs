@@ -5,16 +5,16 @@ import { writeFile, mkdir } from "node:fs/promises";
 import sharp from "sharp";
 import { mark, NAVY, BEIGE, LIGHT_BEIGE, IVORY } from "./brand.mjs";
 
-const SANS = "Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+const SANS = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
 
 /** Les pages qui méritent leur propre carte, avec leur accroche. */
 const PAGES = [
-  { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["Understand AI at work.", "Meet the people building."], foot: "HACKATHONS · WORKSHOPS · TALKS" },
-  { slug: "events", kicker: "EVENTS", lines: ["Nobody here", "is only listening."], foot: "NO ACCOUNT NEEDED TO COME" },
-  { slug: "about", kicker: "WHO WE ARE", lines: ["Six students.", "No staff."], foot: "ALBERT SCHOOL MILANO" },
-  { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "NO APPLICATION, NO SUBSCRIPTION" },
-  { slug: "contact", kicker: "CONTACT", lines: ["Four fields.", "That is the form."], foot: "WRITE TO US" },
+  { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["Albert School's student lab", "for AI and code."], foot: "WORKSHOPS · BUILD LAB · TOURNAMENTS" },
+  { slug: "events", kicker: "EVENTS · NOVEMBER TO MAY", lines: ["Something on at least", "every two weeks."], foot: "FREE · BEGINNERS WELCOME" },
+  { slug: "about", kicker: "WHO WE ARE", lines: ["A lab,", "not a club."], foot: "RECOGNISED BY ALBERT SCHOOL" },
+  { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "BEGINNERS WELCOME" },
+  { slug: "contact", kicker: "CONTACT", lines: ["Talk to us."], foot: "STUDENTS · PARTNERS · SPEAKERS" },
 ];
 
 const card = ({ kicker, lines, foot }) => `
