@@ -1,10 +1,8 @@
-import { SITE } from "@/lib/site";
-
 /**
  * Le pictogramme : ampoule au trait, « L » et rayons en beige.
  * Reproduit en SVG plutôt qu'en image : il hérite des couleurs et reste
  * net à toute taille. Les mêmes tracés vivent dans scripts/brand.mjs,
- * qui produit les fichiers livrés au client et les favicons.
+ * qui produit les fichiers livrés et les favicons.
  */
 export function BrandMark({
   className = "size-8",
@@ -34,70 +32,5 @@ export function BrandMark({
       <rect x="72" y="147" width="56" height="13" rx="6.5" fill={outline} />
       <path d="M80 170h40a20 20 0 0 1-40 0Z" fill={outline} />
     </svg>
-  );
-}
-
-/**
- * Le nom. Les points de L.I.G.H.T. prennent la couleur de marque, comme
- * sur le logo : c'est le seul jeu typographique de l'identité.
- */
-export function Wordmark({
-  className = "tracking-[0.16em]",
-  letters = "text-ink",
-  dots = "text-accent",
-}: {
-  className?: string;
-  letters?: string;
-  dots?: string;
-}) {
-  return (
-    <span
-      className={`whitespace-nowrap font-semibold uppercase ${letters} ${className}`}
-      aria-hidden
-    >
-      Albert L<span className={dots}>.</span>I<span className={dots}>.</span>G
-      <span className={dots}>.</span>H<span className={dots}>.</span>T
-      <span className={dots}>.</span>
-    </span>
-  );
-}
-
-/** Pictogramme + nom, la lockup utilisée dans l'en-tête et le pied de page. */
-export function Logo({
-  compact = false,
-  onInk = false,
-}: {
-  compact?: boolean;
-  onInk?: boolean;
-}) {
-  return (
-    <span className="flex min-w-0 items-center gap-2.5 overflow-hidden">
-      <BrandMark
-        className="size-8 shrink-0"
-        outline={onInk ? "var(--on-ink)" : "var(--ink)"}
-        glyph={onInk ? "var(--brand)" : "var(--accent)"}
-      />
-      {/* Sous 360 px — plus étroit que n'importe quel téléphone courant — le
-          nom serait tronqué en plein milieu. On ne garde que le pictogramme. */}
-      <Wordmark
-        className="hidden text-[0.8125rem] tracking-[0.1em] min-[360px]:inline sm:text-[0.9375rem] sm:tracking-[0.16em]"
-        letters={onInk ? "text-on-ink" : "text-ink"}
-        dots={onInk ? "text-brand" : "text-accent"}
-      />
-      {compact ? null : (
-        /*
-         * La ville est un repère visuel, pas une partie du nom. Sans
-         * aria-hidden le texte accessible du logo devenait
-         * « Albert L.I.G.H.T.Milano », d'un seul tenant : le lien porte
-         * déjà son libellé, celle-ci n'a donc rien à ajouter.
-         */
-        <span
-          aria-hidden
-          className="hidden border-l border-line pl-2.5 text-sm text-muted lg:inline"
-        >
-          {SITE.campus}
-        </span>
-      )}
-    </span>
   );
 }

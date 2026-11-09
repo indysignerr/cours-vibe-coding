@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AddToCalendar } from "@/components/add-to-calendar";
-import { Stage } from "@/components/stage";
+import { PageHead, Shell } from "@/components/shell";
 import { shortDate, upcoming } from "@/lib/events";
 import { SITE } from "@/lib/site";
 
@@ -20,74 +20,68 @@ export const metadata: Metadata = {
   },
 };
 
-/** Ce que l'adhésion ouvre, dans les mots du plan. */
-const MEMBERS_ONLY = ["Vibe coding tournaments", "Build Lab", "Crash courses"];
-
 /**
- * Comment on entre : deux portes, un écran.
- *
  * Ce que le plan dit tient en trois faits : le formulaire d'inscription
- * à un évènement porte la question « join Albert LIGHT », un QR code
- * permet de rejoindre sur place le jour même, et les débutants sont
- * bienvenus. Rien d'autre n'est décidé, donc rien d'autre n'est écrit.
+ * porte la question « join Albert LIGHT », un QR code permet de rejoindre
+ * sur place, et les débutants sont bienvenus.
  */
 export default function JoinPage() {
   const [first] = upcoming();
 
   return (
-    <Stage className="stage--join">
-      <header className="max-w-[40rem]">
-        <p className="eyebrow eyebrow--accent rise">
-          For students at {SITE.school} {SITE.campus}
-        </p>
-        <h1 className="display-1 rise mt-4 [animation-delay:80ms]">
-          Come once. Stay if it is useful.
-        </h1>
-        <p className="lede rise mt-5 [animation-delay:160ms]">
-          Beginners welcome. Open events need nothing but a sign-up —
-          membership is one question on that same form.
-        </p>
-      </header>
+    <Shell>
+      <PageHead
+        eyebrow={`For students at ${SITE.school} ${SITE.campus}`}
+        title="Come once. Stay if it is useful."
+        lede="Beginners welcome. Open events need nothing but a sign-up; membership is a question on that same form."
+      />
 
-      <ol className="ways mt-auto" aria-label="Two ways in">
-        <li className="way rise [animation-delay:260ms]">
-          <span className="way__n tnum">01</span>
-          <h2 className="display-2 mt-3">Sign up for an event</h2>
-          <p className="mt-3 text-body">
-            The form asks whether you want to join Albert L.I.G.H.T. Tick it,
-            and you are a member.
+      <section>
+        <h2>Two ways in</h2>
+        <ol className="rows mt-3">
+          <li className="py-4">
+            <h3>1. Sign up for an event</h3>
+            <p className="mt-1 max-w-[60ch]">
+              The form asks whether you want to join Albert L.I.G.H.T. Tick it,
+              and you are a member.
+            </p>
+          </li>
+          <li className="py-4">
+            <h3>2. Or scan the code on the day</h3>
+            <p className="mt-1 max-w-[60ch]">
+              There is a QR code at every event for joining on the spot.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section className="mt-12">
+        <h2>What membership opens</h2>
+        <p className="mt-3 max-w-[60ch]">
+          Vibe coding tournaments, Build Lab and the crash courses. Workshops
+          and the big open events are open to anyone at {SITE.school}, member or
+          not.
+        </p>
+      </section>
+
+      {first ? (
+        <section className="mt-12">
+          <h2>Next up</h2>
+          <p className="mt-3">
+            <time className="text-sm text-muted" dateTime={first.date}>
+              {shortDate(first.date)}
+            </time>{" "}
+            · {first.title}
           </p>
-          {first ? (
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <Link className="btn btn--primary" href={`/events/${first.slug}/`}>
-                {first.title} · {shortDate(first.date)}
-              </Link>
-              <AddToCalendar event={first} variant="outline" label="Add the date" />
-            </div>
-          ) : null}
-        </li>
-        <li className="way rise [animation-delay:360ms]">
-          <span className="way__n tnum">02</span>
-          <h2 className="display-2 mt-3">Or scan the code on the day</h2>
-          <p className="mt-3 text-body">
-            There is a QR code at every event for joining on the spot.
-          </p>
-          <p className="mt-5 eyebrow">Membership opens</p>
-          <ul className="mt-2 flex flex-wrap gap-2">
-            {MEMBERS_ONLY.map((name) => (
-              <li key={name}>
-                <Link className="tag tag--link" href="/events/">
-                  {name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-sm text-muted">
-            Workshops and the big open events are open to anyone at{" "}
-            {SITE.school}, member or not.
-          </p>
-        </li>
-      </ol>
-    </Stage>
+          <p className="mt-1 max-w-[60ch]">{first.summary}</p>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <Link className="btn btn--primary" href={`/events/${first.slug}/`}>
+              Sign up
+            </Link>
+            <AddToCalendar event={first} variant="ghost" label="Add the date" />
+          </div>
+        </section>
+      ) : null}
+    </Shell>
   );
 }

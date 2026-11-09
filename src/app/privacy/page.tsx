@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Stage, StageHead } from "@/components/stage";
+import { PageHead, Shell } from "@/components/shell";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <Stage className="stage--doc">
-      <StageHead
+    <Shell>
+      <PageHead
       eyebrow="Privacy"
       title="What we store, and what we never do with it."
       lede="Short version: your name, your email, and the projects you submit. Nothing is sold, nothing is used for advertising, and nothing leaves the European Union." />
-      <div className="doc">
+      <div>
       <div className="prose">
         <h2>What we collect</h2>
         <ul>
@@ -94,6 +94,6 @@ export default function PrivacyPage() {
         )}
       </div>
     </div>
-    </Stage>
+    </Shell>
   );
 }

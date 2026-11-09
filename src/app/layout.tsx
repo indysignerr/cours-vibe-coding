@@ -1,8 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cursor } from "@/components/motion/cursor";
 import { body, display, mono } from "@/lib/fonts";
-import { LightReveal } from "@/components/light-reveal";
-import { Opening } from "@/components/opening";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -77,11 +74,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${display.variable} ${body.variable} ${mono.variable}`}
-      suppressHydrationWarning
     >
       <body>
-        <Opening />
-        <LightReveal />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION) }}
@@ -92,7 +86,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Cursor />
         {children}
       </body>
     </html>

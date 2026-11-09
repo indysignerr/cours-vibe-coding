@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Stage } from "@/components/stage";
+import { PageHead, Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Nothing here",
@@ -16,33 +16,21 @@ const ELSEWHERE: [string, string][] = [
 
 export default function NotFound() {
   return (
-    <Stage className="stage--doc">
-      <p className="eyebrow eyebrow--accent rise">Error 404</p>
-      <h1 className="display-1 rise mt-4 max-w-[14ch] [animation-delay:80ms]">
-        This page is not where you left it.
-      </h1>
-      <p className="lede rise mt-5 max-w-measure [animation-delay:160ms]">
-        Either we moved it, or the link was wrong. Both happen.
-      </p>
-
-      <ul className="rows rise mt-10 max-w-[32rem] [animation-delay:240ms]">
+    <Shell>
+      <PageHead
+        eyebrow="Error 404"
+        title="This page is not where you left it."
+        lede="Either we moved it, or the link was wrong. Both happen."
+      />
+      <ul className="rows max-w-md">
         {ELSEWHERE.map(([href, label]) => (
           <li key={href}>
-            <Link
-              className="group flex items-center justify-between gap-4 py-4 text-ink transition-colors hover:text-brand"
-              href={href}
-            >
-              <span className="display-3 underline-grow">{label}</span>
-              <span
-                aria-hidden
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              >
-                &rarr;
-              </span>
+            <Link className="block py-3 text-ink underline underline-offset-4" href={href}>
+              {label}
             </Link>
           </li>
         ))}
       </ul>
-    </Stage>
+    </Shell>
   );
 }

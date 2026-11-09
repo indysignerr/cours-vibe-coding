@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Stage, StageHead } from "@/components/stage";
+import { PageHead, Shell } from "@/components/shell";
 
 export const metadata: Metadata = {
   title: "Before you come",
@@ -73,8 +73,7 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
       {steps.map((step, i) => (
         <li
           key={step.title}
-          className="card lift-on-hover rise min-w-0 p-6 md:p-8"
-          style={{ animationDelay: `${(i + 1) * 70}ms` }}
+          className="card min-w-0 p-6 md:p-8"
         >
           <div className="flex items-baseline gap-4">
             <span className="counter">
@@ -101,12 +100,12 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
 
 export default function SetupPage() {
   return (
-    <Stage className="stage--doc">
-      <StageHead
+    <Shell>
+      <PageHead
       eyebrow="Before you come"
       title="Twenty minutes at home, so the room is spent building."
       lede="The fastest way to waste a hackathon is to spend its first three hours installing things. Do these seven steps before you turn up. If one of them fights back, come ten minutes early and we fix it together." />
-      <div className="doc">
+      <div>
       <Steps steps={STEPS} />
 
       <section aria-labelledby="before-hackathon" className="mt-16">
@@ -136,6 +135,6 @@ export default function SetupPage() {
         </p>
       </div>
     </div>
-    </Stage>
+    </Shell>
   );
 }
