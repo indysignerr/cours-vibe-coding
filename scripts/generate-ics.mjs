@@ -1,39 +1,22 @@
-// Produit public/albert-light.ics : tout le programme d'évènements, pour
-// ceux qui ne sont pas chez Google — Apple Calendar, Outlook, Thunderbird.
-// Les dates sont lues dans src/lib/events.ts : une seule source.
-// Relancer après un changement de programme.
-import { writeFile, readFile } from "node:fs/promises";
+// Produit public/albert-light.ics : tout le programme, pour ceux qui ne
+// sont pas chez Google — Apple Calendar, Outlook, Thunderbird.
+// Les dates sont lues dans content/events.json : une seule source.
+//
+// Lancé tout seul avant `npm run dev` et `npm run build` (voir package.json) :
+// modifier le calendrier, même depuis l'éditeur web de GitHub, suffit — le
+// fichier .ics est refait au déploiement. À la main : npm run ics
+import { readFile, writeFile } from "node:fs/promises";
 
-const site = await readFile("src/lib/site.ts", "utf8");
-const events = await readFile("src/lib/events.ts", "utf8");
+const site = JSON.parse(await readFile("content/site.json", "utf8"));
+const { events } = JSON.parse(await readFile("content/events.json", "utf8"));
 
-const field = (src, key) => src.match(new RegExp(`${key}:\\s*"([^"]*)"`))?.[1] ?? "";
-const NAME = field(site, "name");
-const TZ = field(site, "timezone");
-
-// On ne parse que le bloc EVENTS, pour ne pas confondre avec les exemples
-// qui traînent ailleurs dans le fichier.
-const block = events.slice(events.indexOf("export const EVENTS"), events.indexOf("/** Les évènements encore à venir"));
-const entries = block
-  .split(/\n  \{\n/)
-  .slice(1)
-  .map((chunk) => ({
-    slug: field(chunk, "slug"),
-    title: field(chunk, "title"),
-    summary: field(chunk, "summary"),
-    date: field(chunk, "date"),
-    endDate: field(chunk, "endDate"),
-    start: field(chunk, "start"),
-    end: field(chunk, "end"),
-    location: field(chunk, "location"),
-  }))
-  .filter((e) => e.slug && e.date);
-
-if (entries.length === 0) throw new Error("aucun évènement lu dans src/lib/events.ts");
+const NAME = site.name;
+const TZ = site.timezone;
+if (!events?.length) throw new Error("aucun événement dans content/events.json");
 
 const stamp = (date, time) => `${date.replaceAll("-", "")}T${time.replace(":", "")}00`;
 // Les retours à la ligne et les virgules doivent être échappés dans un .ics.
-const esc = (s) => s.replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
+const esc = (s) => String(s).replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
 
 const lines = [
   "BEGIN:VCALENDAR",
@@ -46,7 +29,7 @@ const lines = [
 ];
 
 const now = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-// Une date sans horaire devient un évènement « journée entière » : la
+// Une date sans horaire devient un événement « journée entière » : la
 // date de fin d'un all-day est exclusive, d'où le lendemain.
 const nextDay = (d) => {
   const x = new Date(`${d}T12:00:00Z`);
@@ -54,7 +37,7 @@ const nextDay = (d) => {
   return x.toISOString().slice(0, 10).replaceAll("-", "");
 };
 
-for (const e of entries) {
+for (const e of events) {
   const allDay = !e.start || !e.end;
   const end = e.endDate || e.date;
   lines.push(
@@ -64,14 +47,34 @@ for (const e of entries) {
     ...(allDay
       ? [`DTSTART;VALUE=DATE:${e.date.replaceAll("-", "")}`, `DTEND;VALUE=DATE:${nextDay(end)}`]
       : [`DTSTART;TZID=${TZ}:${stamp(e.date, e.start)}`, `DTEND;TZID=${TZ}:${stamp(end, e.end)}`]),
-    `SUMMARY:${esc(`${NAME} — ${e.title}`)}`,
-    `DESCRIPTION:${esc(e.summary)}`,
-    `LOCATION:${esc(e.location ?? "")}`,
+    `SUMMARY:${esc(`${NAME} — ${e.title.en}`)}`,
+    `DESCRIPTION:${esc(e.summary.en)}`,
+    `LOCATION:${esc(e.location?.en ?? "")}`,
+    `URL:${site.url}/events/${e.slug}/`,
     "END:VEVENT",
   );
 }
 
 lines.push("END:VCALENDAR");
-// Le format impose CRLF.
-await writeFile("public/albert-light.ics", lines.join("\r\n") + "\r\n");
-console.log(`albert-light.ics généré — ${entries.length} évènements`);
+// Le format exige CRLF.
+const OUT = "public/albert-light.ics";
+const next = lines.join("\r\n") + "\r\n";
+
+// L'horodatage (DTSTAMP) change à chaque passage. Lui seul ne justifie pas
+// de réécrire le fichier : on ne l'écrit que si le programme a changé. Le
+// dépôt reste propre d'un build à l'autre, et l'horodatage dit quelque
+// chose de vrai — la dernière fois que le calendrier a bougé.
+const bare = (text) => text.replace(/^DTSTAMP:.*\r?\n/gm, "");
+let previous = "";
+try {
+  previous = await readFile(OUT, "utf8");
+} catch {
+  // Pas encore de fichier : on l'écrit.
+}
+
+if (previous && bare(previous) === bare(next)) {
+  console.log(`${OUT} — à jour (${events.length} événements)`);
+} else {
+  await writeFile(OUT, next);
+  console.log(`${OUT} — réécrit (${events.length} événements)`);
+}

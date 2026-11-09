@@ -14,7 +14,7 @@ import { Bricolage_Grotesque, IBM_Plex_Mono } from "next/font/google";
  * il sert aux chiffres, aux prix, aux dates, aux libellés et aux
  * références de loi. Partout où le site cite une donnée plutôt que de
  * parler. Plex Mono a des chiffres de même chasse et un dessin sobre qui
- * ne se bat pas avec Inter.
+ * ne se bat pas avec Bricolage.
  */
 export const body = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -25,7 +25,9 @@ export const body = Bricolage_Grotesque({
 
 export const mono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  // Deux graisses, pas trois : chaque fichier de police est sur le chemin
+  // du premier affichage.
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });

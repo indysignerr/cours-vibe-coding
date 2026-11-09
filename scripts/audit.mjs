@@ -8,7 +8,7 @@
  * image sans alt, id en double. Rien d'autre à lire.
  */
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { join } from "node:path";
 
 const OUT = "out";
 const SITE = "https://albertlight.com";
@@ -23,7 +23,19 @@ const pages = [];
 
 const issues = [];
 const note = (page, msg) => issues.push(`${page.replace(/^out/, "").replace(/index\.html$/, "")}  ${msg}`);
-const attr = (tag, name) => (tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, "i")) || [])[1];
+// Les longueurs se mesurent sur le texte que lit Google, pas sur son
+// échappement HTML : en français une apostrophe devient « &#x27; », six
+// signes pour un, et une description juste paraissait trop longue.
+const decode = (s) =>
+  s == null
+    ? s
+    : s
+        .replace(/&#x27;|&#39;|&apos;/g, "'")
+        .replace(/&quot;/g, '"')
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&amp;/g, "&");
+const attr = (tag, name) => decode((tag.match(new RegExp(`\\s${name}=["']([^"']*)["']`, "i")) || [])[1]);
 const exists = (url) => {
   const clean = url.split(/[?#]/)[0];
   if (!clean.startsWith("/")) return true;
@@ -37,7 +49,7 @@ for (const page of pages) {
   const is404 = page.endsWith("404.html") || /\/_not-found\//.test(page) || /name=["']robots["'][^>]*noindex/i.test(html);
   const route = page.replace(/^out/, "").replace(/index\.html$/, "");
 
-  const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1];
+  const title = decode((html.match(/<title>([^<]*)<\/title>/) || [])[1]);
   if (!title) note(page, "titre absent");
   else {
     if (title.length > 70) note(page, `titre long : ${title.length} car.`);

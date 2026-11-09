@@ -1,6 +1,8 @@
 // Une image de partage par page, et non une seule pour tout le site.
-// Un lien vers /solutions/ partagé sur LinkedIn doit montrer les offres,
-// pas la page d'accueil. Relancer après un changement de titre.
+// Un lien vers /team/ partagé sur LinkedIn doit montrer l'équipe, pas la
+// page d'accueil. Relancer après un changement d'accroche :
+//   node scripts/generate-og.mjs
+// La correspondance page → image est dans src/lib/metadata.ts.
 import { writeFile, mkdir } from "node:fs/promises";
 import sharp from "sharp";
 import { mark, NAVY, BEIGE, LIGHT_BEIGE, IVORY } from "./brand.mjs";
@@ -12,9 +14,8 @@ const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
 const PAGES = [
   { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["Albert School's student lab", "for AI and code."], foot: "WORKSHOPS · BUILD LAB · TOURNAMENTS" },
   { slug: "events", kicker: "EVENTS · NOVEMBER TO MAY", lines: ["Something on at least", "every two weeks."], foot: "FREE · BEGINNERS WELCOME" },
-  { slug: "about", kicker: "WHO WE ARE", lines: ["A lab,", "not a club."], foot: "RECOGNISED BY ALBERT SCHOOL" },
+  { slug: "team", kicker: "WHO WE ARE", lines: ["A lab,", "not a club."], foot: "RECOGNISED BY ALBERT SCHOOL" },
   { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "BEGINNERS WELCOME" },
-  { slug: "contact", kicker: "CONTACT", lines: ["Talk to us."], foot: "STUDENTS · PARTNERS · SPEAKERS" },
 ];
 
 const card = ({ kicker, lines, foot }) => `

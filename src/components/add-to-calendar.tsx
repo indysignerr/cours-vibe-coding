@@ -7,29 +7,26 @@ import type { SiteEvent } from "@/lib/events";
  */
 export function AddToCalendar({
   event,
-  label = "Add to Google Calendar",
-  variant = "ghost",
+  label,
+  icsLabel,
 }: {
   event: SiteEvent;
-  label?: string;
-  variant?: "ghost" | "primary" | "brand" | "outline";
+  label: string;
+  icsLabel: string;
 }) {
   return (
-    <span className="flex flex-wrap items-center gap-3">
+    <span className="add-cal">
       <a
-        className={`btn btn--${variant}`}
+        className="btn btn--ghost"
         href={googleCalendarUrl(event)}
         target="_blank"
         rel="noopener noreferrer"
+        data-magnetic
       >
         {label}
       </a>
-      <a
-        className="tap inline-flex items-center text-sm text-muted underline underline-offset-4 transition-colors hover:text-ink"
-        href="/albert-light.ics"
-        download
-      >
-        Apple or Outlook (.ics)
+      <a className="link" href="/albert-light.ics" download>
+        {icsLabel}
       </a>
     </span>
   );

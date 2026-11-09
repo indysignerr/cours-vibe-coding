@@ -7,92 +7,102 @@ X-WR-CALNAME:Albert L.I.G.H.T.
 X-WR-TIMEZONE:Europe/Rome
 BEGIN:VEVENT
 UID:ai-discovery-day-maggiore@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20261107
 DTEND;VALUE=DATE:20261108
 SUMMARY:Albert L.I.G.H.T. — AI Discovery Day\, Lake Maggiore
 DESCRIPTION:A one to two hour session Albert School asked us to run\, on entrepreneurship with some data and AI.
 LOCATION:Lake Maggiore
+URL:https://albertlight.com/events/ai-discovery-day-maggiore/
 END:VEVENT
 BEGIN:VEVENT
 UID:tournament-1@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;TZID=Europe/Rome:20261121T140000
 DTEND;TZID=Europe/Rome:20261121T180000
 SUMMARY:Albert L.I.G.H.T. — Vibe coding tournament #1
-DESCRIPTION:The first tournament of the year\, and the start of the calendar.
+DESCRIPTION:The first tournament of the year\, and the start of the calendar. Teams race the clock to build a working app under a theme.
 LOCATION:
+URL:https://albertlight.com/events/tournament-1/
 END:VEVENT
 BEGIN:VEVENT
 UID:codemotion-llms-python@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;TZID=Europe/Rome:20261205T100000
 DTEND;TZID=Europe/Rome:20261205T140000
 SUMMARY:Albert L.I.G.H.T. — Codemotion × Albert LIGHT: LLMs in Python
 DESCRIPTION:A half day on large language models in Python\, prepared with Leonardo Ciabattini. Attendees get a certificate.
 LOCATION:
+URL:https://albertlight.com/events/codemotion-llms-python/
 END:VEVENT
 BEGIN:VEVENT
 UID:build-lab-1@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20261215
 DTEND;VALUE=DATE:20261216
 SUMMARY:Albert L.I.G.H.T. — Build Lab #1
-DESCRIPTION:The first Build Lab. One fixed room and time\, with an experienced member there each session.
+DESCRIPTION:The first Build Lab. One hour on your own project\, with an experienced member there each session. Then every other Tuesday.
 LOCATION:
+URL:https://albertlight.com/events/build-lab-1/
 END:VEVENT
 BEGIN:VEVENT
 UID:crash-course-1@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20270114
 DTEND;VALUE=DATE:20270115
 SUMMARY:Albert L.I.G.H.T. — Crash course #1: AI coding tools speedrun and API keys
 DESCRIPTION:An online evening on AI coding tools and API keys.
 LOCATION:
+URL:https://albertlight.com/events/crash-course-1/
 END:VEVENT
 BEGIN:VEVENT
 UID:cinema-night@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20270125
 DTEND;VALUE=DATE:20270201
 SUMMARY:Albert L.I.G.H.T. — Cinema night: Artificial\, and a discussion after
 DESCRIPTION:A screening of Artificial with a discussion after it\, open to other universities. The film opens in Italy on 20 January 2027\, distributed by I Wonder Pictures.
 LOCATION:
+URL:https://albertlight.com/events/cinema-night/
 END:VEVENT
 BEGIN:VEVENT
 UID:tournament-2@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20270213
 DTEND;VALUE=DATE:20270214
 SUMMARY:Albert L.I.G.H.T. — Vibe coding tournament #2
 DESCRIPTION:The second tournament of the year.
 LOCATION:
+URL:https://albertlight.com/events/tournament-2/
 END:VEVENT
 BEGIN:VEVENT
 UID:crash-course-2@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20270225
 DTEND;VALUE=DATE:20270226
 SUMMARY:Albert L.I.G.H.T. — Crash course #2: Docker and CI/CD
 DESCRIPTION:An online evening on Docker and CI/CD.
 LOCATION:
+URL:https://albertlight.com/events/crash-course-2/
 END:VEVENT
 BEGIN:VEVENT
 UID:crash-course-3@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20270311
 DTEND;VALUE=DATE:20270312
 SUMMARY:Albert L.I.G.H.T. — Crash course #3: cloud credits for student projects
 DESCRIPTION:An online evening on getting and using cloud credits for student projects.
 LOCATION:
+URL:https://albertlight.com/events/crash-course-3/
 END:VEVENT
 BEGIN:VEVENT
 UID:demo-day@albert-light
-DTSTAMP:20261104T152154Z
+DTSTAMP:20261109T013943Z
 DTSTART;VALUE=DATE:20270515
 DTEND;VALUE=DATE:20270516
 SUMMARY:Albert L.I.G.H.T. — Demo Day
 DESCRIPTION:Members show what they built this year.
 LOCATION:
+URL:https://albertlight.com/events/demo-day/
 END:VEVENT
 END:VCALENDAR

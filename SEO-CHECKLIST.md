@@ -1,6 +1,6 @@
 # SEO — ce qui est fait, et ce qui demande vos comptes
 
-Dernière mise à jour : 4 novembre 2026.
+Dernière mise à jour : 9 novembre 2026.
 
 ---
 
@@ -10,16 +10,16 @@ Dernière mise à jour : 4 novembre 2026.
 |---|---|
 | Domaine `albertlight.com` | en ligne, HTTPS, apex et www |
 | `www` → apex en 301 | ajouté dans `public/_redirects` |
-| Sitemap | 18 URL, avec `lastmod` |
+| Sitemap | 45 URL — les trois langues, avec `lastmod` et leurs `hreflang` |
 | `robots.txt` | ouvert, `/admin/` exclu |
-| Une page par évènement | 10 pages statiques |
+| Une page par évènement | 10 pages statiques, dans chacune des trois langues |
 | `schema.org/Event` | sur les 10, avec `name`, `startDate`, `location` |
 | `BreadcrumbList` | sur chaque page évènement |
-| `ItemList` | sur `/events/` |
+| `ItemList` | sur `/events/`, `/it/programma/` et `/fr/programme/` |
 | `Organization` | avec `sameAs` (LinkedIn), `alternateName`, `foundingDate` |
 | Titres et descriptions | uniques sur chaque page |
-| `canonical` | sur chaque page |
-| Audit statique | `node scripts/audit.mjs` — 22 pages, zéro défaut |
+| `canonical` et `hreflang` | sur chaque page : Google sait que `/events/`, `/it/programma/` et `/fr/programme/` sont la même page en trois langues |
+| Audit statique | `npm run audit` — 49 pages, zéro défaut |
 
 ---
 
@@ -42,7 +42,7 @@ survit à une refonte du site.
 6. **Inspection d'URL** → coller `https://albertlight.com/events/tournament-1/` → **Demander l'indexation**
 
 > Si la méthode DNS bloque, le site accepte aussi la balise HTML : coller le
-> code dans `googleSiteVerification` (`src/lib/site.ts`) et pousser. La
+> code dans `googleSiteVerification` (`content/site.json`) et pousser. La
 > propriété « Domaine » reste préférable.
 
 **À vérifier ensuite, dans Search Console :**
@@ -107,10 +107,14 @@ l'évènement concerné.
 ## 3. Encore ouvert
 
 - **`hello@albertlight.com` ne fonctionne pas** tant que Cloudflare Email
-  Routing n'est pas configuré. Le formulaire de contact y envoie : les
-  messages se perdent. (Le plan le prévoyait pour le 8 novembre.)
+  Routing n'est pas configuré. Le site l'affiche donc sans lien, avec la
+  mention « not live yet » ; une fois le routage en place, passer
+  `email.active` à `true` dans `content/site.json`. (Le plan le prévoyait
+  pour le 8 novembre.)
+- **Les inscriptions ne passent pas** : la base Supabase ne répond plus.
+  Voir « Les inscriptions » dans le README.
 - **Les AI discovery days** avec Albert School n'ont pas de date au plan
   (« TBC, from January ») : absentes du site, donc invisibles de Google.
-- **Des photos réelles.** Les images du site sont générées. Après le
-  tournoi du 21 novembre, de vraies photos valent mieux — pour les gens
-  comme pour Google Images.
+- **Des photos réelles.** Le site n'a plus aucune photo. Après le tournoi
+  du 21 novembre, en ajouter à la galerie de l'évènement (`gallery` dans
+  `content/events.json`) — pour les gens comme pour Google Images.

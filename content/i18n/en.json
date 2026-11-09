@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "home": {
+      "title": "Albert L.I.G.H.T. — Albert School's student lab for AI and code",
+      "description": "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab and vibe coding tournaments, at least every two weeks. Free."
+    },
+    "programme": {
+      "title": "Programme 2026–2027",
+      "description": "Every Albert LIGHT date from November 2026 to May 2027: tournaments, workshops, crash courses, Build Lab and open nights in Milan. Free."
+    },
+    "team": {
+      "title": "Team and partners",
+      "description": "The seven students who run Albert L.I.G.H.T. at Albert School Milano, and the partners who make the events possible."
+    },
+    "join": {
+      "title": "Join us",
+      "description": "For students at Albert School Milano: how to come to an event, and how you become a member of Albert L.I.G.H.T."
+    },
+    "eventTail": {
+      "open": "Open to all, free, Albert School Milano.",
+      "members": "Members, free, Albert School Milano."
+    }
+  },
+  "nav": {
+    "main": "Main",
+    "home": "Home",
+    "programme": "Programme",
+    "team": "Team",
+    "join": "Join",
+    "menu": "Menu",
+    "skip": "Skip to content",
+    "language": "Language",
+    "cta": "See the programme"
+  },
+  "sound": {
+    "label": "Ignition sound",
+    "on": "Sound on",
+    "off": "Sound off"
+  },
+  "hero": {
+    "eyebrow": "Student-run · Albert School Milano",
+    "tagline": "The launchpad where Albert students build portfolio-ready AI projects, master modern developer tools and meet real professionals, together.",
+    "ctaPrimary": "See the programme",
+    "ctaSecondary": "How to join",
+    "scroll": "Scroll. The filament has a letter to spell.",
+    "bulbAlt": "A light bulb whose filament draws the letter L",
+    "bulbButton": "Switch the light on",
+    "spelled": "L, for Lab.",
+    "words": [
+      "Lab",
+      "Intelligent",
+      "Generative",
+      "Hands-on",
+      "Technology"
+    ]
+  },
+  "manifesto": {
+    "eyebrow": "Manifesto",
+    "lines": [
+      "A lab, not a club.",
+      "Beginners welcome. Free.",
+      "Open events are for every Albert School student — no membership needed.",
+      "Tournaments and Build Lab are for members.",
+      "Becoming one is a tick on a form."
+    ],
+    "note": "English first, with Italian and French."
+  },
+  "pillars": {
+    "eyebrow": "What we do",
+    "title": "Four pillars. One lab.",
+    "formats": "Formats"
+  },
+  "timeline": {
+    "eyebrow": "Calendar 2026–2027",
+    "title": "Something on at least every two weeks.",
+    "filterLabel": "Filter the calendar by audience",
+    "all": "All",
+    "open": "Open",
+    "members": "Members",
+    "past": "Past",
+    "next": "Next",
+    "tbc": "Venue to be confirmed",
+    "online": "Online",
+    "seats": "{n} seats",
+    "backup": "Backup date: {date}",
+    "buildLabThen": "Then every other Tuesday:",
+    "full": "The full programme",
+    "shown": "{n} dates shown",
+    "details": "Details"
+  },
+  "formats": {
+    "workshop": "Workshop",
+    "crash-course": "Crash course",
+    "build-lab": "Build Lab",
+    "tournament": "Tournament",
+    "open-event": "Open event"
+  },
+  "audience": {
+    "open": "Open to all",
+    "members": "Members"
+  },
+  "egg": {
+    "eyebrow": "One more thing",
+    "title": "There is a switch somewhere.",
+    "body": "Click the bulb at the top of the page, or the button here, and see what the lab looks like with the light on.",
+    "on": "Switch the light on",
+    "off": "Switch it off",
+    "messageTitle": "You found the switch.",
+    "message": "Placeholder — the board is still writing its message.",
+    "signature": "The board",
+    "close": "Close"
+  },
+  "join": {
+    "eyebrow": "Join",
+    "title": "Come once. Stay if it is useful.",
+    "lede": "Two ways in. Both take a minute.",
+    "way1Title": "Sign up for an event",
+    "way1Body": "The form has a box that says “join Albert L.I.G.H.T.”. Tick it, and you are a member.",
+    "way2Title": "Or scan the code on the day",
+    "way2Body": "There is a QR code at every event for joining on the spot.",
+    "opensTitle": "What membership opens",
+    "opensBody": "Vibe coding tournaments and Build Lab. Workshops, crash courses and the big open events are for every Albert School student, member or not.",
+    "beforeTitle": "Before you come",
+    "beforeBody": "Twenty minutes at home, so the room is spent building.",
+    "beforeNote": "In English",
+    "nextTitle": "Next up",
+    "signup": "Sign up",
+    "more": "How joining works"
+  },
+  "team": {
+    "eyebrow": "Team",
+    "title": "A board of {n} students.",
+    "lede": "They run the sessions, book the rooms and bring in the partners.",
+    "founders": "Founded by {names}.",
+    "partnersEyebrow": "Partners",
+    "partnersTitle": "Partners, and what we ask them for.",
+    "getsTitle": "What a partner gets",
+    "gets": [
+      "Their logo on the event and its posts",
+      "A five-minute talk slot",
+      "The chance to set a tournament challenge",
+      "First access to motivated tech students for internships and junior roles"
+    ],
+    "asks": "What we ask for: prizes, credits, a speaker or food, before any money.",
+    "more": "Meet the team"
+  },
+  "footer": {
+    "about": "Student-run association at Albert School Milano. Free events, beginners welcome.",
+    "emailSoon": "not live yet",
+    "beforeYouCome": "Before you come",
+    "legal": "Legal notice",
+    "privacy": "Privacy",
+    "linkedin": "LinkedIn",
+    "explore": "Explore",
+    "contact": "Contact",
+    "legalTitle": "Legal"
+  },
+  "programme": {
+    "eyebrow": "Programme",
+    "title": "The whole year, date by date.",
+    "lede": "From the first tournament on 21 November through Demo Day in May. Free, and beginners welcome.",
+    "formatLabel": "Filter by format",
+    "audienceLabel": "Filter by audience",
+    "formatAll": "Every format",
+    "upcoming": "Coming up",
+    "pastTitle": "Already happened",
+    "none": "Nothing matches these filters.",
+    "buildLabTitle": "Build Lab, every other Tuesday",
+    "buildLabBody": "One hour on your own project, with an experienced member there. Members only.",
+    "calendarTitle": "Keep it in your calendar",
+    "calendarBody": "Every date in one file, for Google, Apple or Outlook.",
+    "download": "Download the calendar (.ics)"
+  },
+  "event": {
+    "breadcrumb": "Breadcrumb",
+    "when": "When",
+    "time": "Time",
+    "where": "Where",
+    "for": "For",
+    "seats": "Seats",
+    "seatsMax": "{n} max",
+    "with": "With",
+    "price": "Price",
+    "free": "Free",
+    "backup": "Backup date",
+    "signupOpen": "Tell us you are coming",
+    "signupCompete": "Put your name down",
+    "happened": "This event has taken place.",
+    "gallery": "Gallery",
+    "galleryAlt": "Photo from {title}",
+    "also": "Also coming up",
+    "wholeYear": "The whole programme",
+    "addDate": "Add the date",
+    "ics": "Apple or Outlook (.ics)"
+  },
+  "form": {
+    "notOn": "Sign-ups are not open yet. The date is firm: add it to your calendar, and come back here to put your name down.",
+    "noJs": "The sign-up form needs JavaScript. The date is firm, and the calendar links on this page work without it.",
+    "addGoogle": "Add to Google Calendar",
+    "doneTitle": "You are on the list.",
+    "doneNoCap": "No cap on this one. See you there.",
+    "doneLeft": "Places left after yours: {n}.",
+    "doneLast": "That was the last place.",
+    "doneCalendar": "Put it in your calendar so you do not have to remember it.",
+    "name": "Full name",
+    "email": "Email",
+    "org": "Course and year",
+    "optional": "Optional",
+    "note": "Anything we should know?",
+    "notePlaceholderCompete": "Who you are coming with, or that you need a team.",
+    "notePlaceholder": "What you want to get out of it, or who you want to meet.",
+    "joinBox": "I want to join Albert L.I.G.H.T. (free)",
+    "busy": "One moment…",
+    "submitCompete": "Count me in",
+    "submit": "Sign me up",
+    "privacy": "We keep your name and email to know who is coming, and we delete the list a month after the event. We never pass it on. Write to us and we remove you the same day.",
+    "errFull": "This one is full. Write to us and we will tell you when the next date opens.",
+    "errClosed": "Sign-ups for this date are closed.",
+    "errUnknown": "Sign-ups are not open yet for this date.",
+    "errCheck": "Check the name and the email, one of the two was not accepted.",
+    "errGeneric": "That did not go through. Try again in a moment, or write to us."
+  }
+}

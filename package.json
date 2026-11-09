@@ -3,26 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/generate-ics.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/generate-ics.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "images": "node scripts/generate-images.mjs"
+    "ics": "node scripts/generate-ics.mjs",
+    "events:sql": "node scripts/events-to-sql.mjs",
+    "audit": "node scripts/audit.mjs",
+    "contrast": "node scripts/check-contrast.mjs"
   },
   "engines": {
     "node": ">=20.9.0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.115.0",
+    "gsap": "^3.15.1",
+    "lenis": "^1.3.27",
     "next": "16.3.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "three": "^0.187.0"
   },
   "devDependencies": {
-    "@google/genai": "^2.32.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.187.0",
     "autoprefixer": "^10.5.4",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
@@ -30,7 +38,6 @@
     "postcss": "^8.5.28",
     "sharp": "^0.35.4",
     "tailwindcss": "^3.4.19",
-    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
   }
 }

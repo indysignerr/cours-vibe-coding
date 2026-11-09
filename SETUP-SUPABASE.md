@@ -1,5 +1,11 @@
 # Supabase, avant le déploiement Cloudflare
 
+> **Archive.** Cette marche à suivre date de l'ancien parcours de cours
+> (invitations, séances, concours). Pour le site actuel, suivre la section
+> « Les inscriptions » du `README.md` : `supabase/setup.sql` pour un projet
+> neuf, puis `supabase/008_programme.sql`. `bootstrap.sql` échoue sur une
+> base neuve et ne doit plus servir.
+
 Ordre à respecter. Les étapes 1 à 6 se font avant Cloudflare, l'étape 8
 seulement après le premier déploiement, parce qu'elle a besoin de l'URL.
 

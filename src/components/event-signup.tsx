@@ -1,42 +1,90 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { googleCalendarUrl } from "@/lib/calendar";
-import type { SiteEvent } from "@/lib/events";
-import { isSupabaseConfigured, getSupabase } from "@/lib/supabase/client";
+import { isPast, today, type SiteEvent } from "@/lib/events";
+import type { Dict } from "@/lib/i18n";
+import { fetchEventCounts, getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
 /**
- * Inscription à un évènement, depuis le navigateur.
+ * Inscription à un événement, depuis le navigateur.
  *
  * Aucun serveur : l'appel part vers la fonction `rsvp` de Supabase, en
  * security definer. Le visiteur n'a aucun droit d'écriture sur la table
  * et aucun droit de lecture sur la liste des inscrits — voir
- * supabase/006_events.sql. Le formulaire ne fait que poster.
+ * supabase/007_events.sql. Le formulaire ne fait que poster.
+ *
+ * La case « join Albert L.I.G.H.T. » est celle dont parle la page
+ * Rejoindre. La fonction `rsvp` n'a pas de paramètre pour elle : cochée,
+ * elle ajoute la mention [JOIN] en tête de la note, que le tableau des
+ * organisateurs (/admin/) relit pour en faire une colonne. Aucune
+ * migration à passer.
+ *
+ * Le formulaire ne s'affiche que s'il peut aboutir. La page est statique :
+ * elle ne sait ni si la base répond, ni si l'événement y a été chargé, ni
+ * quel jour on est chez le visiteur. Une sonde le vérifie à l'arrivée, et
+ * trois cas remplacent le formulaire par une phrase honnête :
+ *   — la base ne répond pas, ou ne connaît pas cet événement → « pas
+ *     encore ouvertes », avec le lien pour noter la date ;
+ *   — la date est passée depuis le dernier déploiement → « closes ».
  */
-export function EventSignup({ event }: { event: SiteEvent }) {
+export function EventSignup({
+  event,
+  labels: l,
+}: {
+  event: SiteEvent;
+  labels: Dict["form"];
+}) {
   const id = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
   const [organisation, setOrganisation] = useState("");
+  const [join, setJoin] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<{ seatsLeft: number | null } | null>(null);
+  // « checking » affiche le formulaire : c'est le cas de loin le plus
+  // fréquent, et la page ne doit pas sauter quand tout va bien.
+  const [status, setStatus] = useState<"checking" | "on" | "off" | "over">("checking");
 
-  if (!isSupabaseConfigured()) {
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    let dead = false;
+    void (async () => {
+      // Le jour du visiteur, pas celui du build.
+      if (isPast(event, today())) {
+        if (!dead) setStatus("over");
+        return;
+      }
+      const counts = await fetchEventCounts();
+      if (dead) return;
+      setStatus(counts?.some((c) => c.event_slug === event.slug) ? "on" : "off");
+    })();
+    return () => {
+      dead = true;
+    };
+  }, [event]);
+
+  if (status === "over") {
+    return (
+      <div className="card card--sand p-6" role="status">
+        <p>{l.errClosed}</p>
+      </div>
+    );
+  }
+
+  if (!isSupabaseConfigured() || status === "off") {
     return (
       <div className="card card--sand p-6">
-        <p className="text-body">
-          Sign-ups are not switched on yet. The date is firm — add it to your calendar and we will
-          open the list a fortnight before the {event.format.toLowerCase()}.
-        </p>
+        <p>{l.notOn}</p>
         <a
           className="btn btn--ghost mt-5"
           href={googleCalendarUrl(event)}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Add to Google Calendar
+          {l.addGoogle}
         </a>
       </div>
     );
@@ -45,32 +93,23 @@ export function EventSignup({ event }: { event: SiteEvent }) {
   if (done) {
     return (
       <div className="card card--sand p-6" role="status">
-        <p className="display-3">You are on the list.</p>
-        <p className="mt-3 text-body">
+        <p className="display-3">{l.doneTitle}</p>
+        <p className="mt-3">
           {done.seatsLeft === null
-            ? "No cap on this one. See you there."
+            ? l.doneNoCap
             : done.seatsLeft > 0
-              ? `${done.seatsLeft} ${done.seatsLeft === 1 ? "place" : "places"} left after yours.`
-              : "That was the last place."}{" "}
-          Put it in your calendar so you do not have to remember it.
+              ? l.doneLeft.replace("{n}", String(done.seatsLeft))
+              : l.doneLast}{" "}
+          {l.doneCalendar}
         </p>
-        <div className="mt-5 flex flex-wrap items-center gap-3">
-          <a
-            className="btn btn--brand"
-            href={googleCalendarUrl(event)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Add to Google Calendar
-          </a>
-          <a
-            className="tap inline-flex items-center text-sm text-muted underline underline-offset-4 hover:text-ink"
-            href="/albert-light.ics"
-            download
-          >
-            Apple or Outlook (.ics)
-          </a>
-        </div>
+        <a
+          className="btn btn--primary mt-5"
+          href={googleCalendarUrl(event)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {l.addGoogle}
+        </a>
       </div>
     );
   }
@@ -79,36 +118,39 @@ export function EventSignup({ event }: { event: SiteEvent }) {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    const fullNote = [join ? "[JOIN]" : "", note].filter(Boolean).join(" ");
     const { data, error: err } = await getSupabase().rpc("rsvp", {
       p_slug: event.slug,
       p_name: name,
       p_email: email,
       p_organisation: organisation || null,
-      p_note: note || null,
+      p_note: fullNote || null,
     });
     setBusy(false);
     if (err) {
       const m = err.message.toLowerCase();
-      if (m.includes("full")) return setError("This one is full. Write to us and we will tell you when the next date opens.");
-      if (m.includes("closed") || m.includes("past")) return setError("Sign-ups for this date are closed.");
-      if (m.includes("unknown")) return setError("Sign-ups are not open yet for this date.");
-      if (m.includes("check") || m.includes("constraint")) return setError("Check the name and the email, one of the two was not accepted.");
-      return setError("That did not go through. Try again in a moment, or write to us.");
+      if (m.includes("full")) return setError(l.errFull);
+      if (m.includes("closed") || m.includes("past")) return setError(l.errClosed);
+      if (m.includes("unknown")) return setError(l.errUnknown);
+      if (m.includes("check") || m.includes("constraint")) return setError(l.errCheck);
+      return setError(l.errGeneric);
     }
-    const seats = Array.isArray(data) ? (data[0] as { seats_left: number | null } | undefined) : null;
+    const seats = Array.isArray(data)
+      ? (data[0] as { seats_left: number | null } | undefined)
+      : null;
     setDone({ seatsLeft: seats?.seats_left ?? null });
   }
 
   return (
-    <form onSubmit={submit} noValidate>
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form className="signup" onSubmit={submit} noValidate>
+      <div className="signup__row">
         <div>
-          <label className="block text-sm font-medium text-ink" htmlFor={`${id}-name`}>
-            Full name
+          <label className="label" htmlFor={`${id}-name`}>
+            {l.name}
           </label>
           <input
             id={`${id}-name`}
-            className="field mt-2"
+            className="field"
             required
             minLength={2}
             maxLength={80}
@@ -119,12 +161,12 @@ export function EventSignup({ event }: { event: SiteEvent }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-ink" htmlFor={`${id}-email`}>
-            Email
+          <label className="label" htmlFor={`${id}-email`}>
+            {l.email}
           </label>
           <input
             id={`${id}-email`}
-            className="field mt-2"
+            className="field"
             type="email"
             required
             autoComplete="email"
@@ -135,49 +177,60 @@ export function EventSignup({ event }: { event: SiteEvent }) {
         </div>
       </div>
 
-      {event.audience === "Open to all" ? (
-        <>
-          <label className="mt-5 block text-sm font-medium text-ink" htmlFor={`${id}-org`}>
-            Course and year <span className="font-normal text-muted">Optional</span>
+      {event.audience === "open" ? (
+        <div>
+          <label className="label" htmlFor={`${id}-org`}>
+            {l.org} <span className="label__opt">{l.optional}</span>
           </label>
           <input
             id={`${id}-org`}
-            className="field mt-2"
+            className="field"
             maxLength={120}
             autoComplete="organization"
             value={organisation}
             onChange={(e) => setOrganisation(e.target.value)}
           />
-        </>
+        </div>
       ) : null}
 
-      <label className="mt-5 block text-sm font-medium text-ink" htmlFor={`${id}-note`}>
-        Anything we should know? <span className="font-normal text-muted">Optional</span>
+      <div>
+        <label className="label" htmlFor={`${id}-note`}>
+          {l.note} <span className="label__opt">{l.optional}</span>
+        </label>
+        <textarea
+          id={`${id}-note`}
+          className="field"
+          maxLength={480}
+          rows={3}
+          placeholder={
+            event.kind === "compete" ? l.notePlaceholderCompete : l.notePlaceholder
+          }
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+      </div>
+
+      <label className="check" htmlFor={`${id}-join`}>
+        <input
+          id={`${id}-join`}
+          type="checkbox"
+          checked={join}
+          onChange={(e) => setJoin(e.target.checked)}
+        />
+        <span>{l.joinBox}</span>
       </label>
-      <textarea
-        id={`${id}-note`}
-        className="field mt-2 min-h-[5.5rem]"
-        maxLength={500}
-        rows={3}
-        placeholder={event.kind === "compete" ? "Who you are coming with, or that you need a team." : "What you want to get out of it, or who you want to meet."}
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-      />
 
       {error ? (
-        <p role="alert" className="card card--tint mt-5 p-4 text-ink">
+        <p role="alert" className="card card--tint p-4">
           {error}
         </p>
       ) : null}
 
-      <button type="submit" disabled={busy} className="btn btn--primary mt-6 disabled:opacity-55">
-        {busy ? "One moment…" : event.kind === "compete" ? "Count me in" : "Sign me up"}
+      <button type="submit" disabled={busy} className="btn btn--primary" data-magnetic>
+        {busy ? l.busy : event.kind === "compete" ? l.submitCompete : l.submit}
       </button>
 
-      <p className="mt-4 max-w-measure text-sm text-muted">
-        We keep your name and email to know who is coming, and we delete the list a month after the
-        event. We never pass it on. Write to us and we remove you the same day.
-      </p>
+      <p className="signup__privacy">{l.privacy}</p>
     </form>
   );
 }

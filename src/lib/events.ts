@@ -1,31 +1,35 @@
-import type { Pillar } from "@/lib/pillars";
+import data from "@content/events.json";
+import { INTL, t, type Locale } from "@/lib/i18n";
+import type { PillarKey } from "@/lib/pillars";
 
 /**
- * Le calendrier 2026/27.
+ * Le calendrier 2026/27, lu dans content/events.json.
  *
- * RÈGLE DE CE FICHIER : rien ici n'est inventé. Chaque champ vient du
- * plan annuel. Quand le plan ne dit pas, le champ est absent et le site
- * affiche « To be confirmed » — jamais une valeur plausible.
- *
- * Le plan donne, pour chaque date : le nom, le pilier, le public, le
- * responsable, et l'heure quand elle est arrêtée. Il ne donne ni les
- * salles, ni les jauges (sauf Codemotion, « 10–30 people »), ni de
- * déroulé heure par heure. Ces champs ont donc disparu.
+ * RÈGLE : rien ici n'est inventé. Chaque champ vient du plan annuel.
+ * Quand le plan ne dit pas, le champ est absent et le site affiche
+ * « lieu à confirmer » — jamais une valeur plausible.
  *
  * Les inscriptions vivent dans Supabase : le `slug` est la clé commune,
- * identique à supabase/007_events.sql.
+ * identique à supabase/007_events.sql. Il ne change jamais.
  */
-export type EventKind = Pillar["key"];
+export type EventKind = PillarKey;
+export type FormatKey =
+  | "workshop"
+  | "crash-course"
+  | "build-lab"
+  | "tournament"
+  | "open-event";
+export type Audience = "open" | "members";
 
 export type SiteEvent = {
   slug: string;
   kind: EventKind;
-  /** Le format, tel que nommé dans le plan. */
+  formatKey: FormatKey;
+  /** Le format, dans la langue demandée. */
   format: string;
   title: string;
-  /** Ce que le plan dit de l'évènement. Rien de plus. */
   summary: string;
-  /** AAAA-MM-JJ. Absent quand le plan dit « TBC ». */
+  /** AAAA-MM-JJ. */
   date: string;
   endDate?: string;
   /** HH:MM, seulement quand le plan fixe l'heure. */
@@ -33,170 +37,69 @@ export type SiteEvent = {
   end?: string;
   /** Seulement quand le plan nomme le lieu. */
   location?: string;
-  audience: "Open to all" | "Members";
+  online: boolean;
+  audience: Audience;
+  audienceLabel: string;
   /** Seulement quand le plan donne une jauge. */
-  capacity?: number | null;
-  /** Qui porte l'évènement, dans les mots du plan. */
-  lead: string;
+  capacity: number | null;
   partner?: string;
-  /** Ce que le plan liste comme travail à faire avant. */
-  prep?: string;
   /** Une date de repli, quand le plan en réserve une. */
   backup?: string;
+  /** Les photos, une fois l'événement passé. */
+  gallery: string[];
 };
 
-export const EVENTS: SiteEvent[] = [
-  {
-    slug: "ai-discovery-day-maggiore",
-    kind: "connect",
-    format: "Big open event",
-    title: "AI Discovery Day, Lake Maggiore",
-    summary:
-      "A one to two hour session Albert School asked us to run, on entrepreneurship with some data and AI.",
-    date: "2026-11-07",
-    location: "Lake Maggiore",
-    audience: "Open to all",
-    lead: "Whoever is already on it",
-    partner: "Albert School",
-  },
-  {
-    slug: "tournament-1",
-    kind: "compete",
-    format: "Vibe coding tournament",
-    title: "Vibe coding tournament #1",
-    summary: "The first tournament of the year, and the start of the calendar.",
-    date: "2026-11-21",
-    start: "14:00",
-    end: "18:00",
-    audience: "Members",
-    lead: "To assign",
-    prep: "Room, theme, jury and prizes, then sign-ups open.",
-  },
-  {
-    slug: "codemotion-llms-python",
-    kind: "learn",
-    format: "Workshop",
-    title: "Codemotion × Albert LIGHT: LLMs in Python",
-    summary:
-      "A half day on large language models in Python, prepared with Leonardo Ciabattini. Attendees get a certificate.",
-    date: "2026-12-05",
-    start: "10:00",
-    end: "14:00",
-    audience: "Open to all",
-    capacity: 30,
-    lead: "Benjamin",
-    partner: "Codemotion",
-    backup: "2026-12-12",
-  },
-  {
-    slug: "build-lab-1",
-    kind: "build",
-    format: "Build Lab",
-    title: "Build Lab #1",
-    summary:
-      "The first Build Lab. One fixed room and time, with an experienced member there each session.",
-    date: "2026-12-15",
-    audience: "Members",
-    lead: "Rotates",
-  },
-  {
-    slug: "crash-course-1",
-    kind: "learn",
-    format: "Crash course",
-    title: "Crash course #1: AI coding tools speedrun and API keys",
-    summary: "An online evening on AI coding tools and API keys.",
-    date: "2027-01-14",
-    start: "18:30",
-    audience: "Open to all",
-    lead: "To assign",
-  },
-  {
-    slug: "cinema-night",
-    kind: "connect",
-    format: "Big open event",
-    title: "Cinema night: Artificial, and a discussion after",
-    summary:
-      "A screening of Artificial with a discussion after it, open to other universities. The film opens in Italy on 20 January 2027, distributed by I Wonder Pictures.",
-    date: "2027-01-25",
-    endDate: "2027-01-31",
-    audience: "Open to all",
-    lead: "To assign, with Floriano's team",
-  },
-  {
-    slug: "tournament-2",
-    kind: "compete",
-    format: "Vibe coding tournament",
-    title: "Vibe coding tournament #2",
-    summary: "The second tournament of the year.",
-    date: "2027-02-13",
-    audience: "Members",
-    lead: "To assign",
-    prep: "Room, theme, jury and prizes, then sign-ups open.",
-  },
-  {
-    slug: "crash-course-2",
-    kind: "learn",
-    format: "Crash course",
-    title: "Crash course #2: Docker and CI/CD",
-    summary: "An online evening on Docker and CI/CD.",
-    date: "2027-02-25",
-    start: "18:30",
-    audience: "Open to all",
-    lead: "To assign",
-  },
-  {
-    slug: "crash-course-3",
-    kind: "learn",
-    format: "Crash course",
-    title: "Crash course #3: cloud credits for student projects",
-    summary:
-      "An online evening on getting and using cloud credits for student projects.",
-    date: "2027-03-11",
-    start: "18:30",
-    audience: "Open to all",
-    lead: "To assign",
-  },
-  {
-    slug: "demo-day",
-    kind: "connect",
-    format: "Big open event",
-    title: "Demo Day",
-    summary: "Members show what they built this year.",
-    date: "2027-05-15",
-    audience: "Open to all",
-    lead: "To assign",
-  },
-];
+export function getEvents(lang: Locale = "en"): SiteEvent[] {
+  const d = t(lang);
+  return data.events.map((e) => ({
+    slug: e.slug,
+    kind: e.pillar as EventKind,
+    formatKey: e.format as FormatKey,
+    format: d.formats[e.format as FormatKey],
+    title: e.title[lang],
+    summary: e.summary[lang],
+    date: e.date,
+    endDate: e.endDate ?? undefined,
+    start: e.start ?? undefined,
+    end: e.end ?? undefined,
+    location: e.location ? e.location[lang] : undefined,
+    online: e.online,
+    audience: e.audience as Audience,
+    audienceLabel: d.audience[e.audience as Audience],
+    capacity: e.capacity,
+    partner: e.partner ?? undefined,
+    backup: e.backup ?? undefined,
+    gallery: e.gallery as string[],
+  }));
+}
 
-export const BUILD_LAB_DATES = [
-  "2027-01-12",
-  "2027-01-26",
-  "2027-02-09",
-  "2027-02-23",
-  "2027-03-09",
-  "2027-03-23",
-  "2027-04-06",
-  "2027-04-20",
-  "2027-05-04",
-  "2027-05-18",
-];
+/** En anglais : pour le tableau des inscriptions, le plan du site, le fichier .ics. */
+export const EVENTS = getEvents("en");
 
-export const upcoming = (from = new Date()) => {
-  const today = from.toISOString().slice(0, 10);
-  return EVENTS.filter((e) => (e.endDate ?? e.date) >= today).sort((a, b) =>
-    a.date.localeCompare(b.date),
-  );
-};
+export const BUILD_LAB_FIRST = data.buildLab.first;
+export const BUILD_LAB_DATES = data.buildLab.dates;
 
-export const past = (from = new Date()) => {
-  const today = from.toISOString().slice(0, 10);
-  return EVENTS.filter((e) => (e.endDate ?? e.date) < today).sort((a, b) =>
-    b.date.localeCompare(a.date),
-  );
-};
+/** Le jour du build, AAAA-MM-JJ. Le navigateur recalcule le sien. */
+export const today = (from = new Date()) => from.toISOString().slice(0, 10);
 
-export function readableDate(date: string) {
-  return new Date(`${date}T12:00:00Z`).toLocaleDateString("en-GB", {
+export const isPast = (e: Pick<SiteEvent, "date" | "endDate">, day = today()) =>
+  (e.endDate ?? e.date) < day;
+
+export const upcoming = (lang: Locale = "en", day = today()) =>
+  getEvents(lang)
+    .filter((e) => !isPast(e, day))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+export const past = (lang: Locale = "en", day = today()) =>
+  getEvents(lang)
+    .filter((e) => isPast(e, day))
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+const at = (date: string) => new Date(`${date}T12:00:00Z`);
+
+/** « Saturday 21 November 2026 ». */
+export function readableDate(date: string, lang: Locale = "en") {
+  return at(date).toLocaleDateString(INTL[lang], {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -205,20 +108,24 @@ export function readableDate(date: string) {
   });
 }
 
-export function readableSpan(e: SiteEvent) {
-  if (!e.endDate) return readableDate(e.date);
-  const d1 = new Date(`${e.date}T12:00:00Z`);
-  const d2 = new Date(`${e.endDate}T12:00:00Z`);
+/** Une date, ou une plage quand l'événement tombe « dans la semaine du ». */
+export function readableSpan(
+  e: Pick<SiteEvent, "date" | "endDate">,
+  lang: Locale = "en",
+) {
+  if (!e.endDate) return readableDate(e.date, lang);
+  const d1 = at(e.date);
+  const d2 = at(e.endDate);
   const month = (d: Date) =>
-    d.toLocaleDateString("en-GB", { month: "long", timeZone: "UTC" });
+    d.toLocaleDateString(INTL[lang], { month: "long", timeZone: "UTC" });
   return month(d1) === month(d2)
     ? `${d1.getUTCDate()}–${d2.getUTCDate()} ${month(d2)} ${d2.getUTCFullYear()}`
     : `${d1.getUTCDate()} ${month(d1)} – ${d2.getUTCDate()} ${month(d2)} ${d2.getUTCFullYear()}`;
 }
 
 /** « Sat 21 Nov », pour les listes denses. */
-export function shortDate(date: string) {
-  return new Date(`${date}T12:00:00Z`).toLocaleDateString("en-GB", {
+export function shortDate(date: string, lang: Locale = "en") {
+  return at(date).toLocaleDateString(INTL[lang], {
     weekday: "short",
     day: "numeric",
     month: "short",
@@ -226,14 +133,29 @@ export function shortDate(date: string) {
   });
 }
 
+/** Le jour, le mois et l'année séparés, pour les dates dessinées en grand. */
+export function dateParts(date: string, lang: Locale = "en") {
+  const d = at(date);
+  return {
+    day: String(d.getUTCDate()).padStart(2, "0"),
+    month: d.toLocaleDateString(INTL[lang], { month: "short", timeZone: "UTC" }),
+    monthLong: d.toLocaleDateString(INTL[lang], { month: "long", timeZone: "UTC" }),
+    weekday: d.toLocaleDateString(INTL[lang], { weekday: "long", timeZone: "UTC" }),
+    year: String(d.getUTCFullYear()),
+  };
+}
+
+/** « 14:00–18:00 », « 18:30 », ou rien. */
+export const timeRange = (e: Pick<SiteEvent, "start" | "end">) =>
+  e.start ? `${e.start}${e.end ? `–${e.end}` : ""}` : "";
+
 /**
  * L'instant de début, en millisecondes, dans le fuseau de Milan.
  *
  * Le décalage est lu pour LA date concernée : +01:00 en hiver, +02:00
- * après le dernier dimanche de mars. Un décalage codé en dur serait
- * faux pour Demo Day, en mai. Sans heure arrêtée, la cible est minuit.
+ * après le dernier dimanche de mars. Sans heure arrêtée, la cible est minuit.
  */
-export function eventStartMs(e: SiteEvent): number {
+export function eventStartMs(e: Pick<SiteEvent, "date" | "start">): number {
   const time = e.start ?? "00:00";
   const naive = new Date(`${e.date}T${time}:00Z`);
   const parts = new Intl.DateTimeFormat("en-US", {

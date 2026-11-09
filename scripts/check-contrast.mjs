@@ -1,5 +1,5 @@
 // Contrôle WCAG des deux peaux, lues dans src/app/globals.css.
-// Le site est sombre par défaut ; « .on-paper » inverse localement.
+// Le site est sombre par défaut ; « .on-light » inverse localement.
 // Texte courant 4.5:1, repères non textuels 3:1. Relancer après retouche.
 import { readFileSync } from "node:fs";
 

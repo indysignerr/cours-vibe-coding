@@ -1,0 +1,24 @@
+{
+  "name": "Albert L.I.G.H.T.",
+  "expansion": "Lab of Intelligent, Generative, Hands-on Technology",
+  "school": "Albert School",
+  "campus": "Milano",
+  "url": "https://albertlight.com",
+  "domain": "albertlight.com",
+  "tagline": "The launchpad where Albert students build portfolio-ready AI projects, master modern developer tools and meet real professionals, together.",
+  "legalMention": "A student-run association at Albert School Milano. Not affiliated with, endorsed by, or sponsored by the technology vendors named on this site.",
+  "timezone": "Europe/Rome",
+  "email": {
+    "address": "hello@albertlight.com",
+    "active": false,
+    "_note": "Passer active à true une fois le routage Cloudflare Email Routing en place : l'adresse devient alors un lien cliquable."
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/albertlight/"
+  },
+  "founders": ["Indy Francois", "Benjamin Gros-Piron", "Rafa"],
+  "googleSiteVerification": "",
+  "calendarId": "",
+  "whatsapp": "",
+  "bookingUrl": ""
+}

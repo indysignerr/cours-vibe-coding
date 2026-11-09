@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "home": {
+      "title": "Albert L.I.G.H.T. — Il lab di IA e codice di Albert School",
+      "description": "Il lab studentesco di IA e codice di Albert School, a Milano. Workshop, crash course, Build Lab e tornei di vibe coding, almeno ogni due settimane. Gratis."
+    },
+    "programme": {
+      "title": "Programma 2026–2027",
+      "description": "Tutte le date di Albert LIGHT da novembre 2026 a maggio 2027: tornei, workshop, crash course, Build Lab e serate aperte a Milano. Gratis."
+    },
+    "team": {
+      "title": "Team e partner",
+      "description": "I sette studenti che gestiscono Albert L.I.G.H.T. ad Albert School Milano, e i partner che rendono possibili gli eventi."
+    },
+    "join": {
+      "title": "Unisciti a noi",
+      "description": "Per gli studenti di Albert School Milano: come partecipare a un evento e come diventare membro di Albert L.I.G.H.T."
+    },
+    "eventTail": {
+      "open": "Aperto a tutti, gratis, Albert School Milano.",
+      "members": "Membri, gratis, Albert School Milano."
+    }
+  },
+  "nav": {
+    "main": "Navigazione principale",
+    "home": "Home",
+    "programme": "Programma",
+    "team": "Team",
+    "join": "Unisciti",
+    "menu": "Menu",
+    "skip": "Vai al contenuto",
+    "language": "Lingua",
+    "cta": "Vedi il programma"
+  },
+  "sound": {
+    "label": "Suono di accensione",
+    "on": "Suono attivo",
+    "off": "Suono disattivato"
+  },
+  "hero": {
+    "eyebrow": "Gestito da studenti · Albert School Milano",
+    "tagline": "Il trampolino di lancio dove gli studenti di Albert costruiscono progetti di IA da portfolio, padroneggiano i moderni strumenti di sviluppo e incontrano veri professionisti, insieme.",
+    "ctaPrimary": "Vedi il programma",
+    "ctaSecondary": "Come unirsi",
+    "scroll": "Scorri. Il filamento ha una lettera da scrivere.",
+    "bulbAlt": "Una lampadina il cui filamento disegna la lettera L",
+    "bulbButton": "Accendi la luce",
+    "spelled": "L, come Lab.",
+    "words": [
+      "Lab",
+      "Intelligent",
+      "Generative",
+      "Hands-on",
+      "Technology"
+    ]
+  },
+  "manifesto": {
+    "eyebrow": "Manifesto",
+    "lines": [
+      "Un laboratorio, non un club.",
+      "Principianti benvenuti. Gratis.",
+      "Gli eventi aperti sono per ogni studente di Albert School: non serve essere membri.",
+      "Tornei e Build Lab sono riservati ai membri.",
+      "Diventarlo è una spunta su un modulo."
+    ],
+    "note": "Prima in inglese, con italiano e francese."
+  },
+  "pillars": {
+    "eyebrow": "Cosa facciamo",
+    "title": "Quattro pilastri. Un solo lab.",
+    "formats": "Formati"
+  },
+  "timeline": {
+    "eyebrow": "Calendario 2026–2027",
+    "title": "Qualcosa in programma almeno ogni due settimane.",
+    "filterLabel": "Filtra il calendario per pubblico",
+    "all": "Tutto",
+    "open": "Aperto",
+    "members": "Membri",
+    "past": "Passato",
+    "next": "Prossimo",
+    "tbc": "Luogo da confermare",
+    "online": "Online",
+    "seats": "{n} posti",
+    "backup": "Data di riserva: {date}",
+    "buildLabThen": "Poi un martedì su due:",
+    "full": "Il programma completo",
+    "shown": "{n} date mostrate",
+    "details": "Dettagli"
+  },
+  "formats": {
+    "workshop": "Workshop",
+    "crash-course": "Crash course",
+    "build-lab": "Build Lab",
+    "tournament": "Torneo",
+    "open-event": "Evento aperto"
+  },
+  "audience": {
+    "open": "Aperto a tutti",
+    "members": "Membri"
+  },
+  "egg": {
+    "eyebrow": "Un'ultima cosa",
+    "title": "Da qualche parte c'è un interruttore.",
+    "body": "Clicca sulla lampadina in cima alla pagina, o sul pulsante qui, e guarda com'è il lab con la luce accesa.",
+    "on": "Accendi la luce",
+    "off": "Spegni",
+    "messageTitle": "Hai trovato l'interruttore.",
+    "message": "Testo provvisorio — il direttivo sta ancora scrivendo il suo messaggio.",
+    "signature": "Il direttivo",
+    "close": "Chiudi"
+  },
+  "join": {
+    "eyebrow": "Unisciti",
+    "title": "Vieni una volta. Resta se ti serve.",
+    "lede": "Due modi per entrare. Ognuno richiede un minuto.",
+    "way1Title": "Iscriviti a un evento",
+    "way1Body": "Il modulo ha una casella «join Albert L.I.G.H.T.». Spuntala, e sei membro.",
+    "way2Title": "Oppure scansiona il codice il giorno stesso",
+    "way2Body": "A ogni evento c'è un QR code per unirsi sul posto.",
+    "opensTitle": "Cosa apre l'adesione",
+    "opensBody": "I tornei di vibe coding e il Build Lab. Workshop, crash course e i grandi eventi aperti sono per ogni studente di Albert School, membro o no.",
+    "beforeTitle": "Prima di venire",
+    "beforeBody": "Venti minuti a casa, così in aula si costruisce.",
+    "beforeNote": "In inglese",
+    "nextTitle": "Il prossimo",
+    "signup": "Iscriviti",
+    "more": "Come funziona"
+  },
+  "team": {
+    "eyebrow": "Team",
+    "title": "Un direttivo di {n} studenti.",
+    "lede": "Conducono le sessioni, prenotano le aule e portano i partner.",
+    "founders": "Fondata da {names}.",
+    "partnersEyebrow": "Partner",
+    "partnersTitle": "I partner, e cosa chiediamo loro.",
+    "getsTitle": "Cosa ottiene un partner",
+    "gets": [
+      "Il suo logo sull'evento e sui suoi post",
+      "Uno spazio di cinque minuti per parlare",
+      "La possibilità di lanciare la sfida di un torneo",
+      "Un accesso prioritario a studenti tech motivati, per stage e primi ruoli"
+    ],
+    "asks": "Cosa chiediamo: premi, crediti, uno speaker o del cibo, prima di qualsiasi denaro.",
+    "more": "Conosci il team"
+  },
+  "footer": {
+    "about": "Associazione studentesca di Albert School Milano. Eventi gratuiti, principianti benvenuti.",
+    "emailSoon": "non ancora attiva",
+    "beforeYouCome": "Prima di venire",
+    "legal": "Note legali",
+    "privacy": "Privacy",
+    "linkedin": "LinkedIn",
+    "explore": "Esplora",
+    "contact": "Contatti",
+    "legalTitle": "Legale"
+  },
+  "programme": {
+    "eyebrow": "Programma",
+    "title": "Tutto l'anno, data per data.",
+    "lede": "Dal primo torneo il 21 novembre fino al Demo Day a maggio. Gratis, e i principianti sono benvenuti.",
+    "formatLabel": "Filtra per formato",
+    "audienceLabel": "Filtra per pubblico",
+    "formatAll": "Tutti i formati",
+    "upcoming": "In arrivo",
+    "pastTitle": "Già passato",
+    "none": "Nessun risultato per questi filtri.",
+    "buildLabTitle": "Build Lab, un martedì su due",
+    "buildLabBody": "Un'ora sul tuo progetto, con un membro esperto presente. Riservato ai membri.",
+    "calendarTitle": "Tienilo nel tuo calendario",
+    "calendarBody": "Tutte le date in un file, per Google, Apple o Outlook.",
+    "download": "Scarica il calendario (.ics)"
+  },
+  "event": {
+    "breadcrumb": "Percorso",
+    "when": "Quando",
+    "time": "Ora",
+    "where": "Dove",
+    "for": "Per",
+    "seats": "Posti",
+    "seatsMax": "{n} max",
+    "with": "Con",
+    "price": "Prezzo",
+    "free": "Gratis",
+    "backup": "Data di riserva",
+    "signupOpen": "Dicci che vieni",
+    "signupCompete": "Metti il tuo nome",
+    "happened": "Questo evento si è già svolto.",
+    "gallery": "Galleria",
+    "galleryAlt": "Foto di {title}",
+    "also": "In arrivo anche",
+    "wholeYear": "Tutto il programma",
+    "addDate": "Aggiungi la data",
+    "ics": "Apple o Outlook (.ics)"
+  },
+  "form": {
+    "notOn": "Le iscrizioni non sono ancora aperte. La data è confermata: aggiungila al calendario, e torna qui per iscriverti.",
+    "noJs": "Il modulo di iscrizione richiede JavaScript. La data è confermata, e i link al calendario di questa pagina funzionano senza.",
+    "addGoogle": "Aggiungi a Google Calendar",
+    "doneTitle": "Sei nella lista.",
+    "doneNoCap": "Nessun limite di posti per questo. A presto.",
+    "doneLeft": "Posti rimasti dopo il tuo: {n}.",
+    "doneLast": "Era l'ultimo posto.",
+    "doneCalendar": "Mettilo nel calendario, così non devi ricordartelo.",
+    "name": "Nome completo",
+    "email": "Email",
+    "org": "Corso e anno",
+    "optional": "Facoltativo",
+    "note": "Qualcosa che dovremmo sapere?",
+    "notePlaceholderCompete": "Con chi vieni, o che cerchi una squadra.",
+    "notePlaceholder": "Cosa vuoi ottenere, o chi vorresti incontrare.",
+    "joinBox": "Voglio unirmi ad Albert L.I.G.H.T. (gratis)",
+    "busy": "Un momento…",
+    "submitCompete": "Ci sono",
+    "submit": "Iscrivimi",
+    "privacy": "Conserviamo il tuo nome e la tua email per sapere chi viene, e cancelliamo la lista un mese dopo l'evento. Non la passiamo mai a nessuno. Scrivici e ti rimuoviamo il giorno stesso.",
+    "errFull": "Questo è al completo. Scrivici e ti diremo quando apre la prossima data.",
+    "errClosed": "Le iscrizioni per questa data sono chiuse.",
+    "errUnknown": "Le iscrizioni non sono ancora aperte per questa data.",
+    "errCheck": "Controlla il nome e l'email, uno dei due non è stato accettato.",
+    "errGeneric": "Non è andata a buon fine. Riprova tra un momento, o scrivici."
+  }
+}

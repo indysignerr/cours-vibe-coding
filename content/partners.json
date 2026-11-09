@@ -1,0 +1,95 @@
+{
+  "_readme": "Les partenaires, dans l'ordre d'affichage. name : le nom par langue. ask : ce qu'on leur demande, par langue. logo : chemin d'un fichier sous /public (ex. \"/partners/codemotion.svg\") ou null — tant que c'est null, le nom s'affiche en typographie. Le bloc est sur fond marine : fournir la version CLAIRE du logo (blanche ou ivoire), en SVG de préférence. url : le site du partenaire ou null — renseignée, elle rend le nom ou le logo cliquable.",
+  "partners": [
+    {
+      "id": "albert-school",
+      "name": {
+        "en": "Albert School",
+        "it": "Albert School",
+        "fr": "Albert School"
+      },
+      "ask": {
+        "en": "Rooms, a small budget for prizes and snacks, event listings",
+        "it": "Aule, un piccolo budget per premi e snack, diffusione degli eventi",
+        "fr": "Les salles, un petit budget pour les prix et les snacks, le relais des événements"
+      },
+      "logo": null,
+      "url": null
+    },
+    {
+      "id": "codemotion",
+      "name": {
+        "en": "Codemotion",
+        "it": "Codemotion",
+        "fr": "Codemotion"
+      },
+      "ask": {
+        "en": "Co-organises the December workshop",
+        "it": "Co-organizza il workshop di dicembre",
+        "fr": "Co-organise le workshop de décembre"
+      },
+      "logo": null,
+      "url": null
+    },
+    {
+      "id": "floriano",
+      "name": {
+        "en": "Floriano's team",
+        "it": "Il team di Floriano",
+        "fr": "L'équipe de Floriano"
+      },
+      "ask": {
+        "en": "Co-organises the cinema night",
+        "it": "Co-organizza la serata cinema",
+        "fr": "Co-organise la soirée cinéma"
+      },
+      "logo": null,
+      "url": null
+    },
+    {
+      "id": "n8n",
+      "name": {
+        "en": "n8n",
+        "it": "n8n",
+        "fr": "n8n"
+      },
+      "ask": {
+        "en": "Credits and tournament prizes",
+        "it": "Crediti e premi dei tornei",
+        "fr": "Des crédits et les prix des tournois"
+      },
+      "logo": null,
+      "url": null
+    },
+    {
+      "id": "lovable",
+      "name": {
+        "en": "Lovable",
+        "it": "Lovable",
+        "fr": "Lovable"
+      },
+      "ask": {
+        "en": "Credits and tournament prizes",
+        "it": "Crediti e premi dei tornei",
+        "fr": "Des crédits et les prix des tournois"
+      },
+      "logo": null,
+      "url": null
+    },
+    {
+      "id": "ajce",
+      "name": {
+        "en": "Albert Junior Consulting Enterprise",
+        "it": "Albert Junior Consulting Enterprise",
+        "fr": "Albert Junior Consulting Enterprise"
+      },
+      "ask": {
+        "en": "A jury member at the tournaments",
+        "it": "Un membro della giuria ai tornei",
+        "fr": "Un juré aux tournois"
+      },
+      "logo": null,
+      "url": null
+    }
+  ]
+}

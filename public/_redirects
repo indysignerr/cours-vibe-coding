@@ -19,18 +19,38 @@
 https://www.albertlight.com/*   https://albertlight.com/:splat   301!
 
 # Renommages
-/services       /events      301
-/services/*     /events      301
-/team           /about       301
-/team/*         /about       301
-/calendar       /events      301
-/calendar/*     /events      301
+/services       /events/     301
+/services/*     /events/     301
+/calendar       /events/     301
+/calendar/*     /events/     301
+
+# « Who we are » est devenu la page Team ; la page Contact a rejoint le pied
+# de page et le bloc partenaires.
+/about          /team/       301
+/about/*        /team/       301
+/contact        /team/       301
+/contact/*      /team/       301
+
+# Les noms français des pages, sans préfixe de langue : ils mènent à la
+# version française.
+/programme      /fr/programme/            301
+/programme/*    /fr/programme/            301
+/evenements     /fr/programme/            301
+/evenements/*   /fr/evenements/:splat     301
+/equipe         /fr/equipe/               301
+/rejoindre      /fr/rejoindre/            301
+
+# Et les noms italiens.
+/programma      /it/programma/            301
+/eventi         /it/programma/            301
+/eventi/*       /it/eventi/:splat         301
+/unisciti       /it/unisciti/             301
 
 # Le volet conseil est en pause : il ne vit plus sur le site
 /solutions      /events      301
 /solutions/*    /events      301
-/approach       /about       301
-/approach/*     /about       301
+/approach       /team/       301
+/approach/*     /team/       301
 
 # Le portfolio : les sites montrés appartenaient à un autre projet
 /work           /            301
@@ -39,8 +59,6 @@ https://www.albertlight.com/*   https://albertlight.com/:splat   301!
 # Le parcours de cours et les concours sont devenus des évènements
 /contests       /events      301
 /contests/*     /events      301
-/programme      /events      301
-/programme/*    /events      301
 /sessions       /events      301
 /sessions/*     /events      301
 /signup         /events      301

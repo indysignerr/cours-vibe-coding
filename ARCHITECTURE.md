@@ -1,5 +1,9 @@
 # Architecture — site de l'asso vibecoding
 
+> **Archive.** Ce document décrit l'ancien site du parcours de cours
+> (séances verrouillées, concours, notation). Le site actuel est décrit dans
+> le `README.md`, qui fait foi.
+
 ## Décisions
 
 | Sujet | Choix | Raison |

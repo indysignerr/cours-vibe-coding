@@ -19,10 +19,12 @@ export function stamp(date: string, time: string) {
 export function googleCalendarUrl(e: SiteEvent) {
   const end = e.endDate ?? e.date;
   // Sans horaire arrêté, on crée un évènement « journée entière » : la
-  // date de fin d'un all-day est exclusive, d'où le lendemain.
+  // date de fin d'un all-day est exclusive, d'où le lendemain. Quand le
+  // plan donne une fenêtre (« dans la semaine du… »), le bloc couvre toute
+  // la fenêtre, comme dans le fichier .ics.
   const allDay = !e.start || !e.end;
   const dates = allDay
-    ? `${end.replaceAll("-", "")}/${nextDay(end)}`
+    ? `${e.date.replaceAll("-", "")}/${nextDay(end)}`
     : `${stamp(e.date, e.start!)}/${stamp(end, e.end!)}`;
 
   const params = new URLSearchParams({

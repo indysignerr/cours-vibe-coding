@@ -1,0 +1,40 @@
+{
+  "_readme": "Le bureau. Une entrée par personne, dans l'ordre d'affichage. role : le rôle par langue. focus : ce dont la personne s'occupe, par langue (ou null).",
+  "board": [
+    {
+      "name": "Benjamin",
+      "role": { "en": "Lead", "it": "Lead", "fr": "Lead" },
+      "focus": {
+        "en": "Overall organisation",
+        "it": "Organizzazione generale",
+        "fr": "Organisation générale"
+      }
+    },
+    {
+      "name": "Jiali",
+      "role": {
+        "en": "Communication & media",
+        "it": "Comunicazione e media",
+        "fr": "Communication et média"
+      },
+      "focus": {
+        "en": "Instagram and LinkedIn",
+        "it": "Instagram e LinkedIn",
+        "fr": "Instagram et LinkedIn"
+      }
+    },
+    {
+      "name": "Asia",
+      "role": { "en": "Secretary", "it": "Segreteria", "fr": "Secrétariat" },
+      "focus": {
+        "en": "Minutes and the shared sheet",
+        "it": "Verbali e foglio condiviso",
+        "fr": "Comptes rendus et tableau partagé"
+      }
+    },
+    { "name": "Lucca", "role": { "en": "Tech", "it": "Tech", "fr": "Tech" }, "focus": null },
+    { "name": "Riccardo", "role": { "en": "Tech", "it": "Tech", "fr": "Tech" }, "focus": null },
+    { "name": "Indy", "role": { "en": "Tech", "it": "Tech", "fr": "Tech" }, "focus": null },
+    { "name": "Rafa", "role": { "en": "Tech", "it": "Tech", "fr": "Tech" }, "focus": null }
+  ]
+}

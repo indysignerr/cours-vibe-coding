@@ -80,6 +80,40 @@ export function getSupabase(): SupabaseClient {
   return cached;
 }
 
+export type EventCount = { event_slug: string; taken: number; capacity: number | null };
+
+/**
+ * Les compteurs d'inscription, par un simple `fetch` — sans charger le
+ * client Supabase, qui n'est utile qu'au moment d'envoyer le formulaire.
+ *
+ * Sert de sonde à la page d'un événement : `null` veut dire que la base
+ * ne répond pas (projet en pause, réseau coupé, mauvaise adresse) ; une
+ * liste sans le slug cherché, que l'événement n'y a pas encore été chargé
+ * (voir supabase/008_programme.sql). Dans les deux cas le formulaire ne
+ * peut pas aboutir, et la page le dit au lieu de le laisser échouer.
+ */
+export async function fetchEventCounts(timeoutMs = 6000): Promise<EventCount[] | null> {
+  const { url, key } = readEnv();
+  if (!url || !key) return null;
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${url}/rest/v1/rpc/event_counts`, {
+      method: "POST",
+      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: "{}",
+      signal: abort.signal,
+    });
+    if (!res.ok) return null;
+    const rows: unknown = await res.json();
+    return Array.isArray(rows) ? (rows as EventCount[]) : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 /** Vrai si une session Supabase est mémorisée dans ce navigateur, sans charger le client. */
 export function hasStoredSession(): boolean {
   try {
