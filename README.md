@@ -267,6 +267,11 @@ française.
 3. *Le texte avant la 3D.* Three.js n'est importé qu'une fois le haut de
    page affiché, et jamais sur téléphone.
 
+**L'ampoule.** La scène est dans `src/components/hero/bulb-scene.ts`,
+commentée pièce par pièce : le studio qui l'éclaire, le verre, le culot
+fileté, le pied de verre, le filament. Si une carte graphique ne suit pas,
+elle réduit d'elle-même sa résolution pour rester fluide.
+
 **Refaire l'image de l'ampoule.** Elle est une capture de la vraie scène.
 Si la scène change d'aspect, la marche à suivre est en tête de
 `scripts/make-poster.mjs`.
@@ -288,7 +293,7 @@ Mesures du 9 novembre 2026.
 | Mouvement réduit | pas de 3D, pas de transition, pas de curseur, rien de caché |
 | Mobile 375 px | pas de 3D, pas de défilement horizontal, image de l'ampoule, 382 cibles tactiles à 44 px ou plus |
 | Clavier | lien d'évitement, ordre logique, anneau de focus partout |
-| Défilement du haut de page, grand écran | 60 images par seconde, aucune image au-delà de 33 ms |
+| Défilement du haut de page, grand écran | 60 images par seconde, y compris en haute densité (3,3 millions de pixels), aucune image en retard |
 
 Lighthouse, mobile, sur le site en ligne :
 

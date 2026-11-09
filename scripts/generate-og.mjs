@@ -14,7 +14,7 @@ const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
 const PAGES = [
   { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["Albert School's student lab", "for AI and code."], foot: "WORKSHOPS · BUILD LAB · TOURNAMENTS" },
   { slug: "events", kicker: "EVENTS · NOVEMBER TO MAY", lines: ["Something on at least", "every two weeks."], foot: "FREE · BEGINNERS WELCOME" },
-  { slug: "team", kicker: "WHO WE ARE", lines: ["A lab,", "not a club."], foot: "RECOGNISED BY ALBERT SCHOOL" },
+  { slug: "team", kicker: "WHO WE ARE", lines: ["A club", "that builds."], foot: "RECOGNISED BY ALBERT SCHOOL" },
   { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "BEGINNERS WELCOME" },
 ];
 
