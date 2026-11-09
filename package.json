@@ -5,12 +5,13 @@
   "scripts": {
     "predev": "node scripts/generate-ics.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/generate-ics.mjs",
+    "prebuild": "node scripts/check-content.mjs && node scripts/generate-ics.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "ics": "node scripts/generate-ics.mjs",
     "events:sql": "node scripts/events-to-sql.mjs",
+    "content": "node scripts/check-content.mjs",
     "audit": "node scripts/audit.mjs",
     "contrast": "node scripts/check-contrast.mjs"
   },

@@ -30,7 +30,8 @@ Node 20.9 ou plus récent.
 | Commande | Ce qu'elle fait |
 |---|---|
 | `npm run dev` | le site en local |
-| `npm run build` | l'export statique dans `out/` — refait d'abord le fichier `.ics` |
+| `npm run build` | l'export statique dans `out/` — vérifie d'abord le contenu, puis refait le fichier `.ics` |
+| `npm run content` | vérifie que chaque texte de `content/` existe dans les quatre langues |
 | `npm run audit` | relit `out/` : titres, descriptions, liens morts, `h1`, JSON-LD, images sans `alt` |
 | `npm run contrast` | vérifie chaque paire de couleurs en WCAG AA |
 | `npm run lint` | ESLint |
@@ -52,7 +53,9 @@ Rien de ce qui se lit sur le site n'est écrit dans le code.
 Trois règles valent pour tous ces fichiers :
 
 - **Quatre langues, toujours.** Un texte s'écrit `{ "en": "…", "it": "…", "fr": "…", "es": "…" }`.
-  S'il en manque une, le build échoue et le dit.
+  S'il en manque une, le build s'arrête et nomme le fichier et le champ
+  (`content/events.json → events[2].location : il manque "es"`). Pour
+  vérifier sans tout construire : `npm run content`.
 - **`null` veut dire « pas encore connu ».** Le site l'affiche comme tel
   (« Lieu à confirmer »). On ne remplit pas un vide avec une supposition.
 - **JSON strict.** Guillemets doubles, pas de virgule après le dernier
@@ -270,7 +273,8 @@ pareil en anglais et en français, mène à la page anglaise.
 `src/lib/i18n.ts`, copier un dictionnaire dans `content/i18n/`, ajouter la
 langue à chaque texte des fichiers de `content/`, copier le dossier
 `src/app/es/` sous le nouveau code, et ajouter ses alias à
-`public/_redirects`. Le build signale tout texte oublié.
+`public/_redirects`. `npm run content` liste alors chaque texte auquel
+la nouvelle langue manque, et le build refuse de partir tant qu'il en reste.
 
 **Trois règles tiennent les animations**, et elles sont écrites en tête de
 `globals.css` :
@@ -306,6 +310,7 @@ Mesures du 9 novembre 2026.
 | Contrôle | Résultat |
 |---|---|
 | `tsc`, ESLint, build | aucun avertissement, 64 pages |
+| `npm run content` | 4 langues, 173 textes par dictionnaire, 60 textes traduits dans les données, rien ne manque |
 | `npm run audit` | 63 pages, zéro défaut |
 | `npm run contrast` | toutes les paires passent en AA |
 | Sans JavaScript | tout le texte est visible, sur chaque type de page |
