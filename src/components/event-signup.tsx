@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { googleCalendarUrl } from "@/lib/calendar";
 import { isPast, today, type SiteEvent } from "@/lib/events";
 import type { Dict } from "@/lib/i18n";
@@ -12,7 +12,7 @@ import { fetchEventCounts, getSupabase, isSupabaseConfigured } from "@/lib/supab
  * Aucun serveur : l'appel part vers la fonction `rsvp` de Supabase, en
  * security definer. Le visiteur n'a aucun droit d'écriture sur la table
  * et aucun droit de lecture sur la liste des inscrits — voir
- * supabase/007_events.sql. Le formulaire ne fait que poster.
+ * supabase/setup.sql. Le formulaire ne fait que poster.
  *
  * La case « join Albert L.I.G.H.T. » est celle dont parle la page
  * Rejoindre. La fonction `rsvp` n'a pas de paramètre pour elle : cochée,
@@ -47,6 +47,8 @@ export function EventSignup({
   // « checking » affiche le formulaire : c'est le cas de loin le plus
   // fréquent, et la page ne doit pas sauter quand tout va bien.
   const [status, setStatus] = useState<"checking" | "on" | "off" | "over">("checking");
+  // Vrai dès la première frappe dans le formulaire.
+  const touched = useRef(false);
 
   useEffect(() => {
     if (!isSupabaseConfigured()) return;
@@ -59,7 +61,12 @@ export function EventSignup({
       }
       const counts = await fetchEventCounts();
       if (dead) return;
-      setStatus(counts?.some((c) => c.event_slug === event.slug) ? "on" : "off");
+      const reachable = counts?.some((c) => c.event_slug === event.slug) ?? false;
+      // Sur un réseau lent la sonde peut répondre tard. Si quelqu'un a déjà
+      // commencé à écrire, on ne lui retire pas le formulaire sous les
+      // doigts : l'envoi dira lui-même ce qui ne va pas.
+      if (!reachable && touched.current) return;
+      setStatus(reachable ? "on" : "off");
     })();
     return () => {
       dead = true;
@@ -142,7 +149,14 @@ export function EventSignup({
   }
 
   return (
-    <form className="signup" onSubmit={submit} noValidate>
+    <form
+      className="signup"
+      onSubmit={submit}
+      onInput={() => {
+        touched.current = true;
+      }}
+      noValidate
+    >
       <div className="signup__row">
         <div>
           <label className="label" htmlFor={`${id}-name`}>

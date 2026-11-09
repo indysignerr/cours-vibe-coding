@@ -277,7 +277,7 @@ se refont avec `node scripts/generate-og.mjs` et
 
 ## Vérifications
 
-Mesures du 9 novembre 2026, sur l'export servi en local avec compression.
+Mesures du 9 novembre 2026.
 
 | Contrôle | Résultat |
 |---|---|
@@ -286,26 +286,26 @@ Mesures du 9 novembre 2026, sur l'export servi en local avec compression.
 | `npm run contrast` | toutes les paires passent en AA |
 | Sans JavaScript | tout le texte est visible, sur chaque type de page |
 | Mouvement réduit | pas de 3D, pas de transition, pas de curseur, rien de caché |
-| Mobile 375 px | pas de 3D, pas de défilement horizontal, image de l'ampoule |
+| Mobile 375 px | pas de 3D, pas de défilement horizontal, image de l'ampoule, 382 cibles tactiles à 44 px ou plus |
 | Clavier | lien d'évitement, ordre logique, anneau de focus partout |
+| Défilement du haut de page, grand écran | 60 images par seconde, aucune image au-delà de 33 ms |
 
-Lighthouse, mobile :
+Lighthouse, mobile, sur le site en ligne :
 
 | Page | Performance | Accessibilité | SEO | Bonnes pratiques |
 |---|---|---|---|---|
-| `/` | 93 à 95 | 100 | 100 | 100 |
-| `/events/` | 97 | 100 | 100 | 100 |
-| `/events/tournament-1/` | 95 | 100 | 100 | 96 |
-| `/fr/rejoindre/` | 97 | 100 | 100 | 100 |
-| `/it/team/` | 97 | 100 | 100 | 100 |
+| `/` | 96 | 100 | 100 | 100 |
+| `/events/` | 98 | 100 | 100 | 100 |
+| `/events/tournament-1/` | 97 | 100 | 100 | 96 |
+| `/fr/rejoindre/` | 98 | 100 | 100 | 100 |
 
 Le 96 de la page d'un événement vient de la base qui ne répond pas : la
 requête en échec s'inscrit dans la console. Il repasse à 100 une fois
 Supabase rétabli.
 
-Le plus grand élément s'affiche en 1,6 à 1,8 s avec un bridage réel (4G
-lente, processeur ralenti quatre fois). Le modèle simulé de Lighthouse,
-plus pessimiste, annonce 2,5 à 2,9 s.
+Le plus grand élément s'affiche en 2,3 à 2,7 s selon le modèle simulé de
+Lighthouse, et en 1,6 à 1,8 s avec un bridage réel (4G lente, processeur
+ralenti quatre fois), mesuré en local.
 
 ## Déploiement
 
@@ -325,6 +325,7 @@ Ce que le site ne peut pas inventer, et où le renseigner.
 | Le message de l'easter egg | `content/i18n/*.json` → `egg.message` |
 | Les logos des partenaires | `public/partners/`, puis `content/partners.json` → `logo` |
 | La base des inscriptions | voir [Les inscriptions](#les-inscriptions) |
+| La redirection de `www.albertlight.com` vers `albertlight.com` | une règle dans Cloudflare : `SEO-CHECKLIST.md`, point 0 |
 | `/setup/`, `/legal/`, `/privacy/` en italien et en français | `src/app/(en)/` |
 | La relecture des mentions légales par le bureau | `/legal/` annonce le droit français ; `/privacy/` décrit la liste des membres |
 

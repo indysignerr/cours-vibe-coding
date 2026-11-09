@@ -7,16 +7,14 @@
 # Cloudflare Pages n'applique ces règles que si aucun fichier statique ne
 # correspond : elles ne peuvent pas masquer une page vivante.
 
-# --- www vers l'apex -------------------------------------------------
+# --- www vers l'apex : PAS ICI ----------------------------------------
 #
-# Les deux domaines servaient la même page en 200. La balise canonical
-# limitait les dégâts, mais deux URL pour un même contenu divisent les
-# signaux : une redirection 301 est ce que Google attend, et elle
-# concentre les liens entrants sur une seule adresse.
-#
-# Une règle absolue, avec le domaine, ne s'applique qu'à ce domaine :
-# elle ne touche pas l'aperçu *.pages.dev.
-https://www.albertlight.com/*   https://albertlight.com/:splat   301!
+# Cloudflare Pages ignore dans ce fichier les règles qui portent un nom de
+# domaine : celle qui vivait ici n'a jamais redirigé quoi que ce soit, et
+# www.albertlight.com sert encore le site en 200 (constaté le 9 novembre
+# 2026). La redirection se règle dans le tableau de bord Cloudflare :
+# Rules → Redirect Rules → « Redirect from WWW to Root ». Voir
+# SEO-CHECKLIST.md. D'ici là, la balise canonical limite les dégâts.
 
 # Renommages
 /services       /events/     301

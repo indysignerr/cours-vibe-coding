@@ -9,7 +9,7 @@ Dernière mise à jour : 9 novembre 2026.
 | | état |
 |---|---|
 | Domaine `albertlight.com` | en ligne, HTTPS, apex et www |
-| `www` → apex en 301 | ajouté dans `public/_redirects` |
+| `www` → apex en 301 | **pas en place** — voir le point 0 ci-dessous |
 | Sitemap | 45 URL — les trois langues, avec `lastmod` et leurs `hreflang` |
 | `robots.txt` | ouvert, `/admin/` exclu |
 | Une page par évènement | 10 pages statiques, dans chacune des trois langues |
@@ -20,6 +20,21 @@ Dernière mise à jour : 9 novembre 2026.
 | Titres et descriptions | uniques sur chaque page |
 | `canonical` et `hreflang` | sur chaque page : Google sait que `/events/`, `/it/programma/` et `/fr/programme/` sont la même page en trois langues |
 | Audit statique | `npm run audit` — 49 pages, zéro défaut |
+
+---
+
+## 0. Rediriger `www` vers le domaine nu — 2 minutes, dans Cloudflare
+
+Constaté le 9 novembre 2026 : `https://www.albertlight.com/` répond 200 au
+lieu de rediriger. La règle écrite dans `public/_redirects` n'a jamais
+fonctionné, parce que Cloudflare Pages y ignore les règles qui portent un
+nom de domaine. Deux adresses pour un même contenu divisent les signaux ;
+la balise `canonical` limite les dégâts, une redirection 301 les supprime.
+
+1. [dash.cloudflare.com](https://dash.cloudflare.com) → `albertlight.com` → **Rules** → **Redirect Rules** → **Create rule**
+2. Choisir le modèle **Redirect from WWW to Root** (ou, à la main : *Hostname equals* `www.albertlight.com` → *Dynamic redirect* vers `concat("https://albertlight.com", http.request.uri.path)`, code **301**, *Preserve query string* coché)
+3. **Deploy**
+4. Vérifier : `https://www.albertlight.com/fr/` doit renvoyer vers `https://albertlight.com/fr/`
 
 ---
 
