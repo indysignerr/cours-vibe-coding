@@ -1,5 +1,5 @@
 {
-  "_readme": "Les quatre piliers. key ne change pas (il relie un pilier à ses événements et à son animation). title reste en anglais dans les trois langues : ce sont les quatre mots de l'association. promise : la promesse, par langue. formats : name, what, length — par langue.",
+  "_readme": "Les quatre piliers. key ne change pas (il relie un pilier à ses événements et à son animation). title reste en anglais dans les quatre langues : ce sont les quatre mots de l'association. promise : la promesse, par langue. formats : name, what, length — par langue.",
   "pillars": [
     {
       "key": "learn",
@@ -7,26 +7,49 @@
       "promise": {
         "en": "Master modern developer tools.",
         "it": "Padroneggia gli strumenti di sviluppo moderni.",
-        "fr": "Maîtriser les outils de développement modernes."
+        "fr": "Maîtriser les outils de développement modernes.",
+        "es": "Domina las herramientas de desarrollo modernas."
       },
       "formats": [
         {
-          "name": { "en": "Workshop", "it": "Workshop", "fr": "Workshop" },
+          "name": {
+            "en": "Workshop",
+            "it": "Workshop",
+            "fr": "Workshop",
+            "es": "Workshop"
+          },
           "what": {
             "en": "A deep, hands-on session on one skill, such as LLMs in Python.",
             "it": "Una sessione pratica e approfondita su una competenza, come gli LLM in Python.",
-            "fr": "Une session pratique et poussée sur une compétence, comme les LLM en Python."
+            "fr": "Une session pratique et poussée sur une compétence, comme les LLM en Python.",
+            "es": "Una sesión práctica y a fondo sobre una habilidad, como los LLM en Python."
           },
-          "length": { "en": "Half a day", "it": "Mezza giornata", "fr": "Une demi-journée" }
+          "length": {
+            "en": "Half a day",
+            "it": "Mezza giornata",
+            "fr": "Une demi-journée",
+            "es": "Media jornada"
+          }
         },
         {
-          "name": { "en": "Crash course", "it": "Crash course", "fr": "Crash course" },
+          "name": {
+            "en": "Crash course",
+            "it": "Crash course",
+            "fr": "Crash course",
+            "es": "Crash course"
+          },
           "what": {
             "en": "One topic classes skip: an AI coding tools speedrun, API keys, Docker, CI/CD, cloud credits.",
             "it": "Un argomento che i corsi saltano: speedrun degli strumenti di coding IA, chiavi API, Docker, CI/CD, crediti cloud.",
-            "fr": "Un sujet que les cours sautent : speedrun des outils de code IA, clés API, Docker, CI/CD, crédits cloud."
+            "fr": "Un sujet que les cours sautent : speedrun des outils de code IA, clés API, Docker, CI/CD, crédits cloud.",
+            "es": "Un tema que las clases se saltan: speedrun de herramientas de código con IA, claves API, Docker, CI/CD, créditos cloud."
           },
-          "length": { "en": "Online", "it": "Online", "fr": "En ligne" }
+          "length": {
+            "en": "Online",
+            "it": "Online",
+            "fr": "En ligne",
+            "es": "En línea"
+          }
         }
       ]
     },
@@ -36,20 +59,28 @@
       "promise": {
         "en": "Build portfolio-ready AI projects.",
         "it": "Costruisci progetti di IA da portfolio.",
-        "fr": "Construire des projets IA pour son portfolio."
+        "fr": "Construire des projets IA pour son portfolio.",
+        "es": "Construye proyectos de IA para tu portfolio."
       },
       "formats": [
         {
-          "name": { "en": "Build Lab", "it": "Build Lab", "fr": "Build Lab" },
+          "name": {
+            "en": "Build Lab",
+            "it": "Build Lab",
+            "fr": "Build Lab",
+            "es": "Build Lab"
+          },
           "what": {
             "en": "Work on your own tech projects, with experienced members helping.",
             "it": "Lavora sui tuoi progetti tech, con l'aiuto di membri esperti.",
-            "fr": "Travailler sur ses propres projets tech, avec l'aide de membres expérimentés."
+            "fr": "Travailler sur ses propres projets tech, avec l'aide de membres expérimentés.",
+            "es": "Trabaja en tus propios proyectos tech, con la ayuda de miembros con experiencia."
           },
           "length": {
             "en": "An hour, every other Tuesday",
             "it": "Un'ora, un martedì su due",
-            "fr": "Une heure, un mardi sur deux"
+            "fr": "Une heure, un mardi sur deux",
+            "es": "Una hora, cada dos martes"
           }
         }
       ]
@@ -60,24 +91,28 @@
       "promise": {
         "en": "Prove your skills under pressure.",
         "it": "Dimostra le tue competenze sotto pressione.",
-        "fr": "Prouver ses compétences sous pression."
+        "fr": "Prouver ses compétences sous pression.",
+        "es": "Demuestra tus habilidades bajo presión."
       },
       "formats": [
         {
           "name": {
             "en": "Vibe coding tournament",
             "it": "Torneo di vibe coding",
-            "fr": "Tournoi de vibe coding"
+            "fr": "Tournoi de vibe coding",
+            "es": "Torneo de vibe coding"
           },
           "what": {
             "en": "Teams race the clock to build a working app or platform under a theme.",
             "it": "Squadre contro il tempo per costruire un'app o una piattaforma funzionante su un tema.",
-            "fr": "Des équipes contre la montre pour livrer une app ou une plateforme qui marche, sur un thème."
+            "fr": "Des équipes contre la montre pour livrer une app ou une plateforme qui marche, sur un thème.",
+            "es": "Equipos contrarreloj para construir una app o una plataforma que funcione, sobre un tema."
           },
           "length": {
             "en": "Four to six hours, on a Saturday",
             "it": "Da quattro a sei ore, di sabato",
-            "fr": "Quatre à six heures, un samedi"
+            "fr": "Quatre à six heures, un samedi",
+            "es": "De cuatro a seis horas, un sábado"
           }
         }
       ]
@@ -88,24 +123,28 @@
       "promise": {
         "en": "Meet real professionals.",
         "it": "Incontra veri professionisti.",
-        "fr": "Rencontrer de vrais professionnels."
+        "fr": "Rencontrer de vrais professionnels.",
+        "es": "Conoce a profesionales de verdad."
       },
       "formats": [
         {
           "name": {
             "en": "Big open events",
             "it": "Grandi eventi aperti",
-            "fr": "Grands événements ouverts"
+            "fr": "Grands événements ouverts",
+            "es": "Grandes eventos abiertos"
           },
           "what": {
             "en": "Cinema night, AI discovery days, Demo Day.",
             "it": "Serata cinema, AI discovery days, Demo Day.",
-            "fr": "Soirée cinéma, AI discovery days, Demo Day."
+            "fr": "Soirée cinéma, AI discovery days, Demo Day.",
+            "es": "Noche de cine, AI discovery days, Demo Day."
           },
           "length": {
             "en": "Two hours to a day",
             "it": "Da due ore a una giornata",
-            "fr": "De deux heures à une journée"
+            "fr": "De deux heures à une journée",
+            "es": "De dos horas a un día"
           }
         }
       ]

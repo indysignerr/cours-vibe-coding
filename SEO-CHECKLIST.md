@@ -10,16 +10,16 @@ Dernière mise à jour : 9 novembre 2026.
 |---|---|
 | Domaine `albertlight.com` | en ligne, HTTPS, apex et www |
 | `www` → apex en 301 | **pas en place** — voir le point 0 ci-dessous |
-| Sitemap | 45 URL — les trois langues, avec `lastmod` et leurs `hreflang` |
+| Sitemap | 59 URL — les quatre langues, avec `lastmod` et leurs `hreflang` |
 | `robots.txt` | ouvert, `/admin/` exclu |
-| Une page par évènement | 10 pages statiques, dans chacune des trois langues |
+| Une page par évènement | 10 pages statiques, dans chacune des quatre langues |
 | `schema.org/Event` | sur les 10, avec `name`, `startDate`, `location` |
 | `BreadcrumbList` | sur chaque page évènement |
 | `ItemList` | sur `/events/`, `/it/programma/` et `/fr/programme/` |
 | `Organization` | avec `sameAs` (LinkedIn), `alternateName`, `foundingDate` |
 | Titres et descriptions | uniques sur chaque page |
-| `canonical` et `hreflang` | sur chaque page : Google sait que `/events/`, `/it/programma/` et `/fr/programme/` sont la même page en trois langues |
-| Audit statique | `npm run audit` — 49 pages, zéro défaut |
+| `canonical` et `hreflang` | sur chaque page : Google sait que `/events/`, `/it/programma/`, `/fr/programme/` et `/es/programa/` sont la même page en quatre langues, et l'anglais est déclaré version par défaut (`x-default`) |
+| Audit statique | `npm run audit` — 63 pages, zéro défaut |
 
 ---
 

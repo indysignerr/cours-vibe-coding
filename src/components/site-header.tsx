@@ -55,13 +55,13 @@ export function SiteHeader({
         </nav>
 
         <div className="site-header__tools">
-          <LangSwitch lang={lang} page={page} />
+          <LangSwitch lang={lang} page={page} compact />
           <SoundToggle label={d.sound.label} on={d.sound.on} off={d.sound.off} />
           <Link className="btn btn--primary btn--sm site-header__cta" href={href("programme", lang)} data-magnetic>
             {d.nav.cta}
           </Link>
 
-          <details className="menu">
+          <details className="menu" name="header-panel">
             <summary className="menu__btn">
               {d.nav.menu}
               <span aria-hidden className="menu__icon" />

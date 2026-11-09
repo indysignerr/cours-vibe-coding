@@ -1,5 +1,5 @@
 {
-  "_readme": "Le calendrier. Une entrée par date. Champs : slug (jamais changé une fois publié — c'est la clé des inscriptions), pillar (learn|build|compete|connect), format (workshop|crash-course|build-lab|tournament|open-event), date et endDate (AAAA-MM-JJ), start et end (HH:MM, optionnels), audience (open|members), online (true|false), location (texte par langue, ou null = « lieu à confirmer »), capacity (nombre ou null), partner (texte ou null), backup (date de repli ou null), gallery (chemins d'images sous /public, affichées après l'événement).",
+  "_readme": "Le calendrier. Une entrée par date. Champs : slug (jamais changé une fois publié — c'est la clé des inscriptions), pillar (learn|build|compete|connect), format (workshop|crash-course|build-lab|tournament|open-event), date et endDate (AAAA-MM-JJ), start et end (HH:MM, optionnels), audience (open|members), online (true|false), location (texte par langue — en, it, fr, es —, ou null = « lieu à confirmer »), capacity (nombre ou null), partner (texte ou null), backup (date de repli ou null), gallery (chemins d'images sous /public, affichées après l'événement).",
   "events": [
     {
       "slug": "ai-discovery-day-maggiore",
@@ -8,19 +8,26 @@
       "date": "2026-11-07",
       "audience": "open",
       "online": false,
-      "location": { "en": "Lake Maggiore", "it": "Lago Maggiore", "fr": "Lac Majeur" },
+      "location": {
+        "en": "Lake Maggiore",
+        "it": "Lago Maggiore",
+        "fr": "Lac Majeur",
+        "es": "Lago Mayor"
+      },
       "capacity": null,
       "partner": "Albert School",
       "backup": null,
       "title": {
         "en": "AI Discovery Day, Lake Maggiore",
         "it": "AI Discovery Day, Lago Maggiore",
-        "fr": "AI Discovery Day, lac Majeur"
+        "fr": "AI Discovery Day, lac Majeur",
+        "es": "AI Discovery Day, Lago Mayor"
       },
       "summary": {
         "en": "A one to two hour session Albert School asked us to run, on entrepreneurship with some data and AI.",
         "it": "Una sessione di una o due ore che Albert School ci ha chiesto di condurre, sull'imprenditorialità con un po' di dati e IA.",
-        "fr": "Une session d'une à deux heures qu'Albert School nous a demandé d'animer, sur l'entrepreneuriat avec un peu de data et d'IA."
+        "fr": "Une session d'une à deux heures qu'Albert School nous a demandé d'animer, sur l'entrepreneuriat avec un peu de data et d'IA.",
+        "es": "Una sesión de una a dos horas que Albert School nos pidió impartir, sobre emprendimiento con algo de datos e IA."
       },
       "gallery": []
     },
@@ -40,12 +47,14 @@
       "title": {
         "en": "Vibe coding tournament #1",
         "it": "Torneo di vibe coding #1",
-        "fr": "Tournoi de vibe coding #1"
+        "fr": "Tournoi de vibe coding #1",
+        "es": "Torneo de vibe coding #1"
       },
       "summary": {
         "en": "The first tournament of the year, and the start of the calendar. Teams race the clock to build a working app under a theme.",
         "it": "Il primo torneo dell'anno, e l'inizio del calendario. Squadre contro il tempo per costruire un'app funzionante su un tema.",
-        "fr": "Le premier tournoi de l'année, et le début du calendrier. Des équipes contre la montre pour livrer une app qui marche, sur un thème."
+        "fr": "Le premier tournoi de l'année, et le début du calendrier. Des équipes contre la montre pour livrer une app qui marche, sur un thème.",
+        "es": "El primer torneo del año, y el inicio del calendario. Equipos contrarreloj para construir una app que funcione, sobre un tema."
       },
       "gallery": []
     },
@@ -65,12 +74,14 @@
       "title": {
         "en": "Codemotion × Albert LIGHT: LLMs in Python",
         "it": "Codemotion × Albert LIGHT: LLMs in Python",
-        "fr": "Codemotion × Albert LIGHT : LLMs in Python"
+        "fr": "Codemotion × Albert LIGHT : LLMs in Python",
+        "es": "Codemotion × Albert LIGHT: LLMs in Python"
       },
       "summary": {
         "en": "A half day on large language models in Python, prepared with Leonardo Ciabattini. Attendees get a certificate.",
         "it": "Mezza giornata sui large language model in Python, preparata con Leonardo Ciabattini. I partecipanti ricevono un attestato.",
-        "fr": "Une demi-journée sur les grands modèles de langage en Python, préparée avec Leonardo Ciabattini. Les participants reçoivent un certificat."
+        "fr": "Une demi-journée sur les grands modèles de langage en Python, préparée avec Leonardo Ciabattini. Les participants reçoivent un certificat.",
+        "es": "Media jornada sobre los grandes modelos de lenguaje en Python, preparada con Leonardo Ciabattini. Los asistentes reciben un certificado."
       },
       "gallery": []
     },
@@ -88,12 +99,14 @@
       "title": {
         "en": "Build Lab #1",
         "it": "Build Lab #1",
-        "fr": "Build Lab #1"
+        "fr": "Build Lab #1",
+        "es": "Build Lab #1"
       },
       "summary": {
         "en": "The first Build Lab. One hour on your own project, with an experienced member there each session. Then every other Tuesday.",
         "it": "Il primo Build Lab. Un'ora sul tuo progetto, con un membro esperto presente a ogni sessione. Poi un martedì su due.",
-        "fr": "Le premier Build Lab. Une heure sur ton propre projet, avec un membre expérimenté présent à chaque session. Puis un mardi sur deux."
+        "fr": "Le premier Build Lab. Une heure sur ton propre projet, avec un membre expérimenté présent à chaque session. Puis un mardi sur deux.",
+        "es": "El primer Build Lab. Una hora en tu propio proyecto, con un miembro con experiencia presente en cada sesión. Después, cada dos martes."
       },
       "gallery": []
     },
@@ -112,12 +125,14 @@
       "title": {
         "en": "Crash course #1: AI coding tools speedrun and API keys",
         "it": "Crash course #1: speedrun degli strumenti di coding IA e chiavi API",
-        "fr": "Crash course #1 : speedrun des outils de code IA et clés API"
+        "fr": "Crash course #1 : speedrun des outils de code IA et clés API",
+        "es": "Crash course #1: speedrun de herramientas de código con IA y claves API"
       },
       "summary": {
         "en": "An online evening on AI coding tools and API keys.",
         "it": "Una serata online sugli strumenti di coding IA e le chiavi API.",
-        "fr": "Une soirée en ligne sur les outils de code IA et les clés API."
+        "fr": "Une soirée en ligne sur les outils de code IA et les clés API.",
+        "es": "Una tarde en línea sobre herramientas de código con IA y claves API."
       },
       "gallery": []
     },
@@ -136,12 +151,14 @@
       "title": {
         "en": "Cinema night: Artificial, and a discussion after",
         "it": "Serata cinema: Artificial, seguita da una discussione",
-        "fr": "Soirée cinéma : Artificial, suivie d'une discussion"
+        "fr": "Soirée cinéma : Artificial, suivie d'une discussion",
+        "es": "Noche de cine: Artificial, y un debate después"
       },
       "summary": {
         "en": "A screening of Artificial with a discussion after it, open to other universities. The film opens in Italy on 20 January 2027, distributed by I Wonder Pictures.",
         "it": "Una proiezione di Artificial seguita da una discussione, aperta alle altre università. Il film esce in Italia il 20 gennaio 2027, distribuito da I Wonder Pictures.",
-        "fr": "Une projection d'Artificial suivie d'une discussion, ouverte aux autres universités. Le film sort en Italie le 20 janvier 2027, distribué par I Wonder Pictures."
+        "fr": "Une projection d'Artificial suivie d'une discussion, ouverte aux autres universités. Le film sort en Italie le 20 janvier 2027, distribué par I Wonder Pictures.",
+        "es": "Una proyección de Artificial seguida de un debate, abierta a otras universidades. La película se estrena en Italia el 20 de enero de 2027, distribuida por I Wonder Pictures."
       },
       "gallery": []
     },
@@ -159,12 +176,14 @@
       "title": {
         "en": "Vibe coding tournament #2",
         "it": "Torneo di vibe coding #2",
-        "fr": "Tournoi de vibe coding #2"
+        "fr": "Tournoi de vibe coding #2",
+        "es": "Torneo de vibe coding #2"
       },
       "summary": {
         "en": "The second tournament of the year.",
         "it": "Il secondo torneo dell'anno.",
-        "fr": "Le deuxième tournoi de l'année."
+        "fr": "Le deuxième tournoi de l'année.",
+        "es": "El segundo torneo del año."
       },
       "gallery": []
     },
@@ -183,12 +202,14 @@
       "title": {
         "en": "Crash course #2: Docker and CI/CD",
         "it": "Crash course #2: Docker e CI/CD",
-        "fr": "Crash course #2 : Docker et CI/CD"
+        "fr": "Crash course #2 : Docker et CI/CD",
+        "es": "Crash course #2: Docker y CI/CD"
       },
       "summary": {
         "en": "An online evening on Docker and CI/CD.",
         "it": "Una serata online su Docker e CI/CD.",
-        "fr": "Une soirée en ligne sur Docker et le CI/CD."
+        "fr": "Une soirée en ligne sur Docker et le CI/CD.",
+        "es": "Una tarde en línea sobre Docker y CI/CD."
       },
       "gallery": []
     },
@@ -207,12 +228,14 @@
       "title": {
         "en": "Crash course #3: cloud credits for student projects",
         "it": "Crash course #3: crediti cloud per i progetti degli studenti",
-        "fr": "Crash course #3 : crédits cloud pour les projets étudiants"
+        "fr": "Crash course #3 : crédits cloud pour les projets étudiants",
+        "es": "Crash course #3: créditos cloud para proyectos de estudiantes"
       },
       "summary": {
         "en": "An online evening on getting and using cloud credits for student projects.",
         "it": "Una serata online su come ottenere e usare i crediti cloud per i progetti degli studenti.",
-        "fr": "Une soirée en ligne pour obtenir et utiliser des crédits cloud sur ses projets étudiants."
+        "fr": "Une soirée en ligne pour obtenir et utiliser des crédits cloud sur ses projets étudiants.",
+        "es": "Una tarde en línea sobre cómo conseguir y usar créditos cloud para proyectos de estudiantes."
       },
       "gallery": []
     },
@@ -230,12 +253,14 @@
       "title": {
         "en": "Demo Day",
         "it": "Demo Day",
-        "fr": "Demo Day"
+        "fr": "Demo Day",
+        "es": "Demo Day"
       },
       "summary": {
         "en": "Members show what they built this year.",
         "it": "I membri mostrano ciò che hanno costruito quest'anno.",
-        "fr": "Les membres montrent ce qu'ils ont construit cette année."
+        "fr": "Les membres montrent ce qu'ils ont construit cette année.",
+        "es": "Los miembros muestran lo que han construido este año."
       },
       "gallery": []
     }

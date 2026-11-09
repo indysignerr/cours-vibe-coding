@@ -6,12 +6,14 @@
       "name": {
         "en": "Albert School",
         "it": "Albert School",
-        "fr": "Albert School"
+        "fr": "Albert School",
+        "es": "Albert School"
       },
       "ask": {
         "en": "Rooms, a small budget for prizes and snacks, event listings",
         "it": "Aule, un piccolo budget per premi e snack, diffusione degli eventi",
-        "fr": "Les salles, un petit budget pour les prix et les snacks, le relais des événements"
+        "fr": "Les salles, un petit budget pour les prix et les snacks, le relais des événements",
+        "es": "Aulas, un pequeño presupuesto para premios y snacks, difusión de los eventos"
       },
       "logo": null,
       "url": null
@@ -21,12 +23,14 @@
       "name": {
         "en": "Codemotion",
         "it": "Codemotion",
-        "fr": "Codemotion"
+        "fr": "Codemotion",
+        "es": "Codemotion"
       },
       "ask": {
         "en": "Co-organises the December workshop",
         "it": "Co-organizza il workshop di dicembre",
-        "fr": "Co-organise le workshop de décembre"
+        "fr": "Co-organise le workshop de décembre",
+        "es": "Coorganiza el workshop de diciembre"
       },
       "logo": null,
       "url": null
@@ -36,12 +40,14 @@
       "name": {
         "en": "Floriano's team",
         "it": "Il team di Floriano",
-        "fr": "L'équipe de Floriano"
+        "fr": "L'équipe de Floriano",
+        "es": "El equipo de Floriano"
       },
       "ask": {
         "en": "Co-organises the cinema night",
         "it": "Co-organizza la serata cinema",
-        "fr": "Co-organise la soirée cinéma"
+        "fr": "Co-organise la soirée cinéma",
+        "es": "Coorganiza la noche de cine"
       },
       "logo": null,
       "url": null
@@ -51,12 +57,14 @@
       "name": {
         "en": "n8n",
         "it": "n8n",
-        "fr": "n8n"
+        "fr": "n8n",
+        "es": "n8n"
       },
       "ask": {
         "en": "Credits and tournament prizes",
         "it": "Crediti e premi dei tornei",
-        "fr": "Des crédits et les prix des tournois"
+        "fr": "Des crédits et les prix des tournois",
+        "es": "Créditos y premios de los torneos"
       },
       "logo": null,
       "url": null
@@ -66,12 +74,14 @@
       "name": {
         "en": "Lovable",
         "it": "Lovable",
-        "fr": "Lovable"
+        "fr": "Lovable",
+        "es": "Lovable"
       },
       "ask": {
         "en": "Credits and tournament prizes",
         "it": "Crediti e premi dei tornei",
-        "fr": "Des crédits et les prix des tournois"
+        "fr": "Des crédits et les prix des tournois",
+        "es": "Créditos y premios de los torneos"
       },
       "logo": null,
       "url": null
@@ -81,12 +91,14 @@
       "name": {
         "en": "Albert Junior Consulting Enterprise",
         "it": "Albert Junior Consulting Enterprise",
-        "fr": "Albert Junior Consulting Enterprise"
+        "fr": "Albert Junior Consulting Enterprise",
+        "es": "Albert Junior Consulting Enterprise"
       },
       "ask": {
         "en": "A jury member at the tournaments",
         "it": "Un membro della giuria ai tornei",
-        "fr": "Un juré aux tournois"
+        "fr": "Un juré aux tournois",
+        "es": "Un miembro del jurado en los torneos"
       },
       "logo": null,
       "url": null

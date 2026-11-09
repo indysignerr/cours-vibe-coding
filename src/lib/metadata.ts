@@ -15,10 +15,10 @@ import { SITE } from "@/lib/site";
 /**
  * Les métadonnées d'une page, dans sa langue.
  *
- * Chaque page déclare sa canonical ET ses deux jumelles (hreflang) :
- * c'est ce qui dit à Google que /events/, /it/programma/ et
- * /fr/programme/ sont la même page en trois langues, et laquelle servir
- * à qui.
+ * Chaque page déclare sa canonical ET ses trois jumelles (hreflang) :
+ * c'est ce qui dit à Google que /events/, /it/programma/,
+ * /fr/programme/ et /es/programa/ sont la même page en quatre langues, et
+ * laquelle servir à qui — l'anglais à qui ne parle aucune des trois autres.
  */
 const OG_IMAGE: Record<RouteKey, string> = {
   home: "/og.png",

@@ -2,14 +2,14 @@ import type { Metadata, Viewport } from "next";
 import { LightNote } from "@/components/motion/light-note";
 import { MotionRoot } from "@/components/motion/motion-root";
 import { body, mono } from "@/lib/fonts";
-import { OG_LOCALE, t, type Locale } from "@/lib/i18n";
+import { LOCALES, OG_LOCALE, t, type Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 import "@/app/globals.css";
 
 /**
- * Le document, commun aux trois langues.
+ * Le document, commun aux quatre langues.
  *
- * Il y a un layout racine par langue — (en), fr, it — pour que
+ * Il y a un layout racine par langue — (en), it, fr, es — pour que
  * `<html lang>` soit juste dans le HTML servi, sans JavaScript. Chacun
  * ne fait qu'appeler ce composant avec sa langue.
  *
@@ -42,7 +42,7 @@ const ORGANIZATION = {
   foundingDate: "2026",
   nonprofitStatus: "https://schema.org/NonprofitType",
   sameAs: Object.values(SITE.social),
-  knowsLanguage: ["en", "it", "fr"],
+  knowsLanguage: [...LOCALES],
   founder: SITE.founders.map((name) => ({ "@type": "Person", name })),
   parentOrganization: { "@type": "EducationalOrganization", name: SITE.school },
   address: {

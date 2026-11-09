@@ -94,7 +94,9 @@ export function EventPage({ lang, slug }: { lang: Locale; slug: string }) {
           <header className="event__head">
             <p className="event__date page-head__in" style={{ "--i": 0 } as React.CSSProperties}>
               <time dateTime={e.date}>
-                <span className="event__day">{endDay ? `${p.day}–${endDay}` : p.day}</span>
+                <span className={endDay ? "event__day event__day--span" : "event__day"}>
+                  {endDay ? `${p.day}–${endDay}` : p.day}
+                </span>
                 <span className="event__month">
                   <span>
                     {p.monthLong} {p.year}

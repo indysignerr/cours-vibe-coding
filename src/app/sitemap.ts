@@ -10,7 +10,7 @@ import {
 import { SITE } from "@/lib/site";
 
 /**
- * Le plan du site : chaque page, dans chacune de ses trois langues, avec
+ * Le plan du site : chaque page, dans chacune de ses quatre langues, avec
  * ses jumelles déclarées. /admin/ n'y est pas — il est derrière une
  * connexion.
  */
@@ -36,7 +36,7 @@ function entries(
     url: abs(pagePath(page, lang)),
     lastModified: now,
     changeFrequency,
-    // L'anglais est la version de référence ; les deux autres suivent.
+    // L'anglais est la version de référence ; les trois autres suivent.
     priority: lang === "en" ? priority : Math.round(priority * 80) / 100,
     alternates: { languages },
   }));

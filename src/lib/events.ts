@@ -118,9 +118,11 @@ export function readableSpan(
   const d2 = at(e.endDate);
   const month = (d: Date) =>
     d.toLocaleDateString(INTL[lang], { month: "long", timeZone: "UTC" });
+  // L'espagnol relie le jour, le mois et l'année : « 25–31 de enero de 2027 ».
+  const of = lang === "es" ? "de " : "";
   return month(d1) === month(d2)
-    ? `${d1.getUTCDate()}–${d2.getUTCDate()} ${month(d2)} ${d2.getUTCFullYear()}`
-    : `${d1.getUTCDate()} ${month(d1)} – ${d2.getUTCDate()} ${month(d2)} ${d2.getUTCFullYear()}`;
+    ? `${d1.getUTCDate()}–${d2.getUTCDate()} ${of}${month(d2)} ${of}${d2.getUTCFullYear()}`
+    : `${d1.getUTCDate()} ${of}${month(d1)} – ${d2.getUTCDate()} ${of}${month(d2)} ${of}${d2.getUTCFullYear()}`;
 }
 
 /** « Sat 21 Nov », pour les listes denses. */

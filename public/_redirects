@@ -29,20 +29,31 @@
 /contact        /team/       301
 /contact/*      /team/       301
 
-# Les noms français des pages, sans préfixe de langue : ils mènent à la
-# version française.
-/programme      /fr/programme/            301
-/programme/*    /fr/programme/            301
+# L'anglais est la langue d'arrivée. « Programme » se dit pareil en
+# anglais et en français : sans préfixe de langue, l'adresse mène donc à
+# la page anglaise. Pour le français, c'est /fr/programme/.
+/programme      /events/                  301
+/programme/*    /events/                  301
+
+# Les noms de pages qui n'existent que dans une langue, tapés sans son
+# préfixe, mènent à cette langue : français…
 /evenements     /fr/programme/            301
 /evenements/*   /fr/evenements/:splat     301
 /equipe         /fr/equipe/               301
 /rejoindre      /fr/rejoindre/            301
 
-# Et les noms italiens.
+# …italien…
 /programma      /it/programma/            301
 /eventi         /it/programma/            301
 /eventi/*       /it/eventi/:splat         301
 /unisciti       /it/unisciti/             301
+
+# …espagnol.
+/programa       /es/programa/             301
+/eventos        /es/programa/             301
+/eventos/*      /es/eventos/:splat        301
+/equipo         /es/equipo/               301
+/unete          /es/unete/                301
 
 # Le volet conseil est en pause : il ne vit plus sur le site
 /solutions      /events      301

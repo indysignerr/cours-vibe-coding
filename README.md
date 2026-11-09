@@ -2,9 +2,9 @@
 
 Le site vitrine d'Albert L.I.G.H.T. (*Lab of Intelligent, Generative,
 Hands-on Technology*), l'association étudiante d'Albert School Milano.
-Trois langues — anglais d'abord, puis italien et français —, une ampoule
-en 3D dont le filament écrit un L, et tout le contenu dans des fichiers de
-données.
+Quatre langues — anglais d'abord, puis italien, français et espagnol —,
+une ampoule en 3D dont le filament écrit un L, et tout le contenu dans des
+fichiers de données.
 
 **En ligne :** <https://albertlight.com>. Chaque `git push` sur `main`
 redéploie le site sur Cloudflare Pages, en une minute environ.
@@ -14,7 +14,7 @@ redéploie le site sur Cloudflare Pages, en une minute environ.
 > GitHub's web editor — commit to `main`, and the site rebuilds itself in
 > about a minute. Calendar: `content/events.json`. Team:
 > `content/team.json`. Partners: `content/partners.json`. Every sentence, in
-> three languages: `content/i18n/`. The rest of this page is in French; the
+> four languages: `content/i18n/`. The rest of this page is in French; the
 > field names are the same whatever language you read.
 
 ## Démarrer
@@ -46,12 +46,13 @@ Rien de ce qui se lit sur le site n'est écrit dans le code.
 | le bureau | `content/team.json` |
 | les partenaires et leurs logos | `content/partners.json` |
 | les quatre piliers et leurs formats | `content/pillars.json` |
-| une phrase du site, dans une des trois langues | `content/i18n/en.json`, `it.json`, `fr.json` |
+| une phrase du site, dans une des quatre langues | `content/i18n/en.json`, `it.json`, `fr.json`, `es.json` |
 | le nom, le slogan, l'email, LinkedIn, les fondateurs | `content/site.json` |
 
 Trois règles valent pour tous ces fichiers :
 
-- **Trois langues, toujours.** Un texte s'écrit `{ "en": "…", "it": "…", "fr": "…" }`.
+- **Quatre langues, toujours.** Un texte s'écrit `{ "en": "…", "it": "…", "fr": "…", "es": "…" }`.
+  S'il en manque une, le build échoue et le dit.
 - **`null` veut dire « pas encore connu ».** Le site l'affiche comme tel
   (« Lieu à confirmer »). On ne remplit pas un vide avec une supposition.
 - **JSON strict.** Guillemets doubles, pas de virgule après le dernier
@@ -77,8 +78,8 @@ grisent tout seuls, d'après la date.
   "capacity": null,
   "partner": null,
   "backup": null,
-  "title": { "en": "…", "it": "…", "fr": "…" },
-  "summary": { "en": "…", "it": "…", "fr": "…" },
+  "title": { "en": "…", "it": "…", "fr": "…", "es": "…" },
+  "summary": { "en": "…", "it": "…", "fr": "…", "es": "…" },
   "gallery": []
 }
 ```
@@ -93,14 +94,14 @@ grisent tout seuls, d'après la date.
 | `start`, `end` | `HH:MM`, facultatifs | Heure de Milan. Sans horaire : journée entière. |
 | `audience` | `open` · `members` | Le badge et le filtre Open / Members. |
 | `online` | `true` · `false` | |
-| `location` | `{ en, it, fr }` ou `null` | `null` affiche « Lieu à confirmer ». |
+| `location` | `{ en, it, fr, es }` ou `null` | `null` affiche « Lieu à confirmer ». |
 | `capacity` | un nombre ou `null` | La jauge. `null` : pas de limite. |
 | `partner` | texte ou `null` | |
 | `backup` | `AAAA-MM-JJ` ou `null` | La date de repli. |
 | `gallery` | liste de chemins d'images | Voir plus bas. |
 
 **Confirmer un lieu.** Remplacer `"location": null` par
-`"location": { "en": "Room 2.1, Albert School", "it": "…", "fr": "…" }`.
+`"location": { "en": "Room 2.1, Albert School", "it": "…", "fr": "…", "es": "…" }`.
 
 **Ajouter un événement.** Copier un bloc, lui donner un `slug` neuf, puis
 lancer `npm run events:sql` et jouer le fichier produit dans Supabase
@@ -127,13 +128,15 @@ Une entrée par personne dans `board`, dans l'ordre d'affichage.
 ```json
 {
   "name": "Jiali",
-  "role": { "en": "Communication & media", "it": "…", "fr": "…" },
-  "focus": { "en": "Instagram and LinkedIn", "it": "…", "fr": "…" }
+  "role": { "en": "Communication & media", "it": "…", "fr": "…", "es": "…" },
+  "focus": null
 }
 ```
 
-`focus` peut valoir `null`. Le nombre de membres affiché dans le titre suit
-la liste. Les fondateurs, eux, sont dans `content/site.json` → `founders`.
+`role` est ce qui s'affiche à côté du nom. `focus` est la précision écrite
+dessous : `null` pour ne rien afficher, ou un texte par langue comme pour
+le rôle. Le nombre de membres affiché dans le titre suit la liste. Les
+fondateurs, eux, sont dans `content/site.json` → `founders`.
 
 ### Les partenaires — `content/partners.json`
 
@@ -142,8 +145,8 @@ Une entrée par partenaire dans `partners`, dans l'ordre d'affichage.
 ```json
 {
   "id": "codemotion",
-  "name": { "en": "Codemotion", "it": "Codemotion", "fr": "Codemotion" },
-  "ask": { "en": "…", "it": "…", "fr": "…" },
+  "name": { "en": "Codemotion", "it": "Codemotion", "fr": "Codemotion", "es": "Codemotion" },
+  "ask": { "en": "…", "it": "…", "fr": "…", "es": "…" },
   "logo": null,
   "url": null
 }
@@ -160,10 +163,10 @@ Une entrée par partenaire dans `partners`, dans l'ordre d'affichage.
 
 ### Les textes — `content/i18n/`
 
-Trois fichiers aux clés identiques. À retenir :
+Quatre fichiers aux clés identiques. À retenir :
 
 - `egg.message` — le message de l'easter egg. C'est encore un texte
-  provisoire : le bureau doit écrire le sien, dans les trois langues.
+  provisoire : le bureau doit écrire le sien, dans les quatre langues.
 - Les mots entre accolades (`{n}`, `{names}`, `{title}`) sont remplacés par
   le site. Les garder tels quels.
 - Les pages `/setup/`, `/legal/` et `/privacy/` n'existent qu'en anglais ;
@@ -237,7 +240,7 @@ content/                 tout le contenu (JSON)
 src/app/(en)/ fr/ it/    les routes, une racine par langue
 src/components/hero/     l'ampoule : la scène 3D et son image fixe
 src/components/home/     les blocs de l'accueil
-src/components/pages/    une page = un composant, pour les trois langues
+src/components/pages/    une page = un composant, pour les quatre langues
 src/components/motion/   le défilement, le curseur, le son
 src/lib/                 lecture des données, i18n, dates
 src/app/globals.css      les couleurs, la typographie, toutes les animations
@@ -246,12 +249,28 @@ supabase/                la base des inscriptions
 public/_redirects        les anciennes adresses, et les alias /programme, /equipe…
 ```
 
-**Les adresses.** L'anglais est à la racine (`/events/`, `/team/`,
-`/join/`), l'italien sous `/it/`, le français sous `/fr/`
-(`/fr/programme/`, `/fr/evenements/<slug>/`, `/fr/equipe/`,
-`/fr/rejoindre/`). Les adresses françaises sans préfixe (`/programme`,
-`/equipe`, `/rejoindre`, `/evenements/…`) redirigent vers la version
-française.
+**Les langues et les adresses.** L'anglais est la langue d'arrivée : il
+est à la racine (`/`, `/events/`, `/team/`, `/join/`), et c'est lui qui
+s'ouvre sur `albertlight.com` quelle que soit la langue du navigateur. Il
+n'y a aucune détection ni redirection automatique. Les trois autres
+langues ne s'ouvrent que si on les choisit dans le sélecteur :
+
+| Langue | Accueil | Programme | Événement | Équipe | Rejoindre |
+|---|---|---|---|---|---|
+| Anglais | `/` | `/events/` | `/events/<slug>/` | `/team/` | `/join/` |
+| Italien | `/it/` | `/it/programma/` | `/it/eventi/<slug>/` | `/it/team/` | `/it/unisciti/` |
+| Français | `/fr/` | `/fr/programme/` | `/fr/evenements/<slug>/` | `/fr/equipe/` | `/fr/rejoindre/` |
+| Espagnol | `/es/` | `/es/programa/` | `/es/eventos/<slug>/` | `/es/equipo/` | `/es/unete/` |
+
+Un nom de page propre à une langue, tapé sans préfixe (`/equipe`,
+`/unisciti`, `/equipo`…), mène à cette langue. `/programme`, qui se dit
+pareil en anglais et en français, mène à la page anglaise.
+
+**Ajouter une langue.** L'ajouter à `LOCALES` et aux tables de
+`src/lib/i18n.ts`, copier un dictionnaire dans `content/i18n/`, ajouter la
+langue à chaque texte des fichiers de `content/`, copier le dossier
+`src/app/es/` sous le nouveau code, et ajouter ses alias à
+`public/_redirects`. Le build signale tout texte oublié.
 
 **Trois règles tiennent les animations**, et elles sont écrites en tête de
 `globals.css` :
@@ -286,8 +305,8 @@ Mesures du 9 novembre 2026.
 
 | Contrôle | Résultat |
 |---|---|
-| `tsc`, ESLint, build | aucun avertissement, 50 pages |
-| `npm run audit` | 49 pages, zéro défaut |
+| `tsc`, ESLint, build | aucun avertissement, 64 pages |
+| `npm run audit` | 63 pages, zéro défaut |
 | `npm run contrast` | toutes les paires passent en AA |
 | Sans JavaScript | tout le texte est visible, sur chaque type de page |
 | Mouvement réduit | pas de 3D, pas de transition, pas de curseur, rien de caché |
@@ -331,7 +350,7 @@ Ce que le site ne peut pas inventer, et où le renseigner.
 | Les logos des partenaires | `public/partners/`, puis `content/partners.json` → `logo` |
 | La base des inscriptions | voir [Les inscriptions](#les-inscriptions) |
 | La redirection de `www.albertlight.com` vers `albertlight.com` | une règle dans Cloudflare : `SEO-CHECKLIST.md`, point 0 |
-| `/setup/`, `/legal/`, `/privacy/` en italien et en français | `src/app/(en)/` |
+| `/setup/`, `/legal/`, `/privacy/` en italien, en français et en espagnol | `src/app/(en)/` |
 | La relecture des mentions légales par le bureau | `/legal/` annonce le droit français ; `/privacy/` décrit la liste des membres |
 
 ## Autres documents
