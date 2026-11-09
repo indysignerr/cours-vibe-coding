@@ -20,7 +20,9 @@ export function Hero({ lang }: { lang: Locale }) {
   const d = t(lang);
 
   return (
-    <section className="hero" data-hero>
+    // `data-phase` : « copy » tant que le texte est à l'écran, « bulb » ensuite
+    // (c'est BulbStage qui le bascule au défilement).
+    <section className="hero" data-hero data-phase="copy">
       <div className="hero__sticky">
         <div className="hero__copy">
           <p className="eyebrow eyebrow--accent hero__in" style={{ "--i": 0 } as React.CSSProperties}>

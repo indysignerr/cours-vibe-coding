@@ -60,6 +60,9 @@
   --gutter: clamp(1.25rem, 5vw, 5rem);
   --max: 88rem;
   --header-h: 4.25rem;
+  /* La hauteur de la scène de l'ampoule sur grand écran. Le texte qu'elle
+     écrit et le billet de l'easter egg se placent d'après elle. */
+  --bulb-h: min(82svh, 54rem);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
   color-scheme: dark;
@@ -543,11 +546,9 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   --pm: clamp(0, calc((var(--p, 0) - 0.06) * 2.1), 1);
   /* Quand ce que le filament a écrit apparaît. */
   --ps: clamp(0, calc((var(--p, 0) - 0.72) * 6), 1);
-  /* La hauteur de la scène de l'ampoule, et de combien elle monte en fin
-     de course. Le texte qu'elle écrit se cale dessous à partir de ces deux
-     mesures : il la suit sur tous les écrans, au lieu de rester collé au
-     bas de la fenêtre. */
-  --bulb-h: min(82svh, 54rem);
+  /* De combien l'ampoule monte en fin de course. Avec sa hauteur
+     (`--bulb-h`), c'est ce qui place le texte qu'elle écrit : il la suit
+     sur tous les écrans, au lieu de rester collé au bas de la fenêtre. */
   --rise: 8svh;
   /* Aplat marine, exactement celui du canvas de l'ampoule : la matière
      vient du grain et de la lueur, pas d'un dégradé sous la scène. */
@@ -1122,46 +1123,194 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   .egg__in { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); }
 }
 
-/* Le mot du bureau : un carton ivoire, épinglé en bas de l'écran. */
+/* ---------------------------------------------------------------------
+   Le mot du bureau : un billet épinglé sous la lampe.
+
+   Du papier ivoire, une punaise de laiton, un coin corné. Il arrive en
+   se balançant sur sa punaise comme un vrai pendule, et il est écrit à
+   l'encre sympathique : c'est la chaleur de l'ampoule qui la fait monter,
+   lettre après lettre, du jaune pâle au brun. On éteint, la punaise
+   lâche et il tombe.
+
+   Sans mouvement (réglage du système, ou pas de JavaScript d'animation) :
+   le billet est simplement là, déjà écrit.
+   --------------------------------------------------------------------- */
 .note {
+  --note-ink: #47341a;
   position: fixed;
   left: 50%;
-  bottom: 1.25rem;
+  bottom: clamp(1.25rem, 3vh, 2rem);
   z-index: 60;
-  width: min(92vw, 27rem);
-  padding: 1.25rem 1.4rem 1rem;
-  border-radius: 18px;
-  background: #f8f4ec;
-  color: #1e2d40;
-  box-shadow:
-    0 30px 60px -20px rgb(0 0 0 / 0.75),
-    0 0 70px -10px rgb(255 198 122 / 0.55);
-  opacity: 0;
-  transform: translate(-50%, 130%);
+  width: min(90vw, 28rem);
+  transform: translateX(-50%);
   pointer-events: none;
-  transition:
-    transform 0.6s var(--ease),
-    opacity 0.35s ease;
+  visibility: hidden;
 }
-.note[data-open="true"] { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
-.note__title { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #0e1a2b; }
-.note__text { margin-top: 0.3rem; }
-.note__sign { margin-top: 0.5rem; font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.875rem; color: #55616f; }
+.note[data-open="true"] { visibility: visible; pointer-events: auto; }
+/* Ce qui se balance : la feuille et son ombre, d'un seul bloc. C'est une
+   couche à part, que la carte graphique fait tourner sans que rien ne soit
+   redessiné. */
+.note__paper {
+  position: relative;
+  /* Tout tourne autour de la punaise. */
+  transform-origin: 50% 1.05rem;
+  transform: rotate(-1.4deg);
+  will-change: transform;
+}
+/* L'ombre, et la lueur de la lampe. Elles sont sur un calque sous la
+   feuille et non sur la feuille : sa découpe (le coin corné) les
+   rognerait, et un filtre d'ombre serait recalculé à chaque image du
+   balancement. */
+.note__paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  box-shadow:
+    0 24px 40px -12px rgb(0 0 0 / 0.62),
+    0 0 58px -4px rgb(255 198 122 / 0.34);
+}
+.note__sheet {
+  position: relative;
+  padding: 2.2rem 1.5rem 0.75rem;
+  border-radius: 3px;
+  color: #4a3a22;
+  background-color: #f8f4ec;
+  /* La lumière de la lampe tombe d'en haut ; dessous, le grain du papier. */
+  background-image:
+    radial-gradient(120% 80% at 50% -18%, rgb(255 205 130 / 0.4), transparent 62%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.1 0 0 0 0 0.17 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23p)'/%3E%3C/svg%3E");
+  /* Le coin du bas, à droite, est corné. */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.6rem), calc(100% - 1.6rem) 100%, 0 100%);
+}
+/* Le rabat du coin corné : l'envers du papier, un peu plus sombre. */
+.note__sheet::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  background: linear-gradient(315deg, transparent 49%, #cfc2a8 50%, #ece3d2 68%, #f6f0e4);
+}
+.note__pin {
+  position: absolute;
+  left: 50%;
+  top: 0.55rem;
+  width: 1rem;
+  height: 1rem;
+  margin-left: -0.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #fff3d6 0 10%, #d9bd8d 30%, #a7844f 68%, #6b4f2a 100%);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.4),
+    0.15rem 0.4rem 0.35rem -0.05rem rgb(60 40 10 / 0.45);
+}
+.note__title {
+  font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--note-ink);
+  text-wrap: balance;
+}
+.note__ink { color: var(--note-ink); }
+.note__text { margin-top: 0.55rem; }
+.note__sign {
+  margin-top: 0.7rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875rem;
+  color: #7a5c33;
+}
 .note__close {
   min-height: 44px;
-  margin-top: 0.4rem;
+  margin-top: 0.2rem;
   padding: 0;
   border: 0;
   background: none;
-  color: #0e1a2b;
-  font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 500;
+  color: var(--note-ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-decoration-color: #b89a68;
+  text-underline-offset: 5px;
   cursor: pointer;
 }
+.note__close:hover { text-decoration-color: currentColor; }
 .note__close:focus-visible { outline-color: #0e1a2b; }
+
+/* Sur grand écran le billet choisit sa place, pour ne jamais se poser sur
+   ce qui se lit. La scène du haut de page dit où elle en est par
+   l'attribut `data-stage` de <html> (voir BulbStage). La position est un
+   seul `translate`, de sorte qu'il glisse d'une place à l'autre au lieu
+   de sauter :
+     — par défaut, en bas à droite, là où l'on pose un mot sans gêner ;
+     — en haut de l'accueil, dans la bande libre entre la fin du texte et
+       le col de l'ampoule ;
+     — quand l'ampoule vient au centre, le bas est pris par ce qu'elle
+       écrit : à droite, à mi-hauteur. */
+@media (min-width: 900px) {
+  .note {
+    left: 0;
+    top: 0;
+    bottom: auto;
+    --note-x: calc(100vw - 100% - var(--gutter));
+    --note-y: calc(100svh - 100% - 1.75rem);
+    transform: translate3d(var(--note-x), var(--note-y), 0);
+  }
+  html[data-stage="copy"] .note { --note-x: calc(50vw - 50%); }
+  html[data-stage="bulb"] .note { --note-y: calc(50svh - 50%); }
+}
+/* Le haut de page à deux colonnes. La bande libre va de la fin de la
+   phrase d'accroche (35rem au plus, ou la colonne si elle est plus
+   étroite) jusqu'au col de l'ampoule, dont le centre est aux 77,27 % de
+   la grille 1.2fr / 1fr.
+
+   Le billet a UNE largeur, la même aux trois places : celle qui tient à
+   la fois dans cette bande et à droite de l'ampoule centrée sans toucher
+   ses rayons. S'il changeait de largeur en changeant de place, son texte
+   se remettrait en page et son ombre serait redessinée en plein
+   défilement ; ainsi, seul un `translate` bouge. */
+@media (min-width: 1024px) {
+  .note {
+    --grid: calc(100vw - 2 * var(--gutter) - 2rem);
+    --band-l: calc(var(--gutter) + min(35rem, 0.5455 * var(--grid)) + 1.25rem);
+    --band-r: calc(var(--gutter) + 2rem + 0.7727 * var(--grid) - 0.13 * var(--bulb-h) - 1.5rem);
+    width: clamp(
+      15rem,
+      min(
+        calc(var(--band-r) - var(--band-l)),
+        calc(50vw - var(--gutter) - 0.3 * var(--bulb-h) - 1rem)
+      ),
+      28rem
+    );
+  }
+  html[data-stage="copy"] .note { --note-x: calc(var(--band-r) - 100%); }
+}
+
+/* Le mouvement. Le billet reste visible le temps de sa chute. */
+.motion .note { transition: visibility 0s linear 0.7s, transform 0.7s var(--ease); }
+.motion .note[data-open="true"] { transition-delay: 0s; }
+.motion .note[data-open="true"] .note__paper { animation: note-swing 2.3s both; }
+.motion .note[data-open="false"] .note__paper {
+  animation: note-fall 0.62s cubic-bezier(0.5, 0, 0.9, 0.45) both;
+}
+/* L'encre : le titre lettre après lettre, puis le reste d'un seul tenant. */
+.motion .note[data-open="true"] .note__ink {
+  animation: ink-rise 1.05s ease-out both;
+  animation-delay: calc(0.55s + var(--k) * 36ms);
+}
+.motion .note[data-open="true"] .note__text {
+  animation: ink-rise 1.2s ease-out both;
+  animation-delay: calc(0.8s + var(--n) * 36ms);
+}
+.motion .note[data-open="true"] .note__sign,
+.motion .note[data-open="true"] .note__close {
+  animation: ink-fade 0.8s ease-out both;
+  animation-delay: calc(1.3s + var(--n) * 36ms);
+}
 
 /* ---- Rejoindre : deux portes ---- */
 .ways { display: grid; gap: 1.25rem; }
@@ -1539,6 +1688,36 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
 @keyframes vt-in {
   from { clip-path: inset(100% 0 0 0); translate: 0 48px; }
   to { clip-path: inset(0 0 0 0); translate: 0 0; }
+}
+/* Le billet : un pendule qui s'amortit autour de sa punaise. Les
+   extrêmes sont à intervalles égaux, comme ceux d'un vrai balancier. */
+@keyframes note-swing {
+  0% { opacity: 0; transform: translateY(-2rem) rotate(-9deg); animation-timing-function: ease-out; }
+  8% { opacity: 1; }
+  18% { transform: translateY(0) rotate(5.6deg); animation-timing-function: ease-in-out; }
+  34% { transform: translateY(0) rotate(-6.4deg); animation-timing-function: ease-in-out; }
+  50% { transform: translateY(0) rotate(1.8deg); animation-timing-function: ease-in-out; }
+  66% { transform: translateY(0) rotate(-3.2deg); animation-timing-function: ease-in-out; }
+  82% { transform: translateY(0) rotate(-0.6deg); animation-timing-function: ease-in-out; }
+  100% { opacity: 1; transform: translateY(0) rotate(-1.4deg); }
+}
+/* La punaise lâche : il pivote, puis tombe. */
+@keyframes note-fall {
+  0% { opacity: 1; transform: rotate(-1.4deg); }
+  25% { opacity: 1; transform: translateY(0.3rem) rotate(2.5deg); }
+  100% { opacity: 0; transform: translateY(5rem) rotate(10deg); }
+}
+/* L'encre sympathique : invisible, puis jaune pâle, puis brune. Seules
+   l'opacité et la couleur changent : un flou par lettre, c'était vingt
+   filtres à recalculer en même temps. */
+@keyframes ink-rise {
+  0% { opacity: 0; color: #f0d98f; }
+  40% { opacity: 0.72; color: #cf9c44; }
+  100% { opacity: 1; }
+}
+@keyframes ink-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 @keyframes rise-in {
   from { opacity: 0; transform: translateY(22px); }

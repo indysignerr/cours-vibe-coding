@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { LightNote } from "@/components/motion/light-note";
 import { MotionRoot } from "@/components/motion/motion-root";
 import { body, mono } from "@/lib/fonts";
 import { OG_LOCALE, t, type Locale } from "@/lib/i18n";
@@ -113,6 +114,15 @@ export function RootShell({
           {d.nav.skip}
         </a>
         {children}
+        {/* Hors des pages : le billet reste épinglé d'une page à l'autre. */}
+        <LightNote
+          labels={{
+            messageTitle: d.egg.messageTitle,
+            message: d.egg.message,
+            signature: d.egg.signature,
+            off: d.egg.off,
+          }}
+        />
         <MotionRoot />
       </body>
     </html>

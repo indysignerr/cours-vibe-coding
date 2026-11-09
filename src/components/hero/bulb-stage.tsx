@@ -38,20 +38,60 @@ export function BulbStage({
   useEffect(() => {
     const el = holder.current;
     const cv = canvas.current;
-    if (!el || !cv || !fineOn()) return;
+    if (!el || !cv) return;
 
     const hero = el.closest<HTMLElement>("[data-hero]");
+    const root = document.documentElement;
     let handle: BulbHandle | null = null;
     let dead = false;
     let progress = 0;
     const cleanups: (() => void)[] = [];
+    const stop = () => {
+      dead = true;
+      for (const c of cleanups) c();
+    };
+
+    // Où en est la scène, dit à toute la page par un attribut de <html> :
+    // « copy » tant que le texte est là, « bulb » quand l'ampoule est au
+    // centre, rien quand elle est sortie de l'écran. Le billet de l'easter
+    // egg s'en sert pour choisir sa place (voir `.note` dans globals.css).
+    // On n'écrit l'attribut que lorsqu'il change : le défilement appelle
+    // ceci soixante fois par seconde, et chaque écriture ferait recalculer
+    // les styles de la page.
+    let phase: "copy" | "bulb" = "copy";
+    let seen = false;
+    let stage = "";
+    const publish = () => {
+      const next = seen ? phase : "";
+      if (next === stage) return;
+      stage = next;
+      if (next) root.dataset.stage = next;
+      else delete root.dataset.stage;
+    };
+    const watcher = new IntersectionObserver(([entry]) => {
+      seen = entry.isIntersecting;
+      publish();
+    });
+    watcher.observe(el);
+    cleanups.push(() => {
+      watcher.disconnect();
+      delete root.dataset.stage;
+    });
+
+    // Le reste — la 3D, le défilement qui la joue — est pour le grand écran.
+    if (!fineOn()) return stop;
 
     // La progression du défilement : deux variables CSS, et la scène si elle est là.
     const apply = (p: number) => {
       progress = p;
       hero?.style.setProperty("--p", p.toFixed(4));
-      // Texte effacé : il sort aussi de l'ordre de tabulation.
-      if (hero) hero.dataset.phase = p > 0.24 ? "bulb" : "copy";
+      const next = p > 0.24 ? "bulb" : "copy";
+      if (next !== phase) {
+        phase = next;
+        // Texte effacé : il sort aussi de l'ordre de tabulation.
+        if (hero) hero.dataset.phase = next;
+        publish();
+      }
       handle?.setProgress((p - 0.16) / 0.56);
     };
 
@@ -128,9 +168,8 @@ export function BulbStage({
     const id = idle(() => void start(), { timeout: 1800 });
 
     return () => {
-      dead = true;
       (window.cancelIdleCallback ?? window.clearTimeout)(id as number);
-      for (const c of cleanups) c();
+      stop();
       handle?.dispose();
       el.classList.remove("is-live");
     };

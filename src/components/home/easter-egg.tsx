@@ -10,10 +10,8 @@ import { litStore } from "@/lib/stage";
  * Deux façons d'allumer — cliquer l'ampoule du haut de page, ou
  * basculer cet interrupteur. Allumée, la page change : `is-lit` sur
  * <html> pousse la lueur de l'ampoule, fait briller le fil qui court le
- * long des sections, et un mot du bureau apparaît, épinglé en bas de
- * l'écran où qu'on soit dans la page.
- *
- * Le mot est un texte provisoire (content/i18n/*.json → egg.message).
+ * long des sections, et un mot du bureau vient s'épingler en bas de
+ * l'écran (voir LightNote, monté une fois pour tout le site).
  */
 export function EasterEgg({
   labels,
@@ -24,10 +22,6 @@ export function EasterEgg({
     body: string;
     on: string;
     off: string;
-    messageTitle: string;
-    message: string;
-    signature: string;
-    close: string;
   };
 }) {
   const lit = useSyncExternalStore(litStore.subscribe, litStore.get, () => false);
@@ -68,20 +62,6 @@ export function EasterEgg({
         </button>
       </div>
 
-      {/* Le mot du bureau. Enfant direct de la section : aucun ancêtre
-          transformé, donc le `fixed` cadre bien la fenêtre. */}
-      <div className="note" role="status" aria-live="polite" data-open={lit}>
-        {lit ? (
-          <>
-            <p className="note__title">{labels.messageTitle}</p>
-            <p className="note__text">{labels.message}</p>
-            <p className="note__sign">— {labels.signature}</p>
-            <button type="button" className="note__close" onClick={() => set(false)}>
-              {labels.off}
-            </button>
-          </>
-        ) : null}
-      </div>
     </section>
   );
 }
