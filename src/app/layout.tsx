@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Cursor } from "@/components/motion/cursor";
-import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { body, display, mono } from "@/lib/fonts";
 import { LightReveal } from "@/components/light-reveal";
 import { Opening } from "@/components/opening";
@@ -94,7 +93,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <Cursor />
-        <ScrollProgress />
         {children}
       </body>
     </html>

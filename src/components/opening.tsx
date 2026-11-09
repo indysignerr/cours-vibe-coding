@@ -33,8 +33,11 @@ export function Opening() {
     const el = root.current;
     if (!el) return;
 
+    // On cache le rideau, on ne retire pas le nœud : il appartient à React,
+    // qui le retrouverait absent au prochain rendu de <body> et planterait
+    // ses insertBefore/removeChild.
     const done = () => {
-      el.remove();
+      el.hidden = true;
       document.documentElement.classList.remove("is-opening");
     };
 
@@ -47,7 +50,9 @@ export function Opening() {
     }
 
     sessionStorage.setItem(SEEN, "1");
-    document.documentElement.classList.add("is-opening");
+    // `is-opening` le temps du rideau ; `opened` reste : la scène sait alors
+    // que l'ampoule vient de tomber et ne la fait pas tomber une deuxième fois.
+    document.documentElement.classList.add("is-opening", "opened");
     const net = window.setTimeout(done, 6000);
 
     let killed = false;

@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageShell } from "@/components/page-shell";
+import { Stage } from "@/components/stage";
+import { Wall } from "@/components/wall";
 import { eventListSchema } from "@/lib/event-schema";
-import { embedUrl, icalFeedUrl, subscribeUrl } from "@/lib/calendar";
 import {
   BUILD_LAB_DATES,
   past,
   readableDate,
-  readableSpan,
   shortDate,
   upcoming,
+  type SiteEvent,
 } from "@/lib/events";
 import { PILLARS } from "@/lib/pillars";
-import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Events",
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
         url: "/og/events.png",
         width: 1200,
         height: 630,
-        alt: "Nobody here is only listening",
+        alt: "Something on at least every two weeks",
       },
     ],
   },
@@ -32,9 +31,32 @@ export const metadata: Metadata = {
 
 const PILLAR_BY_KEY = Object.fromEntries(PILLARS.map((p) => [p.key, p]));
 
+/** « 21 » et « Nov », séparés : le jour en très grand, le mois en mono. */
+function parts(date: string) {
+  const d = new Date(`${date}T12:00:00Z`);
+  return {
+    day: String(d.getUTCDate()).padStart(2, "0"),
+    month: d.toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" }),
+    weekday: d.toLocaleDateString("en-GB", {
+      weekday: "long",
+      timeZone: "UTC",
+    }),
+  };
+}
+
+/**
+ * La page Events : le mur de l'année.
+ *
+ * Une carte par date, en rangée, qu'on traverse à l'horizontale — le
+ * jour en chiffres de six centimètres, le mois, le titre, le format. La
+ * prochaine est en tête et cerclée de beige. Le reste de la page tient
+ * sous le mur : le rythme du Build Lab, le fichier calendrier, ce qui a
+ * déjà eu lieu. Un écran, et chaque chose dite une fois.
+ */
 export default function EventsPage() {
   const next = upcoming();
   const before = past();
+  const [first] = next;
 
   return (
     <>
@@ -42,222 +64,115 @@ export default function EventsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(eventListSchema()) }}
       />
-      <PageShell
-        eyebrow="Events"
-        title="Something on at least every two weeks."
-        lede="From the first tournament on 21 November through Demo Day in May. Free, and beginners welcome."
-      >
-        {/* Chaque évènement : une ligne, et le détail qui s'ouvre.
-          Les neuf fiches dépliées d'un coup faisaient 1 630 mots sur la page.
-          `<details>` est natif : le clavier, le mobile et le repli sans
-          JavaScript viennent avec, et le contenu reste dans le HTML pour
-          l'indexation même quand il est fermé. */}
-        <ol className="evs mt-16 scroll-stagger">
-          {next.map((e) => {
-            const pillar = PILLAR_BY_KEY[e.kind];
-            return (
-              <li key={e.slug} id={e.slug} className="scroll-mt-28">
-                <details className="ev">
-                  <summary className="ev__head">
-                    <span className="ev__date tnum">{shortDate(e.date)}</span>
-                    <span className="ev__title">{e.title}</span>
-                    <span className="ev__meta">
-                      <span className="eyebrow eyebrow--accent">
-                        {pillar?.title}
-                      </span>
-                      <span className="text-sm text-muted">{e.audience}</span>
-                    </span>
-                    <span aria-hidden className="ev__sign" />
-                  </summary>
-
-                  <div className="ev__body">
-                    <div className="grid gap-10 md:grid-cols-12">
-                      <div className="md:col-span-5">
-                        <dl className="grid gap-2.5 text-sm">
-                          {(
-                            [
-                              ["When", readableSpan(e)],
-                              ...(e.start
-                                ? ([
-                                    [
-                                      "Time",
-                                      `${e.start}${e.end ? `–${e.end}` : ""}`,
-                                    ],
-                                  ] as [string, string][])
-                                : []),
-                              // Le plan ne donne ni salle ni jauge pour la plupart
-                              // des dates : on le dit, on ne l'invente pas.
-                              ["Where", e.location ?? "To be confirmed"],
-                              ...(e.capacity
-                                ? ([["Seats", `${e.capacity} max`]] as [
-                                    string,
-                                    string,
-                                  ][])
-                                : []),
-                              ["Lead", e.lead],
-                              ...(e.partner
-                                ? ([["With", e.partner]] as [string, string][])
-                                : []),
-                              ...(e.prep
-                                ? ([["Before it", e.prep]] as [
-                                    string,
-                                    string,
-                                  ][])
-                                : []),
-                            ] as [string, string][]
-                          ).map(([term, detail]) => (
-                            <div key={term} className="flex gap-3">
-                              <dt className="w-16 shrink-0 text-accent">
-                                {term}
-                              </dt>
-                              <dd className="tnum text-body">{detail}</dd>
-                            </div>
-                          ))}
-                        </dl>
-
-                        <p className="mt-6 text-body">{e.summary}</p>
-                      </div>
-
-                      <div className="md:col-span-6 md:col-start-7">
-                        <p className="eyebrow">Sign up</p>
-                        <p className="mt-4 max-w-measure text-body">
-                          The form, the full details and the calendar link are
-                          on this event&rsquo;s own page.
-                        </p>
-                        <Link
-                          className="btn btn--primary mt-7"
-                          href={`/events/${e.slug}/`}
-                        >
-                          {e.title}
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </details>
-              </li>
-            );
-          })}
-        </ol>
-
-        {/* Build Lab, qui est un rythme plutôt qu'une date. */}
-        <section className="card card--sand mt-24 p-7 md:p-10 scroll-in">
-          <div className="grid gap-8 md:grid-cols-12">
-            <div className="md:col-span-5">
-              <p className="eyebrow">Every other Tuesday</p>
-              <h2 className="display-2 mt-5">Build Lab</h2>
-              <p className="mt-5 text-body">
-                One hour. Bring your own project, and an experienced member is
-                there to unblock you. Members only, and it runs all year.
-              </p>
-            </div>
-            <ol className="md:col-span-6 md:col-start-7">
-              <li className="tnum border-b border-line py-3 text-ink">
-                {readableDate("2026-12-15")}{" "}
-                <span className="text-muted">· first session</span>
-              </li>
-              {BUILD_LAB_DATES.map((d) => (
-                <li
-                  key={d}
-                  className="tnum border-b border-line py-3 text-muted last:border-0"
-                >
-                  {readableDate(d)}
-                </li>
-              ))}
-            </ol>
+      <Stage className="stage--events">
+        <header className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
+          <div>
+            <p className="eyebrow eyebrow--accent rise">The year</p>
+            <h1 className="display-1 rise mt-3 [animation-delay:80ms]">
+              {next.length} dates, November to May.
+            </h1>
           </div>
-        </section>
+          <p className="lede rise max-w-[30ch] [animation-delay:160ms]">
+            Free. Beginners welcome. Open events need nothing but a sign-up.
+          </p>
+        </header>
 
-        {/* L'agenda partagé. */}
-        <section className="mt-24 scroll-in">
-          <p className="eyebrow">Keep it in your calendar</p>
-          {subscribeUrl() ? (
-            <>
-              <h2 className="display-2 mt-5 max-w-[22ch]">
-                Subscribe once, stay in sync.
-              </h2>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <a
-                  className="btn btn--primary"
-                  href={subscribeUrl()!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Add to my Google Calendar
-                </a>
-                {icalFeedUrl() ? (
-                  <a
-                    className="tap inline-flex items-center text-sm text-muted underline underline-offset-4 hover:text-ink"
-                    href={icalFeedUrl()!}
-                  >
-                    iCal feed for Apple or Outlook
-                  </a>
-                ) : null}
-              </div>
-              {embedUrl() ? (
-                <div className="card card--raised mt-10 overflow-hidden">
-                  <iframe
-                    title={`${SITE.name} calendar`}
-                    src={embedUrl()!}
-                    className="h-[520px] w-full border-0"
-                    loading="lazy"
-                  />
-                </div>
-              ) : null}
-            </>
-          ) : (
-            <div className="card card--sand mt-5 p-7">
-              <h2 className="display-3">One calendar for everything, soon.</h2>
-              <p className="mt-3 text-body">
-                Every date above adds itself to your own calendar, and{" "}
-                <a
-                  className="text-accent underline underline-offset-4"
-                  href="/albert-light.ics"
-                  download
-                >
-                  the whole year downloads as one file
-                </a>
-                .
-              </p>
-            </div>
-          )}
-        </section>
+        <Wall label="Upcoming events" className="mt-6">
+          {next.map((e, i) => (
+            <Tile key={e.slug} e={e} i={i} isNext={e.slug === first?.slug} />
+          ))}
+        </Wall>
 
-        {before.length > 0 ? (
-          <section className="mt-24 scroll-in">
-            <p className="eyebrow">Already happened</p>
-            <ol className="rows mt-6">
-              {before.map((e) => (
-                <li
-                  key={e.slug}
-                  className="grid gap-2 py-5 md:grid-cols-12 md:items-baseline md:gap-6"
-                >
-                  <span className="tnum text-sm text-muted md:col-span-2">
-                    {shortDate(e.date)}
-                  </span>
-                  <span className="text-ink md:col-span-6">{e.title}</span>
-                  <span className="eyebrow md:col-span-4">{e.format}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        ) : null}
-
-        <section className="mt-24 grid gap-10 md:grid-cols-12 scroll-in">
-          <div className="md:col-span-5">
-            <p className="eyebrow">Never been?</p>
-            <h2 className="display-2 mt-5">Start with an open one.</h2>
-          </div>
-          <div className="md:col-span-6 md:col-start-7">
-            <p className="lede">
-              Workshops, crash courses and the big nights are open to anyone.
-              Tournaments and Build Lab are for members.
+        <div className="trio mt-auto">
+          {/* Build Lab : un rythme plus qu'une date. */}
+          <section className="trio__cell rise [animation-delay:500ms]">
+            <p className="eyebrow">Every other Tuesday · Members</p>
+            <h2 className="display-3 mt-2">Build Lab</h2>
+            <p className="mt-2 text-body">
+              One hour on your own project, with an experienced member there.
+              First session {shortDate("2026-12-15")}, then:
             </p>
-            <Link className="btn btn--primary mt-8" href="/join/">
+            <ul className="trio__dates tnum mt-3">
+              {BUILD_LAB_DATES.map((d) => (
+                <li key={d}>{shortDate(d)}</li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Le calendrier. */}
+          <section className="trio__cell rise [animation-delay:580ms]">
+            <p className="eyebrow">Keep it in your calendar</p>
+            <h2 className="display-3 mt-2">The whole year, one file.</h2>
+            <p className="mt-2 text-body">
+              Every date, for Google, Apple or Outlook. Each event page also
+              adds itself on its own.
+            </p>
+            <a className="btn btn--outline mt-4" href="/albert-light.ics" download>
+              Download the calendar (.ics)
+            </a>
+          </section>
+
+          {/* Ce qui a eu lieu, et par où commencer. */}
+          <section className="trio__cell rise [animation-delay:660ms]">
+            {before.length > 0 ? (
+              <>
+                <p className="eyebrow">Already happened</p>
+                <ul className="mt-2">
+                  {before.map((e) => (
+                    <li key={e.slug} className="flex items-baseline gap-3 py-1">
+                      <span className="tnum text-sm text-muted">
+                        {shortDate(e.date)}
+                      </span>
+                      <span className="text-body">{e.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+            <p className="eyebrow mt-5">Never been?</p>
+            <p className="mt-2 text-body">
+              Start with an open one. Tournaments and Build Lab are for
+              members — and membership is a tick on the sign-up form.
+            </p>
+            <Link className="btn btn--ghost mt-4" href="/join/">
               How to join
             </Link>
-          </div>
-        </section>
-      </PageShell>
+          </section>
+        </div>
+      </Stage>
     </>
+  );
+}
+
+function Tile({ e, i, isNext }: { e: SiteEvent; i: number; isNext: boolean }) {
+  const { day, month, weekday } = parts(e.date);
+  const pillar = PILLAR_BY_KEY[e.kind];
+  return (
+    <li
+      className={`tile${isNext ? " tile--next" : ""}`}
+      style={{ "--i": i } as React.CSSProperties}
+    >
+      <Link href={`/events/${e.slug}/`} className="tile__link">
+        <span className="tile__top">
+          <span className="tile__month">
+            {month}
+            {isNext ? " · Next" : ""}
+          </span>
+          <span className="tile__pillar">{pillar?.title}</span>
+        </span>
+        <span className="tile__day tnum" aria-hidden>
+          {day}
+        </span>
+        <span className="sr-only">{readableDate(e.date)}</span>
+        <span className="tile__body">
+          <span className="tile__title">{e.title}</span>
+          <span className="tile__meta">
+            {weekday}
+            {e.start ? ` · ${e.start}` : ""} · {e.audience}
+          </span>
+        </span>
+        <span className="tile__format eyebrow">{e.format}</span>
+      </Link>
+    </li>
   );
 }

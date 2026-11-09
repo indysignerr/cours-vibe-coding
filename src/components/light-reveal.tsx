@@ -115,14 +115,14 @@ export function LightReveal() {
       const node = e.target as Element | null;
       if (!node || node.closest(GRASPABLE)) return;
       if (root.classList.contains("is-opening")) return;
-      if (node.closest("[aria-modal='true']")) return;
+      if (node.closest("[aria-modal='true'], dialog[open]")) return;
       if (window.getSelection()?.isCollapsed === false) return;
       if (Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8) return;
       lampStore.set({ lit: false, used: true });
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape" || !lampStore.get().lit) return;
-      if (document.querySelector("[aria-modal='true']")) return;
+      if (document.querySelector("[aria-modal='true'], dialog[open]")) return;
       lampStore.set({ lit: false, used: true });
     };
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SignupBoard } from "@/app/admin/signup-board";
 import { AuthGate } from "@/components/auth-gate";
-import { PageShell } from "@/components/page-shell";
+import { Stage, StageHead } from "@/components/stage";
 
 export const metadata: Metadata = {
   title: "Sign-ups",
@@ -11,14 +11,16 @@ export const metadata: Metadata = {
 /** Réservé aux organisateurs. Le verrou est la RLS, pas cette page. */
 export default function AdminPage() {
   return (
-    <PageShell
+    <Stage className="stage--doc">
+      <StageHead
       eyebrow="Organisers"
       title="Who is coming."
-      lede="The sign-up lists, one block per event. The names never leave this page unless you download them."
-    >
+      lede="The sign-up lists, one block per event. The names never leave this page unless you download them." />
+      <div className="doc">
       <AuthGate requireAdmin>
         <SignupBoard />
       </AuthGate>
-    </PageShell>
+    </div>
+    </Stage>
   );
 }

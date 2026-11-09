@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
-import { PageShell } from "@/components/page-shell";
+import { Stage } from "@/components/stage";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -14,14 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * La page de contact.
- *
- * Elle vendait un rendez-vous de quarante-cinq minutes sur
- * l'automatisation en entreprise — un reste de l'offre de conseil qui
- * n'existe plus. Ce qui reste vient du plan : ce qu'un partenaire
- * obtient, et ce qu'on lui demande.
- */
+/** Ce qu'un partenaire obtient, dans les mots du plan. */
 const PARTNER_GETS = [
   "Their logo on the event and its posts",
   "A five-minute talk slot",
@@ -29,25 +21,25 @@ const PARTNER_GETS = [
   "First access to motivated tech students for internships and junior roles",
 ];
 
+/**
+ * Le contact : un écran, le formulaire à droite, tout le reste à gauche.
+ */
 export default function ContactPage() {
   return (
-    <PageShell
-      eyebrow="Contact"
-      title="Talk to us."
-      lede="Students, partners, and anyone who would like to speak at an event."
-    >
-      <div className="grid gap-16 md:grid-cols-12">
-        <div className="md:col-span-6 scroll-in">
-          <p className="eyebrow">Send a message</p>
-          <div className="mt-6">
-            <ContactForm />
-          </div>
-        </div>
+    <Stage className="stage--contact">
+      <div className="desk">
+        <div className="desk__left">
+          <p className="eyebrow eyebrow--accent rise">Contact</p>
+          <h1 className="display-1 rise mt-4 [animation-delay:80ms]">
+            Talk to us.
+          </h1>
+          <p className="lede rise mt-5 max-w-[34ch] [animation-delay:160ms]">
+            Students, partners, and anyone who would like to speak at an
+            event.
+          </p>
 
-        <div className="md:col-span-5 md:col-start-8 scroll-in">
-          <p className="eyebrow">Elsewhere</p>
-          <ul className="rows mt-6">
-            <li className="py-4">
+          <ul className="rise mt-7 flex flex-wrap gap-x-7 gap-y-2 [animation-delay:240ms]">
+            <li>
               <a
                 className="underline-grow text-ink"
                 href={SITE.social.linkedin}
@@ -57,45 +49,36 @@ export default function ContactPage() {
                 LinkedIn
               </a>
             </li>
-            <li className="py-4">
-              <a
-                className="underline-grow text-ink"
-                href={`mailto:${SITE.contactEmail}`}
-              >
+            <li>
+              <a className="underline-grow text-ink" href={`mailto:${SITE.contactEmail}`}>
                 {SITE.contactEmail}
               </a>
             </li>
           </ul>
 
-          <p className="mt-10 max-w-measure text-sm text-muted">
-            We are at {SITE.school} {SITE.campus}, and the association is
-            recognised by the school.
-          </p>
+          <section className="rise mt-auto pt-10 [animation-delay:320ms]">
+            <p className="eyebrow">For partners · what you get</p>
+            <ul className="rows mt-3 max-w-[34rem]">
+              {PARTNER_GETS.map((line) => (
+                <li key={line} className="py-2.5 text-body">
+                  {line}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 max-w-[34rem] text-sm text-muted">
+              What we ask for: prizes, credits, a speaker or food, before any
+              money.
+            </p>
+          </section>
+        </div>
+
+        <div className="desk__form rise [animation-delay:200ms]">
+          <p className="eyebrow">Send a message</p>
+          <div className="mt-4">
+            <ContactForm />
+          </div>
         </div>
       </div>
-
-      <section className="mt-24 grid gap-10 md:grid-cols-12 scroll-in">
-        <div className="md:col-span-5">
-          <p className="eyebrow eyebrow--accent">For partners</p>
-          <h2 className="display-2 mt-4">What a partner gets.</h2>
-        </div>
-        <div className="md:col-span-6 md:col-start-7">
-          <ul className="rows">
-            {PARTNER_GETS.map((line) => (
-              <li key={line} className="py-4 text-body">
-                {line}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-7 max-w-measure text-sm text-muted">
-            What we ask for: prizes, credits, a speaker or food, before any
-            money.
-          </p>
-          <Link className="btn btn--ghost mt-8" href="/about/">
-            Who we are
-          </Link>
-        </div>
-      </section>
-    </PageShell>
+    </Stage>
   );
 }

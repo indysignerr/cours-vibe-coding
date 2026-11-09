@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Reveal } from "@/components/motion/reveal";
-import { PageShell } from "@/components/page-shell";
+import { Stage, StageHead } from "@/components/stage";
 
 export const metadata: Metadata = {
   title: "Before you come",
@@ -70,9 +69,13 @@ const BEFORE_HACKATHON: Step[] = [
 
 function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
   return (
-    <Reveal as="ol" className="grid gap-4" stagger y={22}>
+    <ol className="grid gap-4">
       {steps.map((step, i) => (
-        <li key={step.title} className="card lift-on-hover min-w-0 p-6 md:p-8">
+        <li
+          key={step.title}
+          className="card lift-on-hover rise min-w-0 p-6 md:p-8"
+          style={{ animationDelay: `${(i + 1) * 70}ms` }}
+        >
           <div className="flex items-baseline gap-4">
             <span className="counter">
               {String(i + 1 + offset).padStart(2, "0")}
@@ -92,17 +95,18 @@ function Steps({ steps, offset = 0 }: { steps: Step[]; offset?: number }) {
           ) : null}
         </li>
       ))}
-    </Reveal>
+    </ol>
   );
 }
 
 export default function SetupPage() {
   return (
-    <PageShell
+    <Stage className="stage--doc">
+      <StageHead
       eyebrow="Before you come"
       title="Twenty minutes at home, so the room is spent building."
-      lede="The fastest way to waste a hackathon is to spend its first three hours installing things. Do these seven steps before you turn up. If one of them fights back, come ten minutes early and we fix it together."
-    >
+      lede="The fastest way to waste a hackathon is to spend its first three hours installing things. Do these seven steps before you turn up. If one of them fights back, come ten minutes early and we fix it together." />
+      <div className="doc">
       <Steps steps={STEPS} />
 
       <section aria-labelledby="before-hackathon" className="mt-16">
@@ -131,6 +135,7 @@ export default function SetupPage() {
           get fixed in twenty.
         </p>
       </div>
-    </PageShell>
+    </div>
+    </Stage>
   );
 }

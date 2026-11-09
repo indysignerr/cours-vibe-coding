@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageShell } from "@/components/page-shell";
+import { Stage, StageHead } from "@/components/stage";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 
 export default function LegalPage() {
   return (
-    <PageShell eyebrow="Legal" title="Legal notice">
+    <Stage className="stage--doc">
+      <StageHead eyebrow="Legal" title="Legal notice" />
+      <div className="doc">
       <div className="prose">
         <h2>Publisher</h2>
         <p>
@@ -75,6 +77,7 @@ export default function LegalPage() {
           competent French courts.
         </p>
       </div>
-    </PageShell>
+    </div>
+    </Stage>
   );
 }
