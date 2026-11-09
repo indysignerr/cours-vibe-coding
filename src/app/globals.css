@@ -543,6 +543,12 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   --pm: clamp(0, calc((var(--p, 0) - 0.06) * 2.1), 1);
   /* Quand ce que le filament a écrit apparaît. */
   --ps: clamp(0, calc((var(--p, 0) - 0.72) * 6), 1);
+  /* La hauteur de la scène de l'ampoule, et de combien elle monte en fin
+     de course. Le texte qu'elle écrit se cale dessous à partir de ces deux
+     mesures : il la suit sur tous les écrans, au lieu de rester collé au
+     bas de la fenêtre. */
+  --bulb-h: min(82svh, 54rem);
+  --rise: 8svh;
   /* Aplat marine, exactement celui du canvas de l'ampoule : la matière
      vient du grain et de la lueur, pas d'un dégradé sous la scène. */
   background: var(--canvas);
@@ -619,35 +625,49 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   .fine .hero__stage {
     transform: translate3d(
       calc(var(--pm) * (-60% - 1rem)),
-      calc(var(--pm) * -4.5svh),
+      calc(var(--pm) * -1 * var(--rise)),
       0
     );
     will-change: transform;
   }
+  /* Ce que le filament vient d'écrire, en grand, juste sous le culot.
+     La scène est centrée dans l'écran, sous l'en-tête ; le plot du culot
+     tombe à 38,1 % de sa hauteur sous son centre (c'est le cadrage de la
+     caméra). D'où la position : centre, plus cette fraction, moins la
+     montée, plus un souffle. */
   .fine .hero__spelled {
     position: absolute;
-    inset: auto 0 clamp(1.25rem, 5vh, 3.5rem) 0;
+    inset: auto 0;
+    top: calc(
+      50% + var(--header-h) / 2 + 0.381 * var(--bulb-h) - var(--rise) +
+        clamp(1.5rem, 4svh, 3rem)
+    );
     display: grid;
     justify-items: center;
-    gap: 0.6rem;
+    gap: clamp(0.6rem, 1.6svh, 1.1rem);
+    padding-inline: var(--gutter);
     text-align: center;
     opacity: var(--ps);
     transform: translate3d(0, calc((1 - var(--ps)) * 18px), 0);
     pointer-events: none;
   }
+  /* Les tailles suivent la largeur ET la hauteur de la fenêtre : sur un
+     écran bas, le texte ne doit pas sortir par le bas. */
   .hero__spelled-l {
-    font-size: clamp(1.5rem, 2.8vw, 2.5rem);
+    font-size: clamp(2.25rem, min(5vw, 9svh), 5rem);
     font-weight: 600;
-    letter-spacing: -0.03em;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variation-settings: "opsz" 72;
     color: var(--ink);
   }
   .hero__spelled-words {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.25rem 1.25rem;
+    gap: 0.35rem clamp(1.25rem, 2.2vw, 2.25rem);
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.9375rem;
+    font-size: clamp(1.0625rem, min(1.5vw, 2.7svh), 1.5rem);
     color: var(--muted);
   }
   .hero__spelled-words b { font-weight: 500; color: var(--brand); }
@@ -693,7 +713,7 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   --heat: 0.6;
 }
 @media (min-width: 1024px) {
-  .fine .bulb { width: auto; height: min(82svh, 54rem); }
+  .fine .bulb { width: auto; height: var(--bulb-h); }
 }
 .bulb__glow {
   position: absolute;
@@ -1147,8 +1167,11 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
 .ways { display: grid; gap: 1.25rem; }
 .way {
   display: grid;
+  /* Le numéro, le titre, la phrase, puis ce qu'on fait : la phrase prend
+     la place libre, si bien que le bouton de l'une et le QR code de
+     l'autre se posent sur la même ligne de base, en bas de la carte. */
+  grid-template-rows: auto auto 1fr auto;
   gap: 0.9rem;
-  align-content: start;
   justify-items: start;
   padding: clamp(1.5rem, 3vw, 2.5rem);
   border-radius: 22px;
@@ -1165,9 +1188,9 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
 .join__more { display: grid; gap: 2rem; margin-top: clamp(2.5rem, 6vh, 4rem); }
 .join__more > div { display: grid; gap: 0.6rem; align-content: start; justify-items: start; }
 @media (min-width: 900px) {
+  /* Deux portes de même taille, côte à côte : l'une ne vaut pas plus que
+     l'autre. */
   .ways { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
-  /* La seconde porte est décalée : deux cartes alignées feraient un tableau. */
-  .way:nth-child(2) { margin-top: clamp(2rem, 7vh, 5rem); }
   .join__more { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; }
 }
 
