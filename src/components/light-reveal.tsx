@@ -285,23 +285,27 @@ export function LightReveal() {
       </div>
 
       {/* Le cordon, en haut à droite : l'interrupteur de la lampe. Il est
-          au-dessus du voile, donc toujours visible dans le noir. La clé
-          sur l'état rejoue la petite secousse et le rappel à chaque
-          bascule ; tant que personne n'y a touché, l'invitation reste. */}
-      <button
-        type="button"
-        className={`cord${used ? "" : " cord--fresh"}`}
-        aria-pressed={lit}
-        onClick={() => lampStore.set({ lit: !lampStore.get().lit, used: true })}
-      >
-        <span className="cord__pull" key={lit ? "on" : "off"} aria-hidden>
-          <span className="cord__bead" />
-        </span>
-        <span className="sr-only">Lamp</span>
-        <span className="cord__hint" key={lit ? "hint-on" : "hint-off"} aria-hidden>
-          {lit ? "Click anywhere to switch the lamp off" : "Pull to switch the lamp on"}
-        </span>
-      </button>
+          au-dessus du voile, donc toujours visible dans le noir. Seule la
+          perle est un bouton — le fil, décoratif, laisse passer les clics
+          vers l'en-tête qu'il traverse. Les clés rejouent la secousse et
+          le rappel à chaque bascule sans remonter le bouton lui-même, pour
+          que le focus clavier n'y soit pas perdu ; tant que personne n'y a
+          touché, l'invitation reste. */}
+      <div className={`cord${used ? "" : " cord--fresh"}`}>
+        <span className="cord__line" key={lit ? "line-on" : "line-off"} aria-hidden />
+        <button
+          type="button"
+          className="cord__switch"
+          aria-pressed={lit}
+          onClick={() => lampStore.set({ lit: !lampStore.get().lit, used: true })}
+        >
+          <span className="cord__bead" key={lit ? "bead-on" : "bead-off"} aria-hidden />
+          <span className="sr-only">Lamp</span>
+          <span className="cord__hint" key={lit ? "hint-on" : "hint-off"} aria-hidden>
+            {lit ? "Click anywhere to switch the lamp off" : "Pull to switch the lamp on"}
+          </span>
+        </button>
+      </div>
     </>
   );
 }

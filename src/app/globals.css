@@ -1911,6 +1911,11 @@ body::after {
    voit même dans le noir — on ne cache jamais le moyen de rallumer. Il
    n'existe que si la lumière existe : sans JavaScript ou en mouvement
    réduit, il n'y a rien à commander.
+
+   Seule la perle se clique — un carré de 44 px autour d'elle, SOUS
+   l'en-tête. Le fil au-dessus est décoratif et laisse passer les clics :
+   une première version faisait du fil entier la cible, et elle recouvrait
+   le bouton Menu sur téléphone — on tapait Menu, la lampe s'allumait.
    ===================================================================== */
 .cord { display: none; }
 
@@ -1921,46 +1926,61 @@ body::after {
   right: 0;
   z-index: 62;
   width: 44px;
-  height: 96px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.has-light .cord:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: -2px;
-  border-radius: 0.25rem;
+  height: 104px;
+  pointer-events: none;
 }
 
 /* Le fil, qui s'étire quand on s'en approche. Il ressort à chaque bascule
    pour rejouer la secousse. */
-.cord__pull {
+.cord__line {
   position: absolute;
   top: 0;
-  left: 31px;
+  left: 22px;
   width: 1px;
   height: 74px;
   background: linear-gradient(to bottom, rgb(201 174 132 / 0), rgb(201 174 132 / 0.75));
   transition: transform 0.3s cubic-bezier(0.3, 1.3, 0.5, 1);
   animation: cord-tug 0.55s cubic-bezier(0.3, 0.7, 0.3, 1);
 }
-.cord:hover .cord__pull,
-.cord:focus-visible .cord__pull { transform: translateY(6px); }
+
+/* La cible : 44 × 44, centrée sur la perle, entièrement sous l'en-tête. */
+.cord__switch {
+  position: absolute;
+  top: 58px;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.cord__switch:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -3px;
+  border-radius: 50%;
+}
+.cord:hover .cord__line,
+.cord:has(.cord__switch:focus-visible) .cord__line { transform: translateY(6px); }
+.cord:hover .cord__bead,
+.cord__switch:focus-visible .cord__bead { transform: translateY(6px); }
 
 /* La perle. Lampe allumée : elle brille, fixe. Éteinte : elle respire —
    c'est l'invitation. La lueur est un pseudo-élément dont seule l'opacité
    bouge, donc rien à repeindre. */
 .cord__bead {
   position: absolute;
+  top: 16px;
   left: 50%;
-  bottom: -5px;
   width: 9px;
   height: 9px;
   margin-left: -4.5px;
   border-radius: 50%;
   background: var(--brand);
+  transition: transform 0.3s cubic-bezier(0.3, 1.3, 0.5, 1);
+  animation: cord-tug 0.55s cubic-bezier(0.3, 0.7, 0.3, 1);
 }
 .cord__bead::after {
   content: "";
@@ -1984,8 +2004,8 @@ body::after {
 }
 .cord__hint {
   position: absolute;
-  top: 86px;
-  right: 12px;
+  top: 28px;
+  right: 22px;
   white-space: nowrap;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.6875rem;
@@ -1997,18 +2017,20 @@ body::after {
   animation: hint-show 6s ease backwards;
 }
 .cord:hover .cord__hint,
-.cord:focus-visible .cord__hint { opacity: 1; }
+.cord__switch:focus-visible .cord__hint { opacity: 1; }
 
-/* Sous 768 px l'en-tête a deux rangées : le fil descend plus bas pour que
-   la perle et le rappel pendent sous elle, pas sur les liens. */
+/* Sous 768 px l'en-tête a deux rangées (114 px) : le fil descend plus bas
+   pour que la perle, sa cible et le rappel pendent sous elle. */
 @media (max-width: 767px) {
-  .has-light .cord { height: 136px; }
-  .cord__pull { height: 114px; }
-  .cord__hint { top: 126px; }
+  .has-light .cord { height: 162px; }
+  .cord__line { height: 134px; }
+  .cord__switch { top: 116px; }
 }
-/* Pendant l'ouverture, le rappel attend : personne ne le verrait. */
+
+/* Pendant l'ouverture, tout attend : personne ne le verrait. */
 .is-opening .cord__hint,
-.is-opening .cord__pull { animation-play-state: paused; }
+.is-opening .cord__line,
+.is-opening .cord__bead { animation-play-state: paused; }
 
 @keyframes cord-tug {
   0% { transform: translateY(0); }
