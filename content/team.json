@@ -29,10 +29,10 @@
     {
       "name": "Asia",
       "role": {
-        "en": "Secretary",
-        "it": "Segreteria",
-        "fr": "Secrétariat",
-        "es": "Secretaría"
+        "en": "Secretary General",
+        "it": "Segreteria generale",
+        "fr": "Secrétariat général",
+        "es": "Secretaría general"
       },
       "focus": null
     },
@@ -67,7 +67,7 @@
       "focus": null
     },
     {
-      "name": "Rafa",
+      "name": "Rafael",
       "role": {
         "en": "Tech",
         "it": "Tech",
