@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Bulb } from "@/components/home/bulb";
 import { NextEvent } from "@/components/next-event";
 import { today } from "@/lib/events";
 import { href, t, type Locale } from "@/lib/i18n";
@@ -7,14 +8,15 @@ import { timelineItems } from "@/lib/timeline";
 /**
  * Le haut de page.
  *
- * Simple, à la demande du bureau : la phrase de l'affiche de
- * l'association en grand, la phrase de son texte officiel dessous, deux
- * actions, et le prochain événement à droite. Pas d'image : les quatre
- * chiffres qui suivent ferment le premier écran.
+ * À gauche, la phrase de l'affiche de l'association en grand, la phrase
+ * de son texte officiel, deux actions et le prochain événement. À
+ * droite, l'ampoule du logo en volume : des pièces éparses s'assemblent,
+ * puis elle s'allume (Bulb).
  *
- * Rien ici n'attend de JavaScript : tout est dans le HTML. Le dernier mot
- * du titre, « light », prend sa couleur un instant après les autres
- * (globals.css) : c'est le seul effet.
+ * Le texte n'attend pas de JavaScript : il est dans le HTML. L'ampoule,
+ * elle, est chargée après coup ; sans elle, le logo dessiné tient sa
+ * place. Le dernier mot du titre prend sa couleur un instant après les
+ * autres (globals.css).
  */
 export function Hero({ lang }: { lang: Locale }) {
   const d = t(lang);
@@ -43,6 +45,7 @@ export function Hero({ lang }: { lang: Locale }) {
             </div>
           </div>
 
+          <Bulb />
           <NextEvent label={d.hero.next} items={timelineItems(lang)} buildDay={today()} />
         </div>
       </div>

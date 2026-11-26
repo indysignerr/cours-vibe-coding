@@ -323,14 +323,42 @@ qu'elle avait. Les trois règles tiennent dans
 lissage du CSS s'appliquer aux changements de page, et la page neuve
 part de l'ancienne hauteur.
 
-**Le haut de page.** Simple, à la demande du bureau : le titre de
+**Le haut de page : l'ampoule qui s'assemble.** À gauche, le titre de
 l'affiche de l'association en grand (« Turn ideas into light. »), la
-phrase de son texte officiel, deux boutons, et à droite le prochain
-événement. Pas d'image : les quatre chiffres qui suivent ferment le
-premier écran. Le dernier mot du titre prend sa couleur un instant après
-les autres, c'est le seul effet. Deux essais ont été écartés le 26
-novembre 2026 : une image de la maquette 3D, puis un plan technique de
-l'ampoule, jugé trop technique. Ils sont dans l'historique git.
+phrase de son texte officiel, deux boutons et le prochain événement. À
+droite, l'ampoule du logo en volume, d'après une vidéo donnée en référence
+par le bureau le 26 novembre 2026 :
+
+1. des centaines de tuiles marine arrivent de partout en tournant et
+   pavent la silhouette du logo, pendant que le « L » se monte au centre ;
+2. l'ampoule reste entière un instant, se serre, puis éclate : les tuiles
+   partent vers l'extérieur, celles de devant s'écartent comme un iris, et
+   le « L » s'allume au milieu, en même temps que le dernier mot du titre ;
+3. au repos les tuiles flottent autour du « L ». Quand on fait défiler la
+   page elles s'éloignent encore, et reviennent si on remonte ; la souris
+   fait tourner l'ensemble de quelques degrés.
+
+- La scène est dans `src/components/home/bulb-scene.ts` (three.js, sans
+  React) : trois appels de dessin, aucun modèle ni image téléchargés. Ses
+  cotes sont relevées sur le logo (`brand-shapes.json`), son déroulé tient
+  dans trois constantes de temps en tête de fichier.
+- Son cadre, `bulb.tsx`, la charge après le premier affichage, la met en
+  pause hors écran et libère le contexte graphique en quittant la page.
+- Sans JavaScript, en mouvement réduit, ou si WebGL manque : le logo
+  dessiné tient la place, et three.js n'est pas chargé du tout.
+- En développement, `__bulb.seek(1.2)` dans la console montre l'ampoule à
+  un instant donné.
+
+Trois essais ont été écartés le même jour, et restent dans l'historique
+git : une image de la maquette 3D, un plan technique de l'ampoule (jugé
+trop technique), puis un haut de page en texte seul.
+
+**Ce que LIGHT veut dire.** Un bandeau marine sous le haut de page, sur
+l'accueil et sur la page À propos (`src/components/home/acronym.tsx`) :
+cinq mots, chacun avec son initiale en très grand, et les cinq s'allument
+l'une après l'autre. Le halo de ces initiales est la seule lueur du site ;
+l'entorse à la liste ci-dessus est voulue, le bureau ayant demandé des
+lettres « illuminées ».
 
 **La maquette 3D.** Les quatre piliers se lisent autour d'une maquette du
 labo : un plateau tournant, quatre pièces, une par pilier, autour d'une

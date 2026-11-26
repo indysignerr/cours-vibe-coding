@@ -633,20 +633,23 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 /* =====================================================================
    L'accueil : le haut de page.
 
-   Simple : la phrase de l'affiche de l'association en grand, la phrase de
-   son texte officiel, deux actions. À droite, posé en pied, le prochain
-   événement. Pas d'image : les quatre chiffres qui suivent ferment le
-   premier écran.
+   À gauche la phrase de l'affiche de l'association en grand, la phrase de
+   son texte officiel, deux actions, le prochain événement. À droite
+   l'ampoule du logo, en volume, qui s'assemble pièce par pièce.
    ===================================================================== */
 .hero {
-  padding-top: calc(var(--header-h) + clamp(2.5rem, 7vw, 5.5rem));
+  position: relative;
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 6vw, 4.5rem));
   padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  /* Les pièces de l'ampoule arrivent de loin : elles ne font pas défiler la page. */
+  overflow: clip;
 }
 .hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(2rem, 6vw, 3rem);
 }
+.hero__text { position: relative; z-index: 1; }
 .hero__title {
   margin-top: 1.25rem;
   font-family: var(--font-display), Georgia, serif;
@@ -659,6 +662,35 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 .hero__on { color: var(--accent); }
 .hero__lede { max-width: 24em; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+
+/* ---- L'ampoule ----
+   Le cadre (`.bulb`) réserve la place où elle se pose. Le canevas, lui,
+   couvre tout le haut de page : les pièces viennent de loin, de plus
+   loin que le cadre. Il est donc positionné par rapport à `.hero`, et
+   rien entre les deux ne doit être `position: relative`. Sans 3D (pas
+   de JavaScript, mouvement réduit, WebGL absent), le logo dessiné tient
+   la place. */
+.bulb {
+  display: grid;
+  width: min(100%, 21rem);
+  aspect-ratio: 5 / 6;
+  justify-self: center;
+}
+.bulb__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.bulb.is-live .bulb__canvas { opacity: 1; }
+.bulb__fallback { display: grid; place-items: center; padding-block: 6%; min-height: 0; }
+.bulb__mark { width: auto; height: 100%; }
+.motion .bulb:not(.is-failed) .bulb__fallback { display: none; }
+.motion-fallback .bulb:not(.is-live) .bulb__fallback { display: grid !important; }
 
 /* Le prochain événement : un encart réglé, tout entier cliquable. */
 .next {
@@ -683,18 +715,34 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 .next:hover .next__link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
 .next__meta { color: var(--muted); }
 
+.next { position: relative; z-index: 1; }
+
 @media (min-width: 1000px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-    column-gap: clamp(2rem, 5vw, 5rem);
-    align-items: end;
+    grid-template-columns: minmax(0, 6.5fr) minmax(0, 5.5fr);
+    grid-template-areas: "text bulb" "next bulb";
+    column-gap: clamp(2rem, 4vw, 4rem);
+    row-gap: clamp(2rem, 3.5vw, 3rem);
+    align-items: start;
+  }
+  .hero__text { grid-area: text; }
+  .next { grid-area: next; max-width: 34rem; }
+  .bulb { grid-area: bulb; align-self: center; width: min(100%, 31rem); }
+  /* Sur grand écran le canevas laisse le texte tranquille : il part du
+     tiers de la page, et ses pièces s'estompent en approchant de ce bord. */
+  .bulb__canvas {
+    left: 43%;
+    width: 57%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%);
+    mask-image: linear-gradient(90deg, transparent, #000 20%);
   }
   /* Le titre se règle sur sa colonne, pas sur la fenêtre : il tient en
      deux lignes dans les quatre langues. */
   .hero__text { container-type: inline-size; }
-  .hero__title { font-size: min(7.25rem, calc(var(--title-fit, 16) * 1cqi)); }
-  .hero__title:lang(fr) { --title-fit: 14; }
-  .hero__title:lang(it) { --title-fit: 14.3; }
+  .hero__title { font-size: min(7.25rem, calc(var(--title-fit, 18.6) * 1cqi)); }
+  .hero__title:lang(fr) { --title-fit: 14.2; }
+  .hero__title:lang(it) { --title-fit: 14.6; }
+  .hero__title:lang(es) { --title-fit: 17.6; }
 }
 
 /* =====================================================================
@@ -1310,12 +1358,19 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
 .motion .rise { animation: rise 0.7s var(--ease) calc(0.04s + var(--i, 0) * 0.07s) both; }
 .motion .rise--solid { animation-name: rise-solid; }
 
-/* Le dernier mot du titre de l'accueil prend sa couleur un instant
-   après les autres : il « s'allume ». */
+/* Le dernier mot du titre de l'accueil s'allume avec l'ampoule : il
+   attend, à l'encre, que la scène pose `data-lit` sur le haut de page au
+   moment de l'éclat. Le filet : sans nouvelle de la scène au bout de sept
+   secondes, il s'allume seul. */
 @keyframes hero-on {
-  from { color: var(--ink); }
+  to { color: var(--accent); }
 }
-.motion .hero__on { animation: hero-on 0.6s ease-out 0.9s both; }
+.motion .hero__on {
+  color: var(--ink);
+  transition: color 0.5s ease-out;
+  animation: hero-on 0.6s ease-out 7s forwards;
+}
+.motion .hero[data-lit] .hero__on { color: var(--accent); }
 
 /* Les cinq initiales de LIGHT s'allument l'une après l'autre, avec le
    petit raté d'une ampoule qu'on allume. */
