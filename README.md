@@ -239,9 +239,10 @@ neuve. Ne pas s'en servir pour repartir de zéro.
 
 ## Comment c'est construit
 
-**La pile.** Next.js 16 en export statique, React-Three-Fiber pour la
-maquette 3D, Lenis pour le défilement, Cloudflare Pages. La sortie est
-faite de fichiers HTML statiques, lisibles sans JavaScript.
+**La pile.** Next.js 16 en export statique, three.js pour l'ampoule du
+haut de page, React-Three-Fiber pour la maquette 3D, Lenis pour le
+défilement, Cloudflare Pages. La sortie est faite de fichiers HTML
+statiques, lisibles sans JavaScript.
 
 ```
 content/                 tout le contenu (JSON)
@@ -323,43 +324,84 @@ qu'elle avait. Les trois règles tiennent dans
 lissage du CSS s'appliquer aux changements de page, et la page neuve
 part de l'ancienne hauteur.
 
-**Le haut de page : l'ampoule qui s'assemble.** À gauche, le titre de
-l'affiche de l'association en grand (« Turn ideas into light. »), la
-phrase de son texte officiel, deux boutons et le prochain événement. À
-droite, l'ampoule du logo en volume, d'après une vidéo donnée en référence
-par le bureau le 26 novembre 2026 :
+**Le haut de page : l'ampoule de verre.** Une ouverture dans le noir, à
+la suite de l'en-tête. À gauche, le titre de l'affiche de l'association
+en grand (« Turn ideas into light. »), la phrase de son texte officiel,
+deux boutons et le prochain événement. À droite, le logo en volume, comme
+une maquette de précision : une enveloppe de verre en panneaux courbes,
+le « L » et les cinq rayons en or poli, la bague, la barre et le culot en
+acier. Le plan est réglé comme au cinéma :
 
-1. un millier de petites tuiles marine arrivent de partout en tournant et
-   pavent la silhouette du logo, pendant que le « L » se monte au centre ;
-2. l'ampoule reste entière un instant, se serre, puis éclate : les tuiles
-   partent vers l'extérieur, celles de devant s'écartent comme un iris, et
-   le « L » s'allume au milieu, en même temps que le dernier mot du titre ;
-3. au repos les tuiles flottent autour du « L ». Elles s'écartent du
-   curseur quand il passe sur elles, puis reprennent leur place. Quand on
-   fait défiler la page elles s'éloignent encore, et reviennent si on
-   remonte ; la souris fait aussi tourner l'ensemble de quelques degrés.
+1. les éclats de verre arrivent de partout pendant que la caméra, partie
+   de près et de biais, recule et se redresse ;
+2. une fois le verre entier, ses joints s'effacent, le « L » s'allume,
+   les rayons sortent, et le dernier mot du titre s'allume avec eux ;
+3. ensuite l'ampoule reste entière et se balance à peine. Elle ne s'ouvre
+   ni toute seule ni au défilement. La souris écarte les panneaux qu'elle
+   survole ; un clic, ou un toucher bref qui ne glisse pas, l'ouvre en vue
+   éclatée, puis elle se referme.
 
 - La scène est dans `src/components/home/bulb-scene.ts` (three.js, sans
-  React) : trois appels de dessin, aucun modèle ni image téléchargés. Ses
-  cotes sont relevées sur le logo (`brand-shapes.json`), son déroulé tient
-  dans trois constantes de temps en tête de fichier.
-- Son cadre, `bulb.tsx`, la charge après le premier affichage, la met en
-  pause hors écran et libère le contexte graphique en quittant la page.
-- Sans JavaScript, en mouvement réduit, ou si WebGL manque : le logo
+  React). Aucun modèle ni image n'est téléchargé, les cotes sont relevées
+  sur le logo (`brand-shapes.json`), et le déroulé tient dans quelques
+  constantes de temps en tête de fichier.
+- Ses reflets ne viennent pas d'une image d'ambiance : un petit studio
+  est écrit en clair dans les matériaux (`STUDIO`, même fichier). Six
+  boîtes à lumière, chacune une ligne. Déplacer un reflet, c'est changer
+  une direction.
+- Elle tourne dans un fil de travail (`bulb.worker.ts`) : three.js y est
+  chargé et chaque image y est dessinée, sans occuper le fil de la page.
+  Son cadre, `bulb.tsx`, lui confie le canevas, lui envoie la taille et la
+  souris, la met en pause hors écran. Si le navigateur ne sait pas
+  dessiner depuis un fil de travail, ou si le fil échoue, la scène tourne
+  dans la page, sur un canevas neuf.
+- Sans JavaScript, en mouvement réduit, ou sans carte graphique : le logo
   dessiné tient la place, et three.js n'est pas chargé du tout.
 - En développement, `__bulb.seek(1.2)` dans la console montre l'ampoule à
-  un instant donné.
+  un instant donné, `__bulb.seek(6, 1)` la montre ouverte.
 
-Trois essais ont été écartés le même jour, et restent dans l'historique
-git : une image de la maquette 3D, un plan technique de l'ampoule (jugé
-trop technique), puis un haut de page en texte seul.
+Le halo derrière le « L » et le fond marine de cette section sont les
+deux écarts voulus à la règle 2 : le bureau a demandé un rendu « de
+cinéma ». Le halo est dessiné dans la scène, pas en CSS.
+
+Ont été écartés le même jour, et restent dans l'historique git : une
+image de la maquette 3D, un plan technique de l'ampoule (jugé trop
+technique), un haut de page en texte seul, puis trois ampoules en tuiles
+(jugées bon marché, et qui éclataient toutes seules ou au défilement).
+
+**La première visite d'une scène 3D.** C'est le piège que les mesures du
+26 novembre 2026 ont mis au jour, et il vaut pour toute scène qu'on
+ajouterait. Un navigateur garde en cache les programmes graphiques qu'il
+a compilés : sur la machine de celui qui développe, tout paraît fluide.
+Sur un navigateur qui n'a jamais vu le site, c'est-à-dire chez presque
+tous les visiteurs, la même scène figeait la page plus d'une seconde.
+Quatre règles en sont sorties, appliquées à l'ampoule et à la maquette :
+
+1. *Ne rien dessiner avant la fin de la compilation.* `compileAsync`
+   compile hors du fil principal ; dessiner plus tôt fait compiler sur
+   place, page figée.
+2. *Pas d'image d'ambiance filtrée à l'exécution.* Le filtrage de three.js
+   compile six programmes d'un bloc. D'où le studio écrit dans les
+   matériaux.
+3. *Roder les programmes un par un.* Au premier dessin d'un programme la
+   carte graphique finit de le préparer, et plus rien ne s'affiche
+   pendant ce temps. On les dessine donc une première fois chacun, canevas
+   encore invisible, en attendant que la carte ait fini avant le suivant
+   (`gpuSettled`, dans `src/lib/webgl.ts`).
+4. *Lire les réglages des programmes avant tout dessin.* Lus après, chaque
+   lecture attend la carte.
+
+Pour reproduire une première visite : un Chrome sans tête au profil
+neuf ne suffit pas, macOS garde aussi un cache par application. Il faut
+changer une valeur dans un programme (une lumière du studio de 0,0001),
+ce qui en fait un programme jamais vu.
 
 **Ce que LIGHT veut dire.** Un bandeau marine sous le haut de page, sur
 l'accueil et sur la page À propos (`src/components/home/acronym.tsx`) :
 cinq mots, chacun avec son initiale en très grand, et les cinq s'allument
-l'une après l'autre. Le halo de ces initiales est la seule lueur du site ;
-l'entorse à la liste ci-dessus est voulue, le bureau ayant demandé des
-lettres « illuminées ».
+l'une après l'autre. Le halo de ces initiales est, avec celui de
+l'ampoule, la seule lueur du site ; l'entorse à la liste ci-dessus est
+voulue, le bureau ayant demandé des lettres « illuminées ».
 
 **Pas de colonne vide.** Chaque chapitre a son titre à gauche et son
 contenu à droite (`Chapter`, dans `src/components/section-head.tsx`). Sur
@@ -391,11 +433,17 @@ tourne et la pièce du pilier courant s'anime.
   `rooms.ts` décrit les quatre pièces et ce qui y bouge ;
   `lab-canvas.tsx` est la scène (React-Three-Fiber) ;
   `lab-stage.tsx` est son cadre dans la page.
-- Elle n'est chargée que lorsque la section approche de l'écran, et sa
-  boucle s'arrête dès qu'elle en sort. Si l'appareil peine, seule la
-  résolution baisse.
-- Sans JavaScript, en mouvement réduit, ou si WebGL manque : chaque pilier
-  montre l'image fixe de sa pièce. La page dit la même chose.
+- Elle n'est chargée que lorsque la section approche de l'écran, et
+  jamais pendant l'ouverture du haut de page : sur un grand écran elle en
+  est assez près pour démarrer avec la page, et elle faisait alors sauter
+  l'assemblage de l'ampoule. Sa boucle s'arrête dès qu'elle sort de
+  l'écran. Si l'appareil peine, seule la résolution baisse.
+- Son décor est construit à l'avance par tranches de six millisecondes
+  (`warm`, dans `kit.ts`) : d'un seul tenant, c'était une demi-seconde de
+  page figée. Ses programmes sont compilés à part, et sa première image
+  est dessinée pendant qu'elle est encore cachée sous son image fixe.
+- Sans JavaScript, en mouvement réduit, ou sans carte graphique : chaque
+  pilier montre l'image fixe de sa pièce. La page dit la même chose.
 
 **Refaire les images de la maquette.** Les images des quatre pièces sont
 des captures de la vraie scène. Si la scène change
@@ -418,40 +466,47 @@ change : les deux scripts lisent `brand-shapes.json` et
 
 ## Vérifications
 
-Mesures du 26 novembre 2026, après la refonte et le haut de page simplifié.
+Mesures du 26 novembre 2026, après le haut de page en 3D.
 
 | Contrôle | Résultat |
 |---|---|
 | `tsc`, ESLint, build | aucun avertissement, 72 pages |
-| `npm run content` | 4 langues, 190 textes par dictionnaire, 85 textes traduits dans les données, rien ne manque |
+| `npm run content` | 4 langues, 184 textes par dictionnaire, 85 textes traduits dans les données, rien ne manque |
 | `npm run audit` | 71 pages, zéro défaut |
 | `npm run contrast` | toutes les paires passent en AA, sur ivoire comme sur marine |
-| Débordement horizontal | aucun, sur 33 pages dans les quatre langues, à 320, 375, 768, 1024 et 1280 px ; l'accueil revu à douze largeurs, de 320 à 1920 px, après son nouveau haut de page |
-| Sans JavaScript, ou en mouvement réduit | pas de 3D, rien de caché : chaque pilier montre l'image de sa pièce |
+| Débordement horizontal | aucun sur l'accueil à 390 px et à 1440 px, dans les quatre langues ; le balayage complet (33 pages, cinq largeurs) date d'avant le haut de page en 3D |
+| Sans JavaScript, ou en mouvement réduit | pas de 3D, three.js non chargé, rien de caché : le logo dessiné en haut de page, et chaque pilier montre l'image de sa pièce |
 | D'une page à l'autre | la page neuve s'ouvre en haut, même cliquée pendant que l'ancienne défile encore ; le retour arrière rend la hauteur d'un coup. Contrôlé sur le site en ligne, avec et sans défilement lissé |
-| Mobile 375 px | 390 liens et boutons contrôlés sur dix pages, tous à 44 px ou plus |
+| Mobile 375 px | 390 liens et boutons contrôlés sur dix pages, tous à 44 px ou plus (contrôle d'avant le haut de page en 3D, qui n'ajoute ni lien ni bouton) |
 | Clavier | lien d'évitement, ordre logique, anneau de focus partout ; le menu et les questions sont des `<details>` |
-| La maquette 3D | chargée seulement à l'approche de la section (251 Ko compressés), arrêtée hors écran |
+| L'ampoule | dans un fil de travail ; en repli dans la page si le fil échoue (essayé en le faisant échouer) ; survol, clic et toucher bref contrôlés ; rien au défilement |
+| La maquette 3D | attend la fin de l'ouverture, décor construit par tranches, arrêtée hors écran |
+| Première visite | sur un Chrome au profil neuf, site en ligne : 2 ms de blocage du fil principal pendant tout le chargement, ampoule et maquette comprises. Avant ces réglages : 1,4 s |
 
-Lighthouse, profil mobile, sur le site en ligne :
+Lighthouse sur le site en ligne, accueil, avec l'ampoule 3D en marche :
 
-| Page | Performance | Accessibilité | Bonnes pratiques | SEO | Plus grand élément |
-|---|---|---|---|---|---|
-| `/` | 98 à 100 | 100 | 100 | 100 | 1,1 à 2,1 s |
-| `/faq/` | 97 | 100 | 100 | 100 | 2,7 s |
-| `/it/chi-siamo/` | 96 | 100 | 100 | 100 | 2,8 s |
+| Profil | Performance | Accessibilité | Bonnes pratiques | SEO | Plus grand élément | Blocage total |
+|---|---|---|---|---|---|---|
+| Ordinateur | 100 | 100 | 100 | 100 | 0,3 s | 0 ms |
+| Téléphone, trois passes | 100, 99, 100 | 100 | 100 | 100 | 1,0 à 2,0 s | 50 à 80 ms |
 
-Aucun décalage de mise en page sur l'accueil (0), 0,02 sur la FAQ. Les
-temps du plus grand élément sont ceux du modèle simulé de Lighthouse, qui
-est pessimiste. La ligne de l'accueil date du haut de page simplifié :
-son plus grand élément est le titre, du texte, et il n'y a plus d'image à
-attendre. Deux passes : 98 puis 100. Les lignes de la FAQ et de la page
-À propos sont celles d'avant.
+Aucun décalage de mise en page (0). Les temps du téléphone sont ceux du
+modèle simulé de Lighthouse, qui est pessimiste. Le même jour, avant le
+passage de l'ampoule dans un fil de travail, le profil téléphone donnait
+78 : three.js lu dans la page y coûtait près d'une demi-seconde.
 
-Mesurées en local seulement, sur le site construit : `/fr/programme/` à 99,
-et la page d'un événement à 94 avec 96 en bonnes pratiques. Ce 96 vient de
-la base qui ne répond pas : la requête en échec s'inscrit dans la console.
-Il repasse à 100 une fois Supabase rétabli.
+Pages mesurées avant le haut de page en 3D, non refaites depuis :
+`/faq/` à 97 et `/it/chi-siamo/` à 96 en ligne ; en local `/fr/programme/`
+à 99 et la page d'un événement à 94, avec 96 en bonnes pratiques. Ce 96
+vient de la base qui ne répond pas : la requête en échec s'inscrit dans la
+console. Il repasse à 100 une fois Supabase rétabli.
+
+Un avertissement reste dans la console quand la maquette démarre :
+« THREE.Clock … deprecated ». Il vient de React-Three-Fiber, pas du site,
+et partira avec une version de la bibliothèque qui suit three.js 0.187.
+
+Non contrôlé : un vrai iPhone et un vrai téléphone Android. Les contrôles
+« téléphone » sont faits dans Chrome, en émulation.
 
 ## Déploiement
 
