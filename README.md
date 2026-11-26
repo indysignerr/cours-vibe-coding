@@ -382,16 +382,17 @@ change : les deux scripts lisent `brand-shapes.json` et
 
 ## Vérifications
 
-Mesures du 26 novembre 2026, après la refonte.
+Mesures du 26 novembre 2026, après la refonte et le nouveau haut de page.
 
 | Contrôle | Résultat |
 |---|---|
 | `tsc`, ESLint, build | aucun avertissement, 72 pages |
-| `npm run content` | 4 langues, 191 textes par dictionnaire, 84 textes traduits dans les données, rien ne manque |
+| `npm run content` | 4 langues, 205 textes par dictionnaire, 85 textes traduits dans les données, rien ne manque |
 | `npm run audit` | 71 pages, zéro défaut |
 | `npm run contrast` | toutes les paires passent en AA, sur ivoire comme sur marine |
-| Débordement horizontal | aucun, sur 33 pages dans les quatre langues, à 320, 375, 768, 1024 et 1280 px |
-| Sans JavaScript, ou en mouvement réduit | pas de 3D, rien de caché : chaque pilier montre l'image de sa pièce |
+| Débordement horizontal | aucun, sur 33 pages dans les quatre langues, à 320, 375, 768, 1024 et 1280 px ; l'accueil revu à douze largeurs, de 320 à 1920 px |
+| Sans JavaScript, ou en mouvement réduit | pas de 3D, rien de caché : le dessin du haut de page est là, entier, et chaque pilier montre l'image de sa pièce |
+| D'une page à l'autre | la page neuve s'ouvre en haut, même cliquée pendant que l'ancienne défile encore ; le retour arrière rend la hauteur d'un coup. Contrôlé sur le site en ligne, avec et sans défilement lissé |
 | Mobile 375 px | 390 liens et boutons contrôlés sur dix pages, tous à 44 px ou plus |
 | Clavier | lien d'évitement, ordre logique, anneau de focus partout ; le menu et les questions sont des `<details>` |
 | La maquette 3D | chargée seulement à l'approche de la section (251 Ko compressés), arrêtée hors écran |
@@ -400,14 +401,18 @@ Lighthouse, profil mobile, sur le site en ligne :
 
 | Page | Performance | Accessibilité | Bonnes pratiques | SEO | Plus grand élément |
 |---|---|---|---|---|---|
-| `/` | 96 à 97 | 100 | 100 | 100 | 2,3 à 2,4 s |
+| `/` | 100 | 100 | 100 | 100 | 1,0 à 1,2 s |
+| `/fr/` | 100 | 100 | non mesuré | non mesuré | 1,0 s |
 | `/faq/` | 97 | 100 | 100 | 100 | 2,7 s |
 | `/it/chi-siamo/` | 96 | 100 | 100 | 100 | 2,8 s |
 
 Aucun décalage de mise en page sur l'accueil (0), 0,02 sur la FAQ. Les
 temps du plus grand élément sont ceux du modèle simulé de Lighthouse, qui
-est pessimiste : avec un bridage réel (4G lente, processeur ralenti quatre
-fois), le titre de l'accueil s'affichait en 1,9 s en local.
+est pessimiste. Les deux lignes de l'accueil datent du nouveau haut de
+page : son plus grand élément est le titre, du texte, là où l'ancien
+attendait une image. Sur trois passes, l'accueil a donné 100 deux fois et
+91 une fois, pendant que la machine de mesure travaillait à autre chose ;
+les lignes de la FAQ et de la page À propos sont celles d'avant.
 
 Mesurées en local seulement, sur le site construit : `/fr/programme/` à 99,
 et la page d'un événement à 94 avec 96 en bonnes pratiques. Ce 96 vient de
