@@ -613,14 +613,33 @@ function build(): Lot[] {
   return lots;
 }
 
+/**
+ * Ce que la scène doit savoir de la page pour se cadrer. Elle ne lit
+ * rien elle-même : elle tourne aussi bien dans un fil de travail, où il
+ * n'y a ni fenêtre ni document.
+ */
+export type BulbView = {
+  /** La taille du canevas à l'écran, en pixels CSS. */
+  width: number;
+  height: number;
+  /** Les pixels réels par pixel CSS. */
+  ratio: number;
+  /** Le centre du cadre de l'ampoule, mesuré depuis le coin du canevas. */
+  cx: number;
+  cy: number;
+  /** La taille de ce cadre. */
+  areaWidth: number;
+  areaHeight: number;
+};
+
 export type BulbHandle = {
   /** Lance ou reprend l'animation. */
   play: () => void;
   pause: () => void;
-  resize: () => void;
-  /** La souris, de -1 à 1 sur chaque axe : l'ampoule tourne un peu vers elle. */
+  resize: (view: BulbView) => void;
+  /** La souris, de -1 à 1 sur chaque axe de la fenêtre : l'ampoule tourne un peu vers elle. */
   pointer: (x: number, y: number) => void;
-  /** Le curseur, en pixels de la fenêtre : les panneaux s'en écartent. `null` quand il s'en va. */
+  /** Le curseur, de -1 à 1 sur chaque axe du canevas : les panneaux s'en écartent. `null` quand il s'en va. */
   hover: (at: { x: number; y: number } | null) => void;
   /** Un clic sur l'ampoule : elle s'ouvre en vue éclatée, puis se referme. */
   pop: () => void;
@@ -630,8 +649,8 @@ export type BulbHandle = {
 };
 
 export async function createBulb(
-  canvas: HTMLCanvasElement,
-  stage: HTMLElement,
+  canvas: HTMLCanvasElement | OffscreenCanvas,
+  view: BulbView,
   {
     context,
     fine,
@@ -664,9 +683,12 @@ export async function createBulb(
   lamp.position.set(0.04, -0.14, 0.25);
 
   // Son halo : un disque de lumière douce derrière lui, sans post-traitement.
-  const halo = document.createElement("canvas");
-  halo.width = halo.height = 128;
-  const ink = halo.getContext("2d");
+  const halo =
+    typeof document === "undefined"
+      ? new OffscreenCanvas(128, 128)
+      : Object.assign(document.createElement("canvas"), { width: 128, height: 128 });
+  const ink = halo.getContext("2d") as
+    CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
   if (ink) {
     const fade = ink.createRadialGradient(64, 64, 0, 64, 64, 64);
     fade.addColorStop(0, "rgba(255, 205, 130, 0.9)");
@@ -928,29 +950,23 @@ export async function createBulb(
     if (playing && !frame && !dead) frame = requestAnimationFrame(tick);
   };
 
-  const resize = () => {
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
+  const resize = ({ width: w, height: h, ratio, cx, cy, areaWidth, areaHeight }: BulbView) => {
     if (!w || !h) return;
     // Le canevas couvre tout le haut de page : on plafonne ses pixels, pas sa taille.
     const most = fine ? 2.8e6 : 2e6;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(most / (w * h))));
+    renderer.setPixelRatio(Math.min(ratio || 1, 2, Math.sqrt(most / (w * h))));
     renderer.setSize(w, h, false);
 
-    // Le cadrage. L'ampoule tient dans son cadre (`stage`), où qu'il soit
-    // dans le canevas : la caméra vise une vue entière centrée sur ce
-    // cadre, dont le canevas n'est qu'une fenêtre décalée.
-    const view = canvas.getBoundingClientRect();
-    const area = stage.getBoundingClientRect();
-    const cx = area.left + area.width / 2 - view.left;
-    const cy = area.top + area.height / 2 - view.top;
+    // Le cadrage. L'ampoule tient dans son cadre, où qu'il soit dans le
+    // canevas : la caméra vise une vue entière centrée sur ce cadre, dont
+    // le canevas n'est qu'une fenêtre décalée.
     const fullW = 2 * Math.max(cx, w - cx);
     const fullH = 2 * Math.max(cy, h - cy);
     camera.aspect = fullW / fullH;
     camera.setViewOffset(fullW, fullH, fullW / 2 - cx, fullH / 2 - cy, w, h);
     const tan = Math.tan((camera.fov * Math.PI) / 360);
-    const tall = (4.3 / 0.95) * (fullH / Math.max(1, area.height));
-    const wide = ((3.5 / 0.95) * (fullW / Math.max(1, area.width))) / camera.aspect;
+    const tall = (4.3 / 0.95) * (fullH / Math.max(1, areaHeight));
+    const wide = ((3.5 / 0.95) * (fullW / Math.max(1, areaWidth))) / camera.aspect;
     distance = Math.max(tall, wide) / (2 * tan);
     camera.position.set(0, 0, distance);
     camera.lookAt(0, 0, 0);
@@ -966,7 +982,7 @@ export async function createBulb(
   };
   canvas.addEventListener("webglcontextlost", lost);
 
-  resize();
+  resize(view);
   // Les programmes se compilent à part, sans bloquer la page : la première
   // image n'est dessinée qu'ensuite. Dessiner plus tôt les ferait compiler
   // sur place, page figée.
@@ -1022,12 +1038,7 @@ export async function createBulb(
         wake();
         return;
       }
-      const view = canvas.getBoundingClientRect();
-      if (!view.width || !view.height) return;
-      cursor.set(
-        ((at.x - view.left) / view.width) * 2 - 1,
-        -(((at.y - view.top) / view.height) * 2 - 1),
-      );
+      cursor.set(at.x, at.y);
       hovering = time >= ASSEMBLED;
       wake();
     },
