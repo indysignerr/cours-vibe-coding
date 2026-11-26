@@ -361,6 +361,17 @@ l'une après l'autre. Le halo de ces initiales est la seule lueur du site ;
 l'entorse à la liste ci-dessus est voulue, le bureau ayant demandé des
 lettres « illuminées ».
 
+**Le calendrier : une carte de niveaux.** Sur l'accueil et sur la page
+Événements, chaque date est une case numérotée, et un chemin les relie
+dans l'ordre en serpentant d'un rang à l'autre
+(`src/components/event-path.tsx`). Ce qui est passé est estompé, avec un
+chemin plein ; le prochain événement est la case marine, l'ampoule du logo
+posée dessus ; le reste de l'année suit un chemin en tirets. L'ordre du
+HTML reste celui des dates : c'est la grille CSS qui retourne un rang sur
+deux. Sur la page Événements, une case filtrée s'estompe et sort de la
+navigation au clavier, mais garde sa place pour que le chemin ne se rompe
+pas.
+
 **La maquette 3D.** Les quatre piliers se lisent autour d'une maquette du
 labo : un plateau tournant, quatre pièces, une par pilier, autour d'une
 lampe qui reprend le logo. Pendant que les piliers défilent, le plateau

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { CtaBand } from "@/components/cta-band";
-import { EventList } from "@/components/event-list";
+import { EventPath } from "@/components/event-path";
 import { Acronym } from "@/components/home/acronym";
 import { FaqBlock } from "@/components/home/faq-block";
 import { Hero } from "@/components/home/hero";
@@ -36,23 +36,16 @@ export function HomePage({ lang }: { lang: Locale }) {
       <section className="section calendar" aria-labelledby="calendar-title">
         <div className="container">
           <SectionHead n="03" label={d.timeline.eyebrow} title={d.timeline.title} id="calendar-title" />
-          <div className="rail">
-            <div className="rail__main" data-reveal>
-              <EventList
-                items={timelineItems(lang)}
-                labels={timelineLabels(lang)}
-                buildDay={today()}
-                upcomingOnly
-                limit={4}
-              />
-              <div className="calendar__more">
-                <Link className="btn" href={href("programme", lang)}>
-                  {d.timeline.full}
-                </Link>
-                <a className="link link--block" href="/albert-light.ics" download>
-                  {d.programme.download}
-                </a>
-              </div>
+          {/* La carte prend toute la largeur : trois cases de front sur grand écran. */}
+          <div data-reveal>
+            <EventPath items={timelineItems(lang)} labels={timelineLabels(lang)} buildDay={today()} />
+            <div className="calendar__more">
+              <Link className="btn" href={href("programme", lang)}>
+                {d.timeline.full}
+              </Link>
+              <a className="link link--block" href="/albert-light.ics" download>
+                {d.programme.download}
+              </a>
             </div>
           </div>
         </div>

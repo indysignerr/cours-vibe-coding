@@ -1,4 +1,4 @@
-import { EventList } from "@/components/event-list";
+import { EventPath } from "@/components/event-path";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
 import { PageHead } from "@/components/page-head";
@@ -8,9 +8,9 @@ import { t, type Locale } from "@/lib/i18n";
 import { timelineItems, timelineLabels } from "@/lib/timeline";
 
 /**
- * Les événements : toute l'année, ce qui vient puis ce qui est passé,
- * filtrable par public et par format. Dessous, les séances du Build Lab
- * et le fichier de calendrier.
+ * Les événements : toute l'année en carte de niveaux, une case par date
+ * sur un seul chemin, filtrable par public et par format. Dessous, les
+ * séances du Build Lab et le fichier de calendrier.
  */
 export function ProgrammePage({ lang }: { lang: Locale }) {
   const d = t(lang);
@@ -26,7 +26,7 @@ export function ProgrammePage({ lang }: { lang: Locale }) {
 
       <section className="section calendar calendar--page">
         <div className="container">
-          <EventList
+          <EventPath
             items={timelineItems(lang)}
             labels={timelineLabels(lang)}
             buildDay={today()}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { isPast, useDay } from "@/components/event-list";
+import { isPast, useDay } from "@/components/event-path";
 import type { TimelineItem } from "@/lib/timeline";
 
 /**

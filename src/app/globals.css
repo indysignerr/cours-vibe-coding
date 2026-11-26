@@ -959,30 +959,76 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 }
 
 /* =====================================================================
-   Le calendrier : une liste réglée, une ligne par date.
+   Le calendrier : une carte de niveaux.
+
+   Chaque événement est une case numérotée ; un chemin les relie dans
+   l'ordre des dates et serpente, de gauche à droite sur un rang, de
+   droite à gauche sur le suivant. Le chemin déjà parcouru est plein, le
+   reste en tirets ; la case du prochain événement est à l'encre, avec
+   l'ampoule posée dessus.
+
+   L'ordre du HTML reste celui des dates. C'est la grille qui retourne un
+   rang sur deux : chaque case reçoit sa colonne, et `dense` la range dans
+   le premier rang libre. Au téléphone, une seule colonne, et les cases se
+   décalent à gauche puis à droite pour que le chemin zigzague.
    ===================================================================== */
-.ev {
-  position: relative;
+.path {
+  --road: #0e1a2b;
+  --gx: 0px;
+  --gy: 2.75rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 0.75rem 2rem;
-  padding-block: 1.4rem;
-  border-top: 1px solid var(--line-strong);
-  transition: background-color 0.16s ease;
+  grid-auto-flow: row dense;
+  gap: var(--gy) var(--gx);
+  padding-top: 0.9rem;
 }
-.evlist > .ev:last-child { border-bottom: 1px solid var(--line-strong); }
-.ev:hover { background: var(--sunken); }
-.ev__date { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.7rem; }
-.ev__day {
+.stop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.55rem 1.15rem 1.2rem;
+  border: 1.5px solid var(--road);
+  background-color: var(--surface);
+  transition: background-color 0.16s ease, opacity 0.2s ease;
+}
+.stop:nth-child(odd) { margin-right: 10%; }
+.stop:nth-child(even) { margin-left: 10%; }
+.stop:hover { background-color: var(--sunken); }
+.stop.is-past { border-color: var(--line-strong); }
+.stop.is-off { opacity: 0.26; }
+
+/* Le numéro du niveau : un onglet à cheval sur le bord de la case. */
+.stop__n {
+  position: absolute;
+  top: -0.9rem;
+  left: 1rem;
+  padding: 0.22rem 0.6rem;
+  background: var(--road);
+  color: #f8f4ec;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+}
+.stop.is-past .stop__n { background: #55616f; }
+.stop.is-next .stop__n { background: var(--brand); color: var(--on-brand); }
+/* « Vous êtes ici » : l'ampoule du logo, posée sur la case du prochain événement. */
+.stop__here { position: absolute; top: 0.9rem; right: 1rem; width: auto; height: 2.5rem; }
+
+.stop__date { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.6rem; }
+.stop__date time { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.6rem; }
+.stop__day {
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2.5rem, 5vw, 3.4rem);
+  font-size: clamp(2.3rem, 4vw, 2.9rem);
   line-height: 0.9;
   letter-spacing: -0.03em;
   font-variant-numeric: lining-nums;
   color: var(--ink);
   white-space: nowrap;
 }
-.ev__mon {
+.stop__mon {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -990,30 +1036,87 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
   color: var(--ink);
   white-space: nowrap;
 }
-.ev__when { flex-basis: 100%; color: var(--muted); }
-.ev__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.55rem; }
-.ev__title {
+.stop__when { flex-basis: 100%; font-size: 1rem; color: var(--muted); }
+.stop__title {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+  font-size: clamp(1.3rem, 1.75vw, 1.5rem);
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.008em;
 }
-.ev__link { color: var(--ink); text-decoration: none; }
-.ev__link::after { content: ""; position: absolute; inset: 0; }
-.ev:hover .ev__link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
-.ev__place--tbc { color: var(--muted); }
-.ev__then { margin-top: 0.4rem; color: var(--muted); }
-.ev.is-past .ev__day, .ev.is-past .ev__mon, .ev.is-past .ev__link { color: var(--muted); }
-.ev__none { padding-block: 1.5rem; border-block: 1px solid var(--line-strong); color: var(--muted); }
-@media (min-width: 860px) {
-  .ev {
-    grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 15rem);
-    align-items: start;
-    margin-inline: -0.75rem;
-    padding-inline: 0.75rem;
-  }
+.stop__link { color: var(--ink); text-decoration: none; }
+.stop__link::after { content: ""; position: absolute; inset: 0; }
+.stop:hover .stop__link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+.stop__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: 0.4rem; }
+.stop__place { font-size: 1rem; color: var(--muted); }
+.stop.is-past .stop__day,
+.stop.is-past .stop__mon,
+.stop.is-past .stop__link { color: var(--muted); }
+.stop.is-next .badge--next { border-color: var(--brand); background: var(--brand); color: var(--on-brand); }
+.stop.is-next .badge { border-color: var(--line-strong); color: var(--body); }
+
+/* Le chemin : chaque case trace le tronçon qui mène à la suivante. */
+.stop::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0;
+  height: var(--gy);
+  margin-top: 1.5px;
+  border-left: 3px dashed var(--road);
+  pointer-events: none;
 }
+.stop:last-child::after { content: none; }
+
+@media (min-width: 640px) and (max-width: 999.98px) {
+  .path { --gx: 3rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stop:nth-child(n) { margin-inline: 0; }
+  .stop:nth-child(4n + 1) { grid-column: 1; }
+  .stop:nth-child(4n + 2),
+  .stop:nth-child(4n + 3) { grid-column: 2; }
+  .stop:nth-child(4n + 4) { grid-column: 1; }
+  /* Vers la droite, puis vers la gauche au rang suivant. */
+  .stop:nth-child(4n + 1)::after,
+  .stop:nth-child(4n + 3)::after {
+    top: 2.6rem;
+    width: var(--gx);
+    height: 0;
+    margin: 0;
+    border-left: 0;
+    border-top: 3px dashed var(--road);
+  }
+  .stop:nth-child(4n + 1)::after { left: 100%; margin-left: 1.5px; }
+  .stop:nth-child(4n + 3)::after { left: auto; right: 100%; margin-right: 1.5px; }
+}
+@media (min-width: 1000px) {
+  .path { --gx: 3.25rem; --gy: 3rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stop:nth-child(n) { margin-inline: 0; }
+  .stop:nth-child(6n + 1),
+  .stop:nth-child(6n + 6) { grid-column: 1; }
+  .stop:nth-child(6n + 2),
+  .stop:nth-child(6n + 5) { grid-column: 2; }
+  .stop:nth-child(6n + 3),
+  .stop:nth-child(6n + 4) { grid-column: 3; }
+  .stop:nth-child(6n + 1)::after,
+  .stop:nth-child(6n + 2)::after,
+  .stop:nth-child(6n + 4)::after,
+  .stop:nth-child(6n + 5)::after {
+    top: 2.6rem;
+    width: var(--gx);
+    height: 0;
+    margin: 0;
+    border-left: 0;
+    border-top: 3px dashed var(--road);
+  }
+  .stop:nth-child(6n + 1)::after,
+  .stop:nth-child(6n + 2)::after { left: 100%; margin-left: 1.5px; }
+  .stop:nth-child(6n + 4)::after,
+  .stop:nth-child(6n + 5)::after { left: auto; right: 100%; margin-right: 1.5px; }
+}
+/* Le chemin déjà parcouru est plein. */
+.stop.is-past::after { border-style: solid; }
+
 .calendar__more { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem; margin-top: 2rem; }
 
 /* Sous le calendrier de la page Événements : le Build Lab et le fichier .ics. */
@@ -1443,10 +1546,6 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
 .motion-fallback .pillar__poster { display: block !important; }
 .motion-fallback .pillar { min-height: 0 !important; }
 
-/* Le calendrier complet : ce qui vient, puis ce qui est passé. */
-.ev__date time { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.7rem; }
-.evgroup + .evgroup { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
-.evgroup__title { margin-bottom: 0.9rem; }
 /* « Fais défiler, la maquette tourne » : seulement là où elle tourne. */
 .only-motion { display: none; }
 .motion .only-motion { display: inline; }
