@@ -50,8 +50,8 @@ export function ScrollFX() {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           const el = entry.target as HTMLElement;
-          // Ceux qui entrent ensemble se suivent, à 60 ms d'écart.
-          el.style.setProperty("--rd", `${Math.min(i++, 6) * 60}ms`);
+          // Ceux qui entrent ensemble se suivent, à 95 ms d'écart.
+          el.style.setProperty("--rd", `${Math.min(i++, 6) * 95}ms`);
           el.classList.add("is-in");
           if (el.dataset.count) count(el);
           reveal.unobserve(el);

@@ -8,10 +8,10 @@ import { timelineItems } from "@/lib/timeline";
 /**
  * Le haut de page.
  *
- * À gauche, la phrase de l'affiche de l'association en grand, la phrase
- * de son texte officiel, deux actions et le prochain événement. À
- * droite, l'ampoule du logo en volume : des pièces éparses s'assemblent,
- * puis elle s'allume (Bulb).
+ * Une ouverture dans le noir, comme l'affiche de l'association. À
+ * gauche, sa phrase en grand, celle de son texte officiel, deux actions
+ * et le prochain événement. À droite, l'ampoule du logo en volume : des
+ * éclats de verre s'assemblent, puis elle s'allume (Bulb).
  *
  * Le texte n'attend pas de JavaScript : il est dans le HTML. L'ampoule,
  * elle, est chargée après coup ; sans elle, le logo dessiné tient sa
@@ -22,14 +22,17 @@ export function Hero({ lang }: { lang: Locale }) {
   const d = t(lang);
 
   return (
-    <section className="hero">
+    <section className="hero on-navy">
       <div className="container">
         <div className="hero__grid">
           <div className="hero__text">
             <p className="eyebrow eyebrow--accent rise" style={{ "--i": 0 } as React.CSSProperties}>
               {d.hero.eyebrow}
             </p>
-            <h1 className="hero__title rise rise--solid" style={{ "--i": 1 } as React.CSSProperties}>
+            <h1
+              className="hero__title rise rise--solid"
+              style={{ "--i": 1 } as React.CSSProperties}
+            >
               {d.hero.title} <span className="hero__on">{d.hero.titleOn}</span>
             </h1>
             <p className="lede hero__lede rise" style={{ "--i": 2 } as React.CSSProperties}>

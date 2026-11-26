@@ -11,7 +11,8 @@ import { fineOn, motionOn } from "@/lib/motion";
  * Il réserve la place, charge la scène 3D en différé (elle pèse le poids
  * de three.js : rien d'elle n'est sur le chemin du premier affichage), la
  * lance quand elle est à l'écran et la met en pause dès qu'elle en sort.
- * Il lui passe aussi les gestes : la souris, le clic, le défilement.
+ * Il lui passe aussi les gestes : la souris et le clic. Pas le
+ * défilement : l'ampoule ne s'ouvre que si on le lui demande.
  *
  * Quatre cas où il n'y a pas de 3D, et où le logo dessiné prend la place :
  * sans JavaScript, en mouvement réduit, sans carte graphique (three.js
@@ -93,15 +94,11 @@ export function Bulb() {
 
     const sized = new ResizeObserver(() => handle?.resize());
     sized.observe(el);
-    // Le défilement : de 0 en haut de page à 1 quand le haut de page est passé.
-    const onScroll = () => {
-      const span = (hero?.offsetHeight ?? window.innerHeight) * 0.72;
-      handle?.spread(window.scrollY / Math.max(1, span));
-    };
-    // La souris fait deux choses : l'ampoule tourne un peu vers elle, et
-    // les tuiles sur lesquelles elle passe s'écartent. Au doigt, seul
-    // l'écart joue, le temps du contact.
+    // L'ampoule ne réagit ni au défilement ni au doigt qui glisse : elle
+    // resterait à s'ouvrir chaque fois qu'on fait défiler la page. Seule la
+    // souris la fait tourner un peu et écarte les panneaux qu'elle survole.
     const onPointer = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
       if (fine) {
         handle?.pointer(
           (event.clientX / window.innerWidth - 0.5) * 2,
@@ -111,26 +108,35 @@ export function Bulb() {
       handle?.hover({ x: event.clientX, y: event.clientY });
     };
     const onLeave = () => handle?.hover(null);
-    // Un clic ou un toucher sur l'ampoule : les pièces sautent.
+    // L'éclat est un geste voulu : un clic sur l'ampoule, ou un toucher
+    // bref qui ne glisse pas. Un doigt qui fait défiler ne déclenche rien.
+    let press: { x: number; y: number; at: number } | null = null;
     const onDown = (event: PointerEvent) => {
-      onPointer(event);
+      press = { x: event.clientX, y: event.clientY, at: event.timeStamp };
+    };
+    const onUp = (event: PointerEvent) => {
+      const from = press;
+      press = null;
+      if (!from) return;
+      const still = Math.hypot(event.clientX - from.x, event.clientY - from.y) < 8;
+      const brief = event.timeStamp - from.at < 400;
       const box = el.getBoundingClientRect();
       const inside =
         event.clientX > box.left &&
         event.clientX < box.right &&
         event.clientY > box.top &&
         event.clientY < box.bottom;
-      if (inside && !(event.target as Element | null)?.closest?.("a, button")) handle?.pop();
+      const onControl = (event.target as Element | null)?.closest?.("a, button, summary, input");
+      if (still && brief && inside && !onControl) handle?.pop();
     };
-    const onUp = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") handle?.hover(null);
+    const onCancel = () => {
+      press = null;
     };
     document.addEventListener("visibilitychange", sync);
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
     window.addEventListener("pointerup", onUp, { passive: true });
-    window.addEventListener("pointercancel", onLeave, { passive: true });
+    window.addEventListener("pointercancel", onCancel, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
 
     return () => {
@@ -138,11 +144,10 @@ export function Bulb() {
       sight.disconnect();
       sized.disconnect();
       document.removeEventListener("visibilitychange", sync);
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointer);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("pointercancel", onLeave);
+      window.removeEventListener("pointercancel", onCancel);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       handle?.dispose();
     };

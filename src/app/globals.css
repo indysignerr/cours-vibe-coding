@@ -63,6 +63,8 @@
   --max: 80rem;
   --header-h: 4.25rem;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Le geste lent du site : part vite, se pose longtemps. */
+  --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Le grain du papier : un bruit très léger, pour que l'ivoire ne soit
      jamais un aplat. Le même fichier sert à toute la page. */
@@ -676,9 +678,10 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 /* =====================================================================
    L'accueil : le haut de page.
 
-   À gauche la phrase de l'affiche de l'association en grand, la phrase de
-   son texte officiel, deux actions, le prochain événement. À droite
-   l'ampoule du logo, en volume, qui s'assemble pièce par pièce.
+   Une ouverture dans le noir, à la suite de l'en-tête : à gauche la phrase
+   de l'affiche de l'association en grand, la phrase de son texte
+   officiel, deux actions, le prochain événement. À droite l'ampoule du
+   logo, en verre, qui s'assemble puis s'allume.
    ===================================================================== */
 .hero {
   position: relative;
@@ -800,7 +803,7 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
    écrite deux fois, éteinte dessous, allumée dessus ; seule l'opacité de
    la seconde bouge.
    ===================================================================== */
-.acro { padding-block: clamp(2.75rem, 6vw, 4.5rem); }
+.acro { padding-block: clamp(2.75rem, 6vw, 4.5rem); border-top: 1px solid var(--line); }
 .acro__label { color: var(--muted); }
 .acro__row { display: grid; gap: 0.35rem; margin-top: 1.25rem; }
 .acro__split {
@@ -1498,12 +1501,12 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
    que le navigateur chronomètre comme premier grand contenu.
    ===================================================================== */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(26px); }
 }
 @keyframes rise-solid {
-  from { transform: translateY(14px); }
+  from { transform: translateY(26px); }
 }
-.motion .rise { animation: rise 0.7s var(--ease) calc(0.04s + var(--i, 0) * 0.07s) both; }
+.motion .rise { animation: rise 1.15s var(--ease-slow) calc(0.05s + var(--i, 0) * 0.09s) both; }
 .motion .rise--solid { animation-name: rise-solid; }
 
 /* Le dernier mot du titre de l'accueil s'allume avec l'ampoule : il
@@ -1533,14 +1536,31 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
   animation: acro-on 0.95s linear calc(0.3s + var(--k, 0) * 0.24s) both;
 }
 
+/* Les apparitions sont lentes et amples, comme un fondu de cinéma : le
+   bloc monte de loin et se pose longtemps. */
 .motion [data-reveal] {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(38px);
   transition:
-    opacity 0.6s var(--ease) var(--rd, 0ms),
-    transform 0.6s var(--ease) var(--rd, 0ms);
+    opacity 1.1s var(--ease-slow) var(--rd, 0ms),
+    transform 1.35s var(--ease-slow) var(--rd, 0ms);
 }
 .motion [data-reveal].is-in { opacity: 1; transform: none; }
+/* Les titres de chapitre se lèvent derrière un cache : le texte sort de
+   sa ligne de base, de bas en haut. */
+.motion .chapter__title[data-reveal],
+.motion .sec-head__title[data-reveal] {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(0.45em);
+  transition:
+    clip-path 1.2s var(--ease-slow) var(--rd, 0ms),
+    transform 1.2s var(--ease-slow) var(--rd, 0ms);
+}
+.motion .chapter__title[data-reveal].is-in,
+.motion .sec-head__title[data-reveal].is-in {
+  clip-path: inset(-0.25em -0.1em -0.3em -0.1em);
+  transform: none;
+}
 /* Les titres et les chapeaux montent sans passer par la transparence :
    s'ils sont dans le premier écran, ce sont eux que le navigateur
    chronomètre, et un texte transparent ne compte pas. */
@@ -1548,18 +1568,18 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
 .motion .chapter__head [data-reveal],
 .motion .mission__lead[data-reveal] { opacity: 1; }
 /* Le filet d'une section se trace de gauche à droite à son arrivée. */
-.motion [data-rule]::before { transform: scaleX(0); transition: transform 0.9s var(--ease); }
+.motion [data-rule]::before { transform: scaleX(0); transition: transform 1.4s var(--ease-slow); }
 .motion [data-rule].is-in::before { transform: none; }
 
 /* Le filet de sécurité : si le script des apparitions n'a pas pris la
    main, tout est montré. Une animation manquée vaut mieux qu'une page vide. */
-.motion-fallback [data-reveal] { opacity: 1 !important; transform: none !important; }
+.motion-fallback [data-reveal] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
 .motion-fallback [data-rule]::before { transform: none !important; }
 .motion-fallback .acro__initial::after { opacity: 1 !important; animation: none !important; }
 
 /* D'une page à l'autre : l'ancienne s'efface, la nouvelle monte. */
-::view-transition-old(.page-out) { animation: 180ms ease-in both vt-out; }
-::view-transition-new(.page-in) { animation: 420ms var(--ease) 60ms both vt-in; }
+::view-transition-old(.page-out) { animation: 260ms ease-in both vt-out; }
+::view-transition-new(.page-in) { animation: 700ms var(--ease-slow) 90ms both vt-in; }
 ::view-transition-group(site-header) { animation: none; z-index: 100; }
 ::view-transition-old(site-header) { display: none; }
 ::view-transition-new(site-header) { animation: none; }
@@ -1568,7 +1588,7 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
   to { opacity: 0; }
 }
 @keyframes vt-in {
-  from { opacity: 0; translate: 0 14px; }
+  from { opacity: 0; translate: 0 26px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
