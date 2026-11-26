@@ -1,9 +1,15 @@
 {
-  "_readme": "Les quatre piliers. key ne change pas (il relie un pilier à ses événements et à son animation). title reste en anglais dans les quatre langues : ce sont les quatre mots de l'association. promise : la promesse, par langue. formats : name, what, length — par langue.",
+  "_readme": "Les quatre piliers. key ne change pas (il relie un pilier à ses événements et à sa pièce dans la maquette 3D). title reste en anglais dans les quatre langues : ce sont les quatre mots de l'association. line : la phrase du texte officiel de l'association, par langue. promise : la promesse, par langue. formats : name, what, length, par langue.",
   "pillars": [
     {
       "key": "learn",
       "title": "Learn",
+      "line": {
+        "en": "Workshops and crash courses on LLMs, APIs, Docker and CI/CD.",
+        "it": "Workshop e crash course su LLM, API, Docker e CI/CD.",
+        "fr": "Des workshops et des crash courses sur les LLM, les API, Docker et le CI/CD.",
+        "es": "Workshops y crash courses sobre LLM, API, Docker y CI/CD."
+      },
       "promise": {
         "en": "Master modern developer tools.",
         "it": "Padroneggia gli strumenti di sviluppo moderni.",
@@ -56,6 +62,12 @@
     {
       "key": "build",
       "title": "Build",
+      "line": {
+        "en": "Build Lab sessions with peer review; projects shipped to GitHub.",
+        "it": "Sessioni di Build Lab con revisione tra pari; progetti pubblicati su GitHub.",
+        "fr": "Des sessions de Build Lab avec relecture entre pairs ; des projets publiés sur GitHub.",
+        "es": "Sesiones de Build Lab con revisión entre compañeros; proyectos publicados en GitHub."
+      },
       "promise": {
         "en": "Build portfolio-ready AI projects.",
         "it": "Costruisci progetti di IA da portfolio.",
@@ -88,6 +100,12 @@
     {
       "key": "compete",
       "title": "Compete",
+      "line": {
+        "en": "Vibe coding tournaments to build working AI apps against the clock.",
+        "it": "Tornei di vibe coding per costruire app di IA funzionanti contro il tempo.",
+        "fr": "Des tournois de vibe coding pour livrer des apps IA qui marchent, contre la montre.",
+        "es": "Torneos de vibe coding para construir apps de IA que funcionen, contrarreloj."
+      },
       "promise": {
         "en": "Prove your skills under pressure.",
         "it": "Dimostra le tue competenze sotto pressione.",
@@ -120,6 +138,12 @@
     {
       "key": "connect",
       "title": "Connect",
+      "line": {
+        "en": "Talks, discovery days and Demo Day with industry professionals.",
+        "it": "Talk, discovery day e Demo Day con professionisti del settore.",
+        "fr": "Des talks, des discovery days et un Demo Day avec des professionnels du secteur.",
+        "es": "Charlas, discovery days y Demo Day con profesionales del sector."
+      },
       "promise": {
         "en": "Meet real professionals.",
         "it": "Incontra veri professionisti.",

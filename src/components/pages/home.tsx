@@ -1,20 +1,25 @@
 import Link from "next/link";
-import { EasterEgg } from "@/components/home/easter-egg";
+import { CtaBand } from "@/components/cta-band";
+import { EventList } from "@/components/event-list";
+import { FaqBlock } from "@/components/home/faq-block";
 import { Hero } from "@/components/home/hero";
 import { JoinBlock } from "@/components/home/join-block";
-import { Manifesto } from "@/components/home/manifesto";
+import { KeyFacts } from "@/components/home/key-facts";
+import { Mission } from "@/components/home/mission";
 import { Pillars } from "@/components/home/pillars";
 import { TeamBlock } from "@/components/home/team-block";
-import { Timeline } from "@/components/home/timeline";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
+import { SectionHead } from "@/components/section-head";
 import { today } from "@/lib/events";
 import { href, t, type Locale } from "@/lib/i18n";
 import { timelineItems, timelineLabels } from "@/lib/timeline";
 
 /**
- * L'accueil, dans l'ordre du brief : l'ampoule, le manifeste, les quatre
- * piliers, la frise, l'interrupteur, les deux voies d'entrée, l'équipe.
+ * L'accueil : ce qu'est l'association, en chiffres, sa mission, ses
+ * quatre piliers autour de la maquette, les prochaines dates, comment
+ * entrer, qui s'en occupe, les questions qu'on se pose avant de venir.
+ * Les sections sont numérotées, comme les chapitres d'un rapport.
  */
 export function HomePage({ lang }: { lang: Locale }) {
   const d = t(lang);
@@ -23,38 +28,39 @@ export function HomePage({ lang }: { lang: Locale }) {
     <PageFrame lang={lang} page="home">
       <ScrollFX />
       <Hero lang={lang} />
-      <Manifesto lang={lang} />
-      <Pillars lang={lang} />
+      <KeyFacts lang={lang} />
+      <Mission lang={lang} n="01" />
+      <Pillars lang={lang} n="02" />
 
-      <section className="calendar" aria-labelledby="calendar-title">
+      <section className="section calendar" aria-labelledby="calendar-title">
         <div className="container">
-          <header className="section-head">
-            <p className="eyebrow eyebrow--accent" data-reveal>
-              {d.timeline.eyebrow}
-            </p>
-            <h2 className="display-1" id="calendar-title" data-reveal>
-              {d.timeline.title}
-            </h2>
-          </header>
-          <Timeline
-            items={timelineItems(lang)}
-            labels={timelineLabels(lang)}
-            buildDay={today()}
-          />
-          <div className="calendar__more" data-reveal>
-            <Link className="btn btn--primary" href={href("programme", lang)} data-magnetic>
-              {d.timeline.full}
-              <span aria-hidden className="btn__arrow">
-                →
-              </span>
-            </Link>
+          <SectionHead n="03" label={d.timeline.eyebrow} title={d.timeline.title} id="calendar-title" />
+          <div className="rail">
+            <div className="rail__main" data-reveal>
+              <EventList
+                items={timelineItems(lang)}
+                labels={timelineLabels(lang)}
+                buildDay={today()}
+                upcomingOnly
+                limit={4}
+              />
+              <div className="calendar__more">
+                <Link className="btn" href={href("programme", lang)}>
+                  {d.timeline.full}
+                </Link>
+                <a className="link link--block" href="/albert-light.ics" download>
+                  {d.programme.download}
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <EasterEgg labels={d.egg} />
-      <JoinBlock lang={lang} />
-      <TeamBlock lang={lang} />
+      <JoinBlock lang={lang} n="04" />
+      <TeamBlock lang={lang} n="05" />
+      <FaqBlock lang={lang} n="06" />
+      <CtaBand lang={lang} />
     </PageFrame>
   );
 }

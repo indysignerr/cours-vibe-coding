@@ -240,7 +240,7 @@ export function EventSignup({
         </p>
       ) : null}
 
-      <button type="submit" disabled={busy} className="btn btn--primary" data-magnetic>
+      <button type="submit" disabled={busy} className="btn btn--primary">
         {busy ? l.busy : event.kind === "compete" ? l.submitCompete : l.submit}
       </button>
 

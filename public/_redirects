@@ -22,10 +22,8 @@
 /calendar       /events/     301
 /calendar/*     /events/     301
 
-# « Who we are » est devenu la page Team ; la page Contact a rejoint le pied
-# de page et le bloc partenaires.
-/about          /team/       301
-/about/*        /team/       301
+# La page Contact a rejoint le pied de page. (/about, un temps redirigée
+# vers l'équipe, est redevenue une vraie page en novembre 2026.)
 /contact        /team/       301
 /contact/*      /team/       301
 
@@ -41,12 +39,14 @@
 /evenements/*   /fr/evenements/:splat     301
 /equipe         /fr/equipe/               301
 /rejoindre      /fr/rejoindre/            301
+/a-propos       /fr/a-propos/             301
 
 # …italien…
 /programma      /it/programma/            301
 /eventi         /it/programma/            301
 /eventi/*       /it/eventi/:splat         301
 /unisciti       /it/unisciti/             301
+/chi-siamo      /it/chi-siamo/            301
 
 # …espagnol.
 /programa       /es/programa/             301
@@ -54,6 +54,7 @@
 /eventos/*      /es/eventos/:splat        301
 /equipo         /es/equipo/               301
 /unete          /es/unete/                301
+/sobre-nosotros /es/sobre-nosotros/       301
 
 # Le volet conseil est en pause : il ne vit plus sur le site
 /solutions      /events      301

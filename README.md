@@ -1,21 +1,21 @@
-# Albert LIGHT — albertlight.com
+# Albert LIGHT : albertlight.com
 
-Le site vitrine d'Albert LIGHT (*Lab of Intelligent, Generative,
-Hands-on Technology*), l'association étudiante d'Albert School Milano.
-Quatre langues — anglais d'abord, puis italien, français et espagnol —,
-une ampoule en 3D dont le filament écrit un L, et tout le contenu dans des
-fichiers de données.
+Le site d'Albert LIGHT (*Lab of Intelligent, Generative, Hands-on
+Technology*), l'association étudiante d'IA et de développement logiciel
+d'Albert School Milano. Quatre langues (anglais d'abord, puis italien,
+français et espagnol), une maquette du labo en 3D qui tourne pendant qu'on
+lit les quatre piliers, et tout le contenu dans des fichiers de données.
 
 **En ligne :** <https://albertlight.com>. Chaque `git push` sur `main`
 redéploie le site sur Cloudflare Pages, en une minute environ.
 
 > **In English, in 30 seconds.** Everything you can read on the site lives
-> in `content/`. Edit a JSON file — on your machine or straight from
-> GitHub's web editor — commit to `main`, and the site rebuilds itself in
+> in `content/`. Edit a JSON file, on your machine or straight from
+> GitHub's web editor, commit to `main`, and the site rebuilds itself in
 > about a minute. Calendar: `content/events.json`. Team:
-> `content/team.json`. Every sentence, in
-> four languages: `content/i18n/`. The rest of this page is in French; the
-> field names are the same whatever language you read.
+> `content/team.json`. Questions and answers: `content/faq.json`. Every
+> other sentence, in four languages: `content/i18n/`. The rest of this page
+> is in French; the field names are the same whatever language you read.
 
 ## Démarrer
 
@@ -30,7 +30,7 @@ Node 20.9 ou plus récent.
 | Commande | Ce qu'elle fait |
 |---|---|
 | `npm run dev` | le site en local |
-| `npm run build` | l'export statique dans `out/` — vérifie d'abord le contenu, puis refait le fichier `.ics` |
+| `npm run build` | l'export statique dans `out/` : vérifie d'abord le contenu, puis refait le fichier `.ics` |
 | `npm run content` | vérifie que chaque texte de `content/` existe dans les quatre langues |
 | `npm run audit` | relit `out/` : titres, descriptions, liens morts, `h1`, JSON-LD, images sans `alt` |
 | `npm run contrast` | vérifie chaque paire de couleurs en WCAG AA |
@@ -46,6 +46,7 @@ Rien de ce qui se lit sur le site n'est écrit dans le code.
 | une date, un lieu, un événement | `content/events.json` |
 | le bureau | `content/team.json` |
 | les quatre piliers et leurs formats | `content/pillars.json` |
+| une question fréquente et sa réponse | `content/faq.json` |
 | une phrase du site, dans une des quatre langues | `content/i18n/en.json`, `it.json`, `fr.json`, `es.json` |
 | le nom, le slogan, l'email, LinkedIn, les fondateurs | `content/site.json` |
 
@@ -61,7 +62,7 @@ Trois règles valent pour tous ces fichiers :
   élément. Une faute fait échouer le build : l'ancienne version reste en
   ligne, rien ne casse. L'échec se lit dans Cloudflare Pages → Deployments.
 
-### Le calendrier — `content/events.json`
+### Le calendrier : `content/events.json`
 
 Un bloc par date, dans `events`. Les événements passés se rangent et se
 grisent tout seuls, d'après la date.
@@ -123,7 +124,7 @@ Le bloc Photos n'apparaît que lorsque la liste n'est pas vide.
 Le fichier d'agenda `public/albert-light.ics` (Apple Calendar, Outlook) est
 refait tout seul à chaque build.
 
-### L'équipe — `content/team.json`
+### L'équipe : `content/team.json`
 
 Une entrée par personne dans `board`, dans l'ordre d'affichage.
 
@@ -140,22 +141,52 @@ dessous : `null` pour ne rien afficher, ou un texte par langue comme pour
 le rôle. Le nombre de membres affiché dans le titre suit la liste. Les
 fondateurs, eux, sont dans `content/site.json` → `founders`.
 
-### Les textes — `content/i18n/`
+### Les piliers : `content/pillars.json`
+
+Quatre entrées, dans l'ordre. `key` ne change pas : il relie le pilier à
+ses événements et à sa pièce dans la maquette 3D. `title` reste en anglais
+dans les quatre langues. `line` est la phrase du texte officiel de
+l'association, `promise` la promesse du plan, `formats` la liste des
+formats (`name`, `what`, `length`).
+
+### Les questions fréquentes : `content/faq.json`
+
+Des groupes (`groups`), et dans chacun des questions (`items`).
+
+```json
+{
+  "id": "cost",
+  "home": true,
+  "q": { "en": "How much does it cost?", "it": "…", "fr": "…", "es": "…" },
+  "a": { "en": "Nothing. Every event is free, and so is joining.", "it": "…", "fr": "…", "es": "…" }
+}
+```
+
+- **`id`** sert d'ancre (`/faq/#cost`) : ne pas le changer une fois publié.
+- **`home`** : `true` pour reprendre la question sur l'accueil. Cinq au plus.
+- **Une réponse ne dit que ce qui est décidé.** Le plan annuel ou le texte
+  officiel de l'association : rien d'autre. Une question sans réponse
+  certaine ne s'ajoute pas.
+
+La page `/faq/` donne aussi ces questions aux moteurs de recherche
+(schéma `FAQPage`) : elles peuvent s'afficher directement dans Google.
+
+### Les textes : `content/i18n/`
 
 Quatre fichiers aux clés identiques. À retenir :
 
-- `egg.message` — le message de l'easter egg. C'est encore un texte
-  provisoire : le bureau doit écrire le sien, dans les quatre langues.
+- `mission` est le texte officiel de l'association, tel qu'elle l'a écrit.
+  Le modifier, c'est modifier ce texte dans les quatre langues.
 - Les mots entre accolades (`{n}`, `{names}`, `{title}`) sont remplacés par
   le site. Les garder tels quels.
 - Les pages `/setup/`, `/legal/` et `/privacy/` n'existent qu'en anglais ;
   leur texte est dans `src/app/(en)/`.
 
-### L'identité — `content/site.json`
+### L'identité : `content/site.json`
 
-- `email.active` — `false` aujourd'hui : l'adresse s'affiche avec la
-  mention « not live yet », sans lien. Passer à `true` une fois le routage
-  Cloudflare Email en place.
+- `email.active` : `false` aujourd'hui, et l'adresse n'apparaît alors pas
+  dans le pied de page. Passer à `true` une fois le routage Cloudflare
+  Email vérifié : elle s'affiche, en lien cliquable.
 - `social.linkedin`, `founders`, `tagline`, `googleSiteVerification`.
 
 ## Les inscriptions
@@ -176,7 +207,7 @@ formulaire qui échouerait.
 > semaine sans activité) ou supprimé. Tant que ce n'est pas rétabli,
 > aucune inscription ne passe.
 
-**Si le projet est en pause** — le cas le plus probable :
+**Si le projet est en pause**, le cas le plus probable :
 
 1. [supabase.com/dashboard](https://supabase.com/dashboard) → le projet → **Restore project**.
 2. SQL Editor → coller `supabase/008_programme.sql` → Run. Il charge les
@@ -208,22 +239,21 @@ neuve. Ne pas s'en servir pour repartir de zéro.
 
 ## Comment c'est construit
 
-**La pile.** Next.js 16 en export statique, Three.js, GSAP, Lenis,
-Cloudflare Pages. Le brief proposait Astro ; Next.js est resté parce que
-le dépôt, ses règles d'export statique, son déploiement Cloudflare et son
-formulaire Supabase existaient déjà en Next.js, et que la sortie est la
-même : des fichiers HTML statiques, lisibles sans JavaScript.
+**La pile.** Next.js 16 en export statique, React-Three-Fiber pour la
+maquette 3D, Lenis pour le défilement, Cloudflare Pages. La sortie est
+faite de fichiers HTML statiques, lisibles sans JavaScript.
 
 ```
 content/                 tout le contenu (JSON)
-src/app/(en)/ fr/ it/    les routes, une racine par langue
-src/components/hero/     l'ampoule : la scène 3D et son image fixe
-src/components/home/     les blocs de l'accueil
+src/app/(en)/ fr/ it/ es/  les routes, une racine par langue
+src/components/home/     les sections de l'accueil
+src/components/lab/      la maquette 3D : ses pièces, sa scène, son cadre
 src/components/pages/    une page = un composant, pour les quatre langues
-src/components/motion/   le défilement, le curseur, le son
+src/components/motion/   les apparitions au défilement, le défilement lissé
 src/lib/                 lecture des données, i18n, dates
-src/app/globals.css      les couleurs, la typographie, toutes les animations
-scripts/                 audit, contraste, .ics, SQL, favicons, images de partage
+src/fonts/               les deux coupes de Newsreader, en fichiers locaux
+src/app/globals.css      les couleurs, la typographie, la grille, le mouvement
+scripts/                 audit, contraste, .ics, SQL, favicons, images
 supabase/                la base des inscriptions
 public/_redirects        les anciennes adresses, et les alias /programme, /equipe…
 ```
@@ -234,12 +264,12 @@ s'ouvre sur `albertlight.com` quelle que soit la langue du navigateur. Il
 n'y a aucune détection ni redirection automatique. Les trois autres
 langues ne s'ouvrent que si on les choisit dans le sélecteur :
 
-| Langue | Accueil | Programme | Événement | Équipe | Rejoindre |
-|---|---|---|---|---|---|
-| Anglais | `/` | `/events/` | `/events/<slug>/` | `/team/` | `/join/` |
-| Italien | `/it/` | `/it/programma/` | `/it/eventi/<slug>/` | `/it/team/` | `/it/unisciti/` |
-| Français | `/fr/` | `/fr/programme/` | `/fr/evenements/<slug>/` | `/fr/equipe/` | `/fr/rejoindre/` |
-| Espagnol | `/es/` | `/es/programa/` | `/es/eventos/<slug>/` | `/es/equipo/` | `/es/unete/` |
+| Langue | Accueil | À propos | Événements | Un événement | Équipe | Rejoindre | FAQ |
+|---|---|---|---|---|---|---|---|
+| Anglais | `/` | `/about/` | `/events/` | `/events/<slug>/` | `/team/` | `/join/` | `/faq/` |
+| Italien | `/it/` | `/it/chi-siamo/` | `/it/programma/` | `/it/eventi/<slug>/` | `/it/team/` | `/it/unisciti/` | `/it/faq/` |
+| Français | `/fr/` | `/fr/a-propos/` | `/fr/programme/` | `/fr/evenements/<slug>/` | `/fr/equipe/` | `/fr/rejoindre/` | `/fr/faq/` |
+| Espagnol | `/es/` | `/es/sobre-nosotros/` | `/es/programa/` | `/es/eventos/<slug>/` | `/es/equipo/` | `/es/unete/` | `/es/faq/` |
 
 Un nom de page propre à une langue, tapé sans préfixe (`/equipe`,
 `/unisciti`, `/equipo`…), mène à cette langue. `/programme`, qui se dit
@@ -252,28 +282,58 @@ langue à chaque texte des fichiers de `content/`, copier le dossier
 `public/_redirects`. `npm run content` liste alors chaque texte auquel
 la nouvelle langue manque, et le build refuse de partir tant qu'il en reste.
 
-**Trois règles tiennent les animations**, et elles sont écrites en tête de
-`globals.css` :
+**La mise en page.** Le site se lit comme un rapport : papier ivoire, encre
+marine, beige en accent ; Newsreader pour les titres et les chiffres,
+Albert Sans pour le texte. Cinq règles tiennent le reste, et elles sont
+écrites en tête de `globals.css` :
 
 1. *Le contenu d'abord.* L'état de base de chaque élément est son état
    visible et final. Tout ce qui cache ou décale pour animer vit sous
    `html.motion`, une classe posée par un script avant la première
    peinture, et seulement si le système ne demande pas moins de mouvement.
    Sans JavaScript ou en mouvement réduit : rien n'est caché, rien ne bouge.
-2. *Le grand spectacle est pour le grand écran.* La scène 3D, le curseur
-   et le défilement lissé vivent sous `html.fine` (souris, 1024 px et
-   plus). Au téléphone : une image de l'ampoule, le défilement natif.
-3. *Le texte avant la 3D.* Three.js n'est importé qu'une fois le haut de
-   page affiché, et jamais sur téléphone.
+2. *Le trait, pas l'effet.* Des filets et des angles droits. Pas de
+   dégradé, pas d'ombre portée, pas de flou d'arrière-plan, pas de halo,
+   pas de coin arrondi.
+3. *Trois couleurs.* Marine, beige, ivoire et leurs nuances. Jamais de
+   beige en texte sur l'ivoire : l'accent écrit y passe au bronze.
+4. *Le survol informe, il ne joue pas.* Un lien ou un bouton change de
+   couleur ; rien ne se soulève, rien ne glisse.
+5. *Le compositeur seulement.* Ce qui bouge bouge en `transform` et en
+   `opacity`.
 
-**L'ampoule.** La scène est dans `src/components/hero/bulb-scene.ts`,
-commentée pièce par pièce : le studio qui l'éclaire, le verre, le culot
-fileté, le pied de verre, le filament. Si une carte graphique ne suit pas,
-elle réduit d'elle-même sa résolution pour rester fluide.
+**Ce que le site s'interdit.** La refonte de novembre 2026 a écarté, point
+par point, ce qui fait reconnaître un site sorti d'un gabarit : dégradés
+appuyés, jeu d'icônes tout fait, fond blanc pur, couleurs arc-en-ciel ou
+pastel ou néon, ombres portées, trois cartes alignées, emojis, verre
+dépoli, tirets longs dans les textes, Inter ou ses cousines, liseré coloré
+à gauche des encarts, faux témoignages, grille « bento », fausse fenêtre
+de terminal, tournure « ce n'est pas X, c'est Y », puces en coches, halos
+flous, grilles de points, étincelles, flèches animées, survols qui
+gigotent. Les mentions légales, les conditions d'utilisation et la page
+de confidentialité existent, et ce qui charge montre un squelette plutôt
+que « Loading… ». Avant d'ajouter un bloc, relire cette liste.
 
-**Refaire l'image de l'ampoule.** Elle est une capture de la vraie scène.
-Si la scène change d'aspect, la marche à suivre est en tête de
-`scripts/make-poster.mjs`.
+**La maquette 3D.** Les quatre piliers se lisent autour d'une maquette du
+labo : un plateau tournant, quatre pièces, une par pilier, autour d'une
+lampe qui reprend le logo. Pendant que les piliers défilent, le plateau
+tourne et la pièce du pilier courant s'anime.
+
+- Elle est construite en code : aucun modèle n'est téléchargé.
+  `src/components/lab/kit.ts` définit trois formes (pavé, cylindre, boule)
+  et fond des centaines de pièces en quelques objets ;
+  `rooms.ts` décrit les quatre pièces et ce qui y bouge ;
+  `lab-canvas.tsx` est la scène (React-Three-Fiber) ;
+  `lab-stage.tsx` est son cadre dans la page.
+- Elle n'est chargée que lorsque la section approche de l'écran, et sa
+  boucle s'arrête dès qu'elle en sort. Si l'appareil peine, seule la
+  résolution baisse.
+- Sans JavaScript, en mouvement réduit, ou si WebGL manque : chaque pilier
+  montre l'image fixe de sa pièce. La page dit la même chose.
+
+**Refaire les images de la maquette.** L'image du haut de page et celles
+des quatre pièces sont des captures de la vraie scène. Si la scène change
+d'aspect, la marche à suivre est en tête de `scripts/make-lab-images.mjs`.
 
 **Le logo.** C'est celui du bureau, relevé sur son fichier : l'ampoule au
 trait, son « L », ses cinq rayons, et « ALBERT LIGHT » à côté. Sa
@@ -292,36 +352,39 @@ change : les deux scripts lisent `brand-shapes.json` et
 
 ## Vérifications
 
-Mesures du 9 novembre 2026.
+Mesures du 26 novembre 2026, après la refonte.
 
 | Contrôle | Résultat |
 |---|---|
-| `tsc`, ESLint, build | aucun avertissement, 64 pages |
-| `npm run content` | 4 langues, 173 textes par dictionnaire, 60 textes traduits dans les données, rien ne manque |
-| `npm run audit` | 63 pages, zéro défaut |
-| `npm run contrast` | toutes les paires passent en AA |
-| Sans JavaScript | tout le texte est visible, sur chaque type de page |
-| Mouvement réduit | pas de 3D, pas de transition, pas de curseur, rien de caché |
-| Mobile 375 px | pas de 3D, pas de défilement horizontal, image de l'ampoule, 382 cibles tactiles à 44 px ou plus |
-| Clavier | lien d'évitement, ordre logique, anneau de focus partout |
-| Défilement du haut de page, grand écran | 60 images par seconde, y compris en haute densité (3,3 millions de pixels), aucune image en retard |
+| `tsc`, ESLint, build | aucun avertissement, 72 pages |
+| `npm run content` | 4 langues, 191 textes par dictionnaire, 84 textes traduits dans les données, rien ne manque |
+| `npm run audit` | 71 pages, zéro défaut |
+| `npm run contrast` | toutes les paires passent en AA, sur ivoire comme sur marine |
+| Débordement horizontal | aucun, sur 33 pages dans les quatre langues, à 320, 375, 768, 1024 et 1280 px |
+| Sans JavaScript, ou en mouvement réduit | pas de 3D, rien de caché : chaque pilier montre l'image de sa pièce |
+| Mobile 375 px | 390 liens et boutons contrôlés sur dix pages, tous à 44 px ou plus |
+| Clavier | lien d'évitement, ordre logique, anneau de focus partout ; le menu et les questions sont des `<details>` |
+| La maquette 3D | chargée seulement à l'approche de la section (251 Ko compressés), arrêtée hors écran |
 
-Lighthouse, mobile, sur le site en ligne :
+Lighthouse, profil mobile, sur le site construit et servi en local :
 
-| Page | Performance | Accessibilité | SEO | Bonnes pratiques |
+| Page | Performance | Accessibilité | Bonnes pratiques | SEO |
 |---|---|---|---|---|
-| `/` | 96 | 100 | 100 | 100 |
-| `/events/` | 98 | 100 | 100 | 100 |
-| `/events/tournament-1/` | 97 | 100 | 100 | 96 |
-| `/fr/rejoindre/` | 98 | 100 | 100 | 100 |
+| `/` | 95 | 100 | 100 | 100 |
+| `/fr/programme/` | 99 | 100 | 100 | 100 |
+| `/it/chi-siamo/` | 92 | 100 | 100 | 100 |
+| `/events/codemotion-llms-python/` | 94 | 100 | 96 | 100 |
 
 Le 96 de la page d'un événement vient de la base qui ne répond pas : la
 requête en échec s'inscrit dans la console. Il repasse à 100 une fois
 Supabase rétabli.
 
-Le plus grand élément s'affiche en 2,3 à 2,7 s selon le modèle simulé de
-Lighthouse, et en 1,6 à 1,8 s avec un bridage réel (4G lente, processeur
-ralenti quatre fois), mesuré en local.
+Sur l'accueil, le plus grand élément (le titre) s'affiche en 2,7 s selon
+le modèle simulé de Lighthouse, et en 1,9 s avec un bridage réel (4G
+lente, processeur ralenti quatre fois). Aucun décalage de mise en page.
+Les mesures des pages À propos et événement datent d'avant deux
+corrections faites le même jour (le grain de la barre d'en-tête et un
+titre qui attendait le script) : elles sont à refaire en ligne.
 
 ## Déploiement
 
@@ -337,8 +400,9 @@ Ce que le site ne peut pas inventer, et où le renseigner.
 | Manque | Où |
 |---|---|
 | Les lieux de neuf événements sur dix | `content/events.json` → `location` |
-| L'adresse `hello@albertlight.com`, pas encore routée | Cloudflare Email Routing, puis `content/site.json` → `email.active` |
-| Le message de l'easter egg | `content/i18n/*.json` → `egg.message` |
+| L'adresse `hello@albertlight.com` : à tester, puis à afficher | Cloudflare Email Routing, puis `content/site.json` → `email.active` |
+| La relecture de l'italien et de l'espagnol par quelqu'un dont c'est la langue | `content/i18n/it.json`, `es.json`, `content/faq.json` |
+| Des photos des événements passés | `content/events.json` → `gallery` |
 | La base des inscriptions | voir [Les inscriptions](#les-inscriptions) |
 | La redirection de `www.albertlight.com` vers `albertlight.com` | une règle dans Cloudflare : `SEO-CHECKLIST.md`, point 0 |
 | `/setup/`, `/legal/`, `/privacy/` en italien, en français et en espagnol | `src/app/(en)/` |
@@ -346,8 +410,8 @@ Ce que le site ne peut pas inventer, et où le renseigner.
 
 ## Autres documents
 
-- `SEO-CHECKLIST.md` — Search Console et liens entrants : ce qui demande vos comptes.
-- `SETUP-SUPABASE.md`, `ARCHITECTURE.md` — archives de l'ancien parcours
+- `SEO-CHECKLIST.md` : Search Console et liens entrants, ce qui demande vos comptes.
+- `SETUP-SUPABASE.md`, `ARCHITECTURE.md` : archives de l'ancien parcours
   de cours. Pour le site actuel, cette page fait foi.
-- `RUBRIC.md`, `seances/`, `junior/` — le contenu des cours et de la
+- `RUBRIC.md`, `seances/`, `junior/` : le contenu des cours et de la
   structure junior, sans lien avec le site.

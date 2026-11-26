@@ -1,0 +1,273 @@
+{
+  "_readme": "Les questions fréquentes, par groupe, dans l'ordre d'affichage. id ne change pas (il sert d'ancre : /faq/#cost). home : true pour les questions reprises sur l'accueil. q et a : la question et la réponse, par langue (en, it, fr, es). Règle : une réponse ne dit que ce que le plan annuel ou le texte officiel de l'association disent déjà.",
+  "groups": [
+    {
+      "id": "association",
+      "title": {
+        "en": "The association",
+        "it": "L'associazione",
+        "fr": "L'association",
+        "es": "La asociación"
+      },
+      "items": [
+        {
+          "id": "what",
+          "home": true,
+          "q": {
+            "en": "What is Albert LIGHT?",
+            "it": "Che cos'è Albert LIGHT?",
+            "fr": "Qu'est-ce qu'Albert LIGHT ?",
+            "es": "¿Qué es Albert LIGHT?"
+          },
+          "a": {
+            "en": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) is the student association for AI and software development at Albert School. It is run by students, in Milan.",
+            "it": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) è l'associazione studentesca per l'IA e lo sviluppo software di Albert School. È gestita da studenti, a Milano.",
+            "fr": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) est l'association étudiante d'IA et de développement logiciel d'Albert School. Elle est gérée par des étudiants, à Milan.",
+            "es": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) es la asociación estudiantil de IA y desarrollo de software de Albert School. La llevan estudiantes, en Milán."
+          }
+        },
+        {
+          "id": "do",
+          "home": false,
+          "q": {
+            "en": "What do you do?",
+            "it": "Che cosa fate?",
+            "fr": "Que faites-vous ?",
+            "es": "¿Qué hacéis?"
+          },
+          "a": {
+            "en": "Four things. Learn: workshops and crash courses on LLMs, APIs, Docker and CI/CD. Build: Build Lab sessions with peer review, and projects shipped to GitHub. Compete: vibe coding tournaments to build working AI apps against the clock. Connect: talks, discovery days and Demo Day with industry professionals.",
+            "it": "Quattro cose. Learn: workshop e crash course su LLM, API, Docker e CI/CD. Build: sessioni di Build Lab con revisione tra pari, e progetti pubblicati su GitHub. Compete: tornei di vibe coding per costruire app di IA funzionanti contro il tempo. Connect: talk, discovery day e Demo Day con professionisti del settore.",
+            "fr": "Quatre choses. Learn : des workshops et des crash courses sur les LLM, les API, Docker et le CI/CD. Build : des sessions de Build Lab avec relecture entre pairs, et des projets publiés sur GitHub. Compete : des tournois de vibe coding pour livrer des apps IA qui marchent, contre la montre. Connect : des talks, des discovery days et un Demo Day avec des professionnels du secteur.",
+            "es": "Cuatro cosas. Learn: workshops y crash courses sobre LLM, API, Docker y CI/CD. Build: sesiones de Build Lab con revisión entre compañeros, y proyectos publicados en GitHub. Compete: torneos de vibe coding para construir apps de IA que funcionen, contrarreloj. Connect: charlas, discovery days y Demo Day con profesionales del sector."
+          }
+        },
+        {
+          "id": "who-runs",
+          "home": false,
+          "q": {
+            "en": "Who runs it?",
+            "it": "Chi lo gestisce?",
+            "fr": "Qui s'en occupe ?",
+            "es": "¿Quién lo lleva?"
+          },
+          "a": {
+            "en": "A board of seven students at Albert School Milano. Their names and roles are on the Team page.",
+            "it": "Un direttivo di sette studenti di Albert School Milano. Nomi e ruoli sono nella pagina Team.",
+            "fr": "Un bureau de sept étudiants d'Albert School Milano. Leurs noms et leurs rôles sont sur la page Équipe.",
+            "es": "Una junta de siete estudiantes de Albert School Milano. Sus nombres y funciones están en la página Equipo."
+          }
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "title": {
+        "en": "Coming to an event",
+        "it": "Venire a un evento",
+        "fr": "Venir à un événement",
+        "es": "Venir a un evento"
+      },
+      "items": [
+        {
+          "id": "code",
+          "home": true,
+          "q": {
+            "en": "Do I need to know how to code?",
+            "it": "Devo saper programmare?",
+            "fr": "Faut-il savoir coder ?",
+            "es": "¿Tengo que saber programar?"
+          },
+          "a": {
+            "en": "No. Beginners are welcome, and experienced developers find challenges worth their time.",
+            "it": "No. I principianti sono benvenuti, e gli sviluppatori esperti trovano sfide all'altezza.",
+            "fr": "Non. Les débutants sont les bienvenus, et les développeurs expérimentés y trouvent des défis à leur mesure.",
+            "es": "No. Los principiantes son bienvenidos, y los desarrolladores con experiencia encuentran retos a su altura."
+          }
+        },
+        {
+          "id": "cost",
+          "home": true,
+          "q": {
+            "en": "How much does it cost?",
+            "it": "Quanto costa?",
+            "fr": "Combien ça coûte ?",
+            "es": "¿Cuánto cuesta?"
+          },
+          "a": {
+            "en": "Nothing. Every event is free, and so is joining.",
+            "it": "Niente. Ogni evento è gratuito, e unirsi anche.",
+            "fr": "Rien. Chaque événement est gratuit, et l'adhésion aussi.",
+            "es": "Nada. Todos los eventos son gratis, y unirse también."
+          }
+        },
+        {
+          "id": "who-can",
+          "home": true,
+          "q": {
+            "en": "Who can come?",
+            "it": "Chi può venire?",
+            "fr": "Qui peut venir ?",
+            "es": "¿Quién puede venir?"
+          },
+          "a": {
+            "en": "Workshops, crash courses and the big open events are for every Albert School student, member or not. Vibe coding tournaments and Build Lab are for members.",
+            "it": "Workshop, crash course e i grandi eventi aperti sono per ogni studente di Albert School, membro o no. I tornei di vibe coding e il Build Lab sono riservati ai membri.",
+            "fr": "Les workshops, les crash courses et les grands événements ouverts sont pour tous les étudiants d'Albert School, membres ou non. Les tournois de vibe coding et le Build Lab sont réservés aux membres.",
+            "es": "Los workshops, los crash courses y los grandes eventos abiertos son para todos los estudiantes de Albert School, miembros o no. Los torneos de vibe coding y el Build Lab son para miembros."
+          }
+        },
+        {
+          "id": "often",
+          "home": false,
+          "q": {
+            "en": "How often is there something on?",
+            "it": "Ogni quanto c'è qualcosa in programma?",
+            "fr": "À quelle fréquence y a-t-il quelque chose ?",
+            "es": "¿Cada cuánto hay algo?"
+          },
+          "a": {
+            "en": "At least every two weeks, from November to May. Build Lab meets every other Tuesday. Every date is on the Events page, and the whole calendar can be downloaded.",
+            "it": "Almeno ogni due settimane, da novembre a maggio. Il Build Lab si tiene un martedì su due. Tutte le date sono nella pagina Eventi, e il calendario intero si può scaricare.",
+            "fr": "Au moins toutes les deux semaines, de novembre à mai. Le Build Lab a lieu un mardi sur deux. Toutes les dates sont sur la page Événements, et le calendrier entier se télécharge.",
+            "es": "Al menos cada dos semanas, de noviembre a mayo. El Build Lab se reúne cada dos martes. Todas las fechas están en la página Eventos, y el calendario entero se puede descargar."
+          }
+        },
+        {
+          "id": "where",
+          "home": false,
+          "q": {
+            "en": "Where do events take place?",
+            "it": "Dove si svolgono gli eventi?",
+            "fr": "Où ont lieu les événements ?",
+            "es": "¿Dónde son los eventos?"
+          },
+          "a": {
+            "en": "The place is on each event page. When a venue is not confirmed yet, the page says so.",
+            "it": "Il luogo è indicato nella pagina di ogni evento. Quando una sede non è ancora confermata, la pagina lo dice.",
+            "fr": "Le lieu est indiqué sur la page de chaque événement. Quand une salle n'est pas encore confirmée, la page le dit.",
+            "es": "El lugar figura en la página de cada evento. Cuando una sala aún no está confirmada, la página lo dice."
+          }
+        },
+        {
+          "id": "prepare",
+          "home": false,
+          "q": {
+            "en": "Should I prepare anything?",
+            "it": "Devo preparare qualcosa?",
+            "fr": "Faut-il préparer quelque chose ?",
+            "es": "¿Tengo que preparar algo?"
+          },
+          "a": {
+            "en": "Yes: about twenty minutes at home, so the room is spent building. The page Before you come lists the steps, in English.",
+            "it": "Sì: una ventina di minuti a casa, così in aula si costruisce. La pagina Prima di venire elenca i passaggi, in inglese.",
+            "fr": "Oui : une vingtaine de minutes chez toi, pour que la salle serve à construire. La page Avant de venir liste les étapes, en anglais.",
+            "es": "Sí: unos veinte minutos en casa, para que la sala sirva para construir. La página Antes de venir recoge los pasos, en inglés."
+          }
+        },
+        {
+          "id": "tournament",
+          "home": false,
+          "q": {
+            "en": "What is a vibe coding tournament?",
+            "it": "Che cos'è un torneo di vibe coding?",
+            "fr": "C'est quoi, un tournoi de vibe coding ?",
+            "es": "¿Qué es un torneo de vibe coding?"
+          },
+          "a": {
+            "en": "Teams race the clock to build a working app or platform under a theme. It lasts four to six hours, on a Saturday.",
+            "it": "Squadre contro il tempo per costruire un'app o una piattaforma funzionante su un tema. Dura da quattro a sei ore, di sabato.",
+            "fr": "Des équipes contre la montre pour livrer une app ou une plateforme qui marche, sur un thème. Cela dure quatre à six heures, un samedi.",
+            "es": "Equipos contrarreloj para construir una app o una plataforma que funcione, sobre un tema. Dura de cuatro a seis horas, un sábado."
+          }
+        },
+        {
+          "id": "build-lab",
+          "home": false,
+          "q": {
+            "en": "What is Build Lab?",
+            "it": "Che cos'è il Build Lab?",
+            "fr": "C'est quoi, le Build Lab ?",
+            "es": "¿Qué es el Build Lab?"
+          },
+          "a": {
+            "en": "An hour on your own tech project, with experienced members helping. It meets every other Tuesday.",
+            "it": "Un'ora sul tuo progetto tech, con l'aiuto di membri esperti. Si tiene un martedì su due.",
+            "fr": "Une heure sur ton propre projet tech, avec l'aide de membres expérimentés. Il a lieu un mardi sur deux.",
+            "es": "Una hora en tu propio proyecto tech, con la ayuda de miembros con experiencia. Se reúne cada dos martes."
+          }
+        }
+      ]
+    },
+    {
+      "id": "membership",
+      "title": {
+        "en": "Membership",
+        "it": "Adesione",
+        "fr": "Adhésion",
+        "es": "Ser miembro"
+      },
+      "items": [
+        {
+          "id": "member",
+          "home": true,
+          "q": {
+            "en": "How do I become a member?",
+            "it": "Come divento membro?",
+            "fr": "Comment devenir membre ?",
+            "es": "¿Cómo me hago miembro?"
+          },
+          "a": {
+            "en": "Two ways, and both take a minute. Tick the box “join Albert LIGHT” when you sign up for an event, or scan the QR code at any event.",
+            "it": "Due modi, ognuno richiede un minuto. Spunta la casella «join Albert LIGHT» quando ti iscrivi a un evento, oppure scansiona il QR code a un evento.",
+            "fr": "Deux façons, chacune prend une minute. Coche la case « join Albert LIGHT » en t'inscrivant à un événement, ou scanne le QR code sur place.",
+            "es": "Dos formas, y cada una lleva un minuto. Marca la casilla «join Albert LIGHT» al apuntarte a un evento, o escanea el código QR en cualquier evento."
+          }
+        },
+        {
+          "id": "opens",
+          "home": false,
+          "q": {
+            "en": "What does membership open?",
+            "it": "Cosa apre l'adesione?",
+            "fr": "Qu'ouvre l'adhésion ?",
+            "es": "¿Qué abre ser miembro?"
+          },
+          "a": {
+            "en": "Vibe coding tournaments and Build Lab.",
+            "it": "I tornei di vibe coding e il Build Lab.",
+            "fr": "Les tournois de vibe coding et le Build Lab.",
+            "es": "Los torneos de vibe coding y el Build Lab."
+          }
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "title": {
+        "en": "Your data",
+        "it": "I tuoi dati",
+        "fr": "Tes données",
+        "es": "Tus datos"
+      },
+      "items": [
+        {
+          "id": "data",
+          "home": false,
+          "q": {
+            "en": "What do you do with my data?",
+            "it": "Cosa fate dei miei dati?",
+            "fr": "Que faites-vous de mes données ?",
+            "es": "¿Qué hacéis con mis datos?"
+          },
+          "a": {
+            "en": "We keep your name and email to know who is coming, and we delete the list a month after the event. We never pass it on. Write to us and we remove you the same day. The details are on the Privacy page, in English.",
+            "it": "Conserviamo il tuo nome e la tua email per sapere chi viene, e cancelliamo la lista un mese dopo l'evento. Non la passiamo mai a nessuno. Scrivici e ti rimuoviamo il giorno stesso. I dettagli sono nella pagina Privacy, in inglese.",
+            "fr": "Nous gardons ton nom et ton email pour savoir qui vient, et nous supprimons la liste un mois après l'événement. Nous ne la transmettons jamais. Écris-nous et nous te retirons le jour même. Le détail est sur la page Confidentialité, en anglais.",
+            "es": "Guardamos tu nombre y tu email para saber quién viene, y borramos la lista un mes después del evento. Nunca la compartimos. Escríbenos y te quitamos de la lista el mismo día. Los detalles están en la página Privacidad, en inglés."
+          }
+        }
+      ]
+    }
+  ]
+}

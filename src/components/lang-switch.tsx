@@ -60,7 +60,10 @@ export function LangSwitch({
       {list}
       {/* `name` : ouvrir ce panneau referme celui du menu, et inversement. */}
       <details className="lang-menu" name="header-panel">
-        <summary className="lang-menu__btn" aria-label={`${d.nav.language}: ${LOCALE_NAMES[lang]}`}>
+        <summary
+          className="lang-menu__btn"
+          aria-label={`${d.nav.language}: ${lang.toUpperCase()}, ${LOCALE_NAMES[lang]}`}
+        >
           <span aria-hidden>{lang.toUpperCase()}</span>
           <span aria-hidden className="lang-menu__caret" />
         </summary>

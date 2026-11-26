@@ -1,5 +1,6 @@
 // Contrôle WCAG des deux peaux, lues dans src/app/globals.css.
-// Le site est sombre par défaut ; « .on-light » inverse localement.
+// Le site est clair par défaut (ivoire) ; « .on-navy » le retourne pour
+// l'en-tête, la maquette, l'appel final et le pied de page.
 // Texte courant 4.5:1, repères non textuels 3:1. Relancer après retouche.
 import { readFileSync } from "node:fs";
 
@@ -28,9 +29,7 @@ function check(label, fg, bg, floor) {
   console.log(`${ok ? "PASS" : "FAIL"}  ${r.toFixed(2)}  min ${floor}  ${label}`);
 }
 
-// Le marine est la peau par défaut depuis que le site vit dans le noir ;
-// la claire ne sert plus qu'aux surfaces « papier ».
-for (const [name, selector] of [["MARINE (defaut)", ":root"], ["CLAIR", ".on-light"]]) {
+for (const [name, selector] of [["IVOIRE (defaut)", ":root"], ["MARINE", ".on-navy"]]) {
   const T = tokens(selector);
   console.log(`\n── ${name} ──`);
   for (const bg of ["canvas", "surface", "sunken", "accent-tint"]) {
@@ -39,14 +38,15 @@ for (const [name, selector] of [["MARINE (defaut)", ":root"], ["CLAIR", ".on-lig
       if (T[fg]) check(`${fg} sur ${bg}`, T[fg], T[bg], 4.5);
     }
   }
-  // Les aplats de marque servent de boutons : le texte dessus doit passer.
-  check("on-brand sur brand (bouton)", T["on-brand"], T.brand, 4.5);
-  check("on-brand sur brand-soft (survol)", T["on-brand"], T["brand-soft"], 4.5);
+  // Les boutons : le texte doit passer sur chaque aplat, au repos comme au survol.
+  check("canvas sur ink (bouton plein)", T.canvas, T.ink, 4.5);
+  check("on-accent sur accent (bouton survole)", T["on-accent"], T.accent, 4.5);
+  check("on-brand sur brand (bouton beige)", T["on-brand"], T.brand, 4.5);
+  check("on-brand sur brand-soft (bouton beige survole)", T["on-brand"], T["brand-soft"], 4.5);
   // Le beige comme repère non textuel : filets, pictogramme, jauges.
   // Il n'est porteur que sur le marine. Sur l'ivoire il est décoratif, et la
-  // charte interdit déjà de s'en servir comme texte — on ne lui demande donc
-  // pas un rapport qu'il ne peut pas tenir, on vérifie qu'il reste interdit.
-  if (selector === ":root") {
+  // charte interdit de s'en servir comme texte : on vérifie qu'il le reste.
+  if (selector === ".on-navy") {
     check("brand vs canvas (repere)", T.brand, T.canvas, 3);
   } else if (ratio(T.brand, T.canvas) >= 4.5) {
     console.log("ATTENTION : le beige passerait en texte sur l'ivoire, la charte l'interdit.");

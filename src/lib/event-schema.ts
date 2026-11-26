@@ -83,7 +83,7 @@ export function eventListSchema(lang: Locale = "en") {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `${SITE.name} — ${t(lang).meta.programme.title}`,
+    name: `${SITE.name}, ${t(lang).meta.programme.title}`,
     itemListElement: getEvents(lang).map((e, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -124,7 +124,7 @@ export function breadcrumb(e: SiteEvent, lang: Locale = "en") {
 /** Le titre d'onglet d'une date : le nom et le jour. Google coupe vers 60 signes. */
 export function eventTitle(e: SiteEvent, lang: Locale = "en") {
   // Certains noms sont longs par nature : on coupe le nom, jamais la date.
-  return `${clip(e.title, 48)} — ${shortDate(e.date, lang)}`;
+  return `${clip(e.title, 48)} | ${shortDate(e.date, lang)}`;
 }
 
 /** Coupe un texte à `max` signes sur un mot entier, avec une ellipse. */

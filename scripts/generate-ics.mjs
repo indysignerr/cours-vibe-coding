@@ -47,7 +47,7 @@ for (const e of events) {
     ...(allDay
       ? [`DTSTART;VALUE=DATE:${e.date.replaceAll("-", "")}`, `DTEND;VALUE=DATE:${nextDay(end)}`]
       : [`DTSTART;TZID=${TZ}:${stamp(e.date, e.start)}`, `DTEND;TZID=${TZ}:${stamp(end, e.end)}`]),
-    `SUMMARY:${esc(`${NAME} — ${e.title.en}`)}`,
+    `SUMMARY:${esc(`${NAME}: ${e.title.en}`)}`,
     `DESCRIPTION:${esc(e.summary.en)}`,
     `LOCATION:${esc(e.location?.en ?? "")}`,
     `URL:${site.url}/events/${e.slug}/`,

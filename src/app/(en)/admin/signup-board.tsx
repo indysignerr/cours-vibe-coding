@@ -101,9 +101,9 @@ function EventBlock({ event, rows }: { event: SiteEvent; rows: Row[] }) {
                   <tr key={r.id} className="border-b border-line last:border-0">
                     <td className="px-4 py-3 text-ink">{r.full_name}</td>
                     <td className="px-4 py-3 text-body">{r.email}</td>
-                    <td className="px-4 py-3 text-body">{r.organisation ?? "—"}</td>
-                    <td className="px-4 py-3 text-ink">{wantsToJoin(r) ? "Yes" : "—"}</td>
-                    <td className="max-w-[28ch] px-4 py-3 text-muted">{plainNote(r) ?? "—"}</td>
+                    <td className="px-4 py-3 text-body">{r.organisation ?? "·"}</td>
+                    <td className="px-4 py-3 text-ink">{wantsToJoin(r) ? "Yes" : "·"}</td>
+                    <td className="max-w-[28ch] px-4 py-3 text-muted">{plainNote(r) ?? "·"}</td>
                     <td className="tnum whitespace-nowrap px-4 py-3 text-muted">
                       {new Date(r.created_at).toLocaleDateString("en-GB")}
                     </td>

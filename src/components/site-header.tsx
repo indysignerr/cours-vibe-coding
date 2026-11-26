@@ -1,21 +1,20 @@
 import Link from "next/link";
 import { BrandMark, BrandWordmark } from "@/components/brand";
 import { LangSwitch } from "@/components/lang-switch";
-import { SoundToggle } from "@/components/motion/sound-toggle";
 import { href, t, type Locale, type PageRef, type RouteKey } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
 
 /**
- * L'en-tête : une barre marine, fixe, la même sur toutes les pages.
+ * L'en-tête : une barre marine pleine, fixe, la même sur toutes les pages.
  *
- * Elle reste sombre au-dessus des sections ivoire — un en-tête qui
- * changerait de peau en traversant la page demanderait du JavaScript
+ * Le logo y est sur le fond pour lequel le bureau l'a dessiné. La barre
+ * ne change pas de peau en traversant la page : il faudrait du JavaScript
  * pour ne rien dire de plus.
  *
- * Sous 900 px la navigation passe dans un <details> : pas de script, le
+ * Sous 1000 px la navigation passe dans un <details> : pas de script, le
  * clavier et le lecteur d'écran viennent avec.
  */
-const NAV: RouteKey[] = ["programme", "team", "join"];
+const NAV: RouteKey[] = ["about", "programme", "team", "faq"];
 
 export function SiteHeader({
   lang,
@@ -41,9 +40,9 @@ export function SiteHeader({
   ));
 
   return (
-    <header className="site-header" style={{ viewTransitionName: "site-header" }}>
+    <header className="site-header on-navy" style={{ viewTransitionName: "site-header" }}>
       <div className="site-header__in">
-        <Link className="brand" href={href("home", lang)} aria-label={`${SITE.name} — ${d.nav.home}`}>
+        <Link className="brand" href={href("home", lang)} aria-label={`${SITE.name}, ${d.nav.home}`}>
           <BrandMark className="brand__mark" />
           <BrandWordmark className="brand__name" />
         </Link>
@@ -54,8 +53,7 @@ export function SiteHeader({
 
         <div className="site-header__tools">
           <LangSwitch lang={lang} page={page} compact />
-          <SoundToggle label={d.sound.label} on={d.sound.on} off={d.sound.off} />
-          <Link className="btn btn--primary btn--sm site-header__cta" href={href("programme", lang)} data-magnetic>
+          <Link className="btn btn--brand btn--sm site-header__cta" href={href("join", lang)}>
             {d.nav.cta}
           </Link>
 
@@ -66,6 +64,11 @@ export function SiteHeader({
             </summary>
             <nav className="menu__panel" aria-label={d.nav.main}>
               <ul>{links}</ul>
+              <p className="menu__cta">
+                <Link className="btn btn--brand" href={href("join", lang)}>
+                  {d.nav.cta}
+                </Link>
+              </p>
             </nav>
           </details>
         </div>

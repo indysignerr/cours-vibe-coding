@@ -77,7 +77,7 @@ export default function PrivacyPage() {
           <h2>Who sees what</h2>
           <p>
             Only the organisers. The list is never published, never shown on
-            this site, and never passed to a company — including a company
+            this site, and never passed to a company, including a company
             sponsoring an event.
           </p>
 

@@ -1,8 +1,12 @@
 {
   "meta": {
     "home": {
-      "title": "Albert LIGHT — Il lab di IA e codice di Albert School",
-      "description": "Il lab studentesco di IA e codice di Albert School, a Milano. Workshop, crash course, Build Lab e tornei di vibe coding, almeno ogni due settimane. Gratis."
+      "title": "Albert LIGHT | Associazione studentesca di IA e codice, Albert School",
+      "description": "L'associazione studentesca per l'IA e lo sviluppo software di Albert School Milano. Workshop, Build Lab e tornei di vibe coding, ogni due settimane. Gratis."
+    },
+    "about": {
+      "title": "Chi siamo",
+      "description": "Che cos'è Albert LIGHT, la sua missione e i suoi quattro pilastri: Learn, Build, Compete, Connect. Un'associazione studentesca di Albert School Milano."
     },
     "programme": {
       "title": "Programma 2026–2027",
@@ -16,6 +20,10 @@
       "title": "Unisciti a noi",
       "description": "Per gli studenti di Albert School Milano: come partecipare a un evento e come diventare membro di Albert LIGHT."
     },
+    "faq": {
+      "title": "Domande frequenti",
+      "description": "Chi può venire, quanto costa, come diventare membro e cosa preparare: le risposte pratiche su Albert LIGHT, ad Albert School Milano."
+    },
     "eventTail": {
       "open": "Aperto a tutti, gratis, Albert School Milano.",
       "members": "Membri, gratis, Albert School Milano."
@@ -24,28 +32,26 @@
   "nav": {
     "main": "Navigazione principale",
     "home": "Home",
-    "programme": "Programma",
+    "about": "Chi siamo",
+    "programme": "Eventi",
     "team": "Team",
+    "faq": "FAQ",
     "join": "Unisciti",
     "menu": "Menu",
     "skip": "Vai al contenuto",
     "language": "Lingua",
-    "cta": "Vedi il programma"
-  },
-  "sound": {
-    "label": "Suono di accensione",
-    "on": "Suono attivo",
-    "off": "Suono disattivato"
+    "cta": "Unisciti"
   },
   "hero": {
-    "eyebrow": "Gestito da studenti · Albert School Milano",
-    "tagline": "Il trampolino di lancio dove gli studenti di Albert costruiscono progetti di IA da portfolio, padroneggiano i moderni strumenti di sviluppo e incontrano veri professionisti, insieme.",
+    "eyebrow": "Associazione studentesca · Albert School Milano",
+    "title": "L'associazione studentesca per l'IA e lo sviluppo software di Albert School.",
+    "lede": "Il trampolino di lancio dove gli studenti di Albert costruiscono progetti di IA da portfolio, padroneggiano i moderni strumenti di sviluppo e incontrano veri professionisti, insieme.",
+    "next": "Prossimo evento",
+    "figure": "Fig. 1. Il lab, una stanza per ogni pilastro.",
+    "figureAlt": "Un modellino del lab visto dall'alto: quattro stanze attorno a una lampada.",
+    "stands": "LIGHT sta per",
     "ctaPrimary": "Vedi il programma",
     "ctaSecondary": "Come unirsi",
-    "scroll": "Scorri. Il filamento ha una lettera da scrivere.",
-    "bulbAlt": "Una lampadina il cui filamento disegna la lettera L",
-    "bulbButton": "Accendi la luce",
-    "spelled": "L, come Lab.",
     "words": [
       "Lab",
       "Intelligent",
@@ -54,21 +60,31 @@
       "Technology"
     ]
   },
-  "manifesto": {
-    "eyebrow": "Manifesto",
-    "lines": [
-      "Un club che costruisce.",
-      "Principianti benvenuti. Gratis.",
-      "Gli eventi aperti sono per ogni studente di Albert School: non serve essere membri.",
-      "Tornei e Build Lab sono riservati ai membri.",
-      "Diventarlo è una spunta su un modulo."
-    ],
-    "note": "Prima in inglese, con italiano, francese e spagnolo."
+  "facts": {
+    "label": "L'associazione in quattro cifre",
+    "dates": "date nel calendario 2026–2027",
+    "pillars": "pilastri: Learn, Build, Compete, Connect",
+    "board": "studenti nel direttivo",
+    "free": "Ogni evento è gratuito, e unirsi anche",
+    "freeFigure": "0 €"
+  },
+  "mission": {
+    "eyebrow": "La nostra missione",
+    "title": "Colleghiamo la teoria accademica e la pratica dell'industria.",
+    "p1": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) è l'associazione studentesca per l'IA e lo sviluppo software di Albert School.",
+    "p2": "Siamo un trampolino di lancio collaborativo per gli studenti che vogliono andare oltre l'aula: i membri costruiscono progetti di IA da portfolio, padroneggiano gli strumenti di sviluppo usati nell'industria e lavorano accanto a compagni esperti e a veri professionisti.",
+    "p3": "I principianti sono benvenuti; gli sviluppatori esperti trovano sfide all'altezza.",
+    "quote": "Un club che costruisce.",
+    "more": "Di più sull'associazione"
   },
   "pillars": {
     "eyebrow": "Cosa facciamo",
     "title": "Quattro pilastri. Un solo lab.",
-    "formats": "Formati"
+    "formats": "Formati",
+    "lede": "Una stanza del lab per ogni pilastro.",
+    "roomAlt": "La stanza {title} del lab, in un modellino 3D",
+    "figure": "Fig. 2. Stanza {n} di 4: {title}.",
+    "ledeMotion": "Scorri, e il modellino gira."
   },
   "timeline": {
     "eyebrow": "Calendario 2026–2027",
@@ -86,7 +102,7 @@
     "buildLabThen": "Poi un martedì su due:",
     "full": "Il programma completo",
     "shown": "{n} date mostrate",
-    "details": "Dettagli"
+    "noneSoon": "Nessuna data annunciata per ora. Le prossime compariranno qui."
   },
   "formats": {
     "workshop": "Workshop",
@@ -98,17 +114,6 @@
   "audience": {
     "open": "Aperto a tutti",
     "members": "Membri"
-  },
-  "egg": {
-    "eyebrow": "Un'ultima cosa",
-    "title": "Da qualche parte c'è un interruttore.",
-    "body": "Clicca sulla lampadina in cima alla pagina, o sul pulsante qui, e guarda com'è il lab con la luce accesa.",
-    "on": "Accendi la luce",
-    "off": "Spegni",
-    "messageTitle": "Hai trovato l'interruttore.",
-    "message": "Testo provvisorio — il direttivo sta ancora scrivendo il suo messaggio.",
-    "signature": "Il direttivo",
-    "close": "Chiudi"
   },
   "join": {
     "eyebrow": "Unisciti",
@@ -123,7 +128,6 @@
     "beforeTitle": "Prima di venire",
     "beforeBody": "Venti minuti a casa, così in aula si costruisce.",
     "beforeNote": "In inglese",
-    "nextTitle": "Il prossimo",
     "signup": "Iscriviti",
     "more": "Come funziona"
   },
@@ -132,13 +136,41 @@
     "title": "Un direttivo di {n} studenti.",
     "lede": "Conducono le sessioni, prenotano le aule e portano i partner.",
     "founders": "Fondata da {names}.",
-    "more": "Conosci il team"
+    "more": "Conosci il team",
+    "board": "Il direttivo"
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Domande frequenti",
+    "lede": "Le risposte pratiche, prima del tuo primo evento.",
+    "all": "Tutte le domande e risposte",
+    "stillTitle": "Hai ancora una domanda?",
+    "stillBody": "Scrivici un messaggio su LinkedIn."
+  },
+  "about": {
+    "eyebrow": "Chi siamo",
+    "howEyebrow": "Come funziona",
+    "openLabel": "Eventi aperti",
+    "openText": "Workshop, crash course e i grandi eventi aperti sono per ogni studente di Albert School: non serve essere membri.",
+    "membersText": "I tornei di vibe coding e il Build Lab sono riservati ai membri. Diventarlo è una spunta su un modulo.",
+    "rhythmLabel": "Ritmo",
+    "rhythmText": "Qualcosa in programma almeno ogni due settimane, da novembre a maggio.",
+    "priceText": "Gratis, per ogni evento e per l'adesione.",
+    "runLabel": "Chi lo gestisce",
+    "runText": "Un direttivo di {n} studenti di Albert School Milano.",
+    "pillarsTitle": "I quattro pilastri, formato per formato.",
+    "colFormat": "Formato",
+    "colWhat": "Cos'è",
+    "colLength": "Durata"
+  },
+  "cta": {
+    "title": "Principianti benvenuti. Gratis.",
+    "body": "Gli eventi aperti sono per ogni studente di Albert School: non serve essere membri."
   },
   "footer": {
     "about": "Associazione studentesca di Albert School Milano. Eventi gratuiti, principianti benvenuti.",
-    "emailSoon": "non ancora attiva",
     "beforeYouCome": "Prima di venire",
-    "legal": "Note legali",
+    "legal": "Note legali e condizioni",
     "privacy": "Privacy",
     "linkedin": "LinkedIn",
     "explore": "Esplora",

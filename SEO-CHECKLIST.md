@@ -1,6 +1,6 @@
 # SEO — ce qui est fait, et ce qui demande vos comptes
 
-Dernière mise à jour : 9 novembre 2026.
+Dernière mise à jour : 26 novembre 2026.
 
 ---
 
@@ -10,16 +10,17 @@ Dernière mise à jour : 9 novembre 2026.
 |---|---|
 | Domaine `albertlight.com` | en ligne, HTTPS, apex et www |
 | `www` → apex en 301 | **pas en place** — voir le point 0 ci-dessous |
-| Sitemap | 59 URL — les quatre langues, avec `lastmod` et leurs `hreflang` |
+| Sitemap | 67 URL — les quatre langues, avec `lastmod` et leurs `hreflang` |
 | `robots.txt` | ouvert, `/admin/` exclu |
 | Une page par évènement | 10 pages statiques, dans chacune des quatre langues |
 | `schema.org/Event` | sur les 10, avec `name`, `startDate`, `location` |
 | `BreadcrumbList` | sur chaque page évènement |
 | `ItemList` | sur `/events/`, `/it/programma/` et `/fr/programme/` |
+| `FAQPage` | sur `/faq/` et ses trois traductions : les questions peuvent s'afficher dans Google |
 | `Organization` | avec `sameAs` (LinkedIn), `alternateName`, `foundingDate` |
 | Titres et descriptions | uniques sur chaque page |
 | `canonical` et `hreflang` | sur chaque page : Google sait que `/events/`, `/it/programma/`, `/fr/programme/` et `/es/programa/` sont la même page en quatre langues, et l'anglais est déclaré version par défaut (`x-default`) |
-| Audit statique | `npm run audit` — 63 pages, zéro défaut |
+| Audit statique | `npm run audit` — 71 pages, zéro défaut |
 
 ---
 

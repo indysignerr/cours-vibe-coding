@@ -21,7 +21,6 @@ export function AddToCalendar({
         href={googleCalendarUrl(event)}
         target="_blank"
         rel="noopener noreferrer"
-        data-magnetic
       >
         {label}
       </a>

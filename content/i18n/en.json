@@ -1,8 +1,12 @@
 {
   "meta": {
     "home": {
-      "title": "Albert LIGHT — Albert School's student lab for AI and code",
-      "description": "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab and vibe coding tournaments, at least every two weeks. Free."
+      "title": "Albert LIGHT | Albert School's student association for AI and code",
+      "description": "The student association for AI and software development at Albert School Milano. Workshops, Build Lab and vibe coding tournaments, every two weeks. Free."
+    },
+    "about": {
+      "title": "About",
+      "description": "What Albert LIGHT is, its mission and its four pillars: Learn, Build, Compete, Connect. A student association at Albert School Milano."
     },
     "programme": {
       "title": "Programme 2026–2027",
@@ -16,6 +20,10 @@
       "title": "Join us",
       "description": "For students at Albert School Milano: how to come to an event, and how you become a member of Albert LIGHT."
     },
+    "faq": {
+      "title": "Frequently asked questions",
+      "description": "Who can come, what it costs, how to become a member and what to prepare: the practical answers about Albert LIGHT, at Albert School Milano."
+    },
     "eventTail": {
       "open": "Open to all, free, Albert School Milano.",
       "members": "Members, free, Albert School Milano."
@@ -24,28 +32,26 @@
   "nav": {
     "main": "Main",
     "home": "Home",
-    "programme": "Programme",
+    "about": "About",
+    "programme": "Events",
     "team": "Team",
+    "faq": "FAQ",
     "join": "Join",
     "menu": "Menu",
     "skip": "Skip to content",
     "language": "Language",
-    "cta": "See the programme"
-  },
-  "sound": {
-    "label": "Ignition sound",
-    "on": "Sound on",
-    "off": "Sound off"
+    "cta": "Join us"
   },
   "hero": {
-    "eyebrow": "Student-run · Albert School Milano",
-    "tagline": "The launchpad where Albert students build portfolio-ready AI projects, master modern developer tools and meet real professionals, together.",
+    "eyebrow": "Student association · Albert School Milano",
+    "title": "The student association for AI and software development at Albert School.",
+    "lede": "The launchpad where Albert students build portfolio-ready AI projects, master modern developer tools and meet real professionals, together.",
+    "next": "Next event",
+    "figure": "Fig. 1. The lab, one room for each pillar.",
+    "figureAlt": "A model of the lab seen from above: four rooms around one lamp.",
+    "stands": "LIGHT stands for",
     "ctaPrimary": "See the programme",
     "ctaSecondary": "How to join",
-    "scroll": "Scroll. The filament has a letter to spell.",
-    "bulbAlt": "A light bulb whose filament draws the letter L",
-    "bulbButton": "Switch the light on",
-    "spelled": "L, for Lab.",
     "words": [
       "Lab",
       "Intelligent",
@@ -54,21 +60,31 @@
       "Technology"
     ]
   },
-  "manifesto": {
-    "eyebrow": "Manifesto",
-    "lines": [
-      "A club that builds.",
-      "Beginners welcome. Free.",
-      "Open events are for every Albert School student — no membership needed.",
-      "Tournaments and Build Lab are for members.",
-      "Becoming one is a tick on a form."
-    ],
-    "note": "English first, with Italian, French and Spanish."
+  "facts": {
+    "label": "The association in four figures",
+    "dates": "dates on the 2026–2027 calendar",
+    "pillars": "pillars: Learn, Build, Compete, Connect",
+    "board": "students on the board",
+    "free": "Every event is free, and so is joining",
+    "freeFigure": "0 €"
+  },
+  "mission": {
+    "eyebrow": "Our mission",
+    "title": "We bridge academic theory and industry practice.",
+    "p1": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) is the student association for AI and software development at Albert School.",
+    "p2": "We are a collaborative launchpad for students who want to go beyond the classroom: members build portfolio-ready AI projects, master the developer tools used in industry and work alongside experienced peers and real professionals.",
+    "p3": "Beginners are welcome; experienced developers find challenges worth their time.",
+    "quote": "A club that builds.",
+    "more": "More about the association"
   },
   "pillars": {
     "eyebrow": "What we do",
     "title": "Four pillars. One lab.",
-    "formats": "Formats"
+    "formats": "Formats",
+    "lede": "One room of the lab for each pillar.",
+    "roomAlt": "The {title} room of the lab, as a 3D model",
+    "figure": "Fig. 2. Room {n} of 4: {title}.",
+    "ledeMotion": "Scroll, and the model turns."
   },
   "timeline": {
     "eyebrow": "Calendar 2026–2027",
@@ -86,7 +102,7 @@
     "buildLabThen": "Then every other Tuesday:",
     "full": "The full programme",
     "shown": "{n} dates shown",
-    "details": "Details"
+    "noneSoon": "No date is announced right now. The next ones will be listed here."
   },
   "formats": {
     "workshop": "Workshop",
@@ -98,17 +114,6 @@
   "audience": {
     "open": "Open to all",
     "members": "Members"
-  },
-  "egg": {
-    "eyebrow": "One more thing",
-    "title": "There is a switch somewhere.",
-    "body": "Click the bulb at the top of the page, or the button here, and see what the lab looks like with the light on.",
-    "on": "Switch the light on",
-    "off": "Switch it off",
-    "messageTitle": "You found the switch.",
-    "message": "Placeholder — the board is still writing its message.",
-    "signature": "The board",
-    "close": "Close"
   },
   "join": {
     "eyebrow": "Join",
@@ -123,7 +128,6 @@
     "beforeTitle": "Before you come",
     "beforeBody": "Twenty minutes at home, so the room is spent building.",
     "beforeNote": "In English",
-    "nextTitle": "Next up",
     "signup": "Sign up",
     "more": "How joining works"
   },
@@ -132,13 +136,41 @@
     "title": "A board of {n} students.",
     "lede": "They run the sessions, book the rooms and bring in the partners.",
     "founders": "Founded by {names}.",
-    "more": "Meet the team"
+    "more": "Meet the team",
+    "board": "The board"
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Frequently asked questions",
+    "lede": "The practical answers, before your first event.",
+    "all": "All questions and answers",
+    "stillTitle": "Still have a question?",
+    "stillBody": "Send us a message on LinkedIn."
+  },
+  "about": {
+    "eyebrow": "About",
+    "howEyebrow": "How it works",
+    "openLabel": "Open events",
+    "openText": "Workshops, crash courses and the big open events are for every Albert School student, no membership needed.",
+    "membersText": "Vibe coding tournaments and Build Lab are for members. Becoming one is a tick on a form.",
+    "rhythmLabel": "Rhythm",
+    "rhythmText": "Something on at least every two weeks, from November to May.",
+    "priceText": "Free, for every event and for joining.",
+    "runLabel": "Who runs it",
+    "runText": "A board of {n} students at Albert School Milano.",
+    "pillarsTitle": "The four pillars, format by format.",
+    "colFormat": "Format",
+    "colWhat": "What it is",
+    "colLength": "Length"
+  },
+  "cta": {
+    "title": "Beginners welcome. Free.",
+    "body": "Open events are for every Albert School student, no membership needed."
   },
   "footer": {
     "about": "Student-run association at Albert School Milano. Free events, beginners welcome.",
-    "emailSoon": "not live yet",
     "beforeYouCome": "Before you come",
-    "legal": "Legal notice",
+    "legal": "Legal notice and terms",
     "privacy": "Privacy",
     "linkedin": "LinkedIn",
     "explore": "Explore",

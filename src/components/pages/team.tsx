@@ -1,4 +1,5 @@
 import team from "@content/team.json";
+import { CtaBand } from "@/components/cta-band";
 import { TeamBlock } from "@/components/home/team-block";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
@@ -17,6 +18,7 @@ export function TeamPage({ lang }: { lang: Locale }) {
         lede={d.team.lede}
       />
       <TeamBlock lang={lang} full />
+      <CtaBand lang={lang} />
     </PageFrame>
   );
 }

@@ -1,0 +1,9 @@
+Newsreader, by Production Type. Copyright 2020 The Newsreader Project Authors
+(https://github.com/productiontype/Newsreader).
+
+These two files are the Latin subset of Newsreader as served by Google Fonts:
+newsreader-display.woff2 is the 72 pt optical size, regular weight;
+newsreader-text.woff2 is the 20 pt optical size, weights 200 to 800.
+
+Licensed under the SIL Open Font License, Version 1.1:
+https://openfontlicense.org

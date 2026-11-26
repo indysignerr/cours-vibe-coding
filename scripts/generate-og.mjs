@@ -1,50 +1,47 @@
 // Une image de partage par page, et non une seule pour tout le site.
 // Un lien vers /team/ partagé sur LinkedIn doit montrer l'équipe, pas la
-// page d'accueil. Relancer après un changement d'accroche :
+// page d'accueil. Relancer après un changement d'accroche ou de logo :
 //   node scripts/generate-og.mjs
 // La correspondance page → image est dans src/lib/metadata.ts.
+//
+// La carte reprend la mise en page du site : le logo sur marine, un filet,
+// un titre en serif. Le rendu passe par les polices du système (Georgia) :
+// les polices du site ne sont pas installées sur la machine qui construit.
 import { writeFile, mkdir } from "node:fs/promises";
 import sharp from "sharp";
 import { logoShapes, LOGO, NAVY, BEIGE, LIGHT_BEIGE, IVORY } from "./brand.mjs";
 
+const SERIF = "Georgia, 'Times New Roman', serif";
 const SANS = "'Helvetica Neue', Helvetica, Arial, sans-serif";
-const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
 
 /** Les pages qui méritent leur propre carte, avec leur accroche. */
 const PAGES = [
-  { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["Albert School's student lab", "for AI and code."], foot: "WORKSHOPS · BUILD LAB · TOURNAMENTS" },
+  { slug: "home", kicker: "ALBERT SCHOOL MILANO", lines: ["The student association", "for AI and software."], foot: "LEARN · BUILD · COMPETE · CONNECT" },
+  { slug: "about", kicker: "ABOUT", lines: ["We bridge academic theory", "and industry practice."], foot: "LAB OF INTELLIGENT, GENERATIVE, HANDS-ON TECHNOLOGY" },
   { slug: "events", kicker: "EVENTS · NOVEMBER TO MAY", lines: ["Something on at least", "every two weeks."], foot: "FREE · BEGINNERS WELCOME" },
-  { slug: "team", kicker: "WHO WE ARE", lines: ["A club", "that builds."], foot: "RECOGNISED BY ALBERT SCHOOL" },
-  { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "BEGINNERS WELCOME" },
+  { slug: "team", kicker: "TEAM", lines: ["A club", "that builds."], foot: "STUDENT-RUN · ALBERT SCHOOL MILANO" },
+  { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "FREE · BEGINNERS WELCOME" },
+  { slug: "faq", kicker: "FAQ", lines: ["Frequently asked", "questions."], foot: "WHO CAN COME · WHAT IT COSTS · HOW TO JOIN" },
 ];
 
-// Le logo fait 112 px de haut sur la carte : l'ampoule se lit, le nom aussi.
-const LOGO_SCALE = (112 / LOGO.height).toFixed(4);
+// Le logo fait 104 px de haut sur la carte : l'ampoule se lit, le nom aussi.
+const LOGO_SCALE = (104 / LOGO.height).toFixed(4);
 
 const card = ({ kicker, lines, foot }) => `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="${NAVY}"/>
-  <!-- La même lueur haute que sur le site -->
-  <defs>
-    <radialGradient id="glow" cx="50%" cy="0%" r="70%">
-      <stop offset="0%" stop-color="${BEIGE}" stop-opacity="0.16"/>
-      <stop offset="100%" stop-color="${BEIGE}" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#glow)"/>
-  <rect x="0" y="0" width="1200" height="6" fill="${BEIGE}"/>
-
   <!-- Le logo entier, à gauche ; la rubrique, à droite sur la même ligne. -->
-  <g transform="translate(72 44) scale(${LOGO_SCALE})" fill="none">
+  <g transform="translate(72 48) scale(${LOGO_SCALE})" fill="none">
     ${logoShapes({ outline: IVORY, glyph: LIGHT_BEIGE, letters: IVORY })}
   </g>
-  <text x="1124" y="108" text-anchor="end" font-family="${MONO}" font-size="17" letter-spacing="2.5" fill="${BEIGE}">${kicker}</text>
+  <text x="1128" y="108" text-anchor="end" font-family="${SANS}" font-weight="700" font-size="17" letter-spacing="3" fill="${BEIGE}">${kicker}</text>
+  <rect x="72" y="188" width="1056" height="2" fill="${IVORY}"/>
 
-  <text x="76" y="352" font-family="${SANS}" font-weight="600" font-size="74" letter-spacing="-3" fill="${IVORY}">${lines[0]}</text>
-  <text x="76" y="440" font-family="${SANS}" font-weight="600" font-size="74" letter-spacing="-3" fill="${IVORY}">${lines[1]}</text>
+  <text x="72" y="340" font-family="${SERIF}" font-size="82" letter-spacing="-2" fill="${IVORY}">${lines[0]}</text>
+  <text x="72" y="434" font-family="${SERIF}" font-size="82" letter-spacing="-2" fill="${IVORY}">${lines[1]}</text>
 
-  <rect x="76" y="516" width="1048" height="1" fill="${IVORY}" opacity="0.18"/>
-  <text x="76" y="566" font-family="${MONO}" font-size="19" letter-spacing="2.5" fill="${BEIGE}">${foot}</text>
+  <rect x="72" y="520" width="1056" height="1" fill="${IVORY}" opacity="0.3"/>
+  <text x="72" y="566" font-family="${SANS}" font-weight="700" font-size="17" letter-spacing="3" fill="${BEIGE}">${foot}</text>
 </svg>`;
 
 await mkdir("public/og", { recursive: true });

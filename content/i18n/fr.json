@@ -1,8 +1,12 @@
 {
   "meta": {
     "home": {
-      "title": "Albert LIGHT — Le labo d'IA et de code d'Albert School",
-      "description": "Le labo étudiant d'IA et de code d'Albert School, à Milan. Workshops, crash courses, Build Lab et tournois de vibe coding, toutes les deux semaines. Gratuit."
+      "title": "Albert LIGHT | L'association étudiante d'IA et de code d'Albert School",
+      "description": "L'association étudiante d'IA et de développement logiciel d'Albert School Milano. Workshops, Build Lab et tournois de vibe coding, toutes les deux semaines."
+    },
+    "about": {
+      "title": "À propos",
+      "description": "Ce qu'est Albert LIGHT, sa mission et ses quatre piliers : Learn, Build, Compete, Connect. Une association étudiante d'Albert School Milano."
     },
     "programme": {
       "title": "Le programme 2026–2027",
@@ -16,6 +20,10 @@
       "title": "Nous rejoindre",
       "description": "Pour les étudiants d'Albert School Milano : comment venir à un événement, et comment devenir membre d'Albert LIGHT."
     },
+    "faq": {
+      "title": "Questions fréquentes",
+      "description": "Qui peut venir, combien ça coûte, comment devenir membre et quoi préparer : les réponses pratiques sur Albert LIGHT, à Albert School Milano."
+    },
     "eventTail": {
       "open": "Ouvert à tous, gratuit, Albert School Milano.",
       "members": "Membres, gratuit, Albert School Milano."
@@ -24,28 +32,26 @@
   "nav": {
     "main": "Navigation principale",
     "home": "Accueil",
-    "programme": "Programme",
+    "about": "À propos",
+    "programme": "Événements",
     "team": "Équipe",
+    "faq": "FAQ",
     "join": "Rejoindre",
     "menu": "Menu",
     "skip": "Aller au contenu",
     "language": "Langue",
-    "cta": "Voir le programme"
-  },
-  "sound": {
-    "label": "Son d'allumage",
-    "on": "Son activé",
-    "off": "Son coupé"
+    "cta": "Rejoindre"
   },
   "hero": {
-    "eyebrow": "Géré par des étudiants · Albert School Milano",
-    "tagline": "Le tremplin où les étudiants d'Albert construisent des projets IA dignes d'un portfolio, maîtrisent les outils de développement modernes et rencontrent de vrais professionnels, ensemble.",
+    "eyebrow": "Association étudiante · Albert School Milano",
+    "title": "L'association étudiante d'IA et de développement logiciel d'Albert School.",
+    "lede": "Le tremplin où les étudiants d'Albert construisent des projets IA dignes d'un portfolio, maîtrisent les outils de développement modernes et rencontrent de vrais professionnels, ensemble.",
+    "next": "Prochain événement",
+    "figure": "Fig. 1. Le labo, une pièce par pilier.",
+    "figureAlt": "Une maquette du labo vue de haut : quatre pièces autour d'une lampe.",
+    "stands": "LIGHT veut dire",
     "ctaPrimary": "Voir le programme",
     "ctaSecondary": "Comment rejoindre",
-    "scroll": "Fais défiler. Le filament a une lettre à écrire.",
-    "bulbAlt": "Une ampoule dont le filament dessine la lettre L",
-    "bulbButton": "Allumer la lumière",
-    "spelled": "L, comme Lab.",
     "words": [
       "Lab",
       "Intelligent",
@@ -54,21 +60,31 @@
       "Technology"
     ]
   },
-  "manifesto": {
-    "eyebrow": "Manifeste",
-    "lines": [
-      "Un club qui construit.",
-      "Débutants bienvenus. Gratuit.",
-      "Les événements ouverts sont pour tous les étudiants d'Albert School — pas besoin d'être membre.",
-      "Les tournois et le Build Lab sont réservés aux membres.",
-      "Le devenir tient en une case à cocher."
-    ],
-    "note": "En anglais d'abord, avec l'italien, le français et l'espagnol."
+  "facts": {
+    "label": "L'association en quatre chiffres",
+    "dates": "dates au calendrier 2026–2027",
+    "pillars": "piliers : Learn, Build, Compete, Connect",
+    "board": "étudiants au bureau",
+    "free": "Chaque événement est gratuit, l'adhésion aussi",
+    "freeFigure": "0 €"
+  },
+  "mission": {
+    "eyebrow": "Notre mission",
+    "title": "Nous relions la théorie académique et la pratique de l'industrie.",
+    "p1": "Albert LIGHT (Lab of Intelligent, Generative, Hands-on Technology) est l'association étudiante d'IA et de développement logiciel d'Albert School.",
+    "p2": "Nous sommes un tremplin collaboratif pour les étudiants qui veulent aller plus loin que la salle de cours : les membres construisent des projets IA dignes d'un portfolio, maîtrisent les outils de développement utilisés dans l'industrie et travaillent aux côtés de pairs expérimentés et de vrais professionnels.",
+    "p3": "Les débutants sont les bienvenus ; les développeurs expérimentés y trouvent des défis à leur mesure.",
+    "quote": "Un club qui construit.",
+    "more": "En savoir plus sur l'association"
   },
   "pillars": {
     "eyebrow": "Ce qu'on fait",
     "title": "Quatre piliers. Un seul labo.",
-    "formats": "Formats"
+    "formats": "Formats",
+    "lede": "Une pièce du labo par pilier.",
+    "roomAlt": "La pièce {title} du labo, en maquette 3D",
+    "figure": "Fig. 2. Pièce {n} sur 4 : {title}.",
+    "ledeMotion": "Fais défiler, la maquette tourne."
   },
   "timeline": {
     "eyebrow": "Calendrier 2026–2027",
@@ -86,7 +102,7 @@
     "buildLabThen": "Puis un mardi sur deux :",
     "full": "Le programme complet",
     "shown": "{n} dates affichées",
-    "details": "Détails"
+    "noneSoon": "Aucune date annoncée pour l'instant. Les prochaines s'afficheront ici."
   },
   "formats": {
     "workshop": "Workshop",
@@ -98,17 +114,6 @@
   "audience": {
     "open": "Ouvert à tous",
     "members": "Membres"
-  },
-  "egg": {
-    "eyebrow": "Une dernière chose",
-    "title": "Il y a un interrupteur quelque part.",
-    "body": "Clique sur l'ampoule en haut de la page, ou sur le bouton ici, et regarde à quoi ressemble le labo une fois la lumière allumée.",
-    "on": "Allumer la lumière",
-    "off": "Éteindre",
-    "messageTitle": "Tu as trouvé l'interrupteur.",
-    "message": "Texte provisoire — le bureau est encore en train d'écrire son message.",
-    "signature": "Le bureau",
-    "close": "Fermer"
   },
   "join": {
     "eyebrow": "Rejoindre",
@@ -123,7 +128,6 @@
     "beforeTitle": "Avant de venir",
     "beforeBody": "Vingt minutes chez toi, pour que la salle serve à construire.",
     "beforeNote": "En anglais",
-    "nextTitle": "Le prochain",
     "signup": "S'inscrire",
     "more": "Comment ça marche"
   },
@@ -132,13 +136,41 @@
     "title": "Un bureau de {n} étudiants.",
     "lede": "Ils animent les sessions, réservent les salles et font venir les partenaires.",
     "founders": "Fondée par {names}.",
-    "more": "Rencontrer l'équipe"
+    "more": "Rencontrer l'équipe",
+    "board": "Le bureau"
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions fréquentes",
+    "lede": "Les réponses pratiques, avant ton premier événement.",
+    "all": "Toutes les questions et réponses",
+    "stillTitle": "Encore une question ?",
+    "stillBody": "Écris-nous un message sur LinkedIn."
+  },
+  "about": {
+    "eyebrow": "À propos",
+    "howEyebrow": "Comment ça marche",
+    "openLabel": "Événements ouverts",
+    "openText": "Les workshops, les crash courses et les grands événements ouverts sont pour tous les étudiants d'Albert School, sans être membre.",
+    "membersText": "Les tournois de vibe coding et le Build Lab sont réservés aux membres. Le devenir tient en une case à cocher.",
+    "rhythmLabel": "Rythme",
+    "rhythmText": "Quelque chose au moins toutes les deux semaines, de novembre à mai.",
+    "priceText": "Gratuit, pour chaque événement comme pour l'adhésion.",
+    "runLabel": "Qui s'en occupe",
+    "runText": "Un bureau de {n} étudiants d'Albert School Milano.",
+    "pillarsTitle": "Les quatre piliers, format par format.",
+    "colFormat": "Format",
+    "colWhat": "Ce que c'est",
+    "colLength": "Durée"
+  },
+  "cta": {
+    "title": "Débutants bienvenus. Gratuit.",
+    "body": "Les événements ouverts sont pour tous les étudiants d'Albert School, sans être membre."
   },
   "footer": {
     "about": "Association étudiante d'Albert School Milano. Événements gratuits, débutants bienvenus.",
-    "emailSoon": "bientôt active",
     "beforeYouCome": "Avant de venir",
-    "legal": "Mentions légales",
+    "legal": "Mentions légales et conditions",
     "privacy": "Confidentialité",
     "linkedin": "LinkedIn",
     "explore": "Explorer",

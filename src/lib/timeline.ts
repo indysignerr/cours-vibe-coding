@@ -12,7 +12,7 @@ import { eventHref, fill, t, type Locale } from "@/lib/i18n";
 /**
  * Le calendrier, préparé pour l'affichage.
  *
- * La frise est un composant client (elle filtre, et elle recalcule
+ * La liste est un composant client (elle filtre, et elle recalcule
  * « passé » avec la date du navigateur). On lui passe donc des chaînes
  * déjà traduites et déjà formatées : ni dictionnaire ni Intl ne partent
  * dans le JavaScript de la page.
@@ -50,6 +50,10 @@ export type TimelineLabels = {
   next: string;
   shown: string;
   none: string;
+  /** Sur l'accueil, quand plus aucune date n'est à venir. */
+  noneSoon: string;
+  upcoming: string;
+  pastTitle: string;
   formatLabel: string;
   formatAll: string;
   formats: { key: FormatKey; label: string }[];
@@ -112,6 +116,9 @@ export function timelineLabels(lang: Locale): TimelineLabels {
     next: d.timeline.next,
     shown: d.timeline.shown,
     none: d.programme.none,
+    noneSoon: d.timeline.noneSoon,
+    upcoming: d.programme.upcoming,
+    pastTitle: d.programme.pastTitle,
     formatLabel: d.programme.formatLabel,
     formatAll: d.programme.formatAll,
     formats: order.map((key) => ({ key, label: d.formats[key] })),

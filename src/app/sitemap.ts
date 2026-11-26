@@ -17,8 +17,10 @@ import { SITE } from "@/lib/site";
 const PAGES: { page: RouteKey; priority: number; weekly?: boolean }[] = [
   { page: "home", priority: 1, weekly: true },
   { page: "programme", priority: 0.9, weekly: true },
+  { page: "about", priority: 0.8 },
   { page: "join", priority: 0.7 },
   { page: "team", priority: 0.7 },
+  { page: "faq", priority: 0.7 },
 ];
 
 const abs = (path: string) => `${SITE.url}${path}`;

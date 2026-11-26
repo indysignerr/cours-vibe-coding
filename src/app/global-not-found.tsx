@@ -1,33 +1,34 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { body, mono } from "@/lib/fonts";
+import { body, display, mono, serif } from "@/lib/fonts";
 import { href } from "@/lib/i18n";
 import "./globals.css";
 
 /**
  * La page 404, pour tout le site.
  *
- * Il y a trois layouts racine (un par langue) : aucun n'est « le » layout
- * d'où composer une 404 commune. Next la rend donc à part, sans layout —
+ * Il y a quatre layouts racine (un par langue) : aucun n'est « le » layout
+ * d'où composer une 404 commune. Next la rend donc à part, sans layout,
  * d'où le <html> et les imports de style ici.
  */
 export const metadata: Metadata = {
-  title: "Nothing here — Albert LIGHT",
+  title: "Nothing here | Albert LIGHT",
   description: "This page does not exist, or it moved.",
   robots: { index: false, follow: true },
 };
 
 const ELSEWHERE: [string, string][] = [
   [href("home", "en"), "Home"],
+  [href("about", "en"), "About the association"],
   [href("programme", "en"), "The programme"],
   [href("join", "en"), "How to join"],
-  [href("team", "en"), "The team"],
+  [href("faq", "en"), "Frequently asked questions"],
 ];
 
 export default function GlobalNotFound() {
   return (
-    <html lang="en" className={`${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${display.variable} ${serif.variable} ${body.variable} ${mono.variable}`}>
       <body>
         <SiteHeader lang="en" page={null} />
         <main id="main" className="lost">
@@ -40,7 +41,6 @@ export default function GlobalNotFound() {
                 <li key={to}>
                   <a className="also__link" href={to}>
                     <span>{label}</span>
-                    <span aria-hidden>→</span>
                   </a>
                 </li>
               ))}

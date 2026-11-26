@@ -1,36 +1,57 @@
-import { Bricolage_Grotesque, IBM_Plex_Mono } from "next/font/google";
+import { Albert_Sans, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 /**
- * Une voix de marque, et un registre pour les données.
+ * Deux voix, et un registre pour le code.
  *
- * Le plan annuel demande « two colours, one font ». Inter ne pouvait pas
- * être cette police : le CLAUDE.md du dépôt l'interdit, et le jury
- * Awwwards la cite nommément comme signe de gabarit. Bricolage Grotesque
- * tient les deux bouts — un dessin à contre-formes irrégulières qui a du
- * caractère en très grand, et une graisse variable qui reste lisible à
- * 17 px. Une seule famille, donc, pour les titres comme pour le texte.
+ * Newsreader porte les titres, les chapeaux et les grands chiffres : un
+ * caractère de presse, dessiné pour être lu, qui donne au site le ton d'un
+ * rapport plutôt que celui d'un gabarit. Il existe en plusieurs tailles
+ * optiques ; le site en embarque deux, en fichiers locaux :
  *
- * Le mono n'est pas un second caractère de marque, c'est un registre :
- * il sert aux chiffres, aux prix, aux dates, aux libellés et aux
- * références de loi. Partout où le site cite une donnée plutôt que de
- * parler. Plex Mono a des chiffres de même chasse et un dessin sobre qui
- * ne se bat pas avec Bricolage.
+ *   — `display`, la coupe de 72 points, pour les grands titres. C'est un
+ *     fichier de 22 Ko, et c'est lui que le premier écran attend : la
+ *     famille entière, avec son axe de taille optique, en pesait 129.
+ *   — `serif`, la coupe de 20 points, pour les chapeaux, les intertitres
+ *     et les titres d'événements. Graisses 400 et 500.
+ *
+ * Albert Sans porte le texte courant et l'interface : une grotesque
+ * géométrique, lisible à 17 px, qui s'accorde aux capitales espacées du
+ * logo. Ni Inter, ni Roboto, ni Arial : le CLAUDE.md du dépôt les exclut.
+ *
+ * Plex Mono ne sert qu'aux commandes de la page « Before you come ». Ni
+ * lui ni la coupe de texte ne sont préchargés : ils ne disputent rien au
+ * titre du premier écran.
  */
-export const body = Bricolage_Grotesque({
+export const display = localFont({
+  src: "../fonts/newsreader-display.woff2",
+  weight: "400",
+  style: "normal",
+  variable: "--font-display",
+  display: "swap",
+  adjustFontFallback: "Times New Roman",
+});
+
+export const serif = localFont({
+  src: "../fonts/newsreader-text.woff2",
+  weight: "200 800",
+  style: "normal",
+  variable: "--font-serif",
+  display: "swap",
+  preload: false,
+  adjustFontFallback: "Times New Roman",
+});
+
+export const body = Albert_Sans({
   subsets: ["latin"],
-  axes: ["opsz"],
   variable: "--font-body",
   display: "swap",
 });
 
 export const mono = IBM_Plex_Mono({
   subsets: ["latin"],
-  // Deux graisses, pas trois : chaque fichier de police est sur le chemin
-  // du premier affichage.
   weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
+  preload: false,
 });
-
-// Les titres restent dans la voix de la marque.
-export const display = body;

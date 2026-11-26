@@ -18,5 +18,13 @@
 /brand/*
   Cache-Control: public, max-age=86400
 
+# Les images de la maquette et les images de partage ne changent que si on
+# les refait (scripts/make-lab-images.mjs, scripts/generate-og.mjs).
+/images/*
+  Cache-Control: public, max-age=604800
+
+/og/*
+  Cache-Control: public, max-age=604800
+
 /albert-light.ics
   Cache-Control: public, max-age=3600

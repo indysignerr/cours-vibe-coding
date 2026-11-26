@@ -28,7 +28,7 @@ export function googleCalendarUrl(e: SiteEvent) {
     : `${stamp(e.date, e.start!)}/${stamp(end, e.end!)}`;
 
   const params = new URLSearchParams({
-    text: `${SITE.name} — ${e.title}`,
+    text: `${SITE.name}: ${e.title}`,
     dates,
     ctz: SITE.timezone,
     details: e.summary,

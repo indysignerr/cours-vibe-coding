@@ -22,9 +22,11 @@ import { SITE } from "@/lib/site";
  */
 const OG_IMAGE: Record<RouteKey, string> = {
   home: "/og.png",
+  about: "/og/about.png",
   programme: "/og/events.png",
   team: "/og/team.png",
   join: "/og/join.png",
+  faq: "/og/faq.png",
 };
 
 const og = (lang: Locale, title: string, description: string, url: string, image: string) => ({

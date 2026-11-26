@@ -50,10 +50,11 @@ export const OG_LOCALE: Record<Locale, string> = {
 };
 
 /** Les pages qui existent dans les quatre langues. */
-export type RouteKey = "home" | "programme" | "team" | "join";
+export type RouteKey = "home" | "about" | "programme" | "team" | "join" | "faq";
 
 const PATHS: Record<RouteKey | "event", Record<Locale, string>> = {
   home: { en: "/", it: "/it/", fr: "/fr/", es: "/es/" },
+  about: { en: "/about/", it: "/it/chi-siamo/", fr: "/fr/a-propos/", es: "/es/sobre-nosotros/" },
   programme: {
     en: "/events/",
     it: "/it/programma/",
@@ -63,6 +64,7 @@ const PATHS: Record<RouteKey | "event", Record<Locale, string>> = {
   event: { en: "/events/", it: "/it/eventi/", fr: "/fr/evenements/", es: "/es/eventos/" },
   team: { en: "/team/", it: "/it/team/", fr: "/fr/equipe/", es: "/es/equipo/" },
   join: { en: "/join/", it: "/it/unisciti/", fr: "/fr/rejoindre/", es: "/es/unete/" },
+  faq: { en: "/faq/", it: "/it/faq/", fr: "/fr/faq/", es: "/es/faq/" },
 };
 
 /** Les pages qui n'existent qu'en anglais. */

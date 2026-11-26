@@ -1,4 +1,4 @@
-import { Timeline } from "@/components/home/timeline";
+import { EventList } from "@/components/event-list";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
 import { PageHead } from "@/components/page-head";
@@ -8,8 +8,9 @@ import { t, type Locale } from "@/lib/i18n";
 import { timelineItems, timelineLabels } from "@/lib/timeline";
 
 /**
- * Le programme : toute l'année sur une frise, filtrable par public et
- * par format.
+ * Les événements : toute l'année, ce qui vient puis ce qui est passé,
+ * filtrable par public et par format. Dessous, les séances du Build Lab
+ * et le fichier de calendrier.
  */
 export function ProgrammePage({ lang }: { lang: Locale }) {
   const d = t(lang);
@@ -23,19 +24,19 @@ export function ProgrammePage({ lang }: { lang: Locale }) {
       />
       <PageHead eyebrow={d.programme.eyebrow} title={d.programme.title} lede={d.programme.lede} />
 
-      <section className="calendar calendar--page">
+      <section className="section calendar calendar--page">
         <div className="container">
-          <Timeline
+          <EventList
             items={timelineItems(lang)}
             labels={timelineLabels(lang)}
             buildDay={today()}
-            formatFilter
+            filters
             heading="h2"
           />
         </div>
       </section>
 
-      <section className="extras on-light">
+      <section className="section extras">
         <div className="container extras__in">
           <div data-reveal>
             <p className="eyebrow eyebrow--accent">{d.formats["build-lab"]}</p>
@@ -53,7 +54,7 @@ export function ProgrammePage({ lang }: { lang: Locale }) {
             <p className="eyebrow eyebrow--accent">.ics</p>
             <h2 className="display-2">{d.programme.calendarTitle}</h2>
             <p>{d.programme.calendarBody}</p>
-            <a className="btn btn--primary" href="/albert-light.ics" download data-magnetic>
+            <a className="btn" href="/albert-light.ics" download>
               {d.programme.download}
             </a>
           </div>

@@ -25,7 +25,7 @@ import { getPillars } from "@/lib/pillars";
  * lequel aucune n'est éligible aux résultats enrichis.
  *
  * La page est un billet : la date en très grand, les faits, et
- * l'inscription. La galerie n'apparaît qu'une fois des photos ajoutées
+ * l'inscription, sous des filets. La galerie n'apparaît qu'une fois des photos ajoutées
  * dans content/events.json.
  */
 export function EventPage({ lang, slug }: { lang: Locale; slug: string }) {
@@ -92,7 +92,7 @@ export function EventPage({ lang, slug }: { lang: Locale; slug: string }) {
           </nav>
 
           <header className="event__head">
-            <p className="event__date page-head__in" style={{ "--i": 0 } as React.CSSProperties}>
+            <p className="event__date rise" style={{ "--i": 0 } as React.CSSProperties}>
               <time dateTime={e.date}>
                 <span className={endDay ? "event__day event__day--span" : "event__day"}>
                   {endDay ? `${p.day}–${endDay}` : p.day}
@@ -106,17 +106,17 @@ export function EventPage({ lang, slug }: { lang: Locale; slug: string }) {
               </time>
             </p>
             <div className="event__title">
-              <p className="tl__badges page-head__in" style={{ "--i": 1 } as React.CSSProperties}>
+              <p className="ev__badges rise" style={{ "--i": 1 } as React.CSSProperties}>
                 {done ? <span className="badge badge--past">{d.timeline.past}</span> : null}
                 <span className={`badge badge--${e.audience}`}>{e.audienceLabel}</span>
                 <span className="badge badge--format">
                   {pillar?.title} · {e.format}
                 </span>
               </p>
-              <h1 className="display-1 page-head__in" style={{ "--i": 2 } as React.CSSProperties}>
+              <h1 className="display-1 rise rise--solid" style={{ "--i": 2 } as React.CSSProperties}>
                 {e.title}
               </h1>
-              <p className="lede page-head__in" style={{ "--i": 3 } as React.CSSProperties}>
+              <p className="lede rise" style={{ "--i": 3 } as React.CSSProperties}>
                 {e.summary}
               </p>
             </div>
@@ -185,12 +185,11 @@ export function EventPage({ lang, slug }: { lang: Locale; slug: string }) {
                     <Link className="also__link" href={eventHref(o.slug, lang)}>
                       <time dateTime={o.date}>{shortDate(o.date, lang)}</time>
                       <span>{o.title}</span>
-                      <span aria-hidden>→</span>
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link className="btn btn--ghost" href={href("programme", lang)} data-magnetic>
+              <Link className="btn btn--ghost" href={href("programme", lang)}>
                 {d.event.wholeYear}
               </Link>
             </nav>
