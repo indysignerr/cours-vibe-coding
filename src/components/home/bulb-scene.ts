@@ -9,11 +9,11 @@ import {
   LatheGeometry,
   Matrix4,
   Mesh,
-  MeshBasicMaterial,
+  MeshPhysicalMaterial,
   MeshStandardMaterial,
+  PCFSoftShadowMap,
   PerspectiveCamera,
   PMREMGenerator,
-  PointLight,
   Quaternion,
   Ray,
   Raycaster,
@@ -27,30 +27,32 @@ import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeom
 
 /**
  * L'ampoule du haut de page : des pièces éparses qui volent et
- * s'assemblent, puis l'ampoule éclate et laisse voir ce qu'elle
- * contenait, un « L » allumé.
+ * s'assemblent en une ampoule, qui s'allume. Elle n'éclate que si on le
+ * lui demande.
  *
- * Trois temps.
- *   1. L'assemblage. Des centaines de tuiles marine arrivent de partout
+ *   1. L'assemblage. Des centaines de tuiles laquées arrivent de partout
  *      en tournant et pavent la silhouette du logo : le globe, le col, la
- *      barre et le culot. Au centre, le « L » se monte en même temps,
- *      éteint, puis les tuiles l'enferment.
- *   2. L'éclat. L'ampoule se serre un instant, puis s'ouvre d'un coup :
- *      chaque tuile part vers l'extérieur, celles de devant s'écartent
- *      comme un iris, et le « L » s'allume au milieu.
- *   3. Le repos. Les tuiles flottent autour du « L ». Quand on fait
- *      défiler la page elles s'éloignent encore, et reviennent si on
- *      remonte ; la souris fait tourner l'ensemble de quelques degrés.
+ *      barre et le culot. Le « L » se pose en relief sur la face avant.
+ *   2. L'allumage. Le cœur de l'ampoule s'éclaire : la lumière passe par
+ *      les joints, le « L » et les cinq rayons s'allument.
+ *   3. Ensuite l'ampoule reste entière, et répond à trois gestes :
+ *      — la souris passe sur les tuiles, elles s'écartent et laissent
+ *        voir la lumière dessous, puis reviennent ;
+ *      — on clique ou on touche l'ampoule, toutes les tuiles sautent ;
+ *      — on fait défiler la page, la coque éclate à mesure : les tuiles
+ *        s'envolent et il reste la lumière. On remonte, elle se reforme.
  *
  * La forme est celle du logo, mise en volume : toutes les cotes
  * ci-dessous sont relevées sur `brand-shapes.json`, le rayon du globe
  * ramené à 1.
  *
- * Le dessin coûte trois appels : les tuiles (une seule géométrie, une
- * matrice et une couleur par pièce), le « L », et le noyau sombre qui
- * bouche les joints tant que l'ampoule est fermée. Rien n'est
- * téléchargé : ni modèle, ni image, et le reflet des tuiles vient d'une
- * pièce calculée sur place.
+ * Le dessin coûte trois appels, plus leur ombre : les tuiles (une seule
+ * géométrie, une matrice et une couleur par pièce), le « L » avec ses
+ * rayons, et le cœur lumineux. Rien n'est téléchargé : ni modèle, ni
+ * image, et le reflet des tuiles vient d'une pièce calculée sur place.
+ *
+ * Rien n'est redessiné tant que rien ne bouge : la boucle s'arrête après
+ * l'allumage et ne repart qu'au geste suivant.
  */
 
 // ---- Le logo, en cotes (rayon du globe = 1, centre du globe = origine) ----
@@ -62,51 +64,50 @@ const NECK: [number, number][] = [
   [0.411, -1.321],
 ];
 const LETTER = { x: -0.182, top: 0.316, bottom: -0.593, right: 0.272, width: 0.2 };
-/** Le milieu du « L » : il grandit autour de ce point. */
-const HEART = { x: 0.045, y: -0.14 };
+const RAYS = { from: 1.406, to: 1.773, width: 0.2, angles: [-60, -30, 0, 30, 60] };
 const BAR = { y: -1.639, r: 0.364 };
 const CAP = { y: -1.956, r: 0.318 };
 
 // ---- Les tuiles ----
-const TILE = 0.118; // côté visé d'une tuile : près d'un millier sur l'ampoule
-const JOINT = 0.014;
-const THICK = 0.075;
+const TILE = 0.142; // côté visé d'une tuile : six à sept cents sur l'ampoule
+const JOINT = 0.02;
+/** Épaisseur d'une tuile, en part de son côté. */
+const DEEP = 0.58;
 
 // ---- La souris ----
 /** Jusqu'où une tuile sent le curseur, et de combien elle s'en écarte. */
-const REACH = 0.62;
-const PUSH = 0.5;
+const REACH = 0.6;
+const PUSH = 0.42;
 
 // ---- Le temps, en secondes ----
 const ASSEMBLED = 2.45;
-/** L'ampoule reste entière près d'une seconde, puis éclate. */
-const BURST = 3.3;
-const OPEN = BURST + 1.05;
+const ON = 2.75;
+const END = ON + 1.3;
 
-const NAVY = ["#0e1a2b", "#101f33", "#0b1522", "#14263d", "#0e1a2b"];
-const BASE = "#8a6a3e";
+const NAVY = ["#0e1a2b", "#14263d", "#0a1320", "#0e1a2b", "#1b3350", "#30475f"];
+const BRASS = "#8a6a3e";
 const GOLD = "#b58f52";
-const WARM = "#ffd9a0";
 
+type Kind = "tile" | "letter" | "ray";
 type Piece = {
-  /** La place dans l'ampoule fermée. */
+  kind: Kind;
+  /** La place dans l'ampoule. */
   pos: Vector3;
   quat: Quaternion;
   scale: Vector3;
   /** D'où la pièce arrive. */
   from: Vector3;
   fromQuat: Quaternion;
-  /** Où elle se tient une fois l'ampoule éclatée. */
-  open: Vector3;
-  openQuat: Quaternion;
-  /** Vers où elle s'éloigne encore quand la page défile. */
-  away: Vector3;
+  /** Où elle part quand la coque éclate. */
+  far: Vector3;
+  farQuat: Quaternion;
   normal: Vector3;
   delay: number;
   dur: number;
   swirl: number;
   phase: number;
-  kick: number;
+  /** Les tuiles n'éclatent pas toutes au même moment du défilement. */
+  lag: number;
   color: Color;
 };
 
@@ -126,8 +127,7 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const smooth = (v: number) => v * v * (3 - 2 * v);
 const inOut = (v: number) => (v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2);
 const outCubic = (v: number) => 1 - Math.pow(1 - v, 3);
-/** Part vite, dépasse un peu, revient : le geste d'un éclat. */
-const outBack = (v: number) => 1 + 2.7 * Math.pow(v - 1, 3) + 1.7 * Math.pow(v - 1, 2);
+const outBack = (v: number) => 1 + 2.2 * Math.pow(v - 1, 3) + 1.2 * Math.pow(v - 1, 2);
 /** Une ampoule qu'on allume : elle prend, hésite, puis tient. */
 const flicker = (v: number) => {
   if (v <= 0) return 0;
@@ -136,6 +136,7 @@ const flicker = (v: number) => {
   if (v < 0.4) return 0.25 + ((v - 0.24) / 0.16) * 0.75;
   return 1;
 };
+const nextFrame = () => new Promise<void>((done) => requestAnimationFrame(() => done()));
 
 /** Un point du col, sur sa courbe de Bézier, et sa tangente. */
 function neck(t: number) {
@@ -193,73 +194,73 @@ function onRing(r: number, y: number, nr: number, ny: number, phi: number) {
 function build() {
   const rand = seeded(20261126);
   const tiles: Piece[] = [];
-  const letter: Piece[] = [];
+  const marks: Piece[] = [];
+  const spin = () =>
+    new Quaternion().setFromAxisAngle(
+      new Vector3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(),
+      rand() * Math.PI * 2,
+    );
 
   const piece = (
+    kind: Kind,
     pos: Vector3,
     quat: Quaternion,
     scale: Vector3,
     normal: Vector3,
     color: string,
-    late: number,
-    open: Vector3,
-    openQuat: Quaternion,
+    late = 0,
   ): Piece => {
     // D'où vient la pièce : quelque part dans un grand volume, jamais au centre.
     const from = new Vector3();
     do {
       from.set((rand() - 0.5) * 15, (rand() - 0.5) * 11 - 0.3, rand() * 10 - 5.5);
     } while (from.length() < 2.6);
-    const axis = new Vector3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize();
+    // Où elle part si la coque éclate : droit devant elle, plus ou moins
+    // loin, avec un écart de côté. Une sur cinq file bien plus loin.
+    const reach = 0.9 + rand() * 1.9 + (rand() < 0.2 ? 1.2 + rand() * 1.8 : 0);
+    const far = pos
+      .clone()
+      .addScaledVector(normal, reach)
+      .add(new Vector3((rand() - 0.5) * 1.1, (rand() - 0.5) * 1.1 + 0.25, (rand() - 0.5) * 1.1));
     return {
+      kind,
       pos,
       quat,
       scale,
       from,
-      fromQuat: new Quaternion().setFromAxisAngle(axis, rand() * Math.PI * 2),
-      open,
-      openQuat,
-      away: open.clone().sub(pos).normalize(),
+      fromQuat: spin(),
+      far,
+      farQuat: spin(),
       normal,
       delay: late + rand() * 0.55,
       dur: 1.3 + rand() * 0.5,
       swirl: 1.5 + rand() * 1.3,
       phase: rand() * Math.PI * 2,
-      kick: rand() * 0.14,
+      lag: rand() * 0.32,
       color: new Color(color),
     };
   };
 
-  /** Une tuile de la coque, et la place qu'elle prend quand l'ampoule éclate. */
   const tile = (
     at: { pos: Vector3; quat: Quaternion; normal: Vector3 },
-    scale: Vector3,
+    w: number,
+    h: number,
     color: string,
     late = 0,
-    drop = 0,
   ) => {
-    const { pos, quat, normal } = at;
-    // Elle part droit devant elle. Celles qui font face au visiteur
-    // s'écartent en plus sur les côtés : c'est l'iris qui découvre le « L ».
-    const front = Math.max(0, normal.z);
-    const side = new Vector3(normal.x, normal.y, 0);
-    if (side.lengthSq() < 0.0025) side.set(rand() - 0.5, rand() - 0.5, 0);
-    side.normalize();
-    const open = pos
-      .clone()
-      // Une tuile sur six part nettement plus loin que les autres : c'est
-      // elle qui fait l'éclat.
-      .addScaledVector(normal, 0.22 + rand() * 0.34 + (rand() < 0.17 ? 0.45 + rand() * 0.75 : 0))
-      .addScaledVector(side, front * front * (1.08 + rand() * 0.42))
-      .add(new Vector3((rand() - 0.5) * 0.12, (rand() - 0.5) * 0.12 - drop, front * 0.3));
-    const tilt = new Quaternion().setFromAxisAngle(
-      new Vector3(rand() - 0.5, rand() - 0.5, rand() - 0.5).normalize(),
-      (rand() - 0.5) * 0.9,
+    tiles.push(
+      piece(
+        "tile",
+        at.pos,
+        at.quat,
+        new Vector3(w, h, ((w + h) / 2) * DEEP),
+        at.normal,
+        color,
+        late,
+      ),
     );
-    tiles.push(piece(pos, quat, scale, normal, color, late, open, quat.clone().multiply(tilt)));
   };
-  const navy = () =>
-    NAVY[Math.min(NAVY.length - 1, Math.floor(rand() * rand() * NAVY.length * 1.25))];
+  const navy = () => NAVY[Math.floor(rand() * rand() * NAVY.length)];
 
   // Le verre : une tuile au sommet, puis des rangs jusqu'au bas du col.
   const { rings, step } = glassRings();
@@ -269,7 +270,8 @@ function build() {
       quat: new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 2),
       normal: new Vector3(0, 1, 0),
     },
-    new Vector3(TILE - JOINT, TILE - JOINT, THICK),
+    TILE - JOINT,
+    TILE - JOINT,
     navy(),
   );
   rings.forEach((ring, k) => {
@@ -277,11 +279,7 @@ function build() {
     const width = (2 * Math.PI * ring.r) / n - JOINT;
     for (let i = 0; i < n; i++) {
       const phi = ((i + (k % 2) * 0.5) / n) * Math.PI * 2;
-      tile(
-        onRing(ring.r, ring.y, ring.nr, ring.ny, phi),
-        new Vector3(width, step - JOINT, THICK),
-        navy(),
-      );
+      tile(onRing(ring.r, ring.y, ring.nr, ring.ny, phi), width, step - JOINT, navy());
     }
   });
 
@@ -291,10 +289,10 @@ function build() {
     for (let i = 0; i < n; i++) {
       tile(
         onRing(BAR.r, BAR.y, 1, 0, (i / n) * Math.PI * 2),
-        new Vector3((2 * Math.PI * BAR.r) / n - JOINT, 0.2, THICK),
-        BASE,
+        (2 * Math.PI * BAR.r) / n - JOINT,
+        0.19,
+        BRASS,
         0.15,
-        0.16,
       );
     }
   }
@@ -312,10 +310,10 @@ function build() {
           -Math.sin(a),
           ((i + 0.5) / n) * Math.PI * 2,
         ),
-        new Vector3((2 * Math.PI * r) / n - JOINT, 0.19, THICK),
-        BASE,
+        (2 * Math.PI * r) / n - JOINT,
+        0.18,
+        BRASS,
         0.2,
-        0.3,
       );
     }
   }
@@ -325,72 +323,110 @@ function build() {
       quat: new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), Math.PI / 2),
       normal: new Vector3(0, -1, 0),
     },
-    new Vector3(0.2, 0.2, THICK),
-    BASE,
+    0.19,
+    0.19,
+    BRASS,
     0.2,
-    0.3,
   );
 
-  // Le « L », au cœur de l'ampoule : des tronçons bout à bout, face au visiteur.
-  const flat = new Quaternion();
-  const facing = new Vector3(0, 0, 1);
-  const chunk = (x: number, y: number, w: number, h: number) => {
-    const pos = new Vector3(x, y, 0);
-    letter.push(
-      piece(pos, flat.clone(), new Vector3(w, h, 0.2), facing, GOLD, 0, pos.clone(), flat.clone()),
+  // Le « L » : des tronçons posés sur la face avant du globe, en relief.
+  const lift = 1 + (TILE * DEEP) / 2 + 0.045;
+  const letter = (x: number, y: number, dx: number, dy: number, length: number) => {
+    const normal = new Vector3(x, y, Math.sqrt(Math.max(0.04, 1 - x * x - y * y))).normalize();
+    const along = new Vector3(dx, dy, 0)
+      .addScaledVector(normal, -(dx * normal.x + dy * normal.y))
+      .normalize();
+    const across = new Vector3().crossVectors(along, normal);
+    const quat = new Quaternion().setFromRotationMatrix(
+      new Matrix4().makeBasis(across, along, normal),
+    );
+    marks.push(
+      piece(
+        "letter",
+        normal.clone().multiplyScalar(lift),
+        quat,
+        new Vector3(LETTER.width, length, 0.085),
+        normal,
+        GOLD,
+        0.5,
+      ),
     );
   };
   const seg = 0.152;
   const tall = LETTER.top - LETTER.bottom + LETTER.width;
   const rows = Math.round(tall / seg);
   for (let i = 0; i < rows; i++) {
-    chunk(
+    letter(
       LETTER.x,
       LETTER.top + LETTER.width / 2 - ((i + 0.5) / rows) * tall,
-      LETTER.width,
-      tall / rows + 0.004,
+      0,
+      1,
+      tall / rows - 0.008,
     );
   }
   const wide = LETTER.right - LETTER.x;
   const cols = Math.round(wide / seg);
   for (let i = 0; i < cols; i++) {
-    chunk(
+    letter(
       LETTER.x + LETTER.width / 2 + ((i + 0.5) / cols) * wide,
       LETTER.bottom,
-      wide / cols + 0.004,
-      LETTER.width,
+      1,
+      0,
+      wide / cols - 0.008,
     );
   }
-  return { tiles, letter };
+
+  // Les cinq rayons : ils ne volent pas, ils sortent quand la lampe s'allume.
+  RAYS.angles.forEach((deg, i) => {
+    const a = (deg * Math.PI) / 180;
+    const out = new Vector3(Math.sin(a), Math.cos(a), 0);
+    const side = new Vector3(Math.cos(a), -Math.sin(a), 0);
+    const quat = new Quaternion().setFromRotationMatrix(
+      new Matrix4().makeBasis(side, out, new Vector3(0, 0, 1)),
+    );
+    const ray = piece(
+      "ray",
+      out.clone().multiplyScalar((RAYS.from + RAYS.to) / 2),
+      quat,
+      new Vector3(RAYS.width, RAYS.to - RAYS.from + RAYS.width, 0.17),
+      out,
+      GOLD,
+    );
+    ray.from = out.clone().multiplyScalar(RAYS.from - 0.05);
+    ray.delay = ON + 0.15 + Math.abs(i - 2) * 0.07;
+    ray.dur = 0.55;
+    marks.push(ray);
+  });
+  return { tiles, marks };
 }
 
-/** Le noyau : la même silhouette, un peu plus petite, qui bouche les joints. */
+/** Le cœur : la même silhouette, un peu plus petite. C'est lui qui éclaire. */
 function coreGeometry() {
-  const inset = 0.93;
+  const inset = 0.945;
   const pts: Vector2[] = [];
   const end = Math.acos(NECK[0][1]);
-  for (let i = 0; i <= 26; i++) {
-    const a = (i / 26) * end;
+  for (let i = 0; i <= 30; i++) {
+    const a = (i / 30) * end;
     pts.push(new Vector2(Math.max(0.0001, Math.sin(a) * inset), Math.cos(a) * inset));
   }
-  for (let i = 1; i <= 12; i++) {
-    const p = neck(i / 12);
-    pts.push(new Vector2(p.r * inset - 0.02, p.y));
+  for (let i = 1; i <= 14; i++) {
+    const p = neck(i / 14);
+    pts.push(new Vector2(p.r * inset - 0.015, p.y));
   }
   // Sous le verre, le profil passe par l'axe : pas de tige entre les corps.
-  // La barre n'a pas de noyau (on voit l'intérieur de l'anneau), et celui
+  // La barre n'a pas de cœur (on voit l'intérieur de l'anneau), et celui
   // du culot commence plus bas que son bord, comme le fond d'une coupe.
   const axis = 0.0001;
   const hold = (r: number, y: number) => pts.push(new Vector2(r, y));
-  const bowl = CAP.r - 0.045;
+  const bowl = CAP.r - 0.05;
   const sunk = 0.42;
-  hold(axis, -1.33);
+  hold(axis, -1.335);
   hold(axis, CAP.y - bowl * Math.sin(sunk));
   for (let i = 0; i <= 8; i++) {
     const a = sunk + (i / 8) * (Math.PI / 2 - sunk);
     hold(Math.max(0.0001, bowl * Math.cos(a)), CAP.y - bowl * Math.sin(a));
   }
-  return new LatheGeometry(pts, 40);
+  return new LatheGeometry(pts, 56);
 }
 
 export type BulbHandle = {
@@ -398,97 +434,128 @@ export type BulbHandle = {
   play: () => void;
   pause: () => void;
   resize: () => void;
-  /** La souris, de -1 à 1 sur chaque axe. */
+  /** La souris, de -1 à 1 sur chaque axe : l'ampoule tourne un peu vers elle. */
   pointer: (x: number, y: number) => void;
   /** Le curseur, en pixels de la fenêtre : les tuiles s'en écartent. `null` quand il s'en va. */
   hover: (at: { x: number; y: number } | null) => void;
-  /** Le défilement, de 0 (haut de page) à 1 : les tuiles s'éloignent. */
+  /** Un clic ou un toucher sur l'ampoule : toutes les tuiles sautent. */
+  pop: () => void;
+  /** Le défilement, de 0 (haut de page) à 1 : la coque éclate à mesure. */
   spread: (amount: number) => void;
   /** Montre l'ampoule à un instant donné, en secondes. Pour les réglages. */
-  seek: (t: number) => void;
+  seek: (t: number, spread?: number) => void;
   dispose: () => void;
 };
 
-export function createBulb(
+export async function createBulb(
   canvas: HTMLCanvasElement,
   stage: HTMLElement,
-  { fine, onLost, onBurst }: { fine: boolean; onLost: () => void; onBurst: () => void },
-): BulbHandle {
+  { fine, onLost, onLit }: { fine: boolean; onLost: () => void; onLit: () => void },
+): Promise<BulbHandle> {
+  // Sans carte graphique, la scène se dessinerait au processeur, image par
+  // image : on préfère échouer ici, et laisser le logo dessiné.
   const renderer = new WebGLRenderer({
     canvas,
     antialias: true,
     alpha: true,
     powerPreference: "high-performance",
+    failIfMajorPerformanceCaveat: true,
   });
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.12;
+  renderer.toneMappingExposure = 1.08;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = PCFSoftShadowMap;
 
   const scene = new Scene();
+  const camera = new PerspectiveCamera(28, 1, 0.1, 80);
+  await nextFrame();
+
+  // Le reflet des tuiles : une pièce aux murs clairs, calculée ici.
   const pmrem = new PMREMGenerator(renderer);
   const room = new RoomEnvironment();
-  const env = pmrem.fromScene(room, 0.04);
+  const env = pmrem.fromScene(room, 0.03);
   scene.environment = env.texture;
-  scene.environmentIntensity = 0.9;
+  scene.environmentIntensity = 1.15;
+  await nextFrame();
 
-  const camera = new PerspectiveCamera(28, 1, 0.1, 80);
-  scene.add(new HemisphereLight("#eef1f6", "#0e1a2b", 0.7));
-  const key = new DirectionalLight("#fff6e8", 1.7);
-  key.position.set(-4.5, 6, 7);
+  scene.add(new HemisphereLight("#f2f4f8", "#0e1a2b", 0.55));
+  const key = new DirectionalLight("#fff4e2", 2.3);
+  key.position.set(-4.2, 6.5, 7.5);
+  key.castShadow = true;
+  key.shadow.mapSize.set(fine ? 2048 : 1024, fine ? 2048 : 1024);
+  key.shadow.camera.left = -3.4;
+  key.shadow.camera.right = 3.4;
+  key.shadow.camera.top = 3.4;
+  key.shadow.camera.bottom = -3.4;
+  key.shadow.camera.near = 2;
+  key.shadow.camera.far = 22;
+  key.shadow.bias = -0.0006;
+  key.shadow.normalBias = 0.018;
+  key.shadow.radius = 5;
   scene.add(key);
-  const rim = new DirectionalLight("#e6ebf5", 0.7);
+  const rim = new DirectionalLight("#dfe6f3", 0.8);
   rim.position.set(6, 2, -6);
   scene.add(rim);
 
-  const { tiles, letter } = build();
+  const { tiles, marks } = build();
 
-  const box = new RoundedBoxGeometry(1, 1, 1, 2, 0.16);
-  const tileMaterial = new MeshStandardMaterial({
+  // Une tuile : un pavé aux arêtes rondes, laqué. Le vernis fait le reflet net.
+  const box = new RoundedBoxGeometry(1, 1, 1, 4, 0.2);
+  const tileMaterial = new MeshPhysicalMaterial({
     color: "#ffffff",
-    roughness: 0.28,
-    metalness: 0.32,
+    roughness: 0.34,
+    metalness: 0.12,
+    clearcoat: 1,
+    clearcoatRoughness: 0.09,
   });
-  const letterMaterial = new MeshStandardMaterial({
+  const markMaterial = new MeshPhysicalMaterial({
     color: "#ffffff",
-    roughness: 0.4,
-    metalness: 0.05,
+    roughness: 0.3,
+    metalness: 0.35,
+    clearcoat: 0.6,
+    clearcoatRoughness: 0.2,
     emissive: new Color("#c98f3a"),
     emissiveIntensity: 0,
   });
   const tileMesh = new InstancedMesh(box, tileMaterial, tiles.length);
-  const letterMesh = new InstancedMesh(box, letterMaterial, letter.length);
-  tileMesh.instanceMatrix.setUsage(DynamicDrawUsage);
-  letterMesh.instanceMatrix.setUsage(DynamicDrawUsage);
-  tileMesh.frustumCulled = false;
-  letterMesh.frustumCulled = false;
+  const markMesh = new InstancedMesh(box, markMaterial, marks.length);
+  for (const mesh of [tileMesh, markMesh]) {
+    mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+    mesh.frustumCulled = false;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+  }
   const tint = new Color();
   tiles.forEach((it, i) => tileMesh.setColorAt(i, it.color));
-  letter.forEach((it, i) => letterMesh.setColorAt(i, tint.copy(it.color).multiplyScalar(0.55)));
+  marks.forEach((it, i) => markMesh.setColorAt(i, tint.copy(it.color).multiplyScalar(0.6)));
 
+  // Le cœur : sombre tant que la lampe est éteinte, lumineux ensuite.
   const coreGeo = coreGeometry();
-  const coreMaterial = new MeshBasicMaterial({ color: "#070d17" });
+  const dark = new Color("#070d17");
+  const glow = new Color("#ffcf87");
+  const coreMaterial = new MeshStandardMaterial({
+    color: "#070d17",
+    roughness: 0.55,
+    metalness: 0,
+    emissive: glow.clone(),
+    emissiveIntensity: 0,
+  });
   const core = new Mesh(coreGeo, coreMaterial);
-
-  // La lumière du « L » : elle éclaire de l'intérieur les tuiles qui l'entourent.
-  const lamp = new PointLight(WARM, 0, 5.5, 1.5);
-  lamp.position.set(0.02, -0.14, -0.22);
+  core.receiveShadow = true;
 
   const group = new Group();
-  group.add(core, tileMesh, letterMesh, lamp);
-  group.position.y = 0.52;
+  group.add(core, tileMesh, markMesh);
+  group.position.y = 0.28;
   scene.add(group);
+  await nextFrame();
 
-  // La souris : son rayon, ramené dans le repère de l'ampoule, et l'écart
-  // que chaque tuile a pris pour s'en éloigner (il revient à zéro tout seul).
   const raycaster = new Raycaster();
   const cursor = new Vector2();
   const beam = new Ray();
   const inverse = new Matrix4();
   const gap = new Float32Array(tiles.length * 3);
   const d = new Vector3();
-  let hovering = false;
-  let follow = 1;
-
   const m = new Matrix4();
   const p = new Vector3();
   const q = new Quaternion();
@@ -499,17 +566,30 @@ export function createBulb(
   let frame = 0;
   let playing = false;
   let dead = false;
-  let burst = false;
+  let lit = false;
+  let hovering = false;
+  let follow = 1;
+  /** Le saut des tuiles au clic : il monte d'un coup et retombe. */
+  let hop = 0;
+  let hopSpeed = 0;
+  let restless = 0;
   const aim = { x: 0, y: 0, spread: 0 };
   const now = { x: 0, y: 0, spread: 0 };
 
-  /** Où est une pièce à l'instant t : en vol, en place, ou éclatée. */
   const place = (mesh: InstancedMesh, list: Piece[], t: number, shell: boolean) => {
-    // Juste avant d'éclater, l'ampoule se serre.
-    const squeeze = 1 - 0.04 * smooth(clamp01((t - BURST + 0.4) / 0.4));
+    let moved = 0;
     for (let i = 0; i < list.length; i++) {
       const it = list[i];
       const k = clamp01((t - it.delay) / it.dur);
+      if (it.kind === "ray") {
+        // Le rayon pousse depuis l'ampoule.
+        const g = k <= 0 ? 0 : outBack(k);
+        p.copy(it.from).lerp(it.pos, Math.min(1, g));
+        s.set(it.scale.x * Math.min(1, k * 3), it.scale.y * g, it.scale.z * Math.min(1, k * 3));
+        m.compose(p, it.quat, s);
+        mesh.setMatrixAt(i, m);
+        continue;
+      }
       const e = inOut(k);
       p.copy(it.from).lerp(it.pos, e);
       // La pièce tourne autour de l'axe en venant, et flotte tant qu'elle attend.
@@ -522,18 +602,15 @@ export function createBulb(
       q.copy(it.fromQuat).slerp(it.quat, outCubic(k));
       s.copy(it.scale).multiplyScalar(smooth(clamp01(t / 0.45 - it.phase / 20)));
 
-      if (shell && t > ASSEMBLED) {
-        p.multiplyScalar(squeeze);
-        const b = clamp01((t - BURST - it.kick) / 0.95);
-        if (b > 0) {
-          const out = outBack(b);
-          p.lerp(it.open, out);
-          q.slerp(it.openQuat, Math.min(1, out));
-          // Au repos elle flotte un peu ; au défilement elle s'éloigne.
-          const settled = smooth(b);
-          p.addScaledVector(it.normal, Math.sin(t * 0.85 + it.phase) * 0.04 * settled);
-          p.addScaledVector(it.away, now.spread * (2.4 + it.kick * 9));
+      if (shell && k >= 1) {
+        // Le défilement : la coque éclate, tuile après tuile.
+        const out = smooth(clamp01((now.spread - it.lag * 0.5) / (1 - it.lag * 0.5)));
+        if (out > 0) {
+          p.lerp(it.far, out * out * 0.25 + out * 0.75);
+          q.slerp(it.farQuat, out);
         }
+        // Le clic : un saut, droit devant soi.
+        if (hop > 0.0005) p.addScaledVector(it.normal, hop * (0.22 + (it.phase % 1) * 0.2));
         // Le curseur passe : la tuile s'écarte de son rayon, puis revient.
         let gx = 0;
         let gy = 0;
@@ -541,13 +618,13 @@ export function createBulb(
         if (hovering) {
           d.copy(p).sub(beam.origin);
           d.addScaledVector(beam.direction, -d.dot(beam.direction));
-          const far = d.length();
-          if (far < REACH) {
-            const near = 1 - far / REACH;
-            const force = (near * near * PUSH) / Math.max(0.05, far);
-            gx = d.x * force;
-            gy = d.y * force;
-            gz = d.z * force + near * 0.12;
+          const away = d.length();
+          if (away < REACH) {
+            const near = 1 - away / REACH;
+            const force = (near * near * PUSH) / Math.max(0.05, away);
+            gx = d.x * force + it.normal.x * near * 0.1;
+            gy = d.y * force + it.normal.y * near * 0.1;
+            gz = d.z * force + it.normal.z * near * 0.1;
           }
         }
         const j = i * 3;
@@ -557,36 +634,31 @@ export function createBulb(
         p.x += gap[j];
         p.y += gap[j + 1];
         p.z += gap[j + 2];
-      } else if (!shell && t > BURST) {
-        // Le « L » grandit en s'allumant : c'est lui qu'on est venu voir.
-        const grow = 1 + 0.36 * outBack(clamp01((t - BURST) / 0.8));
-        p.set(HEART.x + (p.x - HEART.x) * grow, HEART.y + (p.y - HEART.y) * grow, p.z);
-        s.multiplyScalar(grow);
+        moved += Math.abs(gap[j]) + Math.abs(gap[j + 1]) + Math.abs(gap[j + 2]);
       }
       m.compose(p, q, s);
       mesh.setMatrixAt(i, m);
     }
     mesh.instanceMatrix.needsUpdate = true;
+    return moved;
   };
 
   const draw = (t: number) => {
-    place(tileMesh, tiles, t, true);
-    place(letterMesh, letter, t, false);
+    restless = place(tileMesh, tiles, t, true);
+    place(markMesh, marks, t, false);
 
-    // Le « L » s'allume à l'instant où l'ampoule s'ouvre.
-    const lit = flicker(clamp01((t - BURST) / 0.8));
-    letterMaterial.emissiveIntensity = lit * 0.85;
-    lamp.intensity = lit * 8;
-    for (let i = 0; i < letter.length; i++) {
-      letterMesh.setColorAt(i, tint.copy(letter[i].color).multiplyScalar(0.55 + lit * 0.45));
+    // L'allumage : le cœur s'éclaire, le « L » et les rayons avec lui.
+    const power = flicker(clamp01((t - ON) / 0.85));
+    coreMaterial.color.copy(dark).lerp(glow, power * 0.9);
+    coreMaterial.emissiveIntensity = power * 1.5;
+    markMaterial.emissiveIntensity = power * 0.42;
+    for (let i = 0; i < marks.length; i++) {
+      markMesh.setColorAt(i, tint.copy(marks[i].color).multiplyScalar(0.6 + power * 0.4));
     }
-    if (letterMesh.instanceColor) letterMesh.instanceColor.needsUpdate = true;
+    if (markMesh.instanceColor) markMesh.instanceColor.needsUpdate = true;
 
-    // Le noyau grossit à mesure que les tuiles arrivent, et s'efface quand elles partent.
-    const grown = smooth(clamp01((t - 0.9) / (ASSEMBLED - 0.9)));
-    const gone = clamp01((t - BURST) / 0.12);
-    core.visible = gone < 1;
-    core.scale.setScalar(Math.max(0.0001, grown * (1 - gone)));
+    // Le cœur grossit à mesure que les tuiles arrivent : jamais de forme seule.
+    core.scale.setScalar(Math.max(0.0001, smooth(clamp01((t - 0.9) / (ASSEMBLED - 0.9)))));
 
     const arrive = outCubic(clamp01(t / (ASSEMBLED + 0.2)));
     group.rotation.y = (1 - arrive) * -0.9 + now.x;
@@ -599,23 +671,40 @@ export function createBulb(
     if (dead) return;
     const dt = Math.min(0.05, last ? (stamp - last) / 1000 : 0);
     last = stamp;
-    time += dt;
-    if (!burst && time >= BURST) {
-      burst = true;
-      onBurst();
+    if (time < END) time = Math.min(END, time + dt);
+    if (!lit && time >= ON) {
+      lit = true;
+      onLit();
     }
     const ease = 1 - Math.exp(-dt * 5);
     now.x += (aim.x - now.x) * ease;
     now.y += (aim.y - now.y) * ease;
-    now.spread += (aim.spread - now.spread) * (1 - Math.exp(-dt * 7));
+    now.spread += (aim.spread - now.spread) * (1 - Math.exp(-dt * 8));
     follow = 1 - Math.exp(-dt * 9);
+    // Le saut : un ressort amorti.
+    hopSpeed += (-hop * 120 - hopSpeed * 11) * dt;
+    hop = Math.max(0, hop + hopSpeed * dt);
     if (hovering) {
       raycaster.setFromCamera(cursor, camera);
       inverse.copy(group.matrixWorld).invert();
       beam.copy(raycaster.ray).applyMatrix4(inverse);
     }
     draw(time);
-    if (playing) frame = requestAnimationFrame(tick);
+
+    // Tant que quelque chose bouge encore, on redessine ; sinon on s'arrête.
+    const busy =
+      time < END ||
+      hovering ||
+      restless > 0.002 ||
+      hop > 0.0005 ||
+      Math.abs(hopSpeed) > 0.002 ||
+      Math.abs(aim.x - now.x) + Math.abs(aim.y - now.y) > 0.0005 ||
+      Math.abs(aim.spread - now.spread) > 0.0005;
+    if (playing && busy) frame = requestAnimationFrame(tick);
+    else last = 0;
+  };
+  const wake = () => {
+    if (playing && !frame && !dead) frame = requestAnimationFrame(tick);
   };
 
   const resize = () => {
@@ -639,12 +728,12 @@ export function createBulb(
     camera.aspect = fullW / fullH;
     camera.setViewOffset(fullW, fullH, fullW / 2 - cx, fullH / 2 - cy, w, h);
     const tan = Math.tan((camera.fov * Math.PI) / 360);
-    const tall = (5.2 / 0.96) * (fullH / Math.max(1, area.height));
-    const wide = ((4 / 0.96) * (fullW / Math.max(1, area.width))) / camera.aspect;
+    const tall = (4.25 / 0.95) * (fullH / Math.max(1, area.height));
+    const wide = ((3.5 / 0.95) * (fullW / Math.max(1, area.width))) / camera.aspect;
     camera.position.set(0, 0, Math.max(tall, wide) / (2 * tan));
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
-    if (!playing) draw(time);
+    if (!frame) draw(time);
   };
 
   const lost = (event: Event) => {
@@ -656,15 +745,16 @@ export function createBulb(
   canvas.addEventListener("webglcontextlost", lost);
 
   resize();
-  // Une première image, pour compiler les programmes avant que les pièces ne bougent.
-  draw(0);
+  // Les programmes se compilent à part, sans bloquer la page, avant la première image.
+  await renderer.compileAsync(scene, camera);
+  if (!dead) draw(0);
 
   return {
     play() {
       if (playing || dead) return;
       playing = true;
       last = 0;
-      frame = requestAnimationFrame(tick);
+      wake();
     },
     pause() {
       playing = false;
@@ -673,13 +763,15 @@ export function createBulb(
     },
     resize,
     pointer(x, y) {
-      if (time < OPEN) return;
+      if (time < END) return;
       aim.x = x * 0.3;
       aim.y = y * 0.14;
+      wake();
     },
     hover(at) {
       if (!at) {
         hovering = false;
+        wake();
         return;
       }
       const view = canvas.getBoundingClientRect();
@@ -688,13 +780,21 @@ export function createBulb(
         ((at.x - view.left) / view.width) * 2 - 1,
         -(((at.y - view.top) / view.height) * 2 - 1),
       );
-      hovering = true;
+      hovering = time >= ASSEMBLED;
+      wake();
+    },
+    pop() {
+      if (time < END) return;
+      hopSpeed = 9;
+      wake();
     },
     spread(amount) {
-      aim.spread = time < OPEN ? 0 : clamp01(amount);
+      aim.spread = time < END ? 0 : clamp01(amount);
+      wake();
     },
-    seek(t) {
+    seek(t, spread) {
       time = t;
+      if (spread !== undefined) now.spread = aim.spread = spread;
       draw(time);
     },
     dispose() {
@@ -704,10 +804,10 @@ export function createBulb(
       box.dispose();
       coreGeo.dispose();
       tileMaterial.dispose();
-      letterMaterial.dispose();
+      markMaterial.dispose();
       coreMaterial.dispose();
       tileMesh.dispose();
-      letterMesh.dispose();
+      markMesh.dispose();
       env.dispose();
       pmrem.dispose();
       room.dispose?.();

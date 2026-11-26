@@ -11,9 +11,11 @@ import { fineOn, motionOn } from "@/lib/motion";
  * Il réserve la place, charge la scène 3D en différé (elle pèse le poids
  * de three.js : rien d'elle n'est sur le chemin du premier affichage), la
  * lance quand elle est à l'écran et la met en pause dès qu'elle en sort.
+ * Il lui passe aussi les gestes : la souris, le clic, le défilement.
  *
- * Trois cas où il n'y a pas de 3D, et où le logo dessiné prend la place :
- * sans JavaScript, en mouvement réduit, et si WebGL manque ou se perd.
+ * Quatre cas où il n'y a pas de 3D, et où le logo dessiné prend la place :
+ * sans JavaScript, en mouvement réduit, sans carte graphique (three.js
+ * n'est alors même pas chargé), et si WebGL se perd en route.
  * L'ampoule est décorative (`aria-hidden`) : elle ne dit rien que le
  * titre ne dise.
  */
@@ -41,14 +43,27 @@ export function Bulb() {
 
     const load = async () => {
       try {
+        // Sans carte graphique, WebGL dessinerait au processeur : on s'en
+        // assure avant même de charger three.js, et on garde le logo dessiné.
+        const probe = document
+          .createElement("canvas")
+          .getContext("webgl2", { failIfMajorPerformanceCaveat: true });
+        if (!probe) throw new Error("no hardware WebGL");
+        probe.getExtension("WEBGL_lose_context")?.loseContext();
+
         const { createBulb } = await import("@/components/home/bulb-scene");
         if (dead) return;
-        handle = createBulb(cv, el, {
+        const made = await createBulb(cv, el, {
           fine,
           onLost: () => setState("failed"),
-          // À l'éclat, le dernier mot du titre s'allume avec le « L ».
-          onBurst: () => hero?.setAttribute("data-lit", ""),
+          // Quand l'ampoule s'allume, le dernier mot du titre s'allume avec elle.
+          onLit: () => hero?.setAttribute("data-lit", ""),
         });
+        if (dead) {
+          made.dispose();
+          return;
+        }
+        handle = made;
         // En développement, l'ampoule se pilote depuis la console : __bulb.seek(1.2).
         if (process.env.NODE_ENV !== "production") {
           (window as unknown as { __bulb?: BulbHandle }).__bulb = handle;
@@ -96,13 +111,24 @@ export function Bulb() {
       handle?.hover({ x: event.clientX, y: event.clientY });
     };
     const onLeave = () => handle?.hover(null);
+    // Un clic ou un toucher sur l'ampoule : les pièces sautent.
+    const onDown = (event: PointerEvent) => {
+      onPointer(event);
+      const box = el.getBoundingClientRect();
+      const inside =
+        event.clientX > box.left &&
+        event.clientX < box.right &&
+        event.clientY > box.top &&
+        event.clientY < box.bottom;
+      if (inside && !(event.target as Element | null)?.closest?.("a, button")) handle?.pop();
+    };
     const onUp = (event: PointerEvent) => {
       if (event.pointerType !== "mouse") handle?.hover(null);
     };
     document.addEventListener("visibilitychange", sync);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
-    window.addEventListener("pointerdown", onPointer, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
     window.addEventListener("pointerup", onUp, { passive: true });
     window.addEventListener("pointercancel", onLeave, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
@@ -114,7 +140,7 @@ export function Bulb() {
       document.removeEventListener("visibilitychange", sync);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointer);
-      window.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onLeave);
       document.documentElement.removeEventListener("pointerleave", onLeave);
