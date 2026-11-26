@@ -115,40 +115,104 @@ function geometry(shape: Shape): BufferGeometry {
   return new SphereGeometry(shape.r, shape.seg, Math.max(8, Math.round(shape.seg * 0.7)));
 }
 
+/** Une pièce prête à être fondue : sa forme, posée à sa place, à sa couleur. */
+function part(p: Piece, color: Color): BufferGeometry {
+  const raw = geometry(p.shape);
+  const g = raw.index ? raw.toNonIndexed() : raw;
+  if (g !== raw) raw.dispose();
+  g.deleteAttribute("uv");
+  g.applyMatrix4(p.m);
+  color.set(p.c);
+  const n = g.getAttribute("position").count;
+  const colors = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    colors[i * 3] = color.r;
+    colors[i * 3 + 1] = color.g;
+    colors[i * 3 + 2] = color.b;
+  }
+  g.setAttribute("color", new BufferAttribute(colors, 3));
+  return g;
+}
+
+type Split = { solid: BufferGeometry | null; glow: BufferGeometry | null };
+/** Ce que `warm` a déjà construit, rangé par liste de pièces. */
+const built = new WeakMap<Piece[], BufferGeometry | null>();
+const cut = new WeakMap<Piece[], Split>();
+
 /**
  * Fond des pièces en une géométrie. Chaque sommet porte la couleur de sa
  * pièce : un seul matériau suffit pour toute une salle.
  */
 export function build(pieces: Piece[]): BufferGeometry | null {
+  if (built.has(pieces)) return built.get(pieces) ?? null;
   if (pieces.length === 0) return null;
   const color = new Color();
-  const parts = pieces.map((p) => {
-    const raw = geometry(p.shape);
-    const g = raw.index ? raw.toNonIndexed() : raw;
-    if (g !== raw) raw.dispose();
-    g.deleteAttribute("uv");
-    g.applyMatrix4(p.m);
-    color.set(p.c);
-    const n = g.getAttribute("position").count;
-    const colors = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) {
-      colors[i * 3] = color.r;
-      colors[i * 3 + 1] = color.g;
-      colors[i * 3 + 2] = color.b;
-    }
-    g.setAttribute("color", new BufferAttribute(colors, 3));
-    return g;
-  });
+  const parts = pieces.map((p) => part(p, color));
   const merged = mergeGeometries(parts, false);
   parts.forEach((g) => g.dispose());
   return merged;
 }
 
 /** Sépare ce qui est éclairé de ce qui éclaire, et fond chaque lot. */
-export const split = (pieces: Piece[]) => ({
-  solid: build(pieces.filter((p) => !p.glow)),
-  glow: build(pieces.filter((p) => p.glow)),
-});
+export const split = (pieces: Piece[]): Split =>
+  cut.get(pieces) ?? {
+    solid: build(pieces.filter((p) => !p.glow)),
+    glow: build(pieces.filter((p) => p.glow)),
+  };
+
+/**
+ * Rend la main au navigateur, le temps qu'une image se dessine ou qu'un
+ * geste soit entendu. Un minuteur, et pas `scheduler.yield` : ce dernier
+ * reprend avant le dessin de l'image, qui attendrait alors son tour.
+ */
+const breathe = (): Promise<void> => new Promise((done) => setTimeout(done, 0));
+
+/** Comme `build`, mais par tranches de quelques millisecondes. */
+async function slowly(pieces: Piece[], clock: { last: number }): Promise<BufferGeometry | null> {
+  if (pieces.length === 0) return null;
+  const color = new Color();
+  const parts: BufferGeometry[] = [];
+  for (const p of pieces) {
+    parts.push(part(p, color));
+    if (performance.now() - clock.last > 6) {
+      await breathe();
+      clock.last = performance.now();
+    }
+  }
+  const merged = mergeGeometries(parts, false);
+  parts.forEach((g) => g.dispose());
+  await breathe();
+  clock.last = performance.now();
+  return merged;
+}
+
+/**
+ * Construit le décor à l'avance, sans jamais figer la page.
+ *
+ * Fondre quelques centaines de pièces prend une demi-seconde d'un seul
+ * tenant : assez pour faire sauter un défilement ou une animation en
+ * cours. Ici le même travail est coupé en tranches de six millisecondes,
+ * et le navigateur reprend la main entre deux. `build` et `split`
+ * retrouvent ensuite le résultat tout prêt.
+ */
+export async function warm(wholes: Piece[][], cuts: Piece[][]): Promise<void> {
+  const clock = { last: performance.now() };
+  for (const pieces of wholes) {
+    if (!built.has(pieces)) built.set(pieces, await slowly(pieces, clock));
+  }
+  for (const pieces of cuts) {
+    if (cut.has(pieces)) continue;
+    const solid = await slowly(
+      pieces.filter((p) => !p.glow),
+      clock,
+    );
+    const glow = await slowly(
+      pieces.filter((p) => p.glow),
+      clock,
+    );
+    cut.set(pieces, { solid, glow });
+  }
+}
 
 // ---- Le mouvement : quelques fonctions de temps -------------------------
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { PerformanceMonitor, Preload } from "@react-three/drei";
+import { PerformanceMonitor } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import {
   Color,
   Matrix4,
@@ -14,7 +14,7 @@ import {
   type Group,
   type InstancedMesh,
 } from "three";
-import { C, build, clamp01, smooth, span, split } from "@/components/lab/kit";
+import { C, build, clamp01, smooth, span, split, warm } from "@/components/lab/kit";
 import { BASE, ROOMS, type Burst, type Room } from "@/components/lab/rooms";
 
 /**
@@ -30,6 +30,11 @@ import { BASE, ROOMS, type Burst, type Room } from "@/components/lab/rooms";
  * changent jamais de nombre (pas de recompilation en cours de route) ;
  * la boucle s'arrête quand la maquette sort de l'écran (`running`) ; et
  * si l'appareil peine, seule la résolution baisse, jamais le contenu.
+ *
+ * Démarrage : rien ne fige la page. Le décor est construit à l'avance par
+ * petites tranches (`prepareLab`, à appeler avant de monter la scène), et
+ * les programmes graphiques se compilent à part : la boucle ne tourne
+ * qu'une fois qu'ils sont prêts.
  */
 type Props = {
   progress: RefObject<number>;
@@ -53,14 +58,25 @@ type LabDebug = {
 };
 export const labDebug: LabDebug = { hold: false, times: [] };
 
+let warming: Promise<void> | null = null;
+/** Construit le décor des quatre pièces à l'avance, par petites tranches. */
+export const prepareLab = () =>
+  (warming ??= warm(
+    [BASE],
+    ROOMS.flatMap((room) => [room.pieces, ...room.movers.map((m) => m.pieces)]),
+  ));
+
 export default function LabCanvas({ progress, running, fine, onReady }: Props) {
   const [dpr, setDpr] = useState<number | [number, number]>(fine ? [1, 1.75] : [1, 1.5]);
+  // Les programmes sont-ils compilés ? Avant, dessiner figerait la page.
+  const [primed, setPrimed] = useState(false);
+  const onPrimed = useCallback(() => setPrimed(true), []);
 
   return (
     <Canvas
-      shadows
+      shadows="percentage"
       dpr={dpr}
-      frameloop={running ? "always" : "never"}
+      frameloop={running && primed ? "always" : "never"}
       camera={{ fov: 30, near: 1, far: 90, position: [0, 10, 16] }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ background: "transparent" }}
@@ -68,13 +84,17 @@ export default function LabCanvas({ progress, running, fine, onReady }: Props) {
     >
       {/* L'appareil peine : on baisse la résolution, rien d'autre. */}
       <PerformanceMonitor onDecline={() => setDpr(1)} />
-      <Lab progress={progress} fine={fine} onReady={onReady} />
-      <Preload all />
+      <Lab progress={progress} fine={fine} onReady={onReady} onPrimed={onPrimed} />
     </Canvas>
   );
 }
 
-function Lab({ progress, fine, onReady }: Omit<Props, "running">) {
+function Lab({
+  progress,
+  fine,
+  onReady,
+  onPrimed,
+}: Omit<Props, "running"> & { onPrimed: () => void }) {
   const table = useRef<Group>(null);
   const motion = useRef({ turn: 0, sway: 0, ready: false });
   const powers = useRef<number[]>(ROOMS.map((_, i) => (i === 0 ? 1 : 0)));
@@ -108,6 +128,19 @@ function Lab({ progress, fine, onReady }: Omit<Props, "running">) {
     camera.lookAt(0, 1.25, 0);
     camera.updateProjectionMatrix();
   }, [camera, size]);
+
+  // Les programmes se compilent à part, sans bloquer la page ; la boucle
+  // attend qu'ils soient prêts (voir `primed`).
+  useEffect(() => {
+    let off = false;
+    const done = () => {
+      if (!off) onPrimed();
+    };
+    gl.compileAsync(scene, camera).then(done, done);
+    return () => {
+      off = true;
+    };
+  }, [gl, scene, camera, onPrimed]);
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;

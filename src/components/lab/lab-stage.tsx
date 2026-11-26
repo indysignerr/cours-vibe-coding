@@ -1,7 +1,14 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { Component, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  Component,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { fineOn, motionOn } from "@/lib/motion";
 
 /**
@@ -18,13 +25,23 @@ import { fineOn, motionOn } from "@/lib/motion";
  *      l'écran, et la laisser prendre la place de l'image une fois prête.
  *      Si WebGL manque ou échoue, l'image reste : la page marche pareil.
  *
+ * La scène ne doit jamais faire sauter la page. Elle attend donc que
+ * l'ouverture du haut de page soit jouée (sauf si on est déjà devant
+ * elle), son décor se construit par petites tranches, et sans carte
+ * graphique elle n'est même pas téléchargée.
+ *
  * En mouvement réduit, ce composant ne fait rien : la feuille de style
  * ne l'affiche même pas, et chaque pilier montre l'image de sa pièce.
  */
-const LabCanvas = dynamic(() => import("@/components/lab/lab-canvas"), {
-  ssr: false,
-  loading: () => null,
-});
+type SceneProps = {
+  progress: RefObject<number>;
+  running: boolean;
+  fine: boolean;
+  onReady: () => void;
+};
+
+/** Le temps laissé à l'ouverture du haut de page, en millisecondes. */
+const OPENING = 6500;
 
 export type StageRoom = { key: string; poster: string; caption: string };
 
@@ -47,6 +64,7 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
   const progress = useRef(0);
   const [active, setActive] = useState(0);
   const [near, setNear] = useState(false);
+  const [Scene, setScene] = useState<ComponentType<SceneProps> | null>(null);
   const [running, setRunning] = useState(false);
   const [live, setLive] = useState(false);
   // L'image s'efface en fondu derrière la scène, puis quitte la page.
@@ -61,7 +79,9 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
     setFine(fineOn());
 
     const steps = Array.from(section.querySelectorAll<HTMLElement>("[data-step]"));
+    const born = performance.now();
     let frame = 0;
+    let wait = 0;
     let seen = false;
     let current = 0;
 
@@ -98,18 +118,26 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
       if (seen && !frame) frame = requestAnimationFrame(measure);
     };
 
-    // De loin : on commence à charger la scène. À l'écran : elle tourne.
+    // De loin : on commence à charger la scène, une fois l'ouverture du
+    // haut de page jouée. À l'écran : elle se charge sans attendre, et tourne.
     const approach = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        setNear(true);
         approach.disconnect();
+        wait = window.setTimeout(
+          () => setNear(true),
+          Math.max(0, OPENING - (performance.now() - born)),
+        );
       },
       { rootMargin: "120% 0px" },
     );
     approach.observe(section);
     const sight = new IntersectionObserver(([entry]) => {
       seen = entry.isIntersecting;
+      if (seen) {
+        window.clearTimeout(wait);
+        setNear(true);
+      }
       setRunning(seen && !document.hidden);
       queue();
     });
@@ -121,6 +149,7 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       cancelAnimationFrame(frame);
+      window.clearTimeout(wait);
       approach.disconnect();
       sight.disconnect();
       window.removeEventListener("scroll", queue);
@@ -128,6 +157,32 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
+
+  // La scène : on vérifie la carte graphique, on télécharge, on construit
+  // le décor par tranches, et seulement alors on la monte.
+  useEffect(() => {
+    if (!near) return;
+    let off = false;
+    (async () => {
+      try {
+        // Sans carte graphique, WebGL dessinerait au processeur : l'image reste.
+        const probe = document
+          .createElement("canvas")
+          .getContext("webgl2", { failIfMajorPerformanceCaveat: true });
+        if (!probe) throw new Error("no hardware WebGL");
+        probe.getExtension("WEBGL_lose_context")?.loseContext();
+
+        const lab = await import("@/components/lab/lab-canvas");
+        await lab.prepareLab();
+        if (!off) setScene(() => lab.default);
+      } catch {
+        if (!off) setFailed(true);
+      }
+    })();
+    return () => {
+      off = true;
+    };
+  }, [near]);
 
   return (
     <div ref={el} className={live && !failed ? "stage is-live" : "stage"} aria-hidden="true">
@@ -147,10 +202,10 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
             loading="lazy"
           />
         )}
-        {near && !failed ? (
+        {Scene && !failed ? (
           <div className="stage__canvas">
             <Guard onError={() => setFailed(true)}>
-              <LabCanvas
+              <Scene
                 progress={progress}
                 running={running}
                 fine={fine}
