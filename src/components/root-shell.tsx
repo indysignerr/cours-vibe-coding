@@ -101,6 +101,10 @@ export function RootShell({
     <html
       lang={lang}
       className={`${display.variable} ${serif.variable} ${body.variable} ${mono.variable}`}
+      // Le CSS lisse les ancres. Cet attribut dit au routeur de couper ce
+      // lissage le temps d'un changement de page : la page neuve s'ouvre
+      // en haut, d'un coup, au lieu de remonter depuis l'ancienne hauteur.
+      data-scroll-behavior="smooth"
       // Le script ci-dessous ajoute des classes avant l'hydratation.
       suppressHydrationWarning
     >

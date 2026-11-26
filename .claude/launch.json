@@ -4,8 +4,23 @@
     {
       "name": "club-site",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000
+    },
+    {
+      "name": "club-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "--yes",
+        "serve",
+        "out",
+        "-l",
+        "4173"
+      ],
+      "port": 4173
     }
   ]
 }

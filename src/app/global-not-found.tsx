@@ -28,7 +28,11 @@ const ELSEWHERE: [string, string][] = [
 
 export default function GlobalNotFound() {
   return (
-    <html lang="en" className={`${display.variable} ${serif.variable} ${body.variable} ${mono.variable}`}>
+    <html
+      lang="en"
+      className={`${display.variable} ${serif.variable} ${body.variable} ${mono.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body>
         <SiteHeader lang="en" page={null} />
         <main id="main" className="lost">
