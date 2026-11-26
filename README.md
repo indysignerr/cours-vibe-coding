@@ -354,7 +354,10 @@ acier. Le plan est réglé comme au cinéma :
   Son cadre, `bulb.tsx`, lui confie le canevas, lui envoie la taille et la
   souris, la met en pause hors écran. Si le navigateur ne sait pas
   dessiner depuis un fil de travail, ou si le fil échoue, la scène tourne
-  dans la page, sur un canevas neuf.
+  dans la page, sur un canevas neuf. Sur Safari et sur iPhone elle tourne
+  dans la page d'office : le fil de travail n'y a pas pu être essayé sur
+  un vrai appareil. La ligne à retirer une fois l'essai fait est dans
+  `bulb.tsx` (`webkit`).
 - Sans JavaScript, en mouvement réduit, ou sans carte graphique : le logo
   dessiné tient la place, et three.js n'est pas chargé du tout.
 - En développement, `__bulb.seek(1.2)` dans la console montre l'ampoule à
@@ -505,8 +508,9 @@ Un avertissement reste dans la console quand la maquette démarre :
 « THREE.Clock … deprecated ». Il vient de React-Three-Fiber, pas du site,
 et partira avec une version de la bibliothèque qui suit three.js 0.187.
 
-Non contrôlé : un vrai iPhone et un vrai téléphone Android. Les contrôles
-« téléphone » sont faits dans Chrome, en émulation.
+Non contrôlé : Safari, un vrai iPhone et un vrai téléphone Android. Les
+contrôles « téléphone » sont faits dans Chrome, en émulation ; le Mac de
+développement n'a pas Xcode, donc pas de simulateur iPhone.
 
 ## Déploiement
 

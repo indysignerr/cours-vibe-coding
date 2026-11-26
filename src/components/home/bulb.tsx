@@ -19,7 +19,8 @@ import { fineOn, motionOn } from "@/lib/motion";
  * est chargé et chaque image y est calculée, sans jamais occuper le fil
  * de la page. Si le navigateur ne sait pas faire (ou si le fil échoue),
  * elle tourne dans la page, sur un canevas neuf : celui qu'on a confié au
- * fil ne revient pas.
+ * fil ne revient pas. Sur Safari elle tourne dans la page d'office, tant
+ * que le fil de travail n'y a pas été essayé sur un vrai appareil.
  *
  * Quatre cas où il n'y a pas de 3D, et où le logo dessiné prend la place :
  * sans JavaScript, en mouvement réduit, sans carte graphique (three.js
@@ -51,9 +52,16 @@ export function Bulb() {
     const hero = el.closest("section");
     // Quand l'ampoule s'allume, le dernier mot du titre s'allume avec elle.
     const lit = () => hero?.setAttribute("data-lit", "");
+    // Safari et tous les navigateurs d'iPhone (reconnus à `GestureEvent`,
+    // qu'eux seuls définissent) savent en principe dessiner depuis un fil de
+    // travail, mais cela n'a pas pu être contrôlé sur un vrai appareil : la
+    // scène y reste dans la page, comme avant. À lever après un essai réel.
+    const webkit = "GestureEvent" in window;
     const apart =
       attempt.apart ??
-      (typeof Worker !== "undefined" && typeof cv.transferControlToOffscreen === "function");
+      (!webkit &&
+        typeof Worker !== "undefined" &&
+        typeof cv.transferControlToOffscreen === "function");
 
     /** Ce que la scène doit savoir de la page : elle ne peut pas la mesurer elle-même. */
     const measure = (): BulbView => {
