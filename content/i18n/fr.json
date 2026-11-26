@@ -44,11 +44,10 @@
   },
   "hero": {
     "eyebrow": "Association étudiante · Albert School Milano",
-    "title": "L'association étudiante d'IA et de développement logiciel d'Albert School.",
-    "lede": "Le tremplin où les étudiants d'Albert construisent des projets IA dignes d'un portfolio, maîtrisent les outils de développement modernes et rencontrent de vrais professionnels, ensemble.",
+    "title": "Mettez vos idées en",
+    "titleOn": "lumière.",
+    "lede": "L'association étudiante d'IA et de développement logiciel d'Albert School.",
     "next": "Prochain événement",
-    "figure": "Fig. 1. Le labo, une pièce par pilier.",
-    "figureAlt": "Une maquette du labo vue de haut : quatre pièces autour d'une lampe.",
     "stands": "LIGHT veut dire",
     "ctaPrimary": "Voir le programme",
     "ctaSecondary": "Comment rejoindre",
@@ -58,7 +57,28 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ]
+    ],
+    "plate": {
+      "alt": "Dessin technique d'une ampoule. Son filament est la lettre L, et quatre pièces sont numérotées, une par pilier.",
+      "fig": "Fig. 1. Ampoule, filament type L.",
+      "note": [
+        "Plan d'ensemble",
+        "Sans échelle"
+      ],
+      "price": "Prix : 0 €",
+      "rhythm": "Au moins un événement par quinzaine",
+      "parts": {
+        "learn": "Le filament, type L",
+        "build": "L'armature qui le tient",
+        "compete": "Du gaz, sous pression",
+        "connect": "Le culot qui se branche"
+      },
+      "legend": "Les quatre piliers, un par pièce numérotée",
+      "levelLabel": "Niveau",
+      "level": "Débutants bienvenus",
+      "drawnLabel": "Dessiné par",
+      "drawn": "Les étudiants"
+    }
   },
   "facts": {
     "label": "L'association en quatre chiffres",

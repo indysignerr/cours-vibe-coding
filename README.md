@@ -3,8 +3,9 @@
 Le site d'Albert LIGHT (*Lab of Intelligent, Generative, Hands-on
 Technology*), l'association étudiante d'IA et de développement logiciel
 d'Albert School Milano. Quatre langues (anglais d'abord, puis italien,
-français et espagnol), une maquette du labo en 3D qui tourne pendant qu'on
-lit les quatre piliers, et tout le contenu dans des fichiers de données.
+français et espagnol), un haut de page dessiné comme une planche technique,
+une maquette du labo en 3D qui tourne pendant qu'on lit les quatre piliers,
+et tout le contenu dans des fichiers de données.
 
 **En ligne :** <https://albertlight.com>. Chaque `git push` sur `main`
 redéploie le site sur Cloudflare Pages, en une minute environ.
@@ -300,7 +301,8 @@ Albert Sans pour le texte. Cinq règles tiennent le reste, et elles sont
 4. *Le survol informe, il ne joue pas.* Un lien ou un bouton change de
    couleur ; rien ne se soulève, rien ne glisse.
 5. *Le compositeur seulement.* Ce qui bouge bouge en `transform` et en
-   `opacity`.
+   `opacity`. Une exception : la planche du haut de page, qui se trace
+   une fois à l'ouverture.
 
 **Ce que le site s'interdit.** La refonte de novembre 2026 a écarté, point
 par point, ce qui fait reconnaître un site sorti d'un gabarit : dégradés
@@ -313,6 +315,34 @@ flous, grilles de points, étincelles, flèches animées, survols qui
 gigotent. Les mentions légales, les conditions d'utilisation et la page
 de confidentialité existent, et ce qui charge montre un squelette plutôt
 que « Loading… ». Avant d'ajouter un bloc, relire cette liste.
+
+**D'une page à l'autre.** Une page neuve s'ouvre toujours en haut, d'un
+coup ; un lien vers la page où l'on est déjà (le logo sur l'accueil)
+ramène en haut en glissant ; le retour arrière rend à la page la hauteur
+qu'elle avait. Les trois règles tiennent dans
+`src/components/motion/motion-root.tsx`, avec l'attribut
+`data-scroll-behavior` posé sur `<html>` : sans lui, Next 16 laisse le
+lissage du CSS s'appliquer aux changements de page, et la page neuve
+part de l'ancienne hauteur.
+
+**Le haut de page : une planche.** La première page est le plan de
+l'ampoule du logo, celui de l'affiche que le bureau a retenue : un filament
+en L, deux cotes qui disent le prix et le rythme, quatre repères, un par
+pilier, et un cartouche en pied. Le titre est celui de l'affiche de
+l'association, « Turn ideas into light. ».
+
+- Le dessin est calculé dans `src/components/home/plate.tsx`, en
+  millimètres de l'affiche, et écrit dans le HTML : aucune image, aucun
+  script. Ses textes sont dans `hero.plate` des quatre dictionnaires.
+- À l'ouverture il se trace, puis le filament s'allume avec le dernier mot
+  du titre. C'est la seule animation du site qui ne passe pas par
+  `transform` ou `opacity` : elle joue une fois, jamais pendant le
+  défilement. En mouvement réduit, le dessin est là, entier.
+- Les noms des piliers mènent à leur section ; la pièce désignée passe au
+  bronze au survol ou au focus.
+- Sur grand écran, la planche a son cadre et ses repères de zone ; sur
+  téléphone, le dessin passe sous le texte et les quatre repères
+  deviennent une légende.
 
 **La maquette 3D.** Les quatre piliers se lisent autour d'une maquette du
 labo : un plateau tournant, quatre pièces, une par pilier, autour d'une
@@ -331,8 +361,8 @@ tourne et la pièce du pilier courant s'anime.
 - Sans JavaScript, en mouvement réduit, ou si WebGL manque : chaque pilier
   montre l'image fixe de sa pièce. La page dit la même chose.
 
-**Refaire les images de la maquette.** L'image du haut de page et celles
-des quatre pièces sont des captures de la vraie scène. Si la scène change
+**Refaire les images de la maquette.** Les images des quatre pièces sont
+des captures de la vraie scène. Si la scène change
 d'aspect, la marche à suivre est en tête de `scripts/make-lab-images.mjs`.
 
 **Le logo.** C'est celui du bureau, relevé sur son fichier : l'ampoule au

@@ -44,11 +44,10 @@
   },
   "hero": {
     "eyebrow": "Asociación estudiantil · Albert School Milano",
-    "title": "La asociación estudiantil de IA y desarrollo de software de Albert School.",
-    "lede": "El trampolín donde los estudiantes de Albert construyen proyectos de IA dignos de un portfolio, dominan las herramientas de desarrollo modernas y conocen a profesionales de verdad, juntos.",
+    "title": "Saca tus ideas a la",
+    "titleOn": "luz.",
+    "lede": "La asociación estudiantil de IA y desarrollo de software de Albert School.",
     "next": "Próximo evento",
-    "figure": "Fig. 1. El lab, una sala para cada pilar.",
-    "figureAlt": "Una maqueta del lab vista desde arriba: cuatro salas alrededor de una lámpara.",
     "stands": "LIGHT significa",
     "ctaPrimary": "Ver el programa",
     "ctaSecondary": "Cómo unirse",
@@ -58,7 +57,28 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ]
+    ],
+    "plate": {
+      "alt": "Dibujo técnico de una bombilla. Su filamento es la letra L y cuatro piezas están numeradas, una por cada pilar.",
+      "fig": "Fig. 1. Bombilla, filamento tipo L.",
+      "note": [
+        "Plano de conjunto",
+        "Sin escala"
+      ],
+      "price": "Precio: 0 €",
+      "rhythm": "Al menos un evento cada 2 semanas",
+      "parts": {
+        "learn": "El filamento, tipo L",
+        "build": "El armazón que lo sostiene",
+        "compete": "Gas, a presión",
+        "connect": "El casquillo que se conecta"
+      },
+      "legend": "Los cuatro pilares, uno por cada pieza numerada",
+      "levelLabel": "Nivel",
+      "level": "Principiantes bienvenidos",
+      "drawnLabel": "Dibujado por",
+      "drawn": "Los estudiantes"
+    }
   },
   "facts": {
     "label": "La asociación en cuatro cifras",

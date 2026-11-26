@@ -1,6 +1,6 @@
-// Les images fixes de la maquette 3D : celle du haut de page, et une par
-// pilier (ce que voit quelqu'un sans JavaScript, en mouvement réduit, ou
-// pendant que la scène charge).
+// Les images fixes de la maquette 3D : une par pilier (ce que voit
+// quelqu'un sans JavaScript, en mouvement réduit, ou pendant que la scène
+// charge).
 //
 // Ce sont des captures de la VRAIE scène, pas des dessins à part. À refaire
 // si la scène change d'aspect (src/components/lab/).
@@ -9,7 +9,7 @@
 // 2. Ouvrir http://localhost:3000/ sur un grand écran, faire défiler
 //    jusqu'aux piliers et attendre que la maquette s'affiche.
 // 3. Dans la console du navigateur, coller ceci. Il fige la scène, cadre
-//    chaque pièce et télécharge cinq fichiers PNG à fond transparent :
+//    chaque pièce et télécharge quatre fichiers PNG à fond transparent :
 //
 //      const lab = window.__lab, stage = document.querySelector(".stage");
 //      const frames = (n) => new Promise((r) => { let i = 0; const f = () => (++i >= n ? r() : requestAnimationFrame(f)); requestAnimationFrame(f); });
@@ -27,10 +27,9 @@
 //      await shoot("room-build.png", 800, 600, 1);
 //      await shoot("room-compete.png", 800, 600, 2);
 //      await shoot("room-connect.png", 800, 600, 3);
-//      await shoot("lab-hero.png", 1120, 700, 0);
 //      stage.style.cssText = ""; lab.hold = false;
 //
-// 4. Ranger les cinq PNG dans un dossier, puis :
+// 4. Ranger les quatre PNG dans un dossier, puis :
 //      node scripts/make-lab-images.mjs chemin/du/dossier
 //
 // `window.__lab` n'existe qu'en développement : rien de tout cela n'est
@@ -57,6 +56,4 @@ const webp = (file, width, height, name) =>
 for (const key of ["learn", "build", "compete", "connect"]) {
   await webp(`room-${key}.png`, 1200, 900, `room-${key}.webp`);
 }
-await webp("lab-hero.png", 1600, 1000, "lab-hero.webp");
-await webp("lab-hero.png", 800, 500, "lab-hero-800.webp");
 console.log("images de la maquette écrites dans", out);

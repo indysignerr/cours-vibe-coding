@@ -44,11 +44,10 @@
   },
   "hero": {
     "eyebrow": "Student association · Albert School Milano",
-    "title": "The student association for AI and software development at Albert School.",
-    "lede": "The launchpad where Albert students build portfolio-ready AI projects, master modern developer tools and meet real professionals, together.",
+    "title": "Turn ideas into",
+    "titleOn": "light.",
+    "lede": "The student association for AI and software development at Albert School.",
     "next": "Next event",
-    "figure": "Fig. 1. The lab, one room for each pillar.",
-    "figureAlt": "A model of the lab seen from above: four rooms around one lamp.",
     "stands": "LIGHT stands for",
     "ctaPrimary": "See the programme",
     "ctaSecondary": "How to join",
@@ -58,7 +57,28 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ]
+    ],
+    "plate": {
+      "alt": "Technical drawing of a light bulb. Its filament is the letter L, and four parts are numbered, one for each pillar.",
+      "fig": "Fig. 1. Bulb, filament type L.",
+      "note": [
+        "Assembly drawing",
+        "Not to scale"
+      ],
+      "price": "Price: 0 €",
+      "rhythm": "At least one event every 2 weeks",
+      "parts": {
+        "learn": "The filament, type L",
+        "build": "The frame that holds it",
+        "compete": "Gas, under pressure",
+        "connect": "The base that plugs in"
+      },
+      "legend": "The four pillars, one for each numbered part",
+      "levelLabel": "Level",
+      "level": "Beginners welcome",
+      "drawnLabel": "Drawn by",
+      "drawn": "The students"
+    }
   },
   "facts": {
     "label": "The association in four figures",

@@ -44,11 +44,10 @@
   },
   "hero": {
     "eyebrow": "Associazione studentesca · Albert School Milano",
-    "title": "L'associazione studentesca per l'IA e lo sviluppo software di Albert School.",
-    "lede": "Il trampolino di lancio dove gli studenti di Albert costruiscono progetti di IA da portfolio, padroneggiano i moderni strumenti di sviluppo e incontrano veri professionisti, insieme.",
+    "title": "Porta le tue idee alla",
+    "titleOn": "luce.",
+    "lede": "L'associazione studentesca per l'IA e lo sviluppo software di Albert School.",
     "next": "Prossimo evento",
-    "figure": "Fig. 1. Il lab, una stanza per ogni pilastro.",
-    "figureAlt": "Un modellino del lab visto dall'alto: quattro stanze attorno a una lampada.",
     "stands": "LIGHT sta per",
     "ctaPrimary": "Vedi il programma",
     "ctaSecondary": "Come unirsi",
@@ -58,7 +57,28 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ]
+    ],
+    "plate": {
+      "alt": "Disegno tecnico di una lampadina. Il filamento è la lettera L e quattro parti sono numerate, una per ogni pilastro.",
+      "fig": "Fig. 1. Lampadina, filamento tipo L.",
+      "note": [
+        "Disegno d'assieme",
+        "Non in scala"
+      ],
+      "price": "Prezzo: 0 €",
+      "rhythm": "Almeno un evento ogni 2 settimane",
+      "parts": {
+        "learn": "Il filamento, tipo L",
+        "build": "Il telaio che lo sostiene",
+        "compete": "Gas, sotto pressione",
+        "connect": "L'attacco che si collega"
+      },
+      "legend": "I quattro pilastri, uno per ogni parte numerata",
+      "levelLabel": "Livello",
+      "level": "Principianti benvenuti",
+      "drawnLabel": "Disegnato da",
+      "drawn": "Gli studenti"
+    }
   },
   "facts": {
     "label": "L'associazione in quattro cifre",
