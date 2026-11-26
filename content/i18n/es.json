@@ -57,28 +57,7 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ],
-    "plate": {
-      "alt": "Dibujo técnico de una bombilla. Su filamento es la letra L y cuatro piezas están numeradas, una por cada pilar.",
-      "fig": "Fig. 1. Bombilla, filamento tipo L.",
-      "note": [
-        "Plano de conjunto",
-        "Sin escala"
-      ],
-      "price": "Precio: 0 €",
-      "rhythm": "Al menos un evento cada 2 semanas",
-      "parts": {
-        "learn": "El filamento, tipo L",
-        "build": "El armazón que lo sostiene",
-        "compete": "Gas, a presión",
-        "connect": "El casquillo que se conecta"
-      },
-      "legend": "Los cuatro pilares, uno por cada pieza numerada",
-      "levelLabel": "Nivel",
-      "level": "Principiantes bienvenidos",
-      "drawnLabel": "Dibujado por",
-      "drawn": "Los estudiantes"
-    }
+    ]
   },
   "facts": {
     "label": "La asociación en cuatro cifras",

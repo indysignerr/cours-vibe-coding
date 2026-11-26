@@ -3,9 +3,8 @@
 Le site d'Albert LIGHT (*Lab of Intelligent, Generative, Hands-on
 Technology*), l'association étudiante d'IA et de développement logiciel
 d'Albert School Milano. Quatre langues (anglais d'abord, puis italien,
-français et espagnol), un haut de page dessiné comme une planche technique,
-une maquette du labo en 3D qui tourne pendant qu'on lit les quatre piliers,
-et tout le contenu dans des fichiers de données.
+français et espagnol), une maquette du labo en 3D qui tourne pendant qu'on
+lit les quatre piliers, et tout le contenu dans des fichiers de données.
 
 **En ligne :** <https://albertlight.com>. Chaque `git push` sur `main`
 redéploie le site sur Cloudflare Pages, en une minute environ.
@@ -301,8 +300,7 @@ Albert Sans pour le texte. Cinq règles tiennent le reste, et elles sont
 4. *Le survol informe, il ne joue pas.* Un lien ou un bouton change de
    couleur ; rien ne se soulève, rien ne glisse.
 5. *Le compositeur seulement.* Ce qui bouge bouge en `transform` et en
-   `opacity`. Une exception : la planche du haut de page, qui se trace
-   une fois à l'ouverture.
+   `opacity`.
 
 **Ce que le site s'interdit.** La refonte de novembre 2026 a écarté, point
 par point, ce qui fait reconnaître un site sorti d'un gabarit : dégradés
@@ -325,24 +323,14 @@ qu'elle avait. Les trois règles tiennent dans
 lissage du CSS s'appliquer aux changements de page, et la page neuve
 part de l'ancienne hauteur.
 
-**Le haut de page : une planche.** La première page est le plan de
-l'ampoule du logo, celui de l'affiche que le bureau a retenue : un filament
-en L, deux cotes qui disent le prix et le rythme, quatre repères, un par
-pilier, et un cartouche en pied. Le titre est celui de l'affiche de
-l'association, « Turn ideas into light. ».
-
-- Le dessin est calculé dans `src/components/home/plate.tsx`, en
-  millimètres de l'affiche, et écrit dans le HTML : aucune image, aucun
-  script. Ses textes sont dans `hero.plate` des quatre dictionnaires.
-- À l'ouverture il se trace, puis le filament s'allume avec le dernier mot
-  du titre. C'est la seule animation du site qui ne passe pas par
-  `transform` ou `opacity` : elle joue une fois, jamais pendant le
-  défilement. En mouvement réduit, le dessin est là, entier.
-- Les noms des piliers mènent à leur section ; la pièce désignée passe au
-  bronze au survol ou au focus.
-- Sur grand écran, la planche a son cadre et ses repères de zone ; sur
-  téléphone, le dessin passe sous le texte et les quatre repères
-  deviennent une légende.
+**Le haut de page.** Simple, à la demande du bureau : le titre de
+l'affiche de l'association en grand (« Turn ideas into light. »), la
+phrase de son texte officiel, deux boutons, et à droite le prochain
+événement. Pas d'image : les quatre chiffres qui suivent ferment le
+premier écran. Le dernier mot du titre prend sa couleur un instant après
+les autres, c'est le seul effet. Deux essais ont été écartés le 26
+novembre 2026 : une image de la maquette 3D, puis un plan technique de
+l'ampoule, jugé trop technique. Ils sont dans l'historique git.
 
 **La maquette 3D.** Les quatre piliers se lisent autour d'une maquette du
 labo : un plateau tournant, quatre pièces, une par pilier, autour d'une
@@ -382,16 +370,16 @@ change : les deux scripts lisent `brand-shapes.json` et
 
 ## Vérifications
 
-Mesures du 26 novembre 2026, après la refonte et le nouveau haut de page.
+Mesures du 26 novembre 2026, après la refonte et le haut de page simplifié.
 
 | Contrôle | Résultat |
 |---|---|
 | `tsc`, ESLint, build | aucun avertissement, 72 pages |
-| `npm run content` | 4 langues, 205 textes par dictionnaire, 85 textes traduits dans les données, rien ne manque |
+| `npm run content` | 4 langues, 190 textes par dictionnaire, 85 textes traduits dans les données, rien ne manque |
 | `npm run audit` | 71 pages, zéro défaut |
 | `npm run contrast` | toutes les paires passent en AA, sur ivoire comme sur marine |
 | Débordement horizontal | aucun, sur 33 pages dans les quatre langues, à 320, 375, 768, 1024 et 1280 px ; l'accueil revu à douze largeurs, de 320 à 1920 px |
-| Sans JavaScript, ou en mouvement réduit | pas de 3D, rien de caché : le dessin du haut de page est là, entier, et chaque pilier montre l'image de sa pièce |
+| Sans JavaScript, ou en mouvement réduit | pas de 3D, rien de caché : chaque pilier montre l'image de sa pièce |
 | D'une page à l'autre | la page neuve s'ouvre en haut, même cliquée pendant que l'ancienne défile encore ; le retour arrière rend la hauteur d'un coup. Contrôlé sur le site en ligne, avec et sans défilement lissé |
 | Mobile 375 px | 390 liens et boutons contrôlés sur dix pages, tous à 44 px ou plus |
 | Clavier | lien d'évitement, ordre logique, anneau de focus partout ; le menu et les questions sont des `<details>` |

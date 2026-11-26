@@ -14,7 +14,7 @@ import type { TimelineItem } from "@/lib/timeline";
 const when = (it: TimelineItem) =>
   [[it.weekday, it.day, it.month].filter(Boolean).join(" "), it.time].filter(Boolean).join(", ");
 
-/** La première case du cartouche, en pied de la planche d'accueil. */
+/** L'encart du haut de page de l'accueil. */
 export function NextEvent({
   label,
   items,
@@ -29,7 +29,7 @@ export function NextEvent({
   if (!next) return null;
 
   return (
-    <aside className="next cartouche__cell" aria-label={label}>
+    <aside className="next rise" style={{ "--i": 4 } as React.CSSProperties} aria-label={label}>
       <p className="eyebrow eyebrow--accent">{label}</p>
       <p className="next__title">
         <Link className="next__link" href={next.href} prefetch={false}>

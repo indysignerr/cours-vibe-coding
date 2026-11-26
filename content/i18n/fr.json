@@ -57,28 +57,7 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ],
-    "plate": {
-      "alt": "Dessin technique d'une ampoule. Son filament est la lettre L, et quatre pièces sont numérotées, une par pilier.",
-      "fig": "Fig. 1. Ampoule, filament type L.",
-      "note": [
-        "Plan d'ensemble",
-        "Sans échelle"
-      ],
-      "price": "Prix : 0 €",
-      "rhythm": "Au moins un événement par quinzaine",
-      "parts": {
-        "learn": "Le filament, type L",
-        "build": "L'armature qui le tient",
-        "compete": "Du gaz, sous pression",
-        "connect": "Le culot qui se branche"
-      },
-      "legend": "Les quatre piliers, un par pièce numérotée",
-      "levelLabel": "Niveau",
-      "level": "Débutants bienvenus",
-      "drawnLabel": "Dessiné par",
-      "drawn": "Les étudiants"
-    }
+    ]
   },
   "facts": {
     "label": "L'association en quatre chiffres",

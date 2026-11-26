@@ -57,28 +57,7 @@
       "Generative",
       "Hands-on",
       "Technology"
-    ],
-    "plate": {
-      "alt": "Disegno tecnico di una lampadina. Il filamento è la lettera L e quattro parti sono numerate, una per ogni pilastro.",
-      "fig": "Fig. 1. Lampadina, filamento tipo L.",
-      "note": [
-        "Disegno d'assieme",
-        "Non in scala"
-      ],
-      "price": "Prezzo: 0 €",
-      "rhythm": "Almeno un evento ogni 2 settimane",
-      "parts": {
-        "learn": "Il filamento, tipo L",
-        "build": "Il telaio che lo sostiene",
-        "compete": "Gas, sotto pressione",
-        "connect": "L'attacco che si collega"
-      },
-      "legend": "I quattro pilastri, uno per ogni parte numerata",
-      "levelLabel": "Livello",
-      "level": "Principianti benvenuti",
-      "drawnLabel": "Disegnato da",
-      "drawn": "Gli studenti"
-    }
+    ]
   },
   "facts": {
     "label": "L'associazione in quattro cifre",

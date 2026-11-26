@@ -27,8 +27,7 @@
    4. Le survol informe, il ne joue pas. Un lien ou un bouton change de
       couleur au survol ; rien ne se soulève, rien ne glisse.
    5. Le compositeur seulement. Ce qui bouge bouge en `transform` et en
-      `opacity`. Une exception, dite à sa place : la planche du haut de
-      page, qui se trace une fois à l'ouverture.
+      `opacity`.
 
    Les paires de couleurs sont validées par scripts/check-contrast.mjs.
    ===================================================================== */
@@ -632,281 +631,70 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 .page-head__lede { margin-top: 1.5rem; }
 
 /* =====================================================================
-   L'accueil : le haut de page, une planche de dessin technique.
+   L'accueil : le haut de page.
 
-   Le logo de l'association est une ampoule : sa première page en est le
-   plan, celui de son affiche. À gauche le titre et deux actions ; à
-   droite l'ampoule cotée, un repère par pilier ; en pied le cartouche,
-   comme sur toute planche. Sur grand écran, la planche a son cadre et
-   ses repères de zone.
-
-   Une entorse à la règle 5, une seule : à l'ouverture la planche se
-   trace, par des tirets qui glissent le long des traits. C'est une fois,
-   sur un petit dessin, et jamais pendant le défilement.
+   Simple : la phrase de l'affiche de l'association en grand, la phrase de
+   son texte officiel, deux actions. À droite, posé en pied, le prochain
+   événement. Pas d'image : les quatre chiffres qui suivent ferment le
+   premier écran.
    ===================================================================== */
 .hero {
-  padding-top: calc(var(--header-h) + 1.75rem);
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 7vw, 5.5rem));
   padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
 }
-.sheet__zones { display: none; }
-.sheet__main {
+.hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: clamp(2.5rem, 7vw, 3.5rem);
+  gap: clamp(2rem, 6vw, 3rem);
 }
 .hero__title {
   margin-top: 1.25rem;
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(3.25rem, 15vw, 5.5rem);
+  font-size: clamp(3.25rem, 14vw, 5.5rem);
   font-weight: 400;
-  line-height: 0.94;
+  line-height: 0.95;
   letter-spacing: -0.035em;
 }
-/* Le mot qui s'allume avec le filament. */
+/* Le dernier mot du titre, à la couleur de l'accent. */
 .hero__on { color: var(--accent); }
-.hero__lede { max-width: 23em; margin-top: clamp(1.25rem, 2.4vw, 1.75rem); }
+.hero__lede { max-width: 24em; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
 
-/* ---- La planche : le dessin et ses repères ---- */
-.plate {
-  /* La place des noms à droite du dessin, et la largeur du dessin : ce
-     qui reste, sans jamais pousser le cartouche hors du premier écran. */
-  --labels: 10.75rem;
-  --art: min(calc(100% - var(--labels)), max(17rem, calc((100svh - 25rem) * 0.7244)));
-  container: plate / inline-size;
-}
-.plate__figure { display: grid; grid-template-columns: minmax(0, 1fr); margin: 0; }
-.plate__draw { display: contents; }
-.plate__art {
-  position: relative;
-  order: 1;
-  width: min(100%, 24rem);
-  aspect-ratio: 184 / 254;
-  justify-self: center;
-}
-.plate__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-
-/* Les traits, du plus fin au plus fort, en millimètres du dessin. Tous
-   prennent `--ink` : une pièce désignée n'a qu'à changer cette encre. */
-.pl-thin { fill: none; stroke: var(--ink); stroke-width: 0.36; }
-.pl-mid { fill: none; stroke: var(--ink); stroke-width: 0.5; stroke-linejoin: round; }
-.pl-outline { fill: none; stroke: var(--ink); stroke-width: 0.95; stroke-linejoin: round; }
-.pl-soft { stroke-opacity: 0.5; }
-.pl-hidden { fill: none; stroke: var(--ink); stroke-width: 0.3; stroke-dasharray: 1.6 1; }
-.pl-axis { fill: none; stroke: var(--ink); stroke-width: 0.3; stroke-dasharray: 9 1.4 1.4 1.4; stroke-opacity: 0.7; }
-.pl-wire { fill: none; stroke: var(--ink); stroke-width: 0.45; stroke-linecap: round; }
-.pl-leader { fill: none; stroke: var(--ink); stroke-width: 0.36; }
-.pl-arrow { fill: var(--ink); stroke: none; }
-.pl-hatch { fill: url(#plate-hatch); }
-.pl-lit { fill: var(--accent-tint); stroke: none; }
-.pl-fil-edge { fill: none; stroke: var(--ink); stroke-width: 6.6; stroke-linecap: round; stroke-linejoin: round; }
-.pl-fil { fill: none; stroke: var(--brand); stroke-width: 5.4; stroke-linecap: round; stroke-linejoin: round; }
-.pl-dim, .pl-num {
-  fill: var(--ink);
-  stroke: none;
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 600;
-  text-anchor: middle;
-}
-.pl-dim { font-size: 6.2px; letter-spacing: 0.1em; }
-.pl-num { font-size: 6px; dominant-baseline: central; font-variant-numeric: tabular-nums; }
-.pl-part path, .pl-part circle, .pl-part text { transition: stroke 0.16s ease, fill 0.16s ease; }
-
-/* Le nom survolé désigne sa pièce : elle passe au bronze. */
-.plate__figure:has(.plate__call--learn .plate__link:is(:hover, :focus-visible)) .pl-part--learn,
-.plate__figure:has(.plate__call--build .plate__link:is(:hover, :focus-visible)) .pl-part--build,
-.plate__figure:has(.plate__call--compete .plate__link:is(:hover, :focus-visible)) .pl-part--compete,
-.plate__figure:has(.plate__call--connect .plate__link:is(:hover, :focus-visible)) .pl-part--connect {
-  --ink: var(--accent);
-}
-.plate__figure:has(.plate__call--compete .plate__link:is(:hover, :focus-visible)) .pl-lit {
-  fill: var(--brand-soft);
-}
-
-/* La légende des quatre repères : sous le dessin tant que la place manque. */
-.plate__calls {
-  order: 3;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 1.25rem;
-  margin-top: 1.5rem;
-  border-top: 1px solid var(--line-strong);
-}
-.plate__call { border-bottom: 1px solid var(--line-strong); }
-.plate__link {
-  display: grid;
-  grid-template-columns: 1.5rem minmax(0, 1fr);
-  column-gap: 0.5rem;
-  align-items: baseline;
-  min-height: 2.75rem;
-  padding-block: 0.8rem 0.9rem;
-  color: var(--ink);
-  text-decoration: none;
-}
-.plate__key {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-.plate__name {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 1.6rem;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-.plate__part {
-  grid-column: 2;
-  margin-top: 0.3rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-wrap: balance;
-  color: var(--accent);
-}
-.plate__link:hover .plate__name,
-.plate__link:focus-visible .plate__name {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
-}
-.plate__note,
-.plate__fig {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.6;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.plate__note { order: 0; justify-self: end; margin-bottom: 0.5rem; text-align: right; color: var(--accent); }
-.plate__fig { order: 2; margin-top: 0.9rem; text-align: center; color: var(--ink); }
-
-/* Dès que la planche est assez large, les noms vont au bout de leur trait. */
-@container plate (min-width: 28rem) {
-  .plate__figure { display: block; position: relative; }
-  /* Le dessin devient lui-même un repère de taille : les noms au bout
-     des traits se règlent sur lui (`cqi`), pour ne jamais se toucher
-     quand le dessin rétrécit. */
-  .plate__draw {
-    display: block;
-    position: relative;
-    width: var(--art);
-    margin-left: auto;
-    margin-right: var(--labels);
-    container: draw / inline-size;
-  }
-  .plate__art { width: 100%; }
-  .plate__calls {
-    position: absolute;
-    inset: 0;
-    display: block;
-    margin: 0;
-    border: 0;
-    pointer-events: none;
-  }
-  .plate__call {
-    --name: clamp(1.5rem, 8.8cqi, 2rem);
-    position: absolute;
-    top: var(--y);
-    left: 100%;
-    width: var(--labels);
-    margin-top: calc(var(--name) / -2);
-    padding-left: 0.75rem;
-    border: 0;
-    pointer-events: auto;
-  }
-  .plate__link { display: block; min-height: 0; padding: 0; }
-  .plate__key { display: none; }
-  .plate__name { display: block; font-size: var(--name); line-height: 1; }
-  .plate__part { display: block; margin-top: 0.35rem; font-size: clamp(0.72rem, 3.6cqi, 0.8125rem); }
-  .plate__note { position: absolute; top: 0; right: 0; margin: 0; }
-  .plate__fig { width: var(--art); margin-left: auto; margin-right: var(--labels); }
-}
-
-/* ---- Le cartouche : le bloc de titre, en pied de planche ---- */
-.cartouche {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: clamp(2.5rem, 7vw, 3.5rem);
-  border-top: 2px solid var(--ink);
-}
-.cartouche__cell {
+/* Le prochain événement : un encart réglé, tout entier cliquable. */
+.next {
   position: relative;
   display: grid;
   align-content: start;
   gap: 0.35rem;
   padding-block: 1rem 1.1rem;
+  border-top: 2px solid var(--ink);
   border-bottom: 1px solid var(--line-strong);
+  transition: background-color 0.16s ease;
 }
-.cartouche__value,
+.next:hover { background: var(--sunken); }
 .next__title {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: clamp(1.25rem, 1.7vw, 1.45rem);
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
   font-weight: 500;
-  line-height: 1.22;
-  color: var(--ink);
+  line-height: 1.2;
 }
-/* Le prochain événement : la première case, tout entière cliquable. */
-.next { transition: background-color 0.16s ease; }
-.next:hover { background: var(--sunken); }
 .next__link { color: var(--ink); text-decoration: none; }
 .next__link::after { content: ""; position: absolute; inset: 0; }
 .next:hover .next__link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
 .next__meta { color: var(--muted); }
 
 @media (min-width: 1000px) {
-  /* Le cadre : un filet fin dehors, un trait fort dedans, et entre les
-     deux les repères de zone d'une vraie planche. */
-  .sheet {
-    --zone: 1.25rem;
-    display: grid;
-    grid-template: var(--zone) auto var(--zone) / var(--zone) minmax(0, 1fr) var(--zone);
-    border: 1px solid var(--line-strong);
-  }
-  .sheet__zones {
-    display: grid;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--muted);
-  }
-  .sheet__zones span { display: grid; place-items: center; }
-  .sheet__zones--top { grid-area: 1 / 2; }
-  .sheet__zones--bottom { grid-area: 3 / 2; }
-  .sheet__zones--left { grid-area: 2 / 1; }
-  .sheet__zones--right { grid-area: 2 / 3; }
-  .sheet__zones--top, .sheet__zones--bottom { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
-  .sheet__zones--left, .sheet__zones--right { grid-auto-rows: minmax(0, 1fr); }
-  .sheet__zones--top span + span, .sheet__zones--bottom span + span { border-left: 1px solid var(--line-strong); }
-  .sheet__zones--left span + span, .sheet__zones--right span + span { border-top: 1px solid var(--line-strong); }
-  .sheet__body { grid-area: 2 / 2; border: 2px solid var(--ink); }
-  .sheet__main {
-    grid-template-columns: minmax(0, 10fr) minmax(0, 14fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
-    padding: clamp(1.5rem, 2.6vw, 2.25rem) clamp(1.5rem, 2.6vw, 2.25rem) clamp(1.5rem, 2.2vw, 2rem)
-      clamp(1.75rem, 3vw, 2.75rem);
+  .hero__grid {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    column-gap: clamp(2rem, 5vw, 5rem);
+    align-items: end;
   }
   /* Le titre se règle sur sa colonne, pas sur la fenêtre : il tient en
-     trois lignes dans les quatre langues, sans jamais mordre le dessin. */
-  .hero__text { display: flex; flex-direction: column; container-type: inline-size; }
-  /* Le chapeau et les deux actions se posent en pied de colonne, à la
-     hauteur de la légende du dessin, quelle que soit la longueur du titre. */
-  .hero__lede { margin-top: auto; padding-top: 1.75rem; }
-  /* Les deux actions restent côte à côte dans la colonne étroite. */
-  .hero__cta { gap: 0.6rem; }
-  .hero__cta .btn { padding-inline: clamp(0.9rem, 1.6vw, 1.5rem); }
-  .hero__title { font-size: min(7.5rem, calc(var(--title-fit, 24) * 1cqi)); }
-  .hero__title:lang(fr) { --title-fit: 20.5; }
-  .cartouche { grid-template-columns: minmax(0, 12fr) minmax(0, 6fr) minmax(0, 6fr); margin-top: 0; }
-  .cartouche:not(:has(.next)) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cartouche__cell { padding: 1.1rem 1.5rem 1.25rem; border-bottom: 0; }
-  .cartouche__cell + .cartouche__cell { border-left: 1px solid var(--ink); }
-}
-@media (min-width: 1240px) {
-  .sheet__main { grid-template-columns: minmax(0, 11fr) minmax(0, 13fr); }
+     deux lignes dans les quatre langues. */
+  .hero__text { container-type: inline-size; }
+  .hero__title { font-size: min(7.25rem, calc(var(--title-fit, 16) * 1cqi)); }
+  .hero__title:lang(fr) { --title-fit: 14; }
+  .hero__title:lang(it) { --title-fit: 14.3; }
 }
 
 /* =====================================================================
@@ -1515,34 +1303,12 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
 .motion .rise { animation: rise 0.7s var(--ease) calc(0.04s + var(--i, 0) * 0.07s) both; }
 .motion .rise--solid { animation-name: rise-solid; }
 
-/* La planche du haut de page se trace : les traits glissent (pathLength
-   vaut 1 sur chacun), les aplats et les textes apparaissent, puis le
-   filament s'allume, avec le dernier mot du titre. `--at` et `--dur`
-   sont posés trait par trait dans plate.tsx, `--on` sur la planche. */
-@keyframes pl-draw {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes pl-fade {
-  from { opacity: 0; }
-}
-@keyframes pl-on {
-  0% { opacity: 0; }
-  30% { opacity: 1; }
-  48% { opacity: 0.35; }
-  70%, 100% { opacity: 1; }
-}
+/* Le dernier mot du titre de l'accueil prend sa couleur un instant
+   après les autres : il « s'allume ». */
 @keyframes hero-on {
   from { color: var(--ink); }
 }
-.motion .plate .pl-draw {
-  stroke-dasharray: 1 1.5;
-  stroke-dashoffset: 1.06;
-  animation: pl-draw var(--dur, 0.9s) cubic-bezier(0.5, 0, 0.2, 1) var(--at, 0s) both;
-}
-.motion .plate .pl-fade { animation: pl-fade var(--dur, 0.4s) ease-out var(--at, 0s) both; }
-.motion .plate .pl-fil,
-.motion .plate .pl-lit { animation: pl-on 0.7s linear var(--on, 2s) both; }
-.motion .hero__on { animation: hero-on 0.5s ease-out calc(var(--on, 2s) + 0.15s) both; }
+.motion .hero__on { animation: hero-on 0.6s ease-out 0.9s both; }
 
 .motion [data-reveal] {
   opacity: 0;
