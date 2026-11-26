@@ -217,7 +217,8 @@
 .rail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
 @media (min-width: 960px) {
   .rail { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); column-gap: clamp(2rem, 4vw, 4rem); }
-  .rail > .rail__main:only-child, .rail > .rail__main--solo { grid-column: 2; }
+  /* Un contenu sans marge à nommer prend toute la largeur : pas de colonne vide. */
+  .rail > .rail__main:only-child, .rail > .rail__main--solo { grid-column: 1 / -1; }
 }
 
 /* L'en-tête d'une section : un filet plein, son numéro, son titre. */
@@ -252,6 +253,48 @@
 @media (min-width: 960px) {
   .sec-head { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); column-gap: clamp(2rem, 4vw, 4rem); }
   .sec-head__title { max-width: 18em; }
+}
+
+/* Un chapitre : son titre à gauche, son contenu à droite.
+
+   La colonne de gauche n'est jamais vide : le numéro, le nom, le titre et
+   le chapeau du chapitre y restent en vue tout le temps qu'on lit son
+   contenu. Sur téléphone, le tout s'empile. */
+.chapter {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+  padding-top: 1.1rem;
+}
+.chapter::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--ink);
+  transform-origin: 0 50%;
+}
+.chapter__title {
+  max-width: 13em;
+  margin-top: 1.1rem;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 3.7vw, 3.35rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+}
+.chapter__lede { margin-top: 1.15rem; max-width: 22em; font-size: clamp(1.15rem, 1.55vw, 1.32rem); }
+.chapter__foot { margin-top: clamp(1.5rem, 2.6vw, 2.25rem); }
+@media (min-width: 960px) {
+  .chapter {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(2.5rem, 5.5vw, 6rem);
+    align-items: start;
+  }
+  .chapter__head { position: sticky; top: calc(var(--header-h) + 1.75rem); }
+  .chapter__body { padding-top: 0.45rem; }
 }
 
 /* =====================================================================
@@ -810,19 +853,20 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 }
 .mission__cols { display: grid; gap: 1.25rem; margin-top: 2rem; }
 .mission__quote {
-  margin-top: clamp(2rem, 4vw, 3rem);
-  padding-top: 1.25rem;
+  padding-top: 1.1rem;
   border-top: 1px solid var(--line-strong);
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(2rem, 4.4vw, 3.5rem);
-  line-height: 1.04;
-  letter-spacing: -0.022em;
-  color: var(--ink);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  font-style: normal;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  color: var(--accent);
 }
-.mission__more { margin-top: 1.5rem; }
+.mission__more { margin-top: 0.75rem; }
 @media (min-width: 760px) {
   .mission__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 4vw, 3.5rem); }
   .mission__cols > :nth-child(2) { padding-left: clamp(2rem, 4vw, 3.5rem); border-left: 1px solid var(--line-strong); }
+  .mission__cols > :only-child { grid-column: 1 / -1; max-width: 34em; }
 }
 
 /* =====================================================================
@@ -1201,6 +1245,10 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 @media (min-width: 760px) {
   .board { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(2rem, 4vw, 4rem); }
 }
+@media (min-width: 1100px) {
+  .board--wide { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.chapter__foot .team__founders { margin-top: 0; }
 
 /* =====================================================================
    Les questions fréquentes : un <details> par question, sans script.
@@ -1241,9 +1289,6 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 .qa__a p + p { margin-top: 0.75rem; }
 .faq__more { margin-top: 1.75rem; }
 .faq__group + .faq__group { margin-top: clamp(2.5rem, 5vw, 4rem); }
-.faq__group-title { margin-bottom: 0.9rem; }
-.faq__still { margin-top: clamp(2.5rem, 5vw, 4rem); padding-top: 1.1rem; border-top: 2px solid var(--ink); }
-.faq__still .display-2 { margin-bottom: 0.6rem; }
 .faq__still .btn { margin-top: 1.25rem; }
 /* La réponse se déplie en douceur là où le navigateur sait animer une
    hauteur automatique ; ailleurs elle s'ouvre d'un coup. */
@@ -1500,6 +1545,7 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
    s'ils sont dans le premier écran, ce sont eux que le navigateur
    chronomètre, et un texte transparent ne compte pas. */
 .motion .sec-head [data-reveal],
+.motion .chapter__head [data-reveal],
 .motion .mission__lead[data-reveal] { opacity: 1; }
 /* Le filet d'une section se trace de gauche à droite à son arrivée. */
 .motion [data-rule]::before { transform: scaleX(0); transition: transform 0.9s var(--ease); }

@@ -6,7 +6,7 @@ import { PillarText } from "@/components/home/pillars";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
 import { PageHead } from "@/components/page-head";
-import { SectionHead } from "@/components/section-head";
+import { Chapter, SectionHead } from "@/components/section-head";
 import { fill, t, type Locale } from "@/lib/i18n";
 import { getPillars } from "@/lib/pillars";
 
@@ -36,33 +36,29 @@ export function AboutPage({ lang }: { lang: Locale }) {
 
       <section className="section" aria-labelledby="how-title">
         <div className="container">
-          <SectionHead label={d.about.howEyebrow} title={d.cta.title} id="how-title" />
-          <div className="rail">
-            <div className="rail__main">
-              <dl className="how" data-reveal>
-                {how.map(([term, detail]) => (
-                  <div className="how__row" key={term}>
-                    <dt>{term}</dt>
-                    <dd>{detail}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
+          <Chapter label={d.about.howEyebrow} title={d.cta.title} id="how-title">
+            <dl className="how" data-reveal>
+              {how.map(([term, detail]) => (
+                <div className="how__row" key={term}>
+                  <dt>{term}</dt>
+                  <dd>{detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </Chapter>
         </div>
       </section>
 
       <section className="section" aria-labelledby="formats-title">
         <div className="container">
           <SectionHead label={d.pillars.eyebrow} title={d.about.pillarsTitle} id="formats-title" />
-          <div className="rail">
-            <div className="rail__main pgroups">
-              {getPillars(lang).map((p, i) => (
-                <div className="pgroup" key={p.key} data-reveal>
-                  <PillarText pillar={p} index={i} formatsLabel={d.pillars.formats} as="h3" />
-                </div>
-              ))}
-            </div>
+          {/* Les quatre piliers prennent toute la largeur, deux par rang. */}
+          <div className="pgroups">
+            {getPillars(lang).map((p, i) => (
+              <div className="pgroup" key={p.key} data-reveal>
+                <PillarText pillar={p} index={i} formatsLabel={d.pillars.formats} as="h3" />
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FaqList } from "@/components/faq-list";
-import { SectionHead } from "@/components/section-head";
+import { Chapter } from "@/components/section-head";
 import { homeFaq } from "@/lib/faq";
 import { href, t, type Locale } from "@/lib/i18n";
 
@@ -11,17 +11,22 @@ export function FaqBlock({ lang, n }: { lang: Locale; n?: string }) {
   return (
     <section className="section faq" aria-labelledby="faq-title">
       <div className="container">
-        <SectionHead n={n} label={d.faq.eyebrow} title={d.faq.title} id="faq-title" lede={d.faq.lede} />
-        <div className="rail">
-          <div className="rail__main" data-reveal>
+        <Chapter
+          n={n}
+          label={d.faq.eyebrow}
+          title={d.faq.title}
+          id="faq-title"
+          lede={d.faq.lede}
+          foot={
+            <Link className="link link--block" href={href("faq", lang)}>
+              {d.faq.all}
+            </Link>
+          }
+        >
+          <div data-reveal>
             <FaqList items={homeFaq(lang)} name="faq-home" />
-            <p className="faq__more">
-              <Link className="link link--block" href={href("faq", lang)}>
-                {d.faq.all}
-              </Link>
-            </p>
           </div>
-        </div>
+        </Chapter>
       </div>
     </section>
   );

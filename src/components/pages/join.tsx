@@ -4,7 +4,7 @@ import { JoinBlock } from "@/components/home/join-block";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
 import { PageHead } from "@/components/page-head";
-import { SectionHead } from "@/components/section-head";
+import { Chapter } from "@/components/section-head";
 import { getFaq } from "@/lib/faq";
 import { href, t, type Locale } from "@/lib/i18n";
 
@@ -28,17 +28,20 @@ export function JoinPage({ lang }: { lang: Locale }) {
 
       <section className="section faq" aria-labelledby="join-faq">
         <div className="container">
-          <SectionHead label={d.faq.eyebrow} title={d.faq.title} id="join-faq" />
-          <div className="rail">
-            <div className="rail__main" data-reveal>
+          <Chapter
+            label={d.faq.eyebrow}
+            title={d.faq.title}
+            id="join-faq"
+            foot={
+              <Link className="link link--block" href={href("faq", lang)}>
+                {d.faq.all}
+              </Link>
+            }
+          >
+            <div data-reveal>
               <FaqList items={questions} name="faq-join" />
-              <p className="faq__more">
-                <Link className="link link--block" href={href("faq", lang)}>
-                  {d.faq.all}
-                </Link>
-              </p>
             </div>
-          </div>
+          </Chapter>
         </div>
       </section>
     </PageFrame>

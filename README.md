@@ -361,6 +361,14 @@ l'une après l'autre. Le halo de ces initiales est la seule lueur du site ;
 l'entorse à la liste ci-dessus est voulue, le bureau ayant demandé des
 lettres « illuminées ».
 
+**Pas de colonne vide.** Chaque chapitre a son titre à gauche et son
+contenu à droite (`Chapter`, dans `src/components/section-head.tsx`). Sur
+grand écran le numéro, le nom, le titre et le chapeau restent en vue tout
+le temps qu'on lit le contenu, et ce qui conclut le chapitre (la devise,
+un lien, les fondateurs) se pose dessous. Un contenu qui n'a pas de titre
+à côté de lui prend toute la largeur. Demandé le 26 novembre 2026 : la
+marge de gauche restait vide pendant le défilement.
+
 **Le calendrier : une carte de niveaux.** Sur l'accueil et sur la page
 Événements, chaque date est une case numérotée, et un chemin les relie
 dans l'ordre en serpentant d'un rang à l'autre

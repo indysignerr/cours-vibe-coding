@@ -42,3 +42,60 @@ export function SectionHead({
     </header>
   );
 }
+
+/**
+ * Un chapitre : son titre à gauche, son contenu à droite.
+ *
+ * Sur grand écran la colonne de gauche ne reste jamais vide : le numéro,
+ * le nom, le titre et le chapeau du chapitre y restent en vue tout le
+ * temps qu'on lit son contenu (`position: sticky`). `foot` y ajoute ce
+ * qui conclut le chapitre : un lien, une phrase. Sur téléphone, le tout
+ * s'empile, titre d'abord.
+ */
+export function Chapter({
+  n,
+  label,
+  title,
+  id,
+  lede,
+  foot,
+  as: Title = "h2",
+  children,
+}: {
+  /** Le numéro d'ordre dans la page, « 01 ». Absent sur les pages intérieures. */
+  n?: string;
+  label: string;
+  title: string;
+  /** L'identifiant du titre, pour `aria-labelledby` sur la section. */
+  id?: string;
+  lede?: string;
+  /** Ce qui se pose sous le titre, dans la colonne de gauche. */
+  foot?: React.ReactNode;
+  as?: "h2" | "h3";
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="chapter" data-rule>
+      <header className="chapter__head">
+        <p className="sec-head__label" data-reveal>
+          {n ? <span className="sec-head__n">{n}</span> : null}
+          <span>{label}</span>
+        </p>
+        <Title className="chapter__title" id={id} data-reveal>
+          {title}
+        </Title>
+        {lede ? (
+          <p className="lede chapter__lede" data-reveal>
+            {lede}
+          </p>
+        ) : null}
+        {foot ? (
+          <div className="chapter__foot" data-reveal>
+            {foot}
+          </div>
+        ) : null}
+      </header>
+      <div className="chapter__body">{children}</div>
+    </div>
+  );
+}

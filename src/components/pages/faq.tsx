@@ -3,6 +3,7 @@ import { FaqList } from "@/components/faq-list";
 import { ScrollFX } from "@/components/motion/scroll-fx";
 import { PageFrame } from "@/components/page-frame";
 import { PageHead } from "@/components/page-head";
+import { Chapter } from "@/components/section-head";
 import { faqSchema, getFaq } from "@/lib/faq";
 import { t, type Locale } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
@@ -28,25 +29,30 @@ export function FaqPage({ lang }: { lang: Locale }) {
 
       <section className="section faq faq--page">
         <div className="container">
-          <div className="rail">
-            <div className="rail__main">
-              {getFaq(lang).map((g) => (
-                <section className="faq__group" key={g.id} aria-labelledby={`faq-${g.id}`} data-reveal>
-                  <h2 className="eyebrow eyebrow--accent faq__group-title" id={`faq-${g.id}`}>
-                    {g.title}
-                  </h2>
+          {getFaq(lang).map((g) => (
+            <section className="faq__group" key={g.id} aria-labelledby={`faq-${g.id}`}>
+              <Chapter label={d.faq.eyebrow} title={g.title} id={`faq-${g.id}`}>
+                <div data-reveal>
                   <FaqList items={g.items} name="faq" anchors />
-                </section>
-              ))}
+                </div>
+              </Chapter>
+            </section>
+          ))}
 
+          <div className="faq__group">
+            <Chapter label={d.faq.eyebrow} title={d.faq.stillTitle}>
               <div className="faq__still" data-reveal>
-                <h2 className="display-2">{d.faq.stillTitle}</h2>
                 <p>{d.faq.stillBody}</p>
-                <a className="btn btn--ghost" href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer">
+                <a
+                  className="btn btn--ghost"
+                  href={SITE.social.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {d.footer.linkedin}
                 </a>
               </div>
-            </div>
+            </Chapter>
           </div>
         </div>
       </section>
