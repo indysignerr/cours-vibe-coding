@@ -533,6 +533,7 @@ Ce que le site ne peut pas inventer, et où le renseigner.
 | La redirection de `www.albertlight.com` vers `albertlight.com` | une règle dans Cloudflare : `SEO-CHECKLIST.md`, point 0 |
 | `/setup/`, `/legal/`, `/privacy/` en italien, en français et en espagnol | `src/app/(en)/` |
 | La relecture des mentions légales par le bureau | `/legal/` annonce le droit français ; `/privacy/` décrit la liste des membres |
+| Un essai du site sur un vrai iPhone et un vrai téléphone Android, l'ampoule surtout | si elle s'affiche bien sur iPhone, retirer `webkit` dans `src/components/home/bulb.tsx` pour qu'elle y tourne aussi dans un fil de travail |
 
 ## Autres documents
 
