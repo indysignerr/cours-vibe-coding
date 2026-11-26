@@ -17,6 +17,21 @@
       }
     },
     {
+      "name": "Indy",
+      "role": {
+        "en": "Vice President",
+        "it": "Vicepresidente",
+        "fr": "Vice-président",
+        "es": "Vicepresidente"
+      },
+      "focus": {
+        "en": "Tech",
+        "it": "Tech",
+        "fr": "Tech",
+        "es": "Tech"
+      }
+    },
+    {
       "name": "Jiali",
       "role": {
         "en": "Communication & media",
@@ -48,16 +63,6 @@
     },
     {
       "name": "Riccardo",
-      "role": {
-        "en": "Tech",
-        "it": "Tech",
-        "fr": "Tech",
-        "es": "Tech"
-      },
-      "focus": null
-    },
-    {
-      "name": "Indy",
       "role": {
         "en": "Tech",
         "it": "Tech",
