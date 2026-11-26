@@ -366,25 +366,23 @@ Mesures du 26 novembre 2026, après la refonte.
 | Clavier | lien d'évitement, ordre logique, anneau de focus partout ; le menu et les questions sont des `<details>` |
 | La maquette 3D | chargée seulement à l'approche de la section (251 Ko compressés), arrêtée hors écran |
 
-Lighthouse, profil mobile, sur le site construit et servi en local :
+Lighthouse, profil mobile, sur le site en ligne :
 
-| Page | Performance | Accessibilité | Bonnes pratiques | SEO |
-|---|---|---|---|---|
-| `/` | 95 | 100 | 100 | 100 |
-| `/fr/programme/` | 99 | 100 | 100 | 100 |
-| `/it/chi-siamo/` | 92 | 100 | 100 | 100 |
-| `/events/codemotion-llms-python/` | 94 | 100 | 96 | 100 |
+| Page | Performance | Accessibilité | Bonnes pratiques | SEO | Plus grand élément |
+|---|---|---|---|---|---|
+| `/` | 96 à 97 | 100 | 100 | 100 | 2,3 à 2,4 s |
+| `/faq/` | 97 | 100 | 100 | 100 | 2,7 s |
+| `/it/chi-siamo/` | 96 | 100 | 100 | 100 | 2,8 s |
 
-Le 96 de la page d'un événement vient de la base qui ne répond pas : la
-requête en échec s'inscrit dans la console. Il repasse à 100 une fois
-Supabase rétabli.
+Aucun décalage de mise en page sur l'accueil (0), 0,02 sur la FAQ. Les
+temps du plus grand élément sont ceux du modèle simulé de Lighthouse, qui
+est pessimiste : avec un bridage réel (4G lente, processeur ralenti quatre
+fois), le titre de l'accueil s'affichait en 1,9 s en local.
 
-Sur l'accueil, le plus grand élément (le titre) s'affiche en 2,7 s selon
-le modèle simulé de Lighthouse, et en 1,9 s avec un bridage réel (4G
-lente, processeur ralenti quatre fois). Aucun décalage de mise en page.
-Les mesures des pages À propos et événement datent d'avant deux
-corrections faites le même jour (le grain de la barre d'en-tête et un
-titre qui attendait le script) : elles sont à refaire en ligne.
+Mesurées en local seulement, sur le site construit : `/fr/programme/` à 99,
+et la page d'un événement à 94 avec 96 en bonnes pratiques. Ce 96 vient de
+la base qui ne répond pas : la requête en échec s'inscrit dans la console.
+Il repasse à 100 une fois Supabase rétabli.
 
 ## Déploiement
 
