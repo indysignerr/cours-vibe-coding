@@ -15,7 +15,7 @@ type Row = {
 };
 
 /**
- * La case « join Albert L.I.G.H.T. » du formulaire voyage en tête de la
+ * La case « join Albert LIGHT » du formulaire voyage en tête de la
  * note (voir event-signup.tsx). On la relit ici pour en faire une colonne :
  * c'est l'une des deux façons de devenir membre, elle ne doit pas se
  * perdre au milieu d'un commentaire.

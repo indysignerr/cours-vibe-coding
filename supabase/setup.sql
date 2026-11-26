@@ -1,5 +1,5 @@
 -- =====================================================================
--- Albert L.I.G.H.T. — la base, pour un projet Supabase NEUF.
+-- Albert LIGHT — la base, pour un projet Supabase NEUF.
 --
 -- Tout ce dont le site actuel a besoin, et rien d'autre :
 --   1. les profils des organisateurs et leur rôle ;
@@ -83,7 +83,7 @@ create table if not exists public.event_signups (
   email         text not null check (email = lower(email) and email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
   -- La promo et l'année, ou le nom d'une entreprise pour un invité.
   organisation  text check (organisation is null or length(organisation) <= 120),
-  -- La case « join Albert L.I.G.H.T. » arrive ici, en tête : « [JOIN] … ».
+  -- La case « join Albert LIGHT » arrive ici, en tête : « [JOIN] … ».
   note          text check (note is null or length(note) <= 500),
   created_at    timestamptz not null default now(),
   unique (event_slug, email)

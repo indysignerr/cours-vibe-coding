@@ -1,36 +1,59 @@
+import shapes from "@/lib/brand-shapes.json";
+
 /**
- * Le pictogramme : ampoule au trait, « L » et rayons en beige.
- * Reproduit en SVG plutôt qu'en image : il hérite des couleurs et reste
- * net à toute taille. Les mêmes tracés vivent dans scripts/brand.mjs,
- * qui produit les fichiers livrés et les favicons.
+ * Le logo : celui du bureau, relevé sur son fichier et redessiné en SVG.
+ *
+ * Deux pièces, qui se posent côte à côte ou séparément :
+ *   — BrandMark, le pictogramme : l'ampoule au trait, son « L » et ses
+ *     cinq rayons ;
+ *   — BrandWordmark, « ALBERT LIGHT » en contours. Ce sont des formes,
+ *     pas du texte : aucune police n'est chargée pour l'écrire, et il
+ *     reste identique au logo d'origine sur tous les écrans.
+ *
+ * La géométrie vit dans src/lib/brand-shapes.json, que scripts/brand.mjs
+ * lit aussi pour produire favicons, images de partage et fichiers livrés.
+ * Les couleurs sont celles du logo sur fond sombre : ivoire pour
+ * l'ampoule et le nom, beige clair pour le « L » et les rayons.
  */
+const { mark, wordmark } = shapes;
+
 export function BrandMark({
-  className = "size-8",
+  className = "h-10 w-auto",
   outline = "var(--ink)",
-  glyph = "var(--accent)",
+  glyph = "var(--brand-soft)",
 }: {
   className?: string;
   outline?: string;
   glyph?: string;
 }) {
   return (
-    <svg className={className} viewBox="0 0 200 200" fill="none" aria-hidden focusable="false">
-      <g stroke={glyph} strokeWidth="11" strokeLinecap="round">
-        <path d="M100 27V9" />
-        <path d="M56.2 44.2 43.4 31.4" />
-        <path d="M143.8 44.2 156.6 31.4" />
-        <path d="M41.7 66.8 24.8 60.6" />
-        <path d="M158.3 66.8 175.2 60.6" />
+    <svg
+      className={className}
+      viewBox={`0 0 ${mark.width} ${mark.height}`}
+      fill="none"
+      aria-hidden
+      focusable="false"
+    >
+      <g strokeWidth={mark.stroke} strokeLinecap="round" strokeLinejoin="round">
+        <path className="brand-glyph" d={mark.glyph} stroke={glyph} />
+        <path d={mark.outline} stroke={outline} />
       </g>
-      <path
-        d="M100 42a46 46 0 0 1 28 82 8 8 0 0 0-3 6v9H75v-9a8 8 0 0 0-3-6 46 46 0 0 1 28-82Z"
-        stroke={outline}
-        strokeWidth="13"
-        strokeLinejoin="round"
-      />
-      <path d="M88 66v46h28" stroke={glyph} strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="72" y="147" width="56" height="13" rx="6.5" fill={outline} />
-      <path d="M80 170h40a20 20 0 0 1-40 0Z" fill={outline} />
+      <path d={mark.cap} fill={outline} />
+    </svg>
+  );
+}
+
+export function BrandWordmark({
+  className,
+  fill = "currentColor",
+}: {
+  className?: string;
+  fill?: string;
+}) {
+  const [x, y, w, h] = wordmark.box;
+  return (
+    <svg className={className} viewBox={`${x} ${y} ${w} ${h}`} aria-hidden focusable="false">
+      <path d={wordmark.d} fill={fill} />
     </svg>
   );
 }

@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 /**
  * Jetons pilotés par les variables CSS de globals.css : la peau du site
- * se change à un seul endroit. Palette Albert L.I.G.H.T., marine et beige.
+ * se change à un seul endroit. Palette Albert LIGHT, marine et beige.
  */
 export default {
   content: ["./src/**/*.{ts,tsx,mdx}"],

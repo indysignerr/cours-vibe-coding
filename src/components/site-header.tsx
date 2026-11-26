@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BrandMark } from "@/components/brand";
+import { BrandMark, BrandWordmark } from "@/components/brand";
 import { LangSwitch } from "@/components/lang-switch";
 import { SoundToggle } from "@/components/motion/sound-toggle";
 import { href, t, type Locale, type PageRef, type RouteKey } from "@/lib/i18n";
@@ -45,9 +45,7 @@ export function SiteHeader({
       <div className="site-header__in">
         <Link className="brand" href={href("home", lang)} aria-label={`${SITE.name} — ${d.nav.home}`}>
           <BrandMark className="brand__mark" />
-          <span className="brand__name" aria-hidden>
-            Albert L<i>.</i>I<i>.</i>G<i>.</i>H<i>.</i>T<i>.</i>
-          </span>
+          <BrandWordmark className="brand__name" />
         </Link>
 
         <nav className="nav nav--wide" aria-label={d.nav.main}>

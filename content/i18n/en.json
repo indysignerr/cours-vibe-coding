@@ -1,7 +1,7 @@
 {
   "meta": {
     "home": {
-      "title": "Albert L.I.G.H.T. — Albert School's student lab for AI and code",
+      "title": "Albert LIGHT — Albert School's student lab for AI and code",
       "description": "Albert School's student lab for AI and code, in Milan. Workshops, crash courses, Build Lab and vibe coding tournaments, at least every two weeks. Free."
     },
     "programme": {
@@ -9,12 +9,12 @@
       "description": "Every Albert LIGHT date from November 2026 to May 2027: tournaments, workshops, crash courses, Build Lab and open nights in Milan. Free."
     },
     "team": {
-      "title": "Team and partners",
-      "description": "The seven students who run Albert L.I.G.H.T. at Albert School Milano, and the partners who make the events possible."
+      "title": "Team",
+      "description": "The seven students who run Albert LIGHT at Albert School Milano."
     },
     "join": {
       "title": "Join us",
-      "description": "For students at Albert School Milano: how to come to an event, and how you become a member of Albert L.I.G.H.T."
+      "description": "For students at Albert School Milano: how to come to an event, and how you become a member of Albert LIGHT."
     },
     "eventTail": {
       "open": "Open to all, free, Albert School Milano.",
@@ -115,7 +115,7 @@
     "title": "Come once. Stay if it is useful.",
     "lede": "Two ways in. Both take a minute.",
     "way1Title": "Sign up for an event",
-    "way1Body": "The form has a box that says “join Albert L.I.G.H.T.”. Tick it, and you are a member.",
+    "way1Body": "The form has a box that says “join Albert LIGHT”. Tick it, and you are a member.",
     "way2Title": "Or scan the code on the day",
     "way2Body": "There is a QR code at every event for joining on the spot.",
     "opensTitle": "What membership opens",
@@ -132,16 +132,6 @@
     "title": "A board of {n} students.",
     "lede": "They run the sessions, book the rooms and bring in the partners.",
     "founders": "Founded by {names}.",
-    "partnersEyebrow": "Partners",
-    "partnersTitle": "Partners, and what we ask them for.",
-    "getsTitle": "What a partner gets",
-    "gets": [
-      "Their logo on the event and its posts",
-      "A five-minute talk slot",
-      "The chance to set a tournament challenge",
-      "First access to motivated tech students for internships and junior roles"
-    ],
-    "asks": "What we ask for: prizes, credits, a speaker or food, before any money.",
     "more": "Meet the team"
   },
   "footer": {
@@ -209,7 +199,7 @@
     "note": "Anything we should know?",
     "notePlaceholderCompete": "Who you are coming with, or that you need a team.",
     "notePlaceholder": "What you want to get out of it, or who you want to meet.",
-    "joinBox": "I want to join Albert L.I.G.H.T. (free)",
+    "joinBox": "I want to join Albert LIGHT (free)",
     "busy": "One moment…",
     "submitCompete": "Count me in",
     "submit": "Sign me up",

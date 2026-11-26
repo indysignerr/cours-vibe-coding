@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Privacy",
   alternates: { canonical: "/privacy/" },
   description:
-    "How Albert L.I.G.H.T. handles the data you give us when you sign up for an event, and your rights under the GDPR.",
+    "How Albert LIGHT handles the data you give us when you sign up for an event, and your rights under the GDPR.",
 };
 
 /**

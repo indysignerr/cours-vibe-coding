@@ -13,7 +13,7 @@ import "./globals.css";
  * d'où le <html> et les imports de style ici.
  */
 export const metadata: Metadata = {
-  title: "Nothing here — Albert L.I.G.H.T.",
+  title: "Nothing here — Albert LIGHT",
   description: "This page does not exist, or it moved.",
   robots: { index: false, follow: true },
 };

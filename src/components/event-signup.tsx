@@ -14,7 +14,7 @@ import { fetchEventCounts, getSupabase, isSupabaseConfigured } from "@/lib/supab
  * et aucun droit de lecture sur la liste des inscrits — voir
  * supabase/setup.sql. Le formulaire ne fait que poster.
  *
- * La case « join Albert L.I.G.H.T. » est celle dont parle la page
+ * La case « join Albert LIGHT » est celle dont parle la page
  * Rejoindre. La fonction `rsvp` n'a pas de paramètre pour elle : cochée,
  * elle ajoute la mention [JOIN] en tête de la note, que le tableau des
  * organisateurs (/admin/) relit pour en faire une colonne. Aucune

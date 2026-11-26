@@ -1,6 +1,6 @@
-# Albert L.I.G.H.T. — albertlight.com
+# Albert LIGHT — albertlight.com
 
-Le site vitrine d'Albert L.I.G.H.T. (*Lab of Intelligent, Generative,
+Le site vitrine d'Albert LIGHT (*Lab of Intelligent, Generative,
 Hands-on Technology*), l'association étudiante d'Albert School Milano.
 Quatre langues — anglais d'abord, puis italien, français et espagnol —,
 une ampoule en 3D dont le filament écrit un L, et tout le contenu dans des
@@ -13,7 +13,7 @@ redéploie le site sur Cloudflare Pages, en une minute environ.
 > in `content/`. Edit a JSON file — on your machine or straight from
 > GitHub's web editor — commit to `main`, and the site rebuilds itself in
 > about a minute. Calendar: `content/events.json`. Team:
-> `content/team.json`. Partners: `content/partners.json`. Every sentence, in
+> `content/team.json`. Every sentence, in
 > four languages: `content/i18n/`. The rest of this page is in French; the
 > field names are the same whatever language you read.
 
@@ -45,7 +45,6 @@ Rien de ce qui se lit sur le site n'est écrit dans le code.
 |---|---|
 | une date, un lieu, un événement | `content/events.json` |
 | le bureau | `content/team.json` |
-| les partenaires et leurs logos | `content/partners.json` |
 | les quatre piliers et leurs formats | `content/pillars.json` |
 | une phrase du site, dans une des quatre langues | `content/i18n/en.json`, `it.json`, `fr.json`, `es.json` |
 | le nom, le slogan, l'email, LinkedIn, les fondateurs | `content/site.json` |
@@ -141,29 +140,6 @@ dessous : `null` pour ne rien afficher, ou un texte par langue comme pour
 le rôle. Le nombre de membres affiché dans le titre suit la liste. Les
 fondateurs, eux, sont dans `content/site.json` → `founders`.
 
-### Les partenaires — `content/partners.json`
-
-Une entrée par partenaire dans `partners`, dans l'ordre d'affichage.
-
-```json
-{
-  "id": "codemotion",
-  "name": { "en": "Codemotion", "it": "Codemotion", "fr": "Codemotion", "es": "Codemotion" },
-  "ask": { "en": "…", "it": "…", "fr": "…", "es": "…" },
-  "logo": null,
-  "url": null
-}
-```
-
-- **`logo`.** Tant qu'il vaut `null`, le nom s'affiche en typographie. Pour
-  mettre un logo : déposer le fichier dans `public/partners/` et écrire son
-  chemin, `"/partners/codemotion.svg"`. Le bloc est sur fond marine :
-  fournir la **version claire** du logo (blanche ou ivoire), en SVG de
-  préférence. Il s'affiche dans un cadre de 176 × 42 px au plus.
-- **`url`.** Renseignée, elle rend le nom ou le logo cliquable.
-- **`ask`.** Ce que le plan annuel prévoit de leur demander. On ne prête
-  pas à un partenaire un rôle qu'il n'a pas accepté.
-
 ### Les textes — `content/i18n/`
 
 Quatre fichiers aux clés identiques. À retenir :
@@ -186,7 +162,7 @@ Quatre fichiers aux clés identiques. À retenir :
 
 Le formulaire d'un événement écrit dans Supabase, par la fonction `rsvp`.
 Les listes ne sont lisibles que par les organisateurs, sur `/admin/`. La
-case « I want to join Albert L.I.G.H.T. » y devient la colonne *Joining*,
+case « I want to join Albert LIGHT » y devient la colonne *Joining*,
 à l'écran comme dans l'export CSV.
 
 La page d'un événement vérifie à l'arrivée que le formulaire peut aboutir.
@@ -299,9 +275,20 @@ elle réduit d'elle-même sa résolution pour rester fluide.
 Si la scène change d'aspect, la marche à suivre est en tête de
 `scripts/make-poster.mjs`.
 
+**Le logo.** C'est celui du bureau, relevé sur son fichier : l'ampoule au
+trait, son « L », ses cinq rayons, et « ALBERT LIGHT » à côté. Sa
+géométrie tient dans un seul fichier, `src/lib/brand-shapes.json`, lu à
+la fois par le site (`src/components/brand.tsx`) et par les scripts. Le
+nom y est dessiné en contours : aucune police n'est chargée pour
+l'écrire. Les fichiers à donner à qui prépare un document sont dans
+`public/brand/` : `logo.svg` et `mark.svg` pour un fond clair,
+`logo-inverse.svg` et `mark-inverse.svg` pour un fond sombre.
+
 **Les images de partage** (`public/og.png`, `public/og/`) et les favicons
 se refont avec `node scripts/generate-og.mjs` et
-`node scripts/generate-favicon.mjs`.
+`node scripts/generate-favicon.mjs`. À relancer si le logo ou le nom
+change : les deux scripts lisent `brand-shapes.json` et
+`content/site.json`.
 
 ## Vérifications
 
@@ -352,7 +339,6 @@ Ce que le site ne peut pas inventer, et où le renseigner.
 | Les lieux de neuf événements sur dix | `content/events.json` → `location` |
 | L'adresse `hello@albertlight.com`, pas encore routée | Cloudflare Email Routing, puis `content/site.json` → `email.active` |
 | Le message de l'easter egg | `content/i18n/*.json` → `egg.message` |
-| Les logos des partenaires | `public/partners/`, puis `content/partners.json` → `logo` |
 | La base des inscriptions | voir [Les inscriptions](#les-inscriptions) |
 | La redirection de `www.albertlight.com` vers `albertlight.com` | une règle dans Cloudflare : `SEO-CHECKLIST.md`, point 0 |
 | `/setup/`, `/legal/`, `/privacy/` en italien, en français et en espagnol | `src/app/(en)/` |

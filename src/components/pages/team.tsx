@@ -5,7 +5,7 @@ import { PageFrame } from "@/components/page-frame";
 import { PageHead } from "@/components/page-head";
 import { fill, t, type Locale } from "@/lib/i18n";
 
-/** L'équipe : le bureau, les fondateurs, les partenaires et ce qu'ils y gagnent. */
+/** L'équipe : le bureau et les fondateurs. */
 export function TeamPage({ lang }: { lang: Locale }) {
   const d = t(lang);
   return (

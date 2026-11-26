@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* =====================================================================
-   Albert L.I.G.H.T. — système visuel.
+   Albert LIGHT — système visuel.
 
    Marine dominant, beige en accent, ivoire pour le texte et pour quelques
    sections en rupture. Bricolage Grotesque pour les titres et le texte,
@@ -424,9 +424,12 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   padding-inline: var(--gutter);
 }
 .brand {
+  /* Le logo garde ses proportions d'origine : la hauteur du nom, l'écart
+     et le léger décalage vers le bas se déduisent de celle de l'ampoule. */
+  --mark-h: 2.5rem;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: calc(var(--mark-h) * 0.348);
   /* 44 px dans les deux sens : sous 400 px le nom disparaît, et le
      pictogramme seul ferait une cible de 30 px de large. */
   min-width: 44px;
@@ -434,15 +437,13 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   color: var(--ink);
   text-decoration: none;
 }
-.brand__mark { width: 1.9rem; height: 1.9rem; flex: none; }
+.brand__mark { width: auto; height: var(--mark-h); flex: none; }
 .brand__name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  width: auto;
+  height: calc(var(--mark-h) * 0.265);
+  flex: none;
+  margin-top: calc(var(--mark-h) * 0.021);
 }
-.brand__name i { font-style: normal; color: var(--brand); }
 
 .nav ul { display: flex; gap: 0.15rem; }
 .nav--wide { margin-left: auto; }
@@ -639,8 +640,9 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   letter-spacing: -0.05em;
   font-variation-settings: "opsz" 96;
 }
-.hero__light { display: block; white-space: nowrap; }
-.hero__light i { font-style: normal; color: var(--brand); }
+/* « LIGHT » est tout en capitales : au même interlettrage serré que
+   « Albert », ses lettres se toucheraient. */
+.hero__light { display: block; white-space: nowrap; letter-spacing: -0.02em; }
 .hero__expansion {
   margin-top: 1.5rem;
   font-family: var(--font-mono), ui-monospace, monospace;
@@ -1455,49 +1457,7 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   .board__role, .board__focus { grid-column: auto; }
 }
 
-.partners { margin-top: clamp(4rem, 10vh, 7rem); scroll-margin-top: calc(var(--header-h) + 2rem); }
-.partners__title { max-width: 24ch; margin-top: 0.75rem; }
-/* Les filets sont portés par chaque case, pas par le fond de la grille :
-   avec un nombre de partenaires qui ne remplit pas la dernière rangée, un
-   fond coloré laissait un pavé gris à la place des cases vides. */
-.partners__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
-  gap: 1px;
-  margin-block: 2rem 2.5rem;
-  border-radius: 20px;
-  overflow: hidden;
-}
-.partner {
-  display: grid;
-  gap: 0.75rem;
-  align-content: space-between;
-  min-height: 9.5rem;
-  padding: 1.4rem;
-  background: var(--canvas);
-  box-shadow: 0 0 0 1px var(--line);
-  transition: background-color 0.35s ease;
-}
-.partner:hover { background: var(--surface); }
-.partner__name {
-  font-size: clamp(1.3rem, 1.9vw, 1.7rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-}
-.partner__logo { width: auto; max-width: 11rem; max-height: 2.6rem; object-fit: contain; object-position: left; }
-/* Le nom ou le logo devient un lien dès que le partenaire a une adresse. */
-.partner__link { justify-self: start; text-decoration: none; }
-.partner__link:hover .partner__name { color: var(--accent); }
-.partner__ask { font-size: 1.0625rem; color: var(--muted); }
-.partners__offer { display: grid; gap: 1.5rem; }
-.partners__offer .rows { margin-top: 0.75rem; }
-.partners__offer .rows li { padding: 0.8rem 0; }
-.partners__asks { color: var(--muted); }
-@media (min-width: 900px) {
-  .partners__offer { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 4rem; align-items: end; }
-}
+.team__more { margin-top: 2rem; }
 
 /* ---- Le pied de page ---- */
 .footer {
@@ -1507,16 +1467,21 @@ textarea.field { min-height: 6rem; padding: 0.75rem 0.95rem; line-height: 1.5; r
   background: var(--sunken);
 }
 .footer__in { display: grid; gap: 2.5rem; max-width: var(--max); margin-inline: auto; }
-.footer__mark { width: 2.75rem; height: 2.75rem; }
-.footer__name {
-  margin-top: 0.75rem;
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+.footer__logo {
+  --mark-h: clamp(3.5rem, 6vw, 4.5rem);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--mark-h) * 0.348);
   color: var(--ink);
 }
-.footer__about { max-width: 32ch; margin-block: 0.6rem 0.75rem; color: var(--muted); }
+.footer__mark { width: auto; height: var(--mark-h); flex: none; }
+.footer__name {
+  width: auto;
+  height: calc(var(--mark-h) * 0.265);
+  flex: none;
+  margin-top: calc(var(--mark-h) * 0.021);
+}
+.footer__about { max-width: 32ch; margin-block: 1.1rem 0.75rem; color: var(--muted); }
 .footer .lang { margin-left: -0.85rem; }
 .footer__col ul { display: grid; margin-top: 0.4rem; }
 .footer__col li { display: flex; align-items: center; min-height: 44px; }

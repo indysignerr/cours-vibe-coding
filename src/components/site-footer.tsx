@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BrandMark } from "@/components/brand";
+import { BrandMark, BrandWordmark } from "@/components/brand";
 import { LangSwitch } from "@/components/lang-switch";
 import { EN_ONLY, href, t, type Locale, type PageRef } from "@/lib/i18n";
 import { SITE } from "@/lib/site";
@@ -25,8 +25,12 @@ export function SiteFooter({
     <footer className="footer">
       <div className="footer__in">
         <div className="footer__brand">
-          <BrandMark className="footer__mark" />
-          <p className="footer__name">{SITE.name}</p>
+          {/* Le logo entier. Le nom est aussi écrit, pour qui ne voit pas le dessin. */}
+          <p className="footer__logo">
+            <BrandMark className="footer__mark" />
+            <BrandWordmark className="footer__name" />
+            <span className="sr-only">{SITE.name}</span>
+          </p>
           <p className="footer__about">{d.footer.about}</p>
           <LangSwitch lang={lang} page={page} />
         </div>

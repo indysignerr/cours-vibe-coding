@@ -5,7 +5,7 @@
 // La correspondance page → image est dans src/lib/metadata.ts.
 import { writeFile, mkdir } from "node:fs/promises";
 import sharp from "sharp";
-import { mark, NAVY, BEIGE, LIGHT_BEIGE, IVORY } from "./brand.mjs";
+import { logoShapes, LOGO, NAVY, BEIGE, LIGHT_BEIGE, IVORY } from "./brand.mjs";
 
 const SANS = "'Helvetica Neue', Helvetica, Arial, sans-serif";
 const MONO = "'IBM Plex Mono', ui-monospace, Menlo, monospace";
@@ -17,6 +17,9 @@ const PAGES = [
   { slug: "team", kicker: "WHO WE ARE", lines: ["A club", "that builds."], foot: "RECOGNISED BY ALBERT SCHOOL" },
   { slug: "join", kicker: "JOIN", lines: ["Come once.", "Stay if it is useful."], foot: "BEGINNERS WELCOME" },
 ];
+
+// Le logo fait 112 px de haut sur la carte : l'ampoule se lit, le nom aussi.
+const LOGO_SCALE = (112 / LOGO.height).toFixed(4);
 
 const card = ({ kicker, lines, foot }) => `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
@@ -31,11 +34,11 @@ const card = ({ kicker, lines, foot }) => `
   <rect width="1200" height="630" fill="url(#glow)"/>
   <rect x="0" y="0" width="1200" height="6" fill="${BEIGE}"/>
 
-  <g transform="translate(74 54) scale(0.4)" fill="none">
-    ${mark({ outline: IVORY, glyph: LIGHT_BEIGE }).replace(/^<svg[^>]*>|<\/svg>$/g, "")}
+  <!-- Le logo entier, à gauche ; la rubrique, à droite sur la même ligne. -->
+  <g transform="translate(72 44) scale(${LOGO_SCALE})" fill="none">
+    ${logoShapes({ outline: IVORY, glyph: LIGHT_BEIGE, letters: IVORY })}
   </g>
-  <text x="168" y="118" font-family="${SANS}" font-weight="600" font-size="26" letter-spacing="5" fill="${IVORY}">ALBERT L.I.G.H.T.</text>
-  <text x="168" y="152" font-family="${MONO}" font-size="17" letter-spacing="2.5" fill="${BEIGE}">${kicker}</text>
+  <text x="1124" y="108" text-anchor="end" font-family="${MONO}" font-size="17" letter-spacing="2.5" fill="${BEIGE}">${kicker}</text>
 
   <text x="76" y="352" font-family="${SANS}" font-weight="600" font-size="74" letter-spacing="-3" fill="${IVORY}">${lines[0]}</text>
   <text x="76" y="440" font-family="${SANS}" font-weight="600" font-size="74" letter-spacing="-3" fill="${IVORY}">${lines[1]}</text>

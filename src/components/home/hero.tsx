@@ -30,9 +30,7 @@ export function Hero({ lang }: { lang: Locale }) {
           </p>
           <h1 className="hero__name hero__in" style={{ "--i": 1 } as React.CSSProperties}>
             Albert{" "}
-            <span className="hero__light">
-              L<i>.</i>I<i>.</i>G<i>.</i>H<i>.</i>T<i>.</i>
-            </span>
+            <span className="hero__light">LIGHT</span>
           </h1>
           <p className="hero__expansion hero__in" style={{ "--i": 2 } as React.CSSProperties}>
             {d.hero.words.map((w, i) => (

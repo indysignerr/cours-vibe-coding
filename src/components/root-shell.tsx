@@ -34,7 +34,8 @@ const ORGANIZATION = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: SITE.name,
-  alternateName: ["Albert LIGHT", "Albert Light", "Albert L.I.G.H.T"],
+  // L'ancienne graphie reste ici : c'est sous elle que le site a d'abord été cherché.
+  alternateName: ["Albert Light", "Albert L.I.G.H.T."],
   url: SITE.url,
   logo: `${SITE.url}/android-chrome-512x512.png`,
   description:
