@@ -10,6 +10,7 @@ import {
   type RefObject,
 } from "react";
 import { fineOn, motionOn } from "@/lib/motion";
+import { hardwareWebGL } from "@/lib/webgl";
 
 /**
  * Le cadre de la maquette : ce qui colle à l'écran pendant que les
@@ -166,11 +167,7 @@ export function LabStage({ rooms }: { rooms: StageRoom[] }) {
     (async () => {
       try {
         // Sans carte graphique, WebGL dessinerait au processeur : l'image reste.
-        const probe = document
-          .createElement("canvas")
-          .getContext("webgl2", { failIfMajorPerformanceCaveat: true });
-        if (!probe) throw new Error("no hardware WebGL");
-        probe.getExtension("WEBGL_lose_context")?.loseContext();
+        if (!hardwareWebGL()) throw new Error("no hardware WebGL");
 
         const lab = await import("@/components/lab/lab-canvas");
         await lab.prepareLab();

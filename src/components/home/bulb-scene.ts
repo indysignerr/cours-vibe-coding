@@ -16,7 +16,6 @@ import {
   Matrix4,
   MeshPhysicalMaterial,
   PerspectiveCamera,
-  PMREMGenerator,
   PointLight,
   Quaternion,
   Ray,
@@ -25,11 +24,12 @@ import {
   SphereGeometry,
   Sprite,
   SpriteMaterial,
+  type Material,
   Vector2,
   Vector3,
   WebGLRenderer,
 } from "three";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { gpuSettled } from "@/lib/webgl";
 
 /**
  * L'ampoule du haut de page : le logo, en volume, comme une maquette de
@@ -58,9 +58,11 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
  *        l'enveloppe s'ouvre en vue éclatée, tient un instant, et se
  *        referme.
  *
- * Rien n'est téléchargé : ni modèle, ni image, et les reflets viennent
- * d'une pièce calculée sur place. Chaque rang de panneaux est une seule
- * géométrie, dessinée autant de fois qu'il a de panneaux.
+ * Rien n'est téléchargé : ni modèle, ni image. Les reflets viennent d'un
+ * studio écrit en clair dans les matériaux (voir `STUDIO`) : quelques
+ * boîtes à lumière, sans texture ni calcul préalable. Chaque rang de
+ * panneaux est une seule géométrie, dessinée autant de fois qu'il a de
+ * panneaux.
  *
  * Une fois allumée, l'ampoule se balance à peine, comme tenue à la
  * main : la boucle ne tourne que tant qu'elle est à l'écran.
@@ -105,6 +107,115 @@ const BURST = { out: 0.45, hold: 0.9, back: 0.9 };
 const GLASS_TINT = "#dfe7f3";
 const STEEL = "#d8d4ca";
 const GOLD = "#c7a160";
+
+// ---- Le studio : ce qui se reflète dans le verre et le métal ---------------
+/**
+ * Les boîtes à lumière. Chacune dit où elle se trouve (une direction vue
+ * du centre), sa demi-largeur et sa demi-hauteur (en tangente d'angle) et
+ * sa lumière, en rouge, vert, bleu.
+ *
+ * Pourquoi pas une image d'ambiance : three.js doit la filtrer avant de
+ * s'en servir, et ce filtrage compile six programmes d'un bloc, page
+ * figée, à la première visite. Ici tout est dans le matériau, compilé
+ * avec lui, hors du fil principal.
+ */
+const STUDIO: {
+  at: [number, number, number];
+  size: [number, number];
+  light: [number, number, number];
+}[] = [
+  // La principale : grande, chaude, en haut à gauche, devant.
+  { at: [-0.62, 0.58, 0.55], size: [0.62, 0.42], light: [5.2, 4.7, 4.0] },
+  // Le contre-jour : une bande froide, à droite, derrière.
+  { at: [0.86, 0.22, -0.46], size: [0.13, 0.95], light: [7.0, 8.2, 10.0] },
+  // Le plafond.
+  { at: [0.0, 1.0, 0.12], size: [0.75, 0.75], light: [2.6, 2.7, 2.9] },
+  // Le liseré, à gauche, derrière.
+  { at: [-0.9, 0.05, -0.42], size: [0.08, 0.8], light: [4.0, 4.4, 5.2] },
+  // Le débouchage, devant à droite, plus bas.
+  { at: [0.55, -0.18, 0.82], size: [0.4, 0.5], light: [0.9, 0.85, 0.8] },
+  // Le sol : un grand réflecteur bleuté, pour que le dessous du culot ne soit pas un trou noir.
+  { at: [0.0, -0.85, 0.5], size: [1.1, 0.6], light: [0.5, 0.56, 0.7] },
+];
+/** Hors des boîtes : le haut de la pièce, et son sol, presque noir. */
+const STUDIO_SKY: [number, number, number] = [0.3, 0.34, 0.42];
+const STUDIO_FLOOR: [number, number, number] = [0.06, 0.075, 0.11];
+
+const glsl = (v: number[]) => `vec${v.length}( ${v.map((x) => x.toFixed(4)).join(", ")} )`;
+
+/** Le studio, en GLSL : la lumière qui arrive d'une direction, nette ou floue. */
+function studioShader() {
+  const boxes = STUDIO.map((box) => {
+    const c = new Vector3(...box.at).normalize();
+    const lift = Math.abs(c.y) > 0.95 ? new Vector3(0, 0, 1) : new Vector3(0, 1, 0);
+    const u = new Vector3().crossVectors(lift, c).normalize();
+    const v = new Vector3().crossVectors(c, u);
+    return { c: c.toArray(), u: u.toArray(), v: v.toArray(), ...box };
+  });
+  return [
+    "uniform float uStudio;",
+    "float studioBox( vec3 dir, vec3 c, vec3 u, vec3 v, vec2 size, float soft ) {",
+    "\tfloat facing = dot( dir, c );",
+    "\tvec3 p = dir / max( facing, 0.001 );",
+    "\tvec2 q = abs( vec2( dot( p, u ), dot( p, v ) ) );",
+    "\tvec2 inside = 1.0 - smoothstep( size - soft, size + soft, q );",
+    // La boîte floue garde la même quantité de lumière : plus large, moins vive.
+    "\tfloat keep = ( size.x * size.y ) / ( ( size.x + soft * 0.5 ) * ( size.y + soft * 0.5 ) );",
+    "\treturn step( 0.0, facing ) * inside.x * inside.y * keep;",
+    "}",
+    "vec3 studio( vec3 dir, float roughness ) {",
+    "\tfloat soft = 0.035 + 2.5 * roughness * roughness;",
+    `\tvec3 light = mix( ${glsl(STUDIO_FLOOR)}, ${glsl(STUDIO_SKY)}, smoothstep( -0.75, 0.85, dir.y ) );`,
+    ...boxes.map(
+      (b) =>
+        `\tlight += ${glsl(b.light)} * studioBox( dir, ${glsl(b.c)}, ${glsl(b.u)}, ${glsl(b.v)}, ${glsl(b.size)}, soft );`,
+    ),
+    "\treturn light * uStudio;",
+    "}",
+    "vec3 studioIrradiance( vec3 n ) {",
+    `\tvec3 light = mix( ${glsl(STUDIO_FLOOR)}, ${glsl(STUDIO_SKY)}, 0.5 + 0.5 * n.y ) * PI;`,
+    ...boxes.map(
+      (b) =>
+        `\tlight += ${glsl(b.light)} * ${(4 * b.size[0] * b.size[1]).toFixed(4)} * max( dot( n, ${glsl(b.c)} ), 0.0 );`,
+    ),
+    "\treturn light * uStudio;",
+    "}",
+  ].join("\n");
+}
+/** Là où le matériau demande sa lumière d'ambiance : on lui donne celle du studio. */
+const STUDIO_USE = [
+  "#include <lights_fragment_maps>",
+  "{",
+  "\tvec3 studioN = transformDirectionByInverseViewMatrix( geometryNormal, viewMatrix );",
+  "\tvec3 studioR = reflect( - geometryViewDir, geometryNormal );",
+  "\tstudioR = normalize( mix( studioR, geometryNormal, pow4( material.roughness ) ) );",
+  "\tstudioR = transformDirectionByInverseViewMatrix( studioR, viewMatrix );",
+  "\tiblIrradiance += studioIrradiance( studioN );",
+  "\tradiance += studio( studioR, material.roughness );",
+  "\t#ifdef USE_CLEARCOAT",
+  "\t\tvec3 studioC = reflect( - geometryViewDir, geometryClearcoatNormal );",
+  "\t\tclearcoatRadiance += studio( transformDirectionByInverseViewMatrix( studioC, viewMatrix ), material.clearcoatRoughness );",
+  "\t#endif",
+  "}",
+].join("\n");
+
+type Shader = Parameters<Material["onBeforeCompile"]>[0];
+/**
+ * Éclaire un matériau par le studio. `power` règle sa part d'ambiance,
+ * `more` permet d'ajouter autre chose au programme (le verre s'en sert).
+ */
+function lightBy(material: Material, power: number, name: string, more?: (shader: Shader) => void) {
+  const studio = studioShader();
+  material.onBeforeCompile = (shader) => {
+    shader.uniforms.uStudio = { value: power };
+    shader.fragmentShader = shader.fragmentShader
+      .replace("void main() {", `${studio}\nvoid main() {`)
+      .replace("#include <lights_fragment_maps>", STUDIO_USE);
+    more?.(shader);
+  };
+  // Deux matériaux éclairés pareil partagent leur programme ; pas le verre.
+  material.customProgramCacheKey = () => name;
+}
 
 type Sample = { r: number; y: number; nr: number; ny: number };
 type Kind = "panel" | "letter" | "ray";
@@ -521,31 +632,24 @@ export type BulbHandle = {
 export async function createBulb(
   canvas: HTMLCanvasElement,
   stage: HTMLElement,
-  { fine, onLost, onLit }: { fine: boolean; onLost: () => void; onLit: () => void },
+  {
+    context,
+    fine,
+    onLost,
+    onLit,
+  }: { context: WebGL2RenderingContext; fine: boolean; onLost: () => void; onLit: () => void },
 ): Promise<BulbHandle> {
-  // Sans carte graphique, la scène se dessinerait au processeur, image par
-  // image : on préfère échouer ici, et laisser le logo dessiné.
-  const renderer = new WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-    powerPreference: "high-performance",
-    failIfMajorPerformanceCaveat: true,
-  });
+  // Le contexte est celui que le cadre a ouvert pour s'assurer qu'il y a
+  // une carte graphique : en ouvrir un second coûterait autant, pour rien.
+  const renderer = new WebGLRenderer({ canvas, context });
   renderer.setClearColor(0x000000, 0);
+  // Relire les journaux de compilation fait attendre la page : utile en développement seulement.
+  renderer.debug.checkShaderErrors = process.env.NODE_ENV !== "production";
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(28, 1, 0.1, 80);
-  await nextFrame();
-
-  // Les reflets : une pièce aux murs clairs, calculée ici.
-  const pmrem = new PMREMGenerator(renderer);
-  const room = new RoomEnvironment();
-  const env = pmrem.fromScene(room, 0.03);
-  scene.environment = env.texture;
-  scene.environmentIntensity = 0.75;
   await nextFrame();
 
   scene.add(new HemisphereLight("#9fb2d4", "#0e1a2b", 0.35));
@@ -598,12 +702,11 @@ export async function createBulb(
     color: GLASS_TINT,
     roughness: 0.1,
     metalness: 0,
-    envMapIntensity: 0.6,
     transparent: true,
     depthWrite: false,
     side: DoubleSide,
   });
-  glassMaterial.onBeforeCompile = (shader) => {
+  lightBy(glassMaterial, 0.45, "studio-glass", (shader) => {
     shader.uniforms.uCenter = glass.center;
     shader.uniforms.uEdge = glass.edge;
     shader.uniforms.uPower = glass.power;
@@ -629,14 +732,13 @@ export async function createBulb(
           "#include <opaque_fragment>",
         ].join("\n"),
       );
-  };
+  });
   const metalMaterial = new MeshPhysicalMaterial({
     color: STEEL,
     roughness: 0.26,
     metalness: 0.92,
     clearcoat: 0.5,
     clearcoatRoughness: 0.2,
-    side: DoubleSide,
   });
   const goldMaterial = new MeshPhysicalMaterial({
     color: GOLD,
@@ -647,6 +749,8 @@ export async function createBulb(
     emissive: new Color("#d9952f"),
     emissiveIntensity: 0,
   });
+  lightBy(metalMaterial, 0.75, "studio");
+  lightBy(goldMaterial, 0.75, "studio");
   const skins = { glass: glassMaterial, metal: metalMaterial, gold: goldMaterial };
 
   const lots = build();
@@ -867,6 +971,29 @@ export async function createBulb(
   // image n'est dessinée qu'ensuite. Dessiner plus tôt les ferait compiler
   // sur place, page figée.
   await renderer.compileAsync(scene, camera);
+  // Compilé ne veut pas dire rodé : au premier dessin d'un programme la
+  // carte graphique finit de le préparer, et pendant ce temps plus rien ne
+  // s'affiche à l'écran. On les rode donc un par un, tant que le canevas
+  // est encore invisible, en attendant chaque fois que la carte ait fini :
+  // quelques attentes brèves au lieu d'un gel. Et on lit d'abord leurs
+  // réglages, tous ensemble : lus plus tard, ils feraient attendre le fil
+  // principal derrière chaque dessin.
+  for (const program of renderer.info.programs ?? []) {
+    program.getUniforms();
+    program.getAttributes();
+  }
+  for (const set of sets) place(set, 0);
+  const shown = (skin: Material | null) => {
+    for (const set of sets) set.mesh.visible = skin === null || set.mesh.material === skin;
+    haloSprite.visible = skin === null || skin === haloMaterial;
+  };
+  for (const skin of [metalMaterial, goldMaterial, glassMaterial, haloMaterial]) {
+    if (dead) break;
+    shown(skin);
+    renderer.render(scene, camera);
+    await gpuSettled(context);
+  }
+  shown(null);
   ready = true;
   if (!dead) draw(0);
 
@@ -926,9 +1053,6 @@ export async function createBulb(
       goldMaterial.dispose();
       haloMaterial.dispose();
       haloMap.dispose();
-      env.dispose();
-      pmrem.dispose();
-      room.dispose?.();
       renderer.dispose();
       // Rendre le contexte tout de suite : on revient souvent à l'accueil,
       // et un navigateur n'en garde qu'une poignée.

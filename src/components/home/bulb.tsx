@@ -46,15 +46,19 @@ export function Bulb() {
       try {
         // Sans carte graphique, WebGL dessinerait au processeur : on s'en
         // assure avant même de charger three.js, et on garde le logo dessiné.
-        const probe = document
-          .createElement("canvas")
-          .getContext("webgl2", { failIfMajorPerformanceCaveat: true });
-        if (!probe) throw new Error("no hardware WebGL");
-        probe.getExtension("WEBGL_lose_context")?.loseContext();
+        // Le contexte ouvert ici est celui dont la scène se servira.
+        const context = cv.getContext("webgl2", {
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+          failIfMajorPerformanceCaveat: true,
+        });
+        if (!context) throw new Error("no hardware WebGL");
 
         const { createBulb } = await import("@/components/home/bulb-scene");
         if (dead) return;
         const made = await createBulb(cv, el, {
+          context,
           fine,
           onLost: () => setState("failed"),
           // Quand l'ampoule s'allume, le dernier mot du titre s'allume avec elle.

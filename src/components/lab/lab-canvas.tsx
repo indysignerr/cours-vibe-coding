@@ -16,6 +16,7 @@ import {
 } from "three";
 import { C, build, clamp01, smooth, span, split, warm } from "@/components/lab/kit";
 import { BASE, ROOMS, type Burst, type Room } from "@/components/lab/rooms";
+import { gpuSettled } from "@/lib/webgl";
 
 /**
  * La maquette du labo : un plateau tournant, quatre pièces, une lampe.
@@ -129,14 +130,27 @@ function Lab({
     camera.updateProjectionMatrix();
   }, [camera, size]);
 
-  // Les programmes se compilent à part, sans bloquer la page ; la boucle
-  // attend qu'ils soient prêts (voir `primed`).
+  // Les programmes se compilent à part, sans bloquer la page. Puis une
+  // première image est dessinée ici, pendant que la maquette est encore
+  // cachée sous son image fixe : c'est le premier dessin qui coûte, autant
+  // qu'il ne tombe pas au moment où on arrive devant elle. La boucle
+  // n'est lancée qu'ensuite (voir `primed`).
   useEffect(() => {
     let off = false;
     const done = () => {
       if (!off) onPrimed();
     };
-    gl.compileAsync(scene, camera).then(done, done);
+    (async () => {
+      await gl.compileAsync(scene, camera);
+      if (off) return;
+      // Lus tous ensemble avant le dessin : sinon chaque lecture attendrait la carte.
+      for (const program of gl.info.programs ?? []) {
+        program.getUniforms();
+        program.getAttributes();
+      }
+      gl.render(scene, camera);
+      await gpuSettled(gl.getContext() as WebGL2RenderingContext);
+    })().then(done, done);
     return () => {
       off = true;
     };
