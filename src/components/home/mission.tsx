@@ -5,8 +5,9 @@ import { href, t, type Locale } from "@/lib/i18n";
 /**
  * La mission : le texte officiel de l'association, tel qu'elle l'a écrit.
  *
- * Dans la marge, ce que LIGHT veut dire. `full` (la page À propos) donne
- * les trois paragraphes ; l'accueil en donne deux, et renvoie vers elle.
+ * `full` (la page À propos) donne les trois paragraphes ; l'accueil en
+ * donne deux, et renvoie vers elle. Ce que LIGHT veut dire a son propre
+ * bandeau, juste avant (Acronym).
  */
 export function Mission({
   lang,
@@ -24,18 +25,7 @@ export function Mission({
       <div className="container">
         <SectionHead n={n} label={d.mission.eyebrow} title={d.mission.title} id="mission-title" />
         <div className="rail">
-          <aside data-reveal>
-            <p className="eyebrow">{d.hero.stands}</p>
-            <ul className="acro__list">
-              {d.hero.words.map((w) => (
-                <li key={w}>
-                  <b>{w[0]}</b>
-                  {w.slice(1)}
-                </li>
-              ))}
-            </ul>
-          </aside>
-          <div>
+          <div className="rail__main">
             <p className="mission__lead" data-reveal>
               {full ? d.mission.p1 : d.mission.p2}
             </p>

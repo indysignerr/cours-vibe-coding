@@ -698,53 +698,60 @@ textarea.field { min-height: 6.5rem; resize: vertical; }
 }
 
 /* =====================================================================
-   Les quatre chiffres.
+   Ce que LIGHT veut dire : cinq mots, cinq initiales allumées.
+
+   Un bandeau marine sous le haut de page. Chaque mot porte son initiale
+   en très grand ; les cinq s'allument l'une après l'autre à l'arrivée du
+   bandeau, et se lisent L, I, G, H, T.
+
+   Le halo des initiales est la seule lueur du site, et l'entorse est
+   voulue : le bureau a demandé des lettres « illuminées ». L'initiale est
+   écrite deux fois, éteinte dessous, allumée dessus ; seule l'opacité de
+   la seconde bouge.
    ===================================================================== */
-.keyfacts__row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  border-top: 2px solid var(--ink);
-  border-bottom: 1px solid var(--line-strong);
-}
-.fact {
+.acro { padding-block: clamp(2.75rem, 6vw, 4.5rem); }
+.acro__label { color: var(--muted); }
+.acro__row { display: grid; gap: 0.35rem; margin-top: 1.25rem; }
+.acro__split {
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 0.6rem;
-  padding: 1.5rem 1rem 1.6rem 0;
-}
-.fact:nth-child(even) { padding-left: 1.25rem; border-left: 1px solid var(--line-strong); }
-.fact:nth-child(n + 3) { border-top: 1px solid var(--line-strong); }
-.fact__figure {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(3rem, 7vw, 5.25rem);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  font-variant-numeric: lining-nums tabular-nums;
+  align-items: baseline;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(1.55rem, 6vw, 2rem);
+  line-height: 1;
   color: var(--ink);
-  white-space: nowrap;
 }
-.fact__label { max-width: 20ch; }
-@media (min-width: 900px) {
-  .keyfacts__row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .fact { padding: 2rem 1.5rem 2.1rem 0; }
-  .fact:nth-child(n + 3) { border-top: 0; }
-  .fact:nth-child(n + 2) { padding-left: 1.75rem; border-left: 1px solid var(--line-strong); }
+.acro__initial {
+  position: relative;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(4.5rem, 21vw, 6.25rem);
+  font-weight: 400;
+  line-height: 0.95;
+  color: rgb(248 244 236 / 0.2);
+}
+.acro__initial::after {
+  content: attr(data-l);
+  position: absolute;
+  inset: 0;
+  color: #fff3dc;
+  text-shadow:
+    0 0 0.06em rgb(255 243 220 / 0.9),
+    0 0 0.32em rgb(255 214 150 / 0.55),
+    0 0 0.9em rgb(201 174 132 / 0.45);
+}
+@media (min-width: 720px) {
+  .acro__row {
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: end;
+    gap: 0.75rem;
+  }
+  .acro__split { font-size: clamp(1.15rem, 1.95vw, 1.95rem); }
+  .acro__initial { font-size: clamp(4.25rem, 9.4vw, 8.5rem); }
 }
 
 /* =====================================================================
    La mission.
    ===================================================================== */
-.acro__list {
-  display: grid;
-  gap: 0.1rem;
-  margin-top: 0.9rem;
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
-  line-height: 1.18;
-  color: var(--ink);
-}
-.acro__list b { font-weight: 500; color: var(--accent); }
 .mission__lead {
   max-width: 28em;
   font-family: var(--font-serif), Georgia, serif;
@@ -1310,6 +1317,19 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
 }
 .motion .hero__on { animation: hero-on 0.6s ease-out 0.9s both; }
 
+/* Les cinq initiales de LIGHT s'allument l'une après l'autre, avec le
+   petit raté d'une ampoule qu'on allume. */
+@keyframes acro-on {
+  0% { opacity: 0; }
+  14% { opacity: 1; }
+  24% { opacity: 0.2; }
+  38%, 100% { opacity: 1; }
+}
+.motion .acro__initial::after { opacity: 0; }
+.motion .acro__row.is-in .acro__initial::after {
+  animation: acro-on 0.95s linear calc(0.3s + var(--k, 0) * 0.24s) both;
+}
+
 .motion [data-reveal] {
   opacity: 0;
   transform: translateY(16px);
@@ -1331,6 +1351,7 @@ pre, code { font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospa
    main, tout est montré. Une animation manquée vaut mieux qu'une page vide. */
 .motion-fallback [data-reveal] { opacity: 1 !important; transform: none !important; }
 .motion-fallback [data-rule]::before { transform: none !important; }
+.motion-fallback .acro__initial::after { opacity: 1 !important; animation: none !important; }
 
 /* D'une page à l'autre : l'ancienne s'efface, la nouvelle monte. */
 ::view-transition-old(.page-out) { animation: 180ms ease-in both vt-out; }

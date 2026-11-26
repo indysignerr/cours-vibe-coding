@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { CtaBand } from "@/components/cta-band";
 import { EventList } from "@/components/event-list";
+import { Acronym } from "@/components/home/acronym";
 import { FaqBlock } from "@/components/home/faq-block";
 import { Hero } from "@/components/home/hero";
 import { JoinBlock } from "@/components/home/join-block";
-import { KeyFacts } from "@/components/home/key-facts";
 import { Mission } from "@/components/home/mission";
 import { Pillars } from "@/components/home/pillars";
 import { TeamBlock } from "@/components/home/team-block";
@@ -16,9 +16,10 @@ import { href, t, type Locale } from "@/lib/i18n";
 import { timelineItems, timelineLabels } from "@/lib/timeline";
 
 /**
- * L'accueil : ce qu'est l'association, en chiffres, sa mission, ses
- * quatre piliers autour de la maquette, les prochaines dates, comment
- * entrer, qui s'en occupe, les questions qu'on se pose avant de venir.
+ * L'accueil : ce qu'est l'association, ce que son nom veut dire, sa
+ * mission, ses quatre piliers autour de la maquette, le calendrier,
+ * comment entrer, qui s'en occupe, les questions qu'on se pose avant de
+ * venir.
  * Les sections sont numérotées, comme les chapitres d'un rapport.
  */
 export function HomePage({ lang }: { lang: Locale }) {
@@ -28,7 +29,7 @@ export function HomePage({ lang }: { lang: Locale }) {
     <PageFrame lang={lang} page="home">
       <ScrollFX />
       <Hero lang={lang} />
-      <KeyFacts lang={lang} />
+      <Acronym lang={lang} />
       <Mission lang={lang} n="01" />
       <Pillars lang={lang} n="02" />
 

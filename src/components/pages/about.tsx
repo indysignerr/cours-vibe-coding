@@ -1,5 +1,6 @@
 import team from "@content/team.json";
 import { CtaBand } from "@/components/cta-band";
+import { Acronym } from "@/components/home/acronym";
 import { Mission } from "@/components/home/mission";
 import { PillarText } from "@/components/home/pillars";
 import { ScrollFX } from "@/components/motion/scroll-fx";
@@ -30,6 +31,7 @@ export function AboutPage({ lang }: { lang: Locale }) {
     <PageFrame lang={lang} page="about">
       <ScrollFX />
       <PageHead eyebrow={d.about.eyebrow} title={d.mission.quote} lede={d.hero.lede} />
+      <Acronym lang={lang} />
       <Mission lang={lang} full />
 
       <section className="section" aria-labelledby="how-title">
