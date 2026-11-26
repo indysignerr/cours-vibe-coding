@@ -15,6 +15,8 @@ import {
   PMREMGenerator,
   PointLight,
   Quaternion,
+  Ray,
+  Raycaster,
   Scene,
   Vector2,
   Vector3,
@@ -66,9 +68,14 @@ const BAR = { y: -1.639, r: 0.364 };
 const CAP = { y: -1.956, r: 0.318 };
 
 // ---- Les tuiles ----
-const TILE = 0.185; // côté visé d'une tuile
-const JOINT = 0.018;
-const THICK = 0.08;
+const TILE = 0.118; // côté visé d'une tuile : près d'un millier sur l'ampoule
+const JOINT = 0.014;
+const THICK = 0.075;
+
+// ---- La souris ----
+/** Jusqu'où une tuile sent le curseur, et de combien elle s'en écarte. */
+const REACH = 0.62;
+const PUSH = 0.5;
 
 // ---- Le temps, en secondes ----
 const ASSEMBLED = 2.45;
@@ -240,7 +247,9 @@ function build() {
     side.normalize();
     const open = pos
       .clone()
-      .addScaledVector(normal, 0.24 + rand() * 0.32)
+      // Une tuile sur six part nettement plus loin que les autres : c'est
+      // elle qui fait l'éclat.
+      .addScaledVector(normal, 0.22 + rand() * 0.34 + (rand() < 0.17 ? 0.45 + rand() * 0.75 : 0))
       .addScaledVector(side, front * front * (1.08 + rand() * 0.42))
       .add(new Vector3((rand() - 0.5) * 0.12, (rand() - 0.5) * 0.12 - drop, front * 0.3));
     const tilt = new Quaternion().setFromAxisAngle(
@@ -391,6 +400,8 @@ export type BulbHandle = {
   resize: () => void;
   /** La souris, de -1 à 1 sur chaque axe. */
   pointer: (x: number, y: number) => void;
+  /** Le curseur, en pixels de la fenêtre : les tuiles s'en écartent. `null` quand il s'en va. */
+  hover: (at: { x: number; y: number } | null) => void;
   /** Le défilement, de 0 (haut de page) à 1 : les tuiles s'éloignent. */
   spread: (amount: number) => void;
   /** Montre l'ampoule à un instant donné, en secondes. Pour les réglages. */
@@ -467,6 +478,17 @@ export function createBulb(
   group.position.y = 0.52;
   scene.add(group);
 
+  // La souris : son rayon, ramené dans le repère de l'ampoule, et l'écart
+  // que chaque tuile a pris pour s'en éloigner (il revient à zéro tout seul).
+  const raycaster = new Raycaster();
+  const cursor = new Vector2();
+  const beam = new Ray();
+  const inverse = new Matrix4();
+  const gap = new Float32Array(tiles.length * 3);
+  const d = new Vector3();
+  let hovering = false;
+  let follow = 1;
+
   const m = new Matrix4();
   const p = new Vector3();
   const q = new Quaternion();
@@ -512,6 +534,29 @@ export function createBulb(
           p.addScaledVector(it.normal, Math.sin(t * 0.85 + it.phase) * 0.04 * settled);
           p.addScaledVector(it.away, now.spread * (2.4 + it.kick * 9));
         }
+        // Le curseur passe : la tuile s'écarte de son rayon, puis revient.
+        let gx = 0;
+        let gy = 0;
+        let gz = 0;
+        if (hovering) {
+          d.copy(p).sub(beam.origin);
+          d.addScaledVector(beam.direction, -d.dot(beam.direction));
+          const far = d.length();
+          if (far < REACH) {
+            const near = 1 - far / REACH;
+            const force = (near * near * PUSH) / Math.max(0.05, far);
+            gx = d.x * force;
+            gy = d.y * force;
+            gz = d.z * force + near * 0.12;
+          }
+        }
+        const j = i * 3;
+        gap[j] += (gx - gap[j]) * follow;
+        gap[j + 1] += (gy - gap[j + 1]) * follow;
+        gap[j + 2] += (gz - gap[j + 2]) * follow;
+        p.x += gap[j];
+        p.y += gap[j + 1];
+        p.z += gap[j + 2];
       } else if (!shell && t > BURST) {
         // Le « L » grandit en s'allumant : c'est lui qu'on est venu voir.
         const grow = 1 + 0.36 * outBack(clamp01((t - BURST) / 0.8));
@@ -563,6 +608,12 @@ export function createBulb(
     now.x += (aim.x - now.x) * ease;
     now.y += (aim.y - now.y) * ease;
     now.spread += (aim.spread - now.spread) * (1 - Math.exp(-dt * 7));
+    follow = 1 - Math.exp(-dt * 9);
+    if (hovering) {
+      raycaster.setFromCamera(cursor, camera);
+      inverse.copy(group.matrixWorld).invert();
+      beam.copy(raycaster.ray).applyMatrix4(inverse);
+    }
     draw(time);
     if (playing) frame = requestAnimationFrame(tick);
   };
@@ -625,6 +676,19 @@ export function createBulb(
       if (time < OPEN) return;
       aim.x = x * 0.3;
       aim.y = y * 0.14;
+    },
+    hover(at) {
+      if (!at) {
+        hovering = false;
+        return;
+      }
+      const view = canvas.getBoundingClientRect();
+      if (!view.width || !view.height) return;
+      cursor.set(
+        ((at.x - view.left) / view.width) * 2 - 1,
+        -(((at.y - view.top) / view.height) * 2 - 1),
+      );
+      hovering = true;
     },
     spread(amount) {
       aim.spread = time < OPEN ? 0 : clamp01(amount);

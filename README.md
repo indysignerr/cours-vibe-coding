@@ -329,14 +329,15 @@ phrase de son texte officiel, deux boutons et le prochain événement. À
 droite, l'ampoule du logo en volume, d'après une vidéo donnée en référence
 par le bureau le 26 novembre 2026 :
 
-1. des centaines de tuiles marine arrivent de partout en tournant et
+1. un millier de petites tuiles marine arrivent de partout en tournant et
    pavent la silhouette du logo, pendant que le « L » se monte au centre ;
 2. l'ampoule reste entière un instant, se serre, puis éclate : les tuiles
    partent vers l'extérieur, celles de devant s'écartent comme un iris, et
    le « L » s'allume au milieu, en même temps que le dernier mot du titre ;
-3. au repos les tuiles flottent autour du « L ». Quand on fait défiler la
-   page elles s'éloignent encore, et reviennent si on remonte ; la souris
-   fait tourner l'ensemble de quelques degrés.
+3. au repos les tuiles flottent autour du « L ». Elles s'écartent du
+   curseur quand il passe sur elles, puis reprennent leur place. Quand on
+   fait défiler la page elles s'éloignent encore, et reviennent si on
+   remonte ; la souris fait aussi tourner l'ensemble de quelques degrés.
 
 - La scène est dans `src/components/home/bulb-scene.ts` (three.js, sans
   React) : trois appels de dessin, aucun modèle ni image téléchargés. Ses

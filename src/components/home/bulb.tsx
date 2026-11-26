@@ -83,15 +83,29 @@ export function Bulb() {
       const span = (hero?.offsetHeight ?? window.innerHeight) * 0.72;
       handle?.spread(window.scrollY / Math.max(1, span));
     };
+    // La souris fait deux choses : l'ampoule tourne un peu vers elle, et
+    // les tuiles sur lesquelles elle passe s'écartent. Au doigt, seul
+    // l'écart joue, le temps du contact.
     const onPointer = (event: PointerEvent) => {
-      handle?.pointer(
-        (event.clientX / window.innerWidth - 0.5) * 2,
-        (event.clientY / window.innerHeight - 0.5) * 2,
-      );
+      if (fine) {
+        handle?.pointer(
+          (event.clientX / window.innerWidth - 0.5) * 2,
+          (event.clientY / window.innerHeight - 0.5) * 2,
+        );
+      }
+      handle?.hover({ x: event.clientX, y: event.clientY });
+    };
+    const onLeave = () => handle?.hover(null);
+    const onUp = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") handle?.hover(null);
     };
     document.addEventListener("visibilitychange", sync);
     window.addEventListener("scroll", onScroll, { passive: true });
-    if (fine) window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("pointerdown", onPointer, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    window.addEventListener("pointercancel", onLeave, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
 
     return () => {
       dead = true;
@@ -100,6 +114,10 @@ export function Bulb() {
       document.removeEventListener("visibilitychange", sync);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onLeave);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       handle?.dispose();
     };
   }, []);
